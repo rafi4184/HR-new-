@@ -72,15 +72,15 @@ approves, or declines each request and auto-emails the customer.
   audit filters, new news-desk portrait.
 - **2026-01 (turn 6)** — Rate limits (slowapi), bulk approve/reject, case search,
   glowing tracker timeline.
-- **2026-01 (turn 7)** —
-  - **Ticket autoformat** in the tracker input — types digits, live-morphs to `HRM-100002`,
-    green ring when the format is valid, red border while incomplete. Paste is normalised too.
-  - **Live queue** polling — the same 15s loop now also pulls `staffListRequests`, diffs by
-    id/status/updatedAt, and hot-swaps the queue only when server state actually moved.
-  - **Weekly digest** — APScheduler `AsyncIOScheduler` cron job at Mon 03:00 UTC (~09:00 BD)
-    dispatches a branded HTML summary of the last 7 days (Approved / Declined / Settled / Pending
-    counts + 6 recent decisions) to every admin with a valid email. Admin-only test route
-    `POST /api/staff/digest/test` verified: dispatched to 1 admin (mock log until Resend key set).
+- **2026-01 (turn 7)** — Ticket autoformat, live queue polling, weekly digest cron.
+- **2026-01 (turn 8)** —
+  - **Gmail SMTP** added as a first-priority email provider via `aiosmtplib` (STARTTLS on
+    smtp.gmail.com:587). Provider order: Gmail → Resend → mock. Errors log a clear hint
+    pointing at App Passwords.
+  - Verified: `hr123456789` was rejected with Gmail's `534 5.7.9 Application-specific password
+    required` — provider correctly fell through to mock.
+  - **Supabase migration deferred**: `service_role` JWT was not provided, so no connection was
+    possible. All storage still on MongoDB.
 
 ## Backlog / P0-P2
 - **P0**: Set a real `RESEND_API_KEY` in `.env` — emails are still mocked to logs.

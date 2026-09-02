@@ -1,8 +1,10 @@
 """
-Transactional email helpers (Resend).
+Transactional email helpers.
 
-If RESEND_API_KEY is missing, we log a rendered summary instead of sending — that lets
-staff test the approve/reject flow end-to-end without a real key.
+Provider priority:
+  1. Gmail SMTP  — active if GMAIL_USER + GMAIL_APP_PASSWORD are set.
+  2. Resend API  — active if RESEND_API_KEY is set.
+  3. Mock (log)  — always the final fallback so the app stays functional.
 """
 
 from __future__ import annotations
@@ -10,20 +12,34 @@ from __future__ import annotations
 import asyncio
 import logging
 import os
+import re
+from email.message import EmailMessage
 from typing import Any
 
+import aiosmtplib
 import resend
 
 logger = logging.getLogger("hr-mediator.emails")
 
 RESEND_API_KEY = os.environ.get("RESEND_API_KEY", "").strip()
-SENDER_EMAIL = os.environ.get("SENDER_EMAIL", "HR — The Mediator <onboarding@resend.dev>")
+GMAIL_USER = os.environ.get("GMAIL_USER", "").strip()
+GMAIL_APP_PASSWORD = os.environ.get("GMAIL_APP_PASSWORD", "").strip().replace(" ", "")
+SENDER_EMAIL = os.environ.get(
+    "SENDER_EMAIL",
+    f"HR — The Mediator <{GMAIL_USER or 'onboarding@resend.dev'}>",
+)
 BRAND_NAME = os.environ.get("BRAND_NAME", "HR — The Mediator")
 BRAND_TAGLINE = os.environ.get("BRAND_TAGLINE", "Bangladesh concierge desk")
 BRAND_PHONE = os.environ.get("BRAND_PHONE", "+880 1717-013150")
 
 if RESEND_API_KEY:
     resend.api_key = RESEND_API_KEY
+
+
+def _address_only(sender: str) -> str:
+    """Extract the bare email from 'Name <a@b.com>' style sender strings."""
+    m = re.search(r"<([^>]+)>", sender)
+    return m.group(1) if m else sender
 
 
 def _shell(preheader: str, headline: str, body_html: str, accent: str) -> str:
@@ -226,17 +242,66 @@ def digest_email(
     )
 
 
-async def send_html(to: str, subject: str, html: str) -> None:
-    if not RESEND_API_KEY:
-        logger.info(
-            "[email:mock] to=%s subject=%s (set RESEND_API_KEY to send for real)",
-            to,
-            subject,
-        )
-        return
+async def _send_via_gmail(to: str, subject: str, html: str) -> None:
+    """Send an HTML email through Gmail SMTP (submission port 587, STARTTLS)."""
+    msg = EmailMessage()
+    msg["From"] = SENDER_EMAIL
+    msg["To"] = to
+    msg["Subject"] = subject
+    msg.set_content(re.sub(r"<[^>]+>", "", html))  # plain-text fallback
+    msg.add_alternative(html, subtype="html")
+
+    await aiosmtplib.send(
+        msg,
+        hostname="smtp.gmail.com",
+        port=587,
+        start_tls=True,
+        username=GMAIL_USER,
+        password=GMAIL_APP_PASSWORD,
+        timeout=15,
+    )
+
+
+async def _send_via_resend(to: str, subject: str, html: str) -> Any:
     params = {"from": SENDER_EMAIL, "to": [to], "subject": subject, "html": html}
-    try:
-        result = await asyncio.to_thread(resend.Emails.send, params)
-        logger.info("[email:sent] to=%s id=%s", to, result.get("id") if isinstance(result, dict) else result)
-    except Exception as e:  # noqa: BLE001
-        logger.exception("[email:error] to=%s err=%s", to, e)
+    return await asyncio.to_thread(resend.Emails.send, params)
+
+
+async def send_html(to: str, subject: str, html: str) -> None:
+    # 1) Gmail SMTP
+    if GMAIL_USER and GMAIL_APP_PASSWORD:
+        try:
+            await _send_via_gmail(to, subject, html)
+            logger.info("[email:gmail-sent] to=%s subject=%s", to, subject)
+            return
+        except Exception as e:  # noqa: BLE001
+            # Common: 535 auth failure when a regular Gmail password is used
+            # instead of a 16-char App Password.
+            logger.error(
+                "[email:gmail-error] to=%s err=%s -- falling back. If '535' or "
+                "'Username and Password not accepted', generate an App Password "
+                "at https://myaccount.google.com/apppasswords and set GMAIL_APP_PASSWORD.",
+                to,
+                e,
+            )
+
+    # 2) Resend
+    if RESEND_API_KEY:
+        try:
+            result = await _send_via_resend(to, subject, html)
+            logger.info(
+                "[email:resend-sent] to=%s id=%s",
+                to,
+                result.get("id") if isinstance(result, dict) else result,
+            )
+            return
+        except Exception as e:  # noqa: BLE001
+            logger.error("[email:resend-error] to=%s err=%s -- falling back to mock.", to, e)
+
+    # 3) Mock — the app keeps working even without a real provider.
+    logger.info(
+        "[email:mock] to=%s subject=%s (no provider configured or all failed; "
+        "set GMAIL_APP_PASSWORD or RESEND_API_KEY to send for real)",
+        to,
+        subject,
+    )
