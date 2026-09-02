@@ -70,17 +70,17 @@ approves, or declines each request and auto-emails the customer.
   MediaPartners → "As seen on air" section with BTV feature card.
 - **2026-01 (turn 5)** — Live pending badge, self-service password change, invite emails,
   audit filters, new news-desk portrait.
-- **2026-01 (turn 6)** —
-  - **Rate limits** via `slowapi`: 10/min + 30/hour on submit, 20/min on track, 10/min on login.
-    429 with a friendly message; verified via curl (12th rapid submit → 429).
-  - **Bulk actions**: `POST /api/staff/requests/bulk-approve` and `.../bulk-reject` — process
-    up to 100 pending IDs in one call, queue an individual customer email per case, log each
-    to the audit trail with `bulk: true`. Non-pending IDs are safely skipped.
-  - **Case search**: dashboard queue has a search chip (ticket, guest name, email, phone,
-    summary, type) with a live clear-X and a "Select all pending" toggle.
-  - **Glowing status timeline** in the customer tracker (Submitted → In review → Confirmed),
-    with per-node tone/icon based on final status (green checks, gold spinner for pending,
-    maroon X for declined). Uses Framer Motion `layoutId` for the morph.
+- **2026-01 (turn 6)** — Rate limits (slowapi), bulk approve/reject, case search,
+  glowing tracker timeline.
+- **2026-01 (turn 7)** —
+  - **Ticket autoformat** in the tracker input — types digits, live-morphs to `HRM-100002`,
+    green ring when the format is valid, red border while incomplete. Paste is normalised too.
+  - **Live queue** polling — the same 15s loop now also pulls `staffListRequests`, diffs by
+    id/status/updatedAt, and hot-swaps the queue only when server state actually moved.
+  - **Weekly digest** — APScheduler `AsyncIOScheduler` cron job at Mon 03:00 UTC (~09:00 BD)
+    dispatches a branded HTML summary of the last 7 days (Approved / Declined / Settled / Pending
+    counts + 6 recent decisions) to every admin with a valid email. Admin-only test route
+    `POST /api/staff/digest/test` verified: dispatched to 1 admin (mock log until Resend key set).
 
 ## Backlog / P0-P2
 - **P0**: Set a real `RESEND_API_KEY` in `.env` — emails are still mocked to logs.

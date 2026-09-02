@@ -16,6 +16,8 @@ from typing import Any, Optional, Literal
 
 import bcrypt
 import jwt
+from apscheduler.schedulers.asyncio import AsyncIOScheduler
+from apscheduler.triggers.cron import CronTrigger
 from dotenv import load_dotenv
 from fastapi import BackgroundTasks, Depends, FastAPI, HTTPException, Query, Request
 from fastapi.security import HTTPAuthorizationCredentials, HTTPBearer
@@ -30,7 +32,7 @@ from starlette.responses import JSONResponse
 ROOT_DIR = Path(__file__).parent
 load_dotenv(ROOT_DIR / ".env")
 
-from emails import approval_email, rejection_email, send_html  # noqa: E402
+from emails import approval_email, digest_email, rejection_email, send_html  # noqa: E402
 
 logging.basicConfig(
     level=logging.INFO,
@@ -354,6 +356,80 @@ async def seed_bootstrap_admin() -> None:
     }
     await users_col.insert_one(admin)
     logger.info("bootstrap admin '%s' seeded", BOOTSTRAP_ADMIN_USERNAME)
+
+
+# --- Weekly digest --------------------------------------------------------
+async def _compute_weekly_digest() -> tuple[dict[str, int], list[dict[str, Any]], str, str]:
+    end = datetime.now(timezone.utc)
+    start = end - timedelta(days=7)
+    since_iso = start.isoformat()
+    approved = await requests_col.count_documents({"status": "approved", "updated_at": {"$gte": since_iso}})
+    rejected = await requests_col.count_documents({"status": "rejected", "updated_at": {"$gte": since_iso}})
+    paid = await requests_col.count_documents({"status": "paid", "updated_at": {"$gte": since_iso}})
+    pending = await requests_col.count_documents({"status": "received"})
+    metrics = {"Approved": approved, "Declined": rejected, "Settled": paid, "Pending": pending}
+    top = await (
+        requests_col.find({"updated_at": {"$gte": since_iso}, "status": {"$in": ["approved", "rejected", "paid"]}})
+        .sort("updated_at", -1)
+        .limit(6)
+        .to_list(length=6)
+    )
+    top_cases = [
+        {
+            "ticket": r["ticket"],
+            "type": r["type"],
+            "summary": r["summary"],
+            "status": r["status"],
+        }
+        for r in top
+    ]
+    return metrics, top_cases, start.date().isoformat(), end.date().isoformat()
+
+
+async def send_weekly_digest() -> int:
+    """Send the digest email to every admin. Returns the count sent."""
+    metrics, top_cases, w_start, w_end = await _compute_weekly_digest()
+    admins = await users_col.find({"role": "admin"}).to_list(length=200)
+    sent = 0
+    for admin in admins:
+        recipient = admin.get("email") or admin.get("username")
+        if not recipient or "@" not in recipient:
+            continue  # skip admins without a deliverable address
+        subject, html = digest_email(admin, metrics, top_cases, w_start, w_end)
+        await send_html(recipient, subject, html)
+        sent += 1
+    logger.info("weekly digest dispatched to %d admin(s)", sent)
+    return sent
+
+
+scheduler = AsyncIOScheduler(timezone="UTC")
+
+
+@app.on_event("startup")
+async def start_scheduler() -> None:
+    if scheduler.running:
+        return
+    # Monday 03:00 UTC ≈ 09:00 Bangladesh time
+    scheduler.add_job(
+        send_weekly_digest,
+        CronTrigger(day_of_week="mon", hour=3, minute=0),
+        id="weekly_digest",
+        replace_existing=True,
+    )
+    scheduler.start()
+    logger.info("scheduler started; weekly_digest cron mon@03:00 UTC")
+
+
+@app.on_event("shutdown")
+async def stop_scheduler() -> None:
+    if scheduler.running:
+        scheduler.shutdown(wait=False)
+
+
+@app.post("/api/staff/digest/test")
+async def trigger_digest_test(_: dict = Depends(require_admin)) -> dict[str, Any]:
+    sent = await send_weekly_digest()
+    return {"ok": True, "sent": sent}
 
 
 @app.get("/api/health")

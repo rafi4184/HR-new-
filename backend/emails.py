@@ -172,6 +172,60 @@ def invite_email(user: dict[str, Any], temp_password: str) -> tuple[str, str]:
     )
 
 
+def digest_email(
+    admin: dict[str, Any],
+    metrics: dict[str, int],
+    top_cases: list[dict[str, Any]],
+    week_start: str,
+    week_end: str,
+) -> tuple[str, str]:
+    subject = f"Weekly digest · {week_start} → {week_end} — {BRAND_NAME}"
+    cells = "".join(
+        f"""<td align="center" style="padding:12px 8px;background:#FBF7EA;border:1px solid #DBD0AF;border-radius:10px;">
+              <div style="font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:#8A7A52;">{label}</div>
+              <div style="font-family:'Newsreader',Georgia,serif;font-size:30px;color:#1E2A20;margin-top:4px;">{value}</div>
+            </td>"""
+        for label, value in metrics.items()
+    )
+    highlights = ""
+    if top_cases:
+        rows = "".join(
+            f"""<tr>
+                  <td style="padding:6px 10px;font-family:'IBM Plex Mono',monospace;font-size:12px;color:#8A7A52;">{c['ticket']}</td>
+                  <td style="padding:6px 10px;font-size:13px;color:#1E2A20;">{c['type']}</td>
+                  <td style="padding:6px 10px;font-size:13px;color:#4C5B49;">{c['summary']}</td>
+                  <td style="padding:6px 10px;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:#2F5D3F;">{c['status']}</td>
+                </tr>"""
+            for c in top_cases
+        )
+        highlights = f"""
+        <p style="margin:18px 0 10px 0;font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:#8A7A52;">Recent decisions</p>
+        <table role="presentation" width="100%" cellspacing="0" cellpadding="0"
+               style="border-top:1px dashed #CBBE96;border-bottom:1px dashed #CBBE96;">
+          {rows}
+        </table>"""
+    body = f"""
+        <p style="margin:0 0 14px 0;">Dear {admin.get('name') or admin.get('username')},</p>
+        <p style="margin:0 0 14px 0;">
+          Here's how the desk moved between <strong>{week_start}</strong> and <strong>{week_end}</strong>.
+        </p>
+        <table role="presentation" width="100%" cellspacing="6" cellpadding="0" style="margin:16px 0;">
+          <tr>{cells}</tr>
+        </table>
+        {highlights}
+        <p style="margin:16px 0 0 0;">
+          Everything above is also live in the dashboard's audit log.
+        </p>
+        <p style="margin:16px 0 0 0;">Warmly,<br/>The {BRAND_NAME} case bureau</p>
+    """
+    return subject, _shell(
+        preheader=f"Weekly digest: {metrics.get('Approved', 0)} approved, {metrics.get('Pending', 0)} pending.",
+        headline="Weekly digest",
+        body_html=body,
+        accent="#2F5D3F",
+    )
+
+
 async def send_html(to: str, subject: str, html: str) -> None:
     if not RESEND_API_KEY:
         logger.info(

@@ -1,9 +1,16 @@
-import { forwardRef, type FormEvent } from "react";
+import { forwardRef, useState, type FormEvent } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Search, ShieldAlert, CheckCircle2, CreditCard, Clock, Check, X } from "lucide-react";
 import { Field, inputClass } from "./ui/Field";
 import StatusPill from "./ui/StatusPill";
 import type { RequestStatus, ServiceRequest } from "../types";
+
+function formatTicket(raw: string): string {
+  // Keep only digits from user input, then rebuild HRM-######
+  const digits = raw.replace(/\D/g, "").slice(0, 8);
+  if (!digits) return "";
+  return `HRM-${digits}`;
+}
 
 type StepKey = "submitted" | "review" | "final";
 
@@ -58,6 +65,9 @@ const TrackRequest = forwardRef<
     onPay: (req: ServiceRequest) => void;
   }
 >(function TrackRequest({ loading, result, onSubmit, onPay }, ref) {
+  const [ticketInput, setTicketInput] = useState("");
+  const ticketValid = /^HRM-\d{5,8}$/.test(ticketInput);
+
   const runTrack = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const data = Object.fromEntries(new FormData(e.currentTarget).entries()) as Record<string, string>;
@@ -84,9 +94,23 @@ const TrackRequest = forwardRef<
             <input
               name="ticket"
               required
+              value={ticketInput}
+              onChange={(e) => setTicketInput(formatTicket(e.target.value))}
+              onPaste={(e) => {
+                e.preventDefault();
+                setTicketInput(formatTicket(e.clipboardData.getData("text")));
+              }}
               placeholder="HRM-100..."
+              autoComplete="off"
+              spellCheck={false}
               data-testid="track-ticket"
-              className={inputClass}
+              className={`${inputClass} font-mono tracking-wide transition-shadow ${
+                ticketValid
+                  ? "border-teal shadow-[0_0_0_3px_rgba(47,93,63,0.14)]"
+                  : ticketInput.length > 0
+                  ? "border-[#A6402A]"
+                  : ""
+              }`}
             />
           </Field>
           <Field label="Full name" required>

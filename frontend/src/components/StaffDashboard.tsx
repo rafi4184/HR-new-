@@ -96,7 +96,7 @@ export default function StaffDashboard({ onToast }: { onToast: (msg: string) => 
     }
   };
 
-  // Live pending-count polling every 15s while signed in
+  // Live pending-count + queue polling every 15s while signed in
   useEffect(() => {
     if (!token || !me) {
       setLivePending(null);
@@ -105,8 +105,18 @@ export default function StaffDashboard({ onToast }: { onToast: (msg: string) => 
     let alive = true;
     const tick = async () => {
       try {
-        const s = await fetchStats(token);
-        if (alive) setLivePending(s.pending);
+        const [s, r] = await Promise.all([
+          fetchStats(token),
+          staffListRequests(token),
+        ]);
+        if (!alive) return;
+        setLivePending(s.pending);
+        setRequests((prev) => {
+          // Only update if server state actually changed (compact hash)
+          const key = (arr: typeof r) =>
+            arr.map((x) => `${x.id}:${x.status}:${x.updatedAt}`).join("|");
+          return key(prev) === key(r) ? prev : r;
+        });
       } catch {
         // ignore transient errors
       }
