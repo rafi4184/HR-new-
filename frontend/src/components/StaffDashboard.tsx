@@ -736,8 +736,13 @@ export default function StaffDashboard({ onToast }: { onToast: (msg: string) => 
                   </div>
                   <div className="flex-1 min-w-0">
                     <div className="text-[14px] font-medium truncate">{u.name || u.username}</div>
-                    <div className="text-[11px] text-ink-faint font-mono truncate">
-                      @{u.username}
+                    <div className="text-[11px] text-ink-faint font-mono truncate flex items-center gap-2">
+                      <span>@{u.username}</span>
+                      {u.email && (
+                        <span className="flex items-center gap-1 text-ink-faint">
+                          <Mail size={10} /> {u.email}
+                        </span>
+                      )}
                     </div>
                   </div>
                   <span
@@ -1121,7 +1126,7 @@ export default function StaffDashboard({ onToast }: { onToast: (msg: string) => 
                     </label>
                     <label className="block col-span-2">
                       <span className="text-[12px] font-medium text-ink-soft">
-                        Email (optional — used for the invite)
+                        Email (used for invite &amp; — for admins — the weekly digest)
                       </span>
                       <input
                         name="email"

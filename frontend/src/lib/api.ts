@@ -7,6 +7,7 @@ export interface StaffUser {
   username: string;
   name: string;
   role: "admin" | "staff";
+  email?: string | null;
   mustResetPassword?: boolean;
   createdAt?: string;
   createdBy?: string | null;

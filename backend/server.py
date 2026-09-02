@@ -253,6 +253,7 @@ def serialize_user(row: dict[str, Any]) -> dict[str, Any]:
         "username": row["username"],
         "name": row.get("name", ""),
         "role": row["role"],
+        "email": row.get("email"),
         "mustResetPassword": bool(row.get("must_reset_password", False)),
         "createdAt": row.get("created_at"),
         "createdBy": row.get("created_by"),
