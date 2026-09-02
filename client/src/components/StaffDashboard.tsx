@@ -1,10 +1,10 @@
 import { useState, type FormEvent } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { ShieldAlert, CheckCircle2, Phone, Mail } from "lucide-react";
+import { ShieldAlert, CheckCircle2, XCircle, Phone, Mail } from "lucide-react";
 import { inputClass } from "./ui/Field";
 import StatusPill from "./ui/StatusPill";
 import Reveal from "./ui/Reveal";
-import { staffApprove, staffListRequests, staffLogin, ApiError } from "../lib/api";
+import { staffApprove, staffReject, staffComplete, staffListRequests, staffLogin, ApiError } from "../lib/api";
 import type { ServiceRequest } from "../types";
 
 export default function StaffDashboard({ onToast }: { onToast: (msg: string) => void }) {
@@ -53,9 +53,35 @@ export default function StaffDashboard({ onToast }: { onToast: (msg: string) => 
     try {
       const updated = await staffApprove(token, id, fee);
       setRequests((rs) => rs.map((r) => (r.id === id ? updated : r)));
-      onToast(`${updated.ticket} approved. Confirmation email simulated to ${updated.email}.`);
+      onToast(`${updated.ticket} approved. Confirmation sent automatically to ${updated.email}.`);
     } catch (err) {
       onToast(err instanceof ApiError ? err.message : "Couldn't approve that request.");
+    }
+  };
+
+  const reject = async (id: number) => {
+    if (!token) return;
+    const target = requests.find((r) => r.id === id);
+    if (!target) return;
+    if (!window.confirm(`Reject ${target.ticket}? The customer will be notified automatically.`)) return;
+    const note = window.prompt("Add a note for the customer (optional):", "") ?? undefined;
+    try {
+      const updated = await staffReject(token, id, note);
+      setRequests((rs) => rs.map((r) => (r.id === id ? updated : r)));
+      onToast(`${updated.ticket} marked not approved. Confirmation sent automatically to ${updated.email}.`);
+    } catch (err) {
+      onToast(err instanceof ApiError ? err.message : "Couldn't reject that request.");
+    }
+  };
+
+  const complete = async (id: number) => {
+    if (!token) return;
+    try {
+      const updated = await staffComplete(token, id);
+      setRequests((rs) => rs.map((r) => (r.id === id ? updated : r)));
+      onToast(`${updated.ticket} marked complete. Confirmation sent automatically to ${updated.email}.`);
+    } catch (err) {
+      onToast(err instanceof ApiError ? err.message : "Couldn't mark that request complete.");
     }
   };
 
@@ -107,6 +133,9 @@ export default function StaffDashboard({ onToast }: { onToast: (msg: string) => 
                     <StatusPill status={r.status} fee={r.fee} />
                   </div>
                   <div className="text-[14px]">{r.summary}</div>
+                  {r.status === "rejected" && r.decisionNote && (
+                    <div className="text-[12px] mt-1 text-[#8A3B22]">Note to customer: {r.decisionNote}</div>
+                  )}
                   <div className="text-[12px] mt-1 flex flex-wrap gap-x-4 text-ink-faint">
                     <span>{r.name}</span>
                     <span>DOB {r.dob}</span>
@@ -119,19 +148,40 @@ export default function StaffDashboard({ onToast }: { onToast: (msg: string) => 
                   </div>
                 </div>
                 {r.status === "received" && (
-                  <button
-                    onClick={() => approve(r.id)}
-                    className="text-[13px] font-medium px-3 py-2 rounded-md shrink-0 bg-teal text-white active:scale-[0.97] transition-transform"
-                  >
-                    Approve &amp; email
-                  </button>
+                  <div className="flex gap-2 shrink-0">
+                    <button
+                      onClick={() => approve(r.id)}
+                      className="text-[13px] font-medium px-3 py-2 rounded-md bg-teal text-white active:scale-[0.97] transition-transform"
+                    >
+                      Approve
+                    </button>
+                    <button
+                      onClick={() => reject(r.id)}
+                      className="text-[13px] font-medium px-3 py-2 rounded-md border border-border-strong text-ink-soft active:scale-[0.97] transition-transform hover:border-[#8A3B22] hover:text-[#8A3B22]"
+                    >
+                      Reject
+                    </button>
+                  </div>
                 )}
                 {r.status === "approved" && r.fee != null && (
                   <span className="text-[12px] shrink-0 text-ink-faint">Awaiting customer payment</span>
                 )}
-                {r.status === "paid" && (
+                {((r.status === "approved" && r.fee == null) || r.status === "paid") && (
+                  <button
+                    onClick={() => complete(r.id)}
+                    className="text-[13px] font-medium px-3 py-2 rounded-md shrink-0 bg-teal text-white active:scale-[0.97] transition-transform"
+                  >
+                    Mark complete
+                  </button>
+                )}
+                {r.status === "completed" && (
                   <span className="flex items-center gap-1.5 text-[13px] shrink-0 text-[#2A6B2F]">
-                    <CheckCircle2 size={15} /> Settled
+                    <CheckCircle2 size={15} /> Done
+                  </span>
+                )}
+                {r.status === "rejected" && (
+                  <span className="flex items-center gap-1.5 text-[13px] shrink-0 text-[#8A3B22]" title={r.decisionNote ?? undefined}>
+                    <XCircle size={15} /> Not approved
                   </span>
                 )}
               </div>

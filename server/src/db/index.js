@@ -25,6 +25,9 @@ db.exec(`
     fee INTEGER,
     service_label TEXT,
     payment_method TEXT,
+    decision_note TEXT,
+    notified_at TEXT,
+    completed_at TEXT,
     details TEXT NOT NULL DEFAULT '{}',
     created_at TEXT NOT NULL,
     updated_at TEXT NOT NULL
@@ -32,6 +35,16 @@ db.exec(`
 
   CREATE INDEX IF NOT EXISTS idx_requests_name_dob ON requests (name, dob);
 `);
+
+// Migration guard for databases created before decision_note/notified_at/completed_at existed.
+const existingColumns = new Set(db.prepare("PRAGMA table_info(requests)").all().map((c) => c.name));
+for (const [column, ddl] of [
+  ["decision_note", "ALTER TABLE requests ADD COLUMN decision_note TEXT"],
+  ["notified_at", "ALTER TABLE requests ADD COLUMN notified_at TEXT"],
+  ["completed_at", "ALTER TABLE requests ADD COLUMN completed_at TEXT"],
+]) {
+  if (!existingColumns.has(column)) db.exec(ddl);
+}
 
 // Seed the starting id so ticket numbers look like the production system
 // (HRM-100000 style) instead of starting at HRM-1 on a fresh database.

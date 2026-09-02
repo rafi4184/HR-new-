@@ -1,6 +1,6 @@
 import { forwardRef, type FormEvent } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Search, ShieldAlert, CheckCircle2, CreditCard } from "lucide-react";
+import { Search, ShieldAlert, CheckCircle2, XCircle, CreditCard } from "lucide-react";
 import { Field, inputClass } from "./ui/Field";
 import StatusPill from "./ui/StatusPill";
 import type { ServiceRequest } from "../types";
@@ -96,6 +96,15 @@ const TrackRequest = forwardRef<
               <StatusPill status={result.status} fee={result.fee} />
             </div>
             <div className="text-[15px] mb-3">{result.summary}</div>
+            {result.status === "rejected" && (
+              <div className="flex items-start gap-2 text-[13px] text-[#8A3B22] bg-[#F7E3DD] rounded-md px-3 py-2.5">
+                <XCircle size={15} className="shrink-0 mt-0.5" />
+                <span>
+                  This request was not approved.
+                  {result.decisionNote ? ` ${result.decisionNote}` : " Please contact the desk for details."}
+                </span>
+              </div>
+            )}
             {result.type === "Government Request" && result.status === "approved" && result.fee != null && (
               <button
                 onClick={() => onPay(result)}
@@ -104,9 +113,19 @@ const TrackRequest = forwardRef<
                 <CreditCard size={14} /> Pay ৳{result.fee.toLocaleString()}
               </button>
             )}
+            {(result.status === "approved" && result.fee == null) && (
+              <span className="flex items-center gap-1.5 text-[13px] text-teal">
+                <CheckCircle2 size={15} /> Approved — the desk is on it.
+              </span>
+            )}
             {result.status === "paid" && (
+              <span className="flex items-center gap-1.5 text-[13px] text-[#8A6A12]">
+                <CheckCircle2 size={15} /> Paid — the desk is completing your request.
+              </span>
+            )}
+            {result.status === "completed" && (
               <span className="flex items-center gap-1.5 text-[13px] text-[#2A6B2F]">
-                <CheckCircle2 size={15} /> Settled
+                <CheckCircle2 size={15} /> Completed
               </span>
             )}
           </motion.div>

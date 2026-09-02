@@ -59,4 +59,19 @@ export function staffApprove(token: string, id: number, fee?: number) {
   });
 }
 
+export function staffReject(token: string, id: number, note?: string) {
+  return request<ServiceRequest>(`/staff/requests/${id}/reject`, {
+    method: "POST",
+    headers: { Authorization: `Bearer ${token}` },
+    body: JSON.stringify({ note }),
+  });
+}
+
+export function staffComplete(token: string, id: number) {
+  return request<ServiceRequest>(`/staff/requests/${id}/complete`, {
+    method: "POST",
+    headers: { Authorization: `Bearer ${token}` },
+  });
+}
+
 export { ApiError };
