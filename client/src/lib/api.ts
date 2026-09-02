@@ -1,77 +1,100 @@
+import { supabase } from "./supabaseClient";
 import type { ServiceRequest } from "../types";
 
 class ApiError extends Error {}
 
-async function request<T>(path: string, options: RequestInit = {}): Promise<T> {
-  const res = await fetch(`/api${path}`, {
-    ...options,
-    headers: {
-      "Content-Type": "application/json",
-      ...options.headers,
-    },
-  });
+// The requests table is snake_case (Postgres convention); every RPC returns
+// rows shaped like it, so map once here instead of touching every caller.
+function mapRow(row: Record<string, unknown>): ServiceRequest {
+  return {
+    id: row.id as number,
+    ticket: row.ticket as string,
+    type: row.type_label as string,
+    summary: row.summary as string,
+    name: row.name as string,
+    dob: row.dob as string,
+    phone: row.phone as string,
+    email: row.email as string,
+    status: row.status as ServiceRequest["status"],
+    fee: (row.fee as number | null) ?? null,
+    serviceLabel: (row.service_label as string | null) ?? null,
+    paymentMethod: (row.payment_method as string | null) ?? null,
+    decisionNote: (row.decision_note as string | null) ?? null,
+    notifiedAt: (row.notified_at as string | null) ?? null,
+    completedAt: (row.completed_at as string | null) ?? null,
+    details: (row.details as Record<string, unknown>) ?? {},
+    createdAt: row.created_at as string,
+    updatedAt: row.updated_at as string,
+  };
+}
 
-  if (!res.ok) {
-    const body = await res.json().catch(() => ({}));
-    throw new ApiError(body.error || `Request failed (${res.status})`);
+export async function submitRequest(type: string, fields: Record<string, unknown>): Promise<ServiceRequest> {
+  const { name, dob, phone, email, ...rest } = fields as Record<string, string>;
+  const { data, error } = await supabase.rpc("submit_request", {
+    p_type: type,
+    p_name: name,
+    p_dob: dob,
+    p_phone: phone,
+    p_email: email,
+    p_fields: rest,
+  });
+  if (error) throw new ApiError(error.message);
+  return mapRow(data);
+}
+
+export async function trackRequest(ticket: string, name: string, dob: string): Promise<ServiceRequest> {
+  const { data, error } = await supabase.rpc("track_request", { p_ticket: ticket, p_name: name, p_dob: dob });
+  if (error) throw new ApiError(error.message);
+  const rows = (data ?? []) as Record<string, unknown>[];
+  if (rows.length === 0) {
+    throw new ApiError("No matching request. Double-check the ticket number, name, and date of birth.");
   }
-
-  return res.json() as Promise<T>;
+  return mapRow(rows[0]);
 }
 
-export function submitRequest(type: string, fields: Record<string, unknown>) {
-  return request<ServiceRequest>(`/requests/${type}`, {
-    method: "POST",
-    body: JSON.stringify(fields),
-  });
+export async function payRequest(id: number, method: string): Promise<ServiceRequest> {
+  const { data, error } = await supabase.rpc("pay_request", { p_id: id, p_method: method });
+  if (error) throw new ApiError(error.message);
+  return mapRow(data);
 }
 
-export function trackRequest(ticket: string, name: string, dob: string) {
-  const params = new URLSearchParams({ ticket, name, dob });
-  return request<ServiceRequest>(`/requests/track?${params.toString()}`);
+// `token` is kept in the signature for backward compatibility with the UI
+// (it's stored as the "signed in" flag) but the Supabase client already
+// attaches the active session to every RPC call on its own.
+export async function staffLogin(email: string, password: string): Promise<{ token: string }> {
+  const { data, error } = await supabase.auth.signInWithPassword({ email, password });
+  if (error) throw new ApiError(error.message);
+  const token = data.session?.access_token;
+  if (!token) throw new ApiError("Sign-in failed.");
+  return { token };
 }
 
-export function payRequest(id: number, method: string) {
-  return request<ServiceRequest>(`/requests/${id}/pay`, {
-    method: "POST",
-    body: JSON.stringify({ method }),
-  });
+export async function staffLogout(): Promise<void> {
+  await supabase.auth.signOut();
 }
 
-export function staffLogin(username: string, password: string) {
-  return request<{ token: string }>("/staff/login", {
-    method: "POST",
-    body: JSON.stringify({ username, password }),
-  });
+export async function staffListRequests(_token: string): Promise<ServiceRequest[]> {
+  const { data, error } = await supabase.rpc("staff_list_requests");
+  if (error) throw new ApiError(error.message);
+  return ((data ?? []) as Record<string, unknown>[]).map(mapRow);
 }
 
-export function staffListRequests(token: string) {
-  return request<ServiceRequest[]>("/staff/requests", {
-    headers: { Authorization: `Bearer ${token}` },
-  });
+export async function staffApprove(_token: string, id: number, fee?: number): Promise<ServiceRequest> {
+  const { data, error } = await supabase.rpc("staff_approve_request", { p_id: id, p_fee: fee ?? null });
+  if (error) throw new ApiError(error.message);
+  return mapRow(data);
 }
 
-export function staffApprove(token: string, id: number, fee?: number) {
-  return request<ServiceRequest>(`/staff/requests/${id}/approve`, {
-    method: "POST",
-    headers: { Authorization: `Bearer ${token}` },
-    body: JSON.stringify({ fee }),
-  });
+export async function staffReject(_token: string, id: number, note?: string): Promise<ServiceRequest> {
+  const { data, error } = await supabase.rpc("staff_reject_request", { p_id: id, p_note: note ?? null });
+  if (error) throw new ApiError(error.message);
+  return mapRow(data);
 }
 
-export function staffReject(token: string, id: number, note?: string) {
-  return request<ServiceRequest>(`/staff/requests/${id}/reject`, {
-    method: "POST",
-    headers: { Authorization: `Bearer ${token}` },
-    body: JSON.stringify({ note }),
-  });
-}
-
-export function staffComplete(token: string, id: number) {
-  return request<ServiceRequest>(`/staff/requests/${id}/complete`, {
-    method: "POST",
-    headers: { Authorization: `Bearer ${token}` },
-  });
+export async function staffComplete(_token: string, id: number): Promise<ServiceRequest> {
+  const { data, error } = await supabase.rpc("staff_complete_request", { p_id: id });
+  if (error) throw new ApiError(error.message);
+  return mapRow(data);
 }
 
 export { ApiError };

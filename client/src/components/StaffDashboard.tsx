@@ -5,7 +5,7 @@ import { inputClass } from "./ui/Field";
 import StatusPill from "./ui/StatusPill";
 import Reveal from "./ui/Reveal";
 import AnimatedCounter from "./ui/AnimatedCounter";
-import { staffApprove, staffReject, staffComplete, staffListRequests, staffLogin, ApiError } from "../lib/api";
+import { staffApprove, staffReject, staffComplete, staffListRequests, staffLogin, staffLogout, ApiError } from "../lib/api";
 import type { ServiceRequest } from "../types";
 
 const STAT_TILES = [
@@ -47,7 +47,7 @@ export default function StaffDashboard({ onToast }: { onToast: (msg: string) => 
     const form = e.currentTarget;
     const data = Object.fromEntries(new FormData(form).entries()) as Record<string, string>;
     try {
-      const { token: t } = await staffLogin(data.username, data.password);
+      const { token: t } = await staffLogin(data.email, data.password);
       setToken(t);
       setPinOpen(false);
       onToast("Staff mode enabled.");
@@ -109,7 +109,7 @@ export default function StaffDashboard({ onToast }: { onToast: (msg: string) => 
         <div className="flex items-start justify-between gap-4 flex-wrap mb-2">
           <h2 className="font-display text-3xl">Staff dashboard</h2>
           <button
-            onClick={() => (token ? setToken(null) : setPinOpen(true))}
+            onClick={() => (token ? void staffLogout().then(() => setToken(null)) : setPinOpen(true))}
             className={`text-[12px] font-medium px-3 py-1.5 rounded-full border shrink-0 transition-colors active:scale-[0.97] ${
               token ? "bg-teal text-white border-teal" : "border-border-strong text-ink-faint"
             }`}
@@ -264,11 +264,11 @@ export default function StaffDashboard({ onToast }: { onToast: (msg: string) => 
             >
               <div className="font-display text-lg mb-1">Staff sign-in</div>
               <p className="text-[13px] mb-4 text-ink-faint">
-                Enter the desk username and password to review and approve cases.
+                Enter your staff email and password to review and approve cases.
               </p>
               {loginError && <div className="text-[13px] text-[#8A3B22] mb-3">{loginError}</div>}
               <form onSubmit={handleLogin}>
-                <input name="username" autoFocus placeholder="Username" className={`${inputClass} mb-3`} />
+                <input name="email" type="email" autoFocus placeholder="Email" className={`${inputClass} mb-3`} />
                 <input name="password" type="password" placeholder="Password" className={`${inputClass} mb-4`} />
                 <button
                   type="submit"
