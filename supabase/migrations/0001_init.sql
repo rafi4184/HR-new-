@@ -54,6 +54,9 @@ revoke all on public.staff from anon, authenticated;
 -- Helpers
 -- ---------------------------------------------------------------------
 
+-- Internal-only helpers: nobody should call these directly via RPC — they're
+-- only ever invoked from inside other SECURITY DEFINER functions, which run
+-- as the owner, so revoking EXECUTE here doesn't break those internal calls.
 create or replace function public.is_staff()
 returns boolean
 language sql
@@ -63,6 +66,8 @@ stable
 as $$
   select exists (select 1 from public.staff where user_id = auth.uid());
 $$;
+
+revoke execute on function public.is_staff from public, anon, authenticated;
 
 create or replace function public.request_type_label(p_type text)
 returns text
@@ -77,6 +82,8 @@ as $$
     when 'program' then 'Program Enrollment'
   end;
 $$;
+
+revoke execute on function public.request_type_label from public, anon, authenticated;
 
 -- ---------------------------------------------------------------------
 -- Customer-facing RPCs (anon)
@@ -144,7 +151,7 @@ begin
 end;
 $$;
 
-revoke all on function public.submit_request from public;
+revoke execute on function public.submit_request from public, anon, authenticated;
 grant execute on function public.submit_request to anon, authenticated;
 
 -- Track a request. Must match ticket + name + dob exactly, mirroring the
@@ -167,7 +174,7 @@ as $$
     and dob = p_dob;
 $$;
 
-revoke all on function public.track_request from public;
+revoke execute on function public.track_request from public, anon, authenticated;
 grant execute on function public.track_request to anon, authenticated;
 
 -- Pay an approved government-service fee. Demo-only, same as the old
@@ -205,7 +212,7 @@ begin
 end;
 $$;
 
-revoke all on function public.pay_request from public;
+revoke execute on function public.pay_request from public, anon, authenticated;
 grant execute on function public.pay_request to anon, authenticated;
 
 -- ---------------------------------------------------------------------
@@ -224,7 +231,7 @@ as $$
   order by id desc;
 $$;
 
-revoke all on function public.staff_list_requests from public;
+revoke execute on function public.staff_list_requests from public, anon, authenticated;
 grant execute on function public.staff_list_requests to authenticated;
 
 create or replace function public.staff_approve_request(
@@ -260,7 +267,7 @@ begin
 end;
 $$;
 
-revoke all on function public.staff_approve_request from public;
+revoke execute on function public.staff_approve_request from public, anon, authenticated;
 grant execute on function public.staff_approve_request to authenticated;
 
 create or replace function public.staff_reject_request(
@@ -296,7 +303,7 @@ begin
 end;
 $$;
 
-revoke all on function public.staff_reject_request from public;
+revoke execute on function public.staff_reject_request from public, anon, authenticated;
 grant execute on function public.staff_reject_request to authenticated;
 
 create or replace function public.staff_complete_request(
@@ -331,7 +338,7 @@ begin
 end;
 $$;
 
-revoke all on function public.staff_complete_request from public;
+revoke execute on function public.staff_complete_request from public, anon, authenticated;
 grant execute on function public.staff_complete_request to authenticated;
 
 -- ---------------------------------------------------------------------
@@ -341,6 +348,13 @@ grant execute on function public.staff_complete_request to authenticated;
 -- independent of which client made the call.
 -- ---------------------------------------------------------------------
 
+-- The project URL and anon key below are hardcoded rather than read via
+-- current_setting()/ALTER DATABASE ... SET: Supabase's managed `postgres`
+-- role doesn't have permission to set database-level GUCs (`ALTER DATABASE
+-- ... SET` fails with "permission denied to set parameter"), so a
+-- session-config approach doesn't work on hosted Supabase. Both values are
+-- public by design (the anon key is the same one the browser already ships
+-- with) — replace them if this project is ever forked/recreated.
 create or replace function public.trigger_notify_decision()
 returns trigger
 language plpgsql
@@ -349,8 +363,8 @@ set search_path = public, extensions
 as $$
 declare
   v_decision text;
-  v_project_url text := current_setting('app.settings.project_url', true);
-  v_anon_key text := current_setting('app.settings.notify_key', true);
+  v_project_url constant text := 'https://dgxmouzxgbiigzmtalwo.supabase.co';
+  v_anon_key constant text := 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImRneG1vdXp4Z2JpaWd6bXRhbHdvIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODgzMjk2NTksImV4cCI6MjEwMzkwNTY1OX0.FyXfnuch7I9aUA9-T09fpiUubV84cl6q4VFURswJPrU';
 begin
   if new.status = old.status then
     return new;
@@ -363,7 +377,7 @@ begin
     else null
   end;
 
-  if v_decision is null or v_project_url is null or v_anon_key is null then
+  if v_decision is null then
     return new;
   end if;
 
@@ -388,18 +402,10 @@ begin
 end;
 $$;
 
+revoke execute on function public.trigger_notify_decision from public, anon, authenticated;
+
 drop trigger if exists trg_notify_decision on public.requests;
 create trigger trg_notify_decision
   after update on public.requests
   for each row
   execute function public.trigger_notify_decision();
-
--- After running this migration, set the two project-level settings the
--- trigger reads (SQL Editor, once per project — replace the placeholders):
---
---   alter database postgres set app.settings.project_url = 'https://<project-ref>.supabase.co';
---   alter database postgres set app.settings.notify_key = '<anon-public-key>';
---
--- (Both values are public/publishable — the anon key is the same one the
--- browser already uses, and it's only used here to satisfy the Edge
--- Function's default JWT check.)
