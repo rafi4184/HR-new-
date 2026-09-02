@@ -1,3 +1,4 @@
+import { motion } from "framer-motion";
 import { MessageSquareText, FileCheck2, Handshake } from "lucide-react";
 import Reveal from "./ui/Reveal";
 
@@ -28,13 +29,25 @@ export default function HowItWorks() {
           <p className="max-w-lg mb-10 text-ink-muted">Three steps, whichever desk you use.</p>
         </Reveal>
         <div className="grid sm:grid-cols-3 gap-8 relative">
-          <div className="hidden sm:block absolute top-6 left-0 right-0 h-px bg-border-strong" />
+          <motion.div
+            className="hidden sm:block absolute top-6 left-0 right-0 h-px bg-border-strong origin-left"
+            initial={{ scaleX: 0 }}
+            whileInView={{ scaleX: 1 }}
+            viewport={{ once: true, amount: 0.4 }}
+            transition={{ duration: 1, ease: [0.2, 0.8, 0.2, 1], delay: 0.1 }}
+          />
           {STEPS.map(({ icon: Icon, title, body }, i) => (
             <Reveal key={title} delay={i * 0.1}>
               <div className="relative">
-                <div className="relative z-10 w-12 h-12 rounded-full flex items-center justify-center mb-4 font-display text-lg bg-teal text-white">
+                <motion.div
+                  className="relative z-10 w-12 h-12 rounded-full flex items-center justify-center mb-4 font-display text-lg bg-teal text-white"
+                  initial={{ scale: 0.4, opacity: 0 }}
+                  whileInView={{ scale: 1, opacity: 1 }}
+                  viewport={{ once: true, amount: 0.6 }}
+                  transition={{ duration: 0.45, delay: i * 0.1 + 0.15, ease: [0.2, 0.9, 0.3, 1.3] }}
+                >
                   {i + 1}
-                </div>
+                </motion.div>
                 <Icon size={18} color="#2F5D3F" className="mb-3" />
                 <h3 className="font-display text-lg mb-2">{title}</h3>
                 <p className="text-[14px] text-ink-muted">{body}</p>

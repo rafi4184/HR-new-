@@ -1,3 +1,4 @@
+import { motion, AnimatePresence } from "framer-motion";
 import type { RequestStatus } from "../../types";
 
 const MAP: Record<string, { text: string; className: string }> = {
@@ -16,9 +17,23 @@ export default function StatusPill({
 }) {
   const key = status === "approved" && fee != null ? "approved_fee_due" : status;
   const entry = MAP[key] || MAP.received;
+  const stamped = status === "approved" || status === "paid";
+
   return (
-    <span className={`inline-block text-xs font-medium px-2.5 py-1 rounded-full ${entry.className}`}>
-      {entry.text}
-    </span>
+    <AnimatePresence mode="wait">
+      <motion.span
+        key={key}
+        initial={stamped ? { scale: 1.8, opacity: 0, rotate: -10 } : { scale: 0.6, opacity: 0 }}
+        animate={{ scale: 1, opacity: 1, rotate: 0 }}
+        transition={
+          stamped
+            ? { duration: 0.35, ease: [0.2, 0.8, 0.2, 1.3] }
+            : { duration: 0.3, ease: [0.2, 0.9, 0.3, 1.3] }
+        }
+        className={`inline-block text-xs font-medium px-2.5 py-1 rounded-full ${entry.className}`}
+      >
+        {entry.text}
+      </motion.span>
+    </AnimatePresence>
   );
 }

@@ -37,11 +37,14 @@ export default function Hero({
 
   return (
     <section className="relative overflow-hidden px-5 md:px-10 pt-14 pb-16 bg-navy">
-      <img
+      <motion.img
         src={IMG_HERO_BG}
         alt=""
         aria-hidden="true"
         className="absolute inset-0 w-full h-full object-cover opacity-55"
+        initial={{ scale: 1.12 }}
+        animate={{ scale: 1 }}
+        transition={{ duration: 8, ease: [0.2, 0.8, 0.2, 1] }}
       />
       <div
         className="absolute inset-0"
@@ -222,9 +225,22 @@ export default function Hero({
           <motion.div
             className="absolute -top-4 -right-4 w-[72px] h-[72px] rounded-full flex items-center justify-center border-[3px] border-gold text-gold bg-cream-card font-mono text-[10px] font-semibold uppercase tracking-wide leading-tight text-center select-none"
             initial={{ scale: 2.1, opacity: 0, rotate: -26 }}
-            animate={{ scale: 1, opacity: 1, rotate: -10 }}
-            transition={{ delay: 0.9, duration: 0.55, ease: [0.2, 0.8, 0.2, 1.3] }}
-            style={{ boxShadow: "0 8px 18px rgba(23,36,28,0.18)" }}
+            animate={{
+              scale: 1,
+              opacity: 1,
+              rotate: -10,
+              boxShadow: [
+                "0 8px 18px rgba(23,36,28,0.18)",
+                "0 8px 18px rgba(23,36,28,0.18), 0 0 0 6px rgba(166,64,42,0.12)",
+                "0 8px 18px rgba(23,36,28,0.18)",
+              ],
+            }}
+            transition={{
+              scale: { delay: 0.9, duration: 0.55, ease: [0.2, 0.8, 0.2, 1.3] },
+              opacity: { delay: 0.9, duration: 0.55 },
+              rotate: { delay: 0.9, duration: 0.55, ease: [0.2, 0.8, 0.2, 1.3] },
+              boxShadow: { delay: 1.6, duration: 2.4, repeat: Infinity, ease: "easeInOut" },
+            }}
           >
             Priority
             <br />

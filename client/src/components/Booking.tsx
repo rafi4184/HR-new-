@@ -84,11 +84,20 @@ const Booking = forwardRef<
             <button
               key={id}
               onClick={() => setActiveTab(id)}
-              className={`flex items-center gap-2 px-4 py-2.5 rounded-md text-[14px] font-medium transition-colors ${
-                activeTab === id ? "bg-teal text-white" : "bg-cream-panel text-ink-soft"
+              className={`relative overflow-hidden flex items-center gap-2 px-4 py-2.5 rounded-md text-[14px] font-medium transition-colors ${
+                activeTab === id ? "text-white" : "bg-cream-panel text-ink-soft hover:text-ink"
               }`}
             >
-              <Icon size={15} /> {label}
+              {activeTab === id && (
+                <motion.span
+                  layoutId="bookingTabIndicator"
+                  className="absolute inset-0 bg-teal rounded-md"
+                  transition={{ type: "spring", stiffness: 400, damping: 32 }}
+                />
+              )}
+              <span className="relative z-10 flex items-center gap-2">
+                <Icon size={15} /> {label}
+              </span>
             </button>
           ))}
         </div>

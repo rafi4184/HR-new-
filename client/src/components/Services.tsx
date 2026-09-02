@@ -49,18 +49,31 @@ export default function Services({ onBook }: { onBook: (tab: BookingTab) => void
               transition={{ duration: 0.2 }}
               className="rounded-xl p-6 border border-border bg-cream-card flex flex-col h-full hover:border-teal"
             >
-              <div className="w-10 h-10 rounded-lg flex items-center justify-center mb-4 bg-teal-tint">
+              <motion.div
+                className="w-10 h-10 rounded-lg flex items-center justify-center mb-4 bg-teal-tint"
+                whileHover={{ rotate: -8, scale: 1.12 }}
+                transition={{ type: "spring", stiffness: 300, damping: 10 }}
+              >
                 <Icon size={19} color="#2F5D3F" />
-              </div>
+              </motion.div>
               <h3 className="font-display text-lg mb-2">{title}</h3>
               <p className="text-[14px] flex-1 text-ink-muted">{body}</p>
               {tab && (
-                <button
+                <motion.button
                   onClick={() => onBook(tab)}
+                  initial="rest"
+                  whileHover="hover"
                   className="mt-4 flex items-center gap-1 text-[13px] font-medium text-teal"
                 >
-                  Request this <ChevronRight size={14} />
-                </button>
+                  Request this
+                  <motion.span
+                    className="flex"
+                    variants={{ rest: { x: 0 }, hover: { x: 3 } }}
+                    transition={{ type: "spring", stiffness: 400, damping: 15 }}
+                  >
+                    <ChevronRight size={14} />
+                  </motion.span>
+                </motion.button>
               )}
             </motion.div>
           </Reveal>

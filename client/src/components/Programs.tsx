@@ -1,8 +1,29 @@
 import { motion } from "framer-motion";
+import type { ReactNode } from "react";
 import { GraduationCap, Radio, Globe2, ChevronRight } from "lucide-react";
 import Reveal from "./ui/Reveal";
 import { HASANUR_PHOTO, IMG_DUBAI, IMG_STUDENTS } from "../lib/constants";
 import type { BookingTab } from "../types";
+
+function ProgramCta({ onClick, children }: { onClick: () => void; children: ReactNode }) {
+  return (
+    <motion.button
+      onClick={onClick}
+      initial="rest"
+      whileHover="hover"
+      className="self-start flex items-center gap-2 px-5 py-2.5 rounded-md font-medium text-[14px] bg-gold text-white transition-shadow hover:shadow-[0_10px_26px_rgba(166,64,42,0.35)] active:scale-[0.97]"
+    >
+      {children}
+      <motion.span
+        className="flex"
+        variants={{ rest: { x: 0 }, hover: { x: 4 } }}
+        transition={{ type: "spring", stiffness: 400, damping: 15 }}
+      >
+        <ChevronRight size={15} />
+      </motion.span>
+    </motion.button>
+  );
+}
 
 export default function Programs({
   onBook,
@@ -47,12 +68,7 @@ export default function Programs({
                   visa-interview preparation for students heading to Singapore, Malaysia, Japan,
                   South Korea, China and beyond.
                 </p>
-                <button
-                  onClick={() => onBook("programs", "study")}
-                  className="self-start flex items-center gap-2 px-5 py-2.5 rounded-md font-medium text-[14px] bg-gold text-white transition-all hover:shadow-[0_10px_26px_rgba(166,64,42,0.35)] hover:-translate-y-px active:scale-[0.97]"
-                >
-                  Book a consultation <ChevronRight size={15} />
-                </button>
+                <ProgramCta onClick={() => onBook("programs", "study")}>Book a consultation</ProgramCta>
               </div>
             </motion.div>
           </Reveal>
@@ -98,12 +114,7 @@ export default function Programs({
                     <div className="text-white font-display text-lg">৳5,874</div>
                   </div>
                 </div>
-                <button
-                  onClick={() => onBook("programs", "media")}
-                  className="self-start flex items-center gap-2 px-5 py-2.5 rounded-md font-medium text-[14px] bg-gold text-white transition-all hover:shadow-[0_10px_26px_rgba(166,64,42,0.35)] hover:-translate-y-px active:scale-[0.97]"
-                >
-                  Reserve a seat <ChevronRight size={15} />
-                </button>
+                <ProgramCta onClick={() => onBook("programs", "media")}>Reserve a seat</ProgramCta>
               </div>
             </motion.div>
           </Reveal>
@@ -127,12 +138,7 @@ export default function Programs({
                   wider Gulf markets, drawing on our licensed staffing and outsourcing practice —
                   documentation, contracts, and pre-departure orientation included.
                 </p>
-                <button
-                  onClick={() => onBook("programs", "gulf")}
-                  className="self-start flex items-center gap-2 px-5 py-2.5 rounded-md font-medium text-[14px] bg-gold text-white transition-all hover:shadow-[0_10px_26px_rgba(166,64,42,0.35)] hover:-translate-y-px active:scale-[0.97]"
-                >
-                  Speak to the desk <ChevronRight size={15} />
-                </button>
+                <ProgramCta onClick={() => onBook("programs", "gulf")}>Speak to the desk</ProgramCta>
               </div>
             </motion.div>
           </Reveal>
