@@ -66,11 +66,20 @@ approves, or declines each request and auto-emails the customer.
 - **2026-01 (turn 3)** — Full RBAC: `users` collection, bootstrap admin seeded on startup,
   admin-only user management endpoints & UI (add / delete), staff & admin delete-pending,
   animated Signature section (counters, testimonial rail, house rules).
-- **2026-01 (turn 4)** — **Forced first-login password reset** (new users get `must_reset_password=true`,
-  blocking `KeyRound` modal until they set their own password). **Audit log** collection + admin-only
-  `GET /api/staff/audit-log` endpoint with an in-dashboard tab that renders colored action pills.
-  MediaPartners rewritten as a full "As seen on air" section with Hasanur Rahman portrait,
-  BTV stamp, network chips (BTV, Channel 24, Jamuna, Daily Star), radial-glow background.
+- **2026-01 (turn 4)** — Forced first-login password reset, audit-log endpoint + tab,
+  MediaPartners → "As seen on air" section with BTV feature card.
+- **2026-01 (turn 5)** —
+  - Replaced the "On air" portrait with the professional newsroom photo the user supplied.
+  - **Live pending badge**: `GET /api/staff/stats` + 15s polling → animated `PENDING · N` pill next
+    to the sign-out control when there are open cases.
+  - **Self-service change password**: `Password` button on the dashboard header opens a modal that
+    reuses `POST /api/auth/change-password`.
+  - **Add-staff modal** now takes an optional email + "Email the temporary password to this address"
+    checkbox; when checked, backend queues a branded invite email via `invite_email()` template.
+  - **Audit filter chips**: action pills (approve, reject, delete_request, create_user, delete_user,
+    password_reset), date-range chips (24h / 7d / 30d / all time), plus a free-text actor filter.
+  - The Lovable/Next.js + Three.js/Supabase boilerplate in the user's message was intentionally not
+    adopted — it would fork the stack and clash with the editorial aesthetic already shipped.
 
 ## Backlog / P0-P2
 - **P0**: Set a real `RESEND_API_KEY` in `.env` — emails are still mocked to logs.

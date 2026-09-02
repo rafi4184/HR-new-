@@ -204,6 +204,8 @@ class CreateUserBody(BaseModel):
     password: str = Field(min_length=6, max_length=200)
     name: str = Field(min_length=1, max_length=120)
     role: Literal["admin", "staff"] = "staff"
+    email: Optional[EmailStr] = None
+    send_invite_email: bool = False
 
 
 class ChangePasswordBody(BaseModel):
@@ -575,6 +577,7 @@ async def list_users(_: dict = Depends(require_admin)) -> list[dict[str, Any]]:
 @app.post("/api/staff/users", status_code=201)
 async def create_user(
     body: CreateUserBody,
+    background: BackgroundTasks,
     admin: dict = Depends(require_admin),
 ) -> dict[str, Any]:
     if await users_col.find_one({"username": body.username}):
@@ -585,18 +588,25 @@ async def create_user(
         "password_hash": hash_password(body.password),
         "name": body.name.strip(),
         "role": body.role,
+        "email": (body.email or "").strip() or None,
         "must_reset_password": True,
         "created_at": now_iso(),
         "created_by": admin["_id"],
     }
     await users_col.insert_one(doc)
+    invite_sent = False
+    if body.send_invite_email and doc["email"]:
+        from emails import invite_email  # local import keeps startup light
+        subject, html = invite_email(doc, body.password)
+        background.add_task(send_html, doc["email"], subject, html)
+        invite_sent = True
     await log_audit(
         admin,
         "create_user",
         {"type": "user", "id": doc["_id"], "label": doc["username"]},
-        {"role": doc["role"]},
+        {"role": doc["role"], "invite_sent": invite_sent},
     )
-    return serialize_user(doc)
+    return {**serialize_user(doc), "inviteSent": invite_sent}
 
 
 @app.delete("/api/staff/users/{user_id}")
@@ -621,6 +631,16 @@ async def delete_user(
         {"role": target.get("role")},
     )
     return {"ok": True, "id": user_id}
+
+
+@app.get("/api/staff/stats")
+async def staff_stats(_: dict = Depends(current_user)) -> dict[str, int]:
+    return {
+        "pending": await requests_col.count_documents({"status": "received"}),
+        "approved": await requests_col.count_documents({"status": "approved"}),
+        "paid": await requests_col.count_documents({"status": "paid"}),
+        "rejected": await requests_col.count_documents({"status": "rejected"}),
+    }
 
 
 @app.get("/api/staff/audit-log")

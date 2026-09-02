@@ -126,13 +126,27 @@ export function listUsers(token: string) {
 }
 export function createUser(
   token: string,
-  data: { username: string; password: string; name: string; role: "admin" | "staff" }
+  data: {
+    username: string;
+    password: string;
+    name: string;
+    role: "admin" | "staff";
+    email?: string;
+    send_invite_email?: boolean;
+  }
 ) {
-  return request<StaffUser>("/staff/users", {
+  return request<StaffUser & { inviteSent?: boolean }>("/staff/users", {
     method: "POST",
     headers: auth(token),
     body: JSON.stringify(data),
   });
+}
+
+export function fetchStats(token: string) {
+  return request<{ pending: number; approved: number; paid: number; rejected: number }>(
+    "/staff/stats",
+    { headers: auth(token) }
+  );
 }
 export function deleteUser(token: string, id: string) {
   return request<{ ok: boolean }>(`/staff/users/${id}`, {

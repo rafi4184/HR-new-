@@ -139,6 +139,39 @@ def rejection_email(request: dict[str, Any], reason: str | None) -> tuple[str, s
     )
 
 
+def invite_email(user: dict[str, Any], temp_password: str) -> tuple[str, str]:
+    subject = f"You're on the desk · {BRAND_NAME}"
+    body = f"""
+        <p style="margin:0 0 14px 0;">Dear {user.get('name') or user.get('username')},</p>
+        <p style="margin:0 0 14px 0;">
+          Welcome to the {BRAND_NAME} desk. An administrator has provisioned an account for you
+          with the role <strong>{user.get('role')}</strong>.
+        </p>
+        <table role="presentation" width="100%" cellspacing="0" cellpadding="0"
+               style="margin:18px 0;border-top:1px dashed #CBBE96;border-bottom:1px dashed #CBBE96;">
+          <tr>
+            <td style="padding:10px 0;color:#8A7A52;font-size:12px;letter-spacing:.14em;text-transform:uppercase;width:44%;">Username</td>
+            <td style="padding:10px 0;color:#1E2A20;font-size:14px;font-family:'IBM Plex Mono',ui-monospace,monospace;">{user.get('username')}</td>
+          </tr>
+          <tr>
+            <td style="padding:10px 0;color:#8A7A52;font-size:12px;letter-spacing:.14em;text-transform:uppercase;">Temporary password</td>
+            <td style="padding:10px 0;color:#1E2A20;font-size:14px;font-family:'IBM Plex Mono',ui-monospace,monospace;">{temp_password}</td>
+          </tr>
+        </table>
+        <p style="margin:0 0 14px 0;">
+          For safety, you will be asked to <strong>set your own password</strong> the moment you first
+          sign in. This temporary password only works once.
+        </p>
+        <p style="margin:16px 0 0 0;">See you at the desk,<br/>The {BRAND_NAME} team</p>
+    """
+    return subject, _shell(
+        preheader="Your desk account is ready.",
+        headline=f"Welcome to {BRAND_NAME}.",
+        body_html=body,
+        accent="#2F5D3F",
+    )
+
+
 async def send_html(to: str, subject: str, html: str) -> None:
     if not RESEND_API_KEY:
         logger.info(

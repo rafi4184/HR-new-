@@ -1,4 +1,4 @@
-import { useState, type FormEvent } from "react";
+import { useEffect, useState, type FormEvent } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   ShieldAlert,
@@ -33,6 +33,7 @@ import {
   deleteUser,
   listAuditLog,
   changePassword,
+  fetchStats,
   type AuditEntry,
   type StaffUser,
 } from "../lib/api";
@@ -59,6 +60,14 @@ export default function StaffDashboard({ onToast }: { onToast: (msg: string) => 
   const [users, setUsers] = useState<StaffUser[]>([]);
   const [tab, setTab] = useState<"queue" | "users" | "audit">("queue");
   const [audit, setAudit] = useState<AuditEntry[]>([]);
+  const [auditFilter, setAuditFilter] = useState<{
+    action: "all" | AuditEntry["action"];
+    actor: string;
+    range: "24h" | "7d" | "30d" | "all";
+  }>({ action: "all", actor: "", range: "all" });
+  const [livePending, setLivePending] = useState<number | null>(null);
+  const [selfChangeOpen, setSelfChangeOpen] = useState(false);
+  const [selfChangeError, setSelfChangeError] = useState<string | null>(null);
   const [mustReset, setMustReset] = useState(false);
   const [resetError, setResetError] = useState<string | null>(null);
   const [decision, setDecision] = useState<RequestDecision>(null);
@@ -78,6 +87,29 @@ export default function StaffDashboard({ onToast }: { onToast: (msg: string) => 
       setLoading(false);
     }
   };
+
+  // Live pending-count polling every 15s while signed in
+  useEffect(() => {
+    if (!token || !me) {
+      setLivePending(null);
+      return;
+    }
+    let alive = true;
+    const tick = async () => {
+      try {
+        const s = await fetchStats(token);
+        if (alive) setLivePending(s.pending);
+      } catch {
+        // ignore transient errors
+      }
+    };
+    tick();
+    const iv = setInterval(tick, 15000);
+    return () => {
+      alive = false;
+      clearInterval(iv);
+    };
+  }, [token, me]);
 
   const handleLogin = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -178,9 +210,14 @@ export default function StaffDashboard({ onToast }: { onToast: (msg: string) => 
           password: data.password,
           name: data.name.trim(),
           role: (data.role as "admin" | "staff") || "staff",
+          email: (data.email || "").trim() || undefined,
+          send_invite_email: data.send_invite === "on",
         });
         setUsers((us) => [...us, created]);
-        onToast(`Added ${created.role} — ${created.username}.`);
+        const suffix = (created as { inviteSent?: boolean }).inviteSent
+          ? " (invite email queued)."
+          : ".";
+        onToast(`Added ${created.role} — ${created.username}${suffix}`);
       } else if (userAction.kind === "delete") {
         await deleteUser(token, userAction.user.id);
         setUsers((us) => us.filter((u) => u.id !== userAction.user.id));
@@ -200,6 +237,47 @@ export default function StaffDashboard({ onToast }: { onToast: (msg: string) => 
   const rejected = requests.filter((r) => r.status === "rejected").length;
 
   const isAdmin = me?.role === "admin";
+
+  const runSelfChange = async (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    if (!token) return;
+    setSelfChangeError(null);
+    const form = e.currentTarget;
+    const data = Object.fromEntries(new FormData(form).entries()) as Record<string, string>;
+    if (data.new_password !== data.confirm_password) {
+      setSelfChangeError("New password and confirmation don't match.");
+      return;
+    }
+    setWorking(true);
+    try {
+      const { user } = await changePassword(token, data.current_password, data.new_password);
+      setMe(user);
+      setSelfChangeOpen(false);
+      onToast("Password updated.");
+    } catch (err) {
+      setSelfChangeError(err instanceof ApiError ? err.message : "Couldn't update password.");
+    } finally {
+      setWorking(false);
+    }
+  };
+
+  const filteredAudit = audit.filter((e) => {
+    if (auditFilter.action !== "all" && e.action !== auditFilter.action) return false;
+    if (
+      auditFilter.actor &&
+      !(e.actorUsername || "").toLowerCase().includes(auditFilter.actor.toLowerCase())
+    )
+      return false;
+    if (auditFilter.range !== "all") {
+      const cutoff = Date.now() - {
+        "24h": 24 * 3600e3,
+        "7d": 7 * 24 * 3600e3,
+        "30d": 30 * 24 * 3600e3,
+      }[auditFilter.range];
+      if (new Date(e.at).getTime() < cutoff) return false;
+    }
+    return true;
+  });
 
   return (
     <section id="dashboard" className="relative px-5 md:px-10 py-20 max-w-6xl mx-auto">
@@ -229,13 +307,35 @@ export default function StaffDashboard({ onToast }: { onToast: (msg: string) => 
             )}
           </div>
           {me ? (
-            <button
-              data-testid="staff-signout"
-              onClick={signOut}
-              className="flex items-center gap-1.5 text-[12px] font-medium px-4 py-2 rounded-full border border-border-strong text-ink-faint hover:text-ink transition-colors"
-            >
-              <LogOut size={12} /> Sign out
-            </button>
+            <div className="flex items-center gap-2 shrink-0">
+              {livePending !== null && livePending > 0 && (
+                <motion.span
+                  key={livePending}
+                  initial={{ scale: 0.6, opacity: 0 }}
+                  animate={{ scale: 1, opacity: 1 }}
+                  transition={{ type: "spring", stiffness: 400, damping: 18 }}
+                  data-testid="live-pending-badge"
+                  className="flex items-center gap-1.5 text-[11px] font-mono uppercase tracking-[0.2em] px-3 py-1.5 rounded-full bg-[#F4E7C9] text-[#8A6A12]"
+                >
+                  <span className="w-1.5 h-1.5 rounded-full bg-[#8A6A12] animate-pulse" />
+                  {livePending} pending
+                </motion.span>
+              )}
+              <button
+                data-testid="self-change-password"
+                onClick={() => setSelfChangeOpen(true)}
+                className="hidden sm:flex items-center gap-1.5 text-[12px] font-medium px-3 py-2 rounded-full border border-border-strong text-ink-faint hover:text-ink transition-colors"
+              >
+                <KeyRound size={12} /> Password
+              </button>
+              <button
+                data-testid="staff-signout"
+                onClick={signOut}
+                className="flex items-center gap-1.5 text-[12px] font-medium px-4 py-2 rounded-full border border-border-strong text-ink-faint hover:text-ink transition-colors"
+              >
+                <LogOut size={12} /> Sign out
+              </button>
+            </div>
           ) : (
             <button
               data-testid="staff-signin-toggle"
@@ -486,70 +586,115 @@ export default function StaffDashboard({ onToast }: { onToast: (msg: string) => 
         </div>
       ) : (
         // ---------- Admin: Audit log ----------
-        <div className="rounded-xl border border-border overflow-hidden bg-cream-card">
-          {audit.length === 0 ? (
-            <div className="p-10 text-center text-ink-faint text-[13px]">
-              No activity recorded yet.
+        <div>
+          <div className="flex items-center gap-2 flex-wrap mb-4">
+            <div className="text-[11px] font-mono uppercase tracking-[0.18em] text-ink-faint mr-1">
+              Filter
             </div>
-          ) : (
-            <div>
-              {audit.map((e, i) => {
-                const tone =
-                  e.action === "approve"
-                    ? "bg-teal-pale text-teal"
-                    : e.action === "reject"
-                    ? "bg-[#F7E3DD] text-[#8A3B22]"
-                    : e.action === "delete_request" || e.action === "delete_user"
-                    ? "bg-[#F4E7C9] text-[#8A6A12]"
-                    : e.action === "create_user"
-                    ? "bg-[#DCEEDC] text-[#2A6B2F]"
-                    : "bg-cream-panel text-ink-soft";
-                const label = e.action.replace(/_/g, " ");
-                const when = new Date(e.at);
-                return (
-                  <motion.div
-                    key={e.id}
-                    initial={{ opacity: 0, x: -6 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    transition={{ delay: 0.02 * i }}
-                    data-testid={`audit-${e.id}`}
-                    className="flex items-center gap-3 px-4 py-3 border-b border-border last:border-b-0"
-                  >
-                    <span
-                      className={`shrink-0 text-[10px] font-mono uppercase tracking-[0.18em] px-2 py-1 rounded-full ${tone}`}
+            {(["all", "approve", "reject", "delete_request", "create_user", "delete_user", "password_reset"] as const).map((a) => (
+              <button
+                key={a}
+                onClick={() => setAuditFilter((f) => ({ ...f, action: a }))}
+                data-testid={`audit-filter-${a}`}
+                className={`text-[11px] font-mono uppercase tracking-[0.16em] px-2.5 py-1 rounded-full border transition-colors ${
+                  auditFilter.action === a
+                    ? "bg-navy text-white border-navy"
+                    : "border-border-strong text-ink-faint hover:text-ink"
+                }`}
+              >
+                {a === "all" ? "all" : a.replace(/_/g, " ")}
+              </button>
+            ))}
+            <span className="w-px h-4 bg-border mx-1" />
+            {(["24h", "7d", "30d", "all"] as const).map((r) => (
+              <button
+                key={r}
+                onClick={() => setAuditFilter((f) => ({ ...f, range: r }))}
+                data-testid={`audit-range-${r}`}
+                className={`text-[11px] font-mono uppercase tracking-[0.16em] px-2.5 py-1 rounded-full border transition-colors ${
+                  auditFilter.range === r
+                    ? "bg-teal text-white border-teal"
+                    : "border-border-strong text-ink-faint hover:text-ink"
+                }`}
+              >
+                {r === "all" ? "all time" : r}
+              </button>
+            ))}
+            <input
+              value={auditFilter.actor}
+              onChange={(e) => setAuditFilter((f) => ({ ...f, actor: e.target.value }))}
+              placeholder="Filter by actor…"
+              data-testid="audit-actor-filter"
+              className="text-[12px] px-3 py-1.5 rounded-full border border-border-strong bg-white outline-none focus:border-teal min-w-[160px]"
+            />
+          </div>
+
+          <div className="rounded-xl border border-border overflow-hidden bg-cream-card">
+            {filteredAudit.length === 0 ? (
+              <div className="p-10 text-center text-ink-faint text-[13px]">
+                {audit.length === 0
+                  ? "No activity recorded yet."
+                  : "No entries match those filters."}
+              </div>
+            ) : (
+              <div>
+                {filteredAudit.map((e, i) => {
+                  const tone =
+                    e.action === "approve"
+                      ? "bg-teal-pale text-teal"
+                      : e.action === "reject"
+                      ? "bg-[#F7E3DD] text-[#8A3B22]"
+                      : e.action === "delete_request" || e.action === "delete_user"
+                      ? "bg-[#F4E7C9] text-[#8A6A12]"
+                      : e.action === "create_user"
+                      ? "bg-[#DCEEDC] text-[#2A6B2F]"
+                      : "bg-cream-panel text-ink-soft";
+                  const label = e.action.replace(/_/g, " ");
+                  const when = new Date(e.at);
+                  return (
+                    <motion.div
+                      key={e.id}
+                      initial={{ opacity: 0, x: -6 }}
+                      animate={{ opacity: 1, x: 0 }}
+                      transition={{ delay: Math.min(0.02 * i, 0.4) }}
+                      data-testid={`audit-${e.id}`}
+                      className="flex items-center gap-3 px-4 py-3 border-b border-border last:border-b-0"
                     >
-                      {label}
-                    </span>
-                    <div className="flex-1 min-w-0 text-[13px]">
-                      <span className="font-medium text-ink">
-                        {e.actorUsername || "system"}
+                      <span
+                        className={`shrink-0 text-[10px] font-mono uppercase tracking-[0.18em] px-2 py-1 rounded-full ${tone}`}
+                      >
+                        {label}
                       </span>
-                      <span className="text-ink-faint"> {e.actorRole ? `(${e.actorRole})` : ""} · </span>
-                      <span className="text-ink">
-                        {e.targetLabel || e.targetType || "—"}
-                      </span>
-                      {e.meta && Object.keys(e.meta).length > 0 && (
-                        <span className="text-ink-faint text-[12px] ml-2">
-                          {Object.entries(e.meta)
-                            .filter(([, v]) => v !== null && v !== undefined && v !== "")
-                            .map(([k, v]) => `${k}: ${String(v)}`)
-                            .join(" · ")}
+                      <div className="flex-1 min-w-0 text-[13px]">
+                        <span className="font-medium text-ink">{e.actorUsername || "system"}</span>
+                        <span className="text-ink-faint">
+                          {" "}
+                          {e.actorRole ? `(${e.actorRole})` : ""} ·{" "}
                         </span>
-                      )}
-                    </div>
-                    <div className="shrink-0 text-[11px] font-mono text-ink-faint">
-                      {when.toLocaleString(undefined, {
-                        month: "short",
-                        day: "numeric",
-                        hour: "2-digit",
-                        minute: "2-digit",
-                      })}
-                    </div>
-                  </motion.div>
-                );
-              })}
-            </div>
-          )}
+                        <span className="text-ink">{e.targetLabel || e.targetType || "—"}</span>
+                        {e.meta && Object.keys(e.meta).length > 0 && (
+                          <span className="text-ink-faint text-[12px] ml-2">
+                            {Object.entries(e.meta)
+                              .filter(([, v]) => v !== null && v !== undefined && v !== "")
+                              .map(([k, v]) => `${k}: ${String(v)}`)
+                              .join(" · ")}
+                          </span>
+                        )}
+                      </div>
+                      <div className="shrink-0 text-[11px] font-mono text-ink-faint">
+                        {when.toLocaleString(undefined, {
+                          month: "short",
+                          day: "numeric",
+                          hour: "2-digit",
+                          minute: "2-digit",
+                        })}
+                      </div>
+                    </motion.div>
+                  );
+                })}
+              </div>
+            )}
+          </div>
         </div>
       )}
 
@@ -794,6 +939,30 @@ export default function StaffDashboard({ onToast }: { onToast: (msg: string) => 
                         className={`${inputClass} mt-1`}
                       />
                     </label>
+                    <label className="block col-span-2">
+                      <span className="text-[12px] font-medium text-ink-soft">
+                        Email (optional — used for the invite)
+                      </span>
+                      <input
+                        name="email"
+                        type="email"
+                        placeholder="e.g. ayesha@thedesk.com"
+                        data-testid="new-user-email"
+                        className={`${inputClass} mt-1`}
+                      />
+                    </label>
+                    <label className="col-span-2 flex items-start gap-2 text-[13px] text-ink-soft cursor-pointer">
+                      <input
+                        name="send_invite"
+                        type="checkbox"
+                        defaultChecked
+                        data-testid="new-user-invite-check"
+                        className="mt-0.5 accent-teal"
+                      />
+                      <span>
+                        Email the temporary password to this address so they can sign in.
+                      </span>
+                    </label>
                   </div>
                   <div className="flex items-center justify-end gap-2">
                     <button
@@ -932,6 +1101,82 @@ export default function StaffDashboard({ onToast }: { onToast: (msg: string) => 
           </motion.div>
         )}
       </AnimatePresence>
+      {/* --- Self-service change password ------------------------------- */}
+      <AnimatePresence>
+        {selfChangeOpen && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-navy/70 backdrop-blur-sm"
+            onClick={() => !working && setSelfChangeOpen(false)}
+          >
+            <motion.form
+              onSubmit={runSelfChange}
+              initial={{ opacity: 0, scale: 0.9, y: 12 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              exit={{ opacity: 0, scale: 0.95 }}
+              transition={{ duration: 0.35, ease: [0.2, 0.9, 0.3, 1.3] }}
+              className="w-full max-w-md rounded-2xl p-6 bg-white shadow-2xl border border-border"
+              onClick={(e) => e.stopPropagation()}
+            >
+              <div className="text-[11px] font-mono uppercase tracking-widest text-teal mb-1">
+                Change password
+              </div>
+              <div className="font-display text-xl mb-4">Update your own password</div>
+              {selfChangeError && (
+                <div className="text-[13px] rounded-md px-3 py-2 mb-3 bg-[#F7E3DD] text-[#8A3B22]">
+                  {selfChangeError}
+                </div>
+              )}
+              <input
+                name="current_password"
+                type="password"
+                required
+                placeholder="Current password"
+                data-testid="self-current-password"
+                className={`${inputClass} mb-3`}
+              />
+              <input
+                name="new_password"
+                type="password"
+                required
+                minLength={8}
+                placeholder="New password (min 8 chars)"
+                data-testid="self-new-password"
+                className={`${inputClass} mb-3`}
+              />
+              <input
+                name="confirm_password"
+                type="password"
+                required
+                placeholder="Confirm new password"
+                data-testid="self-confirm-password"
+                className={`${inputClass} mb-4`}
+              />
+              <div className="flex items-center justify-end gap-2">
+                <button
+                  type="button"
+                  onClick={() => setSelfChangeOpen(false)}
+                  disabled={working}
+                  className="text-[13px] px-3 py-2 rounded-md text-ink-soft hover:text-ink transition-colors"
+                >
+                  Cancel
+                </button>
+                <button
+                  type="submit"
+                  disabled={working}
+                  data-testid="self-change-submit"
+                  className="flex items-center gap-1.5 text-[13px] font-medium px-4 py-2 rounded-md bg-teal text-white active:scale-[0.97] transition-transform disabled:opacity-60"
+                >
+                  <KeyRound size={14} /> {working ? "Updating…" : "Save"}
+                </button>
+              </div>
+            </motion.form>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
     </section>
   );
 }
