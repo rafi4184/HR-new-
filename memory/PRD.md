@@ -1,44 +1,76 @@
 # HR — The Mediator
 
-## Source
-Cloned from https://github.com/rafi4184/HR-new-.git and adapted to run under this
-environment's supervisor (React on port 3000, FastAPI on port 8001, MongoDB).
+Bangladesh concierge desk cloned from https://github.com/rafi4184/HR-new-.git and adapted
+to run under this environment (React/Vite + FastAPI + MongoDB).
 
-## What the app does
-Bangladesh concierge desk: airport VIP reception, hotel & car booking, government-liaison
-requests, and study-abroad / media / Gulf-employment programs. Public users submit a
-request, get a ticket, can track it and pay simulated fees. Staff sign in with JWT to
-approve requests and set fees.
+## Product goal
+Give customers a single, calm concierge desk for airport VIP reception, hotel & car booking,
+government liaison, and career/employment programs — with a staff bureau that reviews,
+approves, or declines each request and auto-emails the customer.
+
+## Personas
+- **Customer** — submits requests, tracks status via ticket + name + DOB, sees rejection
+  reasons directly in the tracker.
+- **Staff** — signs in, reviews the case queue, and can approve / reject / delete pending
+  cases. Cannot manage users.
+- **Admin** — everything staff can do, plus add/delete staff & admin accounts and delete
+  non-pending cases.
 
 ## Architecture
-- Frontend: `/app/frontend` (React 18 + TypeScript + Vite + Tailwind + framer-motion)
-  - `yarn start` runs `vite --host 0.0.0.0 --port 3000`
-  - Client calls relative `/api/...`, which the Kubernetes ingress routes to backend on 8001
-- Backend: `/app/backend/server.py` (FastAPI, port of the original Express server)
-  - Storage: MongoDB (`hr_mediator` db, `requests` + `counters` collections)
-  - Auth: bcrypt + JWT (PyJWT) for staff routes, 8-hour expiry
-  - Ticket ids: `HRM-100001, HRM-100002, ...` via an atomic Mongo counter
+- Frontend `/app/frontend`: React 18 + TypeScript + Vite + Tailwind + Framer Motion.
+- Backend `/app/backend/server.py`: FastAPI + Motor (MongoDB).
+- MongoDB collections: `requests` (bookings), `counters` (ticket sequencing), `users` (RBAC).
+- Auth: bcrypt-hashed passwords + JWT (`sub`, `username`, `role`, 8h expiry).
+- Emails: Resend via `emails.py` (falls back to console-logged mock when `RESEND_API_KEY` is empty).
 
 ## API
-- `GET /api/health`
+### Public
+- `GET  /api/health`
 - `POST /api/requests/{airport|hotel|government|program}`
-- `GET /api/requests/track?ticket=&name=&dob=`
-- `POST /api/requests/{id}/pay` — body `{method: bkash|nagad|card}`
-- `POST /api/staff/login` — returns `{token}`
-- `GET /api/staff/requests` — Bearer JWT
-- `POST /api/staff/requests/{id}/approve` — body `{fee?}`
+- `GET  /api/requests/track?ticket=&name=&dob=`
+- `POST /api/requests/{id}/pay`  body `{method: bkash|nagad|card}`
+### Auth
+- `POST /api/auth/login`  → `{token, user}`
+- `GET  /api/auth/me`
+- `POST /api/staff/login` (legacy alias of `/api/auth/login`)
+### Staff (any signed-in user)
+- `GET    /api/staff/requests`
+- `POST   /api/staff/requests/{id}/approve`  body `{fee?}` → email
+- `POST   /api/staff/requests/{id}/reject`   body `{reason}` → email
+- `DELETE /api/staff/requests/{id}`          (pending only unless admin)
+### Admin-only
+- `GET    /api/staff/users`
+- `POST   /api/staff/users`  body `{username, password, name, role}`
+- `DELETE /api/staff/users/{id}`  (cannot delete self; cannot delete last admin)
+
+## Frontend surface
+- **Home** hero, Services, HowItWorks, MediaPartners, Programs.
+- **Signature** — animated counters + testimonial rail + house-rules panel (dark forest hero-inverse).
+- **Booking** — 4 tabbed forms with layout-id indicator.
+- **Track your request** — ticket + name + DOB lookup, shows rejection reason on decline.
+- **Staff dashboard** — sign-in modal, animated stat cards, tabbed layout with:
+  - **Case queue**: Approve / Reject / Delete controls, live remove animation on delete.
+  - **Users** (admin only): avatar list, add-staff modal, delete guard for self/last admin.
 
 ## Environment
-- `/app/backend/.env`: MONGO_URL, DB_NAME=hr_mediator, JWT_SECRET, STAFF_USERNAME=desk, STAFF_PASSWORD=mediator123
-- `/app/frontend/.env`: REACT_APP_BACKEND_URL (do not modify)
+- `/app/backend/.env`: `MONGO_URL`, `DB_NAME=hr_mediator`, `JWT_SECRET`, `STAFF_USERNAME=admin`,
+  `STAFF_PASSWORD=admin@2026`, `RESEND_API_KEY` (empty → mocked emails), `SENDER_EMAIL`, brand vars.
+- `/app/frontend/.env`: `REACT_APP_BACKEND_URL` (protected).
 
-## Implemented
-- 2026-01: Ported Express + SQLite backend to FastAPI + MongoDB. Migrated Vite client
-  to /app/frontend. Verified health, staff login, and airport request submission
-  end-to-end through the external URL.
+## Implemented (rolling log)
+- **2026-01 (turn 1)** — Ported Express+SQLite backend to FastAPI+MongoDB; migrated Vite client
+  to `/app/frontend`; verified health + submit + staff login e2e.
+- **2026-01 (turn 2)** — Resend email integration with branded HTML templates + fallback logger;
+  reject endpoint with reason; TrackRequest shows rejection reason; StaffDashboard reworked with
+  approve/reject modals, stats, and confirmation UX.
+- **2026-01 (turn 3)** — Full RBAC: `users` collection, bootstrap admin seeded on startup,
+  admin-only user management endpoints & UI (add / delete), staff & admin delete-pending,
+  animated Signature section (counters, testimonial rail, house rules).
 
-## Backlog / Next
-- Wire real payment gateway (bKash / Nagad / Stripe) into `/api/requests/{id}/pay`
-- Rate limiting on submit/track/login (was `express-rate-limit` originally)
-- Rich seed data for the staff dashboard demo
-- Deploy production build via `vite build` + static serving
+## Backlog / P0-P2
+- **P0**: Wire real payment gateway (bKash / Nagad / Stripe) into `/api/requests/{id}/pay`.
+- **P1**: Rate limiting on submit / track / login (Redis or slowapi).
+- **P1**: Force-password-reset flow when admin adds a staff account.
+- **P2**: Audit log of admin actions.
+- **P2**: Rich seed data + demo mode toggle for the dashboard.
+- **P2**: `vite build` production output served by FastAPI for single-process deploy.

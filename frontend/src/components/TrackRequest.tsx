@@ -104,6 +104,12 @@ const TrackRequest = forwardRef<
                 <CreditCard size={14} /> Pay ৳{result.fee.toLocaleString()}
               </button>
             )}
+            {result.status === "rejected" && (
+              <div className="mt-2 rounded-md px-4 py-3 bg-[#F7E3DD] text-[#8A3B22] text-[13px] leading-relaxed">
+                <div className="text-[11px] font-mono uppercase tracking-widest mb-1">Desk note</div>
+                {result.rejectionReason || "We're unable to move forward with this specific request. Please call the desk to talk through your options."}
+              </div>
+            )}
             {result.status === "paid" && (
               <span className="flex items-center gap-1.5 text-[13px] text-[#2A6B2F]">
                 <CheckCircle2 size={15} /> Settled

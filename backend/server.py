@@ -1,16 +1,14 @@
 """
-HR — The Mediator API (FastAPI port of the original Express + SQLite server).
+HR — The Mediator API.
 
-Endpoints:
-  POST /api/requests/{type}         Submit a request (airport, hotel, government, program)
-  GET  /api/requests/track          Track a request by ticket + name + dob
-  POST /api/requests/{id}/pay       Simulate paying a fee for an approved request
-  POST /api/staff/login             Staff login -> JWT
-  GET  /api/staff/requests          List all requests (staff only)
-  POST /api/staff/requests/{id}/approve  Approve (optionally with a fee)
+Public routes: submit / track / pay a request.
+Auth routes:   /api/auth/login (returns JWT with role)
+Staff routes:  approve, reject, delete pending requests (staff or admin).
+Admin routes:  create/list/delete staff users.
 """
 
 import os
+import uuid
 import logging
 from datetime import datetime, timezone, timedelta
 from pathlib import Path
@@ -19,7 +17,7 @@ from typing import Any, Optional, Literal
 import bcrypt
 import jwt
 from dotenv import load_dotenv
-from fastapi import Depends, FastAPI, HTTPException, Query, Request, status
+from fastapi import BackgroundTasks, Depends, FastAPI, HTTPException, Query, Request
 from fastapi.security import HTTPAuthorizationCredentials, HTTPBearer
 from motor.motor_asyncio import AsyncIOMotorClient
 from pydantic import BaseModel, EmailStr, Field, ValidationError, field_validator
@@ -28,33 +26,31 @@ from starlette.middleware.cors import CORSMiddleware
 ROOT_DIR = Path(__file__).parent
 load_dotenv(ROOT_DIR / ".env")
 
+from emails import approval_email, rejection_email, send_html  # noqa: E402
+
 logging.basicConfig(
     level=logging.INFO,
     format="%(asctime)s - %(name)s - %(levelname)s - %(message)s",
 )
 logger = logging.getLogger("hr-mediator")
 
-# ---------------------------------------------------------------------------
-# Config
-# ---------------------------------------------------------------------------
+# --- Config ----------------------------------------------------------------
 MONGO_URL = os.environ["MONGO_URL"]
 DB_NAME = os.environ["DB_NAME"]
 CORS_ORIGINS = os.environ.get("CORS_ORIGINS", "*").split(",")
 
 JWT_SECRET = os.environ["JWT_SECRET"]
-STAFF_USERNAME = os.environ["STAFF_USERNAME"]
-STAFF_PASSWORD = os.environ["STAFF_PASSWORD"]
-STAFF_PASSWORD_HASH = bcrypt.hashpw(STAFF_PASSWORD.encode("utf-8"), bcrypt.gensalt(10))
+BOOTSTRAP_ADMIN_USERNAME = os.environ.get("STAFF_USERNAME", "admin")
+BOOTSTRAP_ADMIN_PASSWORD = os.environ.get("STAFF_PASSWORD", "admin@2026")
 
-TICKET_START = 100000  # ticket ids look like HRM-100001, HRM-100002, ...
+TICKET_START = 100000
 
-# ---------------------------------------------------------------------------
-# Database
-# ---------------------------------------------------------------------------
+# --- DB --------------------------------------------------------------------
 mongo_client = AsyncIOMotorClient(MONGO_URL)
 db = mongo_client[DB_NAME]
 requests_col = db["requests"]
 counters_col = db["counters"]
+users_col = db["users"]
 
 
 async def next_request_id() -> int:
@@ -64,8 +60,7 @@ async def next_request_id() -> int:
         upsert=True,
         return_document=True,
     )
-    seq = int(doc["seq"])
-    return TICKET_START + seq
+    return TICKET_START + int(doc["seq"])
 
 
 def ticket_of(request_id: int) -> str:
@@ -76,9 +71,18 @@ def now_iso() -> str:
     return datetime.now(timezone.utc).isoformat()
 
 
-# ---------------------------------------------------------------------------
-# Models — mirror the Zod schemas from the original server
-# ---------------------------------------------------------------------------
+def hash_password(pw: str) -> str:
+    return bcrypt.hashpw(pw.encode("utf-8"), bcrypt.gensalt(10)).decode("utf-8")
+
+
+def check_password(pw: str, hashed: str) -> bool:
+    try:
+        return bcrypt.checkpw(pw.encode("utf-8"), hashed.encode("utf-8"))
+    except Exception:  # noqa: BLE001
+        return False
+
+
+# --- Models — client-side request schemas mirror the original app ----------
 class IdentityFields(BaseModel):
     name: str = Field(min_length=1)
     dob: str = Field(min_length=1)
@@ -88,9 +92,7 @@ class IdentityFields(BaseModel):
     @field_validator("name", "dob", "phone", mode="before")
     @classmethod
     def strip_strings(cls, v: Any) -> Any:
-        if isinstance(v, str):
-            return v.strip()
-        return v
+        return v.strip() if isinstance(v, str) else v
 
 
 class AirportRequest(IdentityFields):
@@ -133,14 +135,14 @@ REQUEST_SCHEMAS: dict[str, type[IdentityFields]] = {
     "program": ProgramRequest,
 }
 
-TYPE_LABELS: dict[str, str] = {
+TYPE_LABELS = {
     "airport": "Airport VIP",
     "hotel": "Hotel & Car",
     "government": "Government Request",
     "program": "Program Enrollment",
 }
 
-PROGRAM_LABELS: dict[str, str] = {
+PROGRAM_LABELS = {
     "study": "Study Abroad Consultation",
     "media": "Media & Public Speaking Academy",
     "gulf": "Gulf & Overseas Employment",
@@ -159,7 +161,7 @@ def summary_for(type_: str, fields: dict[str, Any]) -> str:
     return ""
 
 
-class StaffLogin(BaseModel):
+class LoginBody(BaseModel):
     username: str
     password: str
 
@@ -168,13 +170,22 @@ class ApproveBody(BaseModel):
     fee: Optional[float | int | str] = None
 
 
+class RejectBody(BaseModel):
+    reason: str = Field(default="", max_length=800)
+
+
 class PayBody(BaseModel):
     method: Literal["bkash", "nagad", "card"]
 
 
-# ---------------------------------------------------------------------------
-# Serialization
-# ---------------------------------------------------------------------------
+class CreateUserBody(BaseModel):
+    username: str = Field(min_length=3, max_length=40)
+    password: str = Field(min_length=6, max_length=200)
+    name: str = Field(min_length=1, max_length=120)
+    role: Literal["admin", "staff"] = "staff"
+
+
+# --- Serializers -----------------------------------------------------------
 def serialize_request(row: dict[str, Any]) -> dict[str, Any]:
     return {
         "id": row["_id"],
@@ -189,43 +200,59 @@ def serialize_request(row: dict[str, Any]) -> dict[str, Any]:
         "fee": row.get("fee"),
         "serviceLabel": row.get("service_label"),
         "paymentMethod": row.get("payment_method"),
+        "rejectionReason": row.get("rejection_reason"),
         "details": row.get("details", {}),
         "createdAt": row["created_at"],
         "updatedAt": row["updated_at"],
     }
 
 
-# ---------------------------------------------------------------------------
-# Auth helpers
-# ---------------------------------------------------------------------------
+def serialize_user(row: dict[str, Any]) -> dict[str, Any]:
+    return {
+        "id": row["_id"],
+        "username": row["username"],
+        "name": row.get("name", ""),
+        "role": row["role"],
+        "createdAt": row.get("created_at"),
+    }
+
+
+# --- Auth helpers ----------------------------------------------------------
 security = HTTPBearer(auto_error=False)
 
 
-def sign_staff_token() -> str:
+def sign_token(user: dict[str, Any]) -> str:
     payload = {
-        "role": "staff",
+        "sub": user["_id"],
+        "username": user["username"],
+        "role": user["role"],
         "exp": datetime.now(timezone.utc) + timedelta(hours=8),
     }
     return jwt.encode(payload, JWT_SECRET, algorithm="HS256")
 
 
-def require_staff(
+async def current_user(
     creds: Optional[HTTPAuthorizationCredentials] = Depends(security),
 ) -> dict[str, Any]:
     if not creds or creds.scheme.lower() != "bearer":
-        raise HTTPException(status_code=401, detail="Sign in as staff to continue.")
+        raise HTTPException(status_code=401, detail="Sign in to continue.")
     try:
         payload = jwt.decode(creds.credentials, JWT_SECRET, algorithms=["HS256"])
     except jwt.PyJWTError:
         raise HTTPException(status_code=401, detail="Your session has expired. Sign in again.")
-    if payload.get("role") != "staff":
-        raise HTTPException(status_code=401, detail="Your session has expired. Sign in again.")
-    return payload
+    user = await users_col.find_one({"_id": payload.get("sub")})
+    if not user:
+        raise HTTPException(status_code=401, detail="Your account no longer exists.")
+    return user
 
 
-# ---------------------------------------------------------------------------
-# App
-# ---------------------------------------------------------------------------
+def require_admin(user: dict[str, Any] = Depends(current_user)) -> dict[str, Any]:
+    if user.get("role") != "admin":
+        raise HTTPException(status_code=403, detail="Admins only.")
+    return user
+
+
+# --- App -------------------------------------------------------------------
 app = FastAPI(title="HR — The Mediator API")
 
 app.add_middleware(
@@ -237,18 +264,40 @@ app.add_middleware(
 )
 
 
+@app.on_event("startup")
+async def seed_bootstrap_admin() -> None:
+    # Migrate any legacy admin doc, then ensure a bootstrap admin exists.
+    existing = await users_col.find_one({"username": BOOTSTRAP_ADMIN_USERNAME})
+    if existing:
+        if existing.get("role") != "admin":
+            await users_col.update_one(
+                {"_id": existing["_id"]}, {"$set": {"role": "admin"}}
+            )
+            logger.info("bootstrap admin '%s' role upgraded to admin", BOOTSTRAP_ADMIN_USERNAME)
+        return
+    admin = {
+        "_id": str(uuid.uuid4()),
+        "username": BOOTSTRAP_ADMIN_USERNAME,
+        "password_hash": hash_password(BOOTSTRAP_ADMIN_PASSWORD),
+        "name": "Desk Administrator",
+        "role": "admin",
+        "created_at": now_iso(),
+    }
+    await users_col.insert_one(admin)
+    logger.info("bootstrap admin '%s' seeded", BOOTSTRAP_ADMIN_USERNAME)
+
+
 @app.get("/api/health")
 async def health() -> dict[str, bool]:
     return {"ok": True}
 
 
-# ----- Public request routes -----------------------------------------------
+# --- Public: submit / track / pay -----------------------------------------
 @app.post("/api/requests/{type_}", status_code=201)
 async def submit_request(type_: str, payload: dict[str, Any]) -> dict[str, Any]:
     schema = REQUEST_SCHEMAS.get(type_)
     if schema is None:
         raise HTTPException(status_code=404, detail="Unknown request type.")
-
     try:
         parsed = schema.model_validate(payload)
     except ValidationError as err:
@@ -274,6 +323,7 @@ async def submit_request(type_: str, payload: dict[str, Any]) -> dict[str, Any]:
         "fee": None,
         "service_label": fields["service"] if type_ == "government" else None,
         "payment_method": None,
+        "rejection_reason": None,
         "details": rest,
         "created_at": now,
         "updated_at": now,
@@ -291,25 +341,16 @@ async def track_request(
     ticket_u = ticket.strip().upper()
     name_l = name.strip().lower()
     dob_v = dob.strip()
-
     if not ticket_u or not name_l or not dob_v:
         raise HTTPException(
             status_code=400,
             detail="Ticket number, name, and date of birth are all required.",
         )
-
     row = await requests_col.find_one({"ticket": ticket_u})
-    if (
-        not row
-        or row["name"].strip().lower() != name_l
-        or row["dob"] != dob_v
-    ):
+    if not row or row["name"].strip().lower() != name_l or row["dob"] != dob_v:
         raise HTTPException(
             status_code=404,
-            detail=(
-                "No matching request. Double-check the ticket number, "
-                "name, and date of birth."
-            ),
+            detail="No matching request. Double-check the ticket number, name, and date of birth.",
         )
     return serialize_request(row)
 
@@ -321,34 +362,37 @@ async def pay_request(request_id: int, body: PayBody) -> dict[str, Any]:
         raise HTTPException(status_code=404, detail="Request not found.")
     if row.get("status") != "approved" or row.get("fee") is None:
         raise HTTPException(status_code=409, detail="This request isn't awaiting payment.")
-
     await requests_col.update_one(
         {"_id": request_id},
-        {
-            "$set": {
-                "status": "paid",
-                "payment_method": body.method,
-                "updated_at": now_iso(),
-            }
-        },
+        {"$set": {"status": "paid", "payment_method": body.method, "updated_at": now_iso()}},
     )
     updated = await requests_col.find_one({"_id": request_id})
     return serialize_request(updated)
 
 
-# ----- Staff routes --------------------------------------------------------
-@app.post("/api/staff/login")
-async def staff_login(body: StaffLogin) -> dict[str, str]:
-    if (
-        body.username != STAFF_USERNAME
-        or not bcrypt.checkpw(body.password.encode("utf-8"), STAFF_PASSWORD_HASH)
-    ):
+# --- Auth -----------------------------------------------------------------
+@app.post("/api/auth/login")
+async def login(body: LoginBody) -> dict[str, Any]:
+    user = await users_col.find_one({"username": body.username})
+    if not user or not check_password(body.password, user["password_hash"]):
         raise HTTPException(status_code=401, detail="Incorrect username or password.")
-    return {"token": sign_staff_token()}
+    return {"token": sign_token(user), "user": serialize_user(user)}
 
 
+# Legacy alias for the old client
+@app.post("/api/staff/login")
+async def staff_login_legacy(body: LoginBody) -> dict[str, Any]:
+    return await login(body)
+
+
+@app.get("/api/auth/me")
+async def me(user: dict = Depends(current_user)) -> dict[str, Any]:
+    return serialize_user(user)
+
+
+# --- Staff routes ---------------------------------------------------------
 @app.get("/api/staff/requests")
-async def staff_list_requests(_: dict = Depends(require_staff)) -> list[dict[str, Any]]:
+async def staff_list_requests(_: dict = Depends(current_user)) -> list[dict[str, Any]]:
     rows = await requests_col.find({}).sort("_id", -1).to_list(length=1000)
     return [serialize_request(r) for r in rows]
 
@@ -357,7 +401,8 @@ async def staff_list_requests(_: dict = Depends(require_staff)) -> list[dict[str
 async def staff_approve(
     request_id: int,
     body: ApproveBody,
-    _: dict = Depends(require_staff),
+    background: BackgroundTasks,
+    _: dict = Depends(current_user),
 ) -> dict[str, Any]:
     row = await requests_col.find_one({"_id": request_id})
     if not row:
@@ -377,10 +422,103 @@ async def staff_approve(
         {"$set": {"status": "approved", "fee": fee, "updated_at": now_iso()}},
     )
     updated = await requests_col.find_one({"_id": request_id})
-    return serialize_request(updated)
+    serialized = serialize_request(updated)
+    subject, html = approval_email(serialized)
+    background.add_task(send_html, serialized["email"], subject, html)
+    return serialized
 
 
-# ----- Fallback for unknown /api routes -----------------------------------
+@app.post("/api/staff/requests/{request_id}/reject")
+async def staff_reject(
+    request_id: int,
+    body: RejectBody,
+    background: BackgroundTasks,
+    _: dict = Depends(current_user),
+) -> dict[str, Any]:
+    row = await requests_col.find_one({"_id": request_id})
+    if not row:
+        raise HTTPException(status_code=404, detail="Request not found.")
+    if row.get("status") != "received":
+        raise HTTPException(status_code=409, detail="This request has already been reviewed.")
+
+    reason = (body.reason or "").strip()
+    await requests_col.update_one(
+        {"_id": request_id},
+        {
+            "$set": {
+                "status": "rejected",
+                "rejection_reason": reason or None,
+                "updated_at": now_iso(),
+            }
+        },
+    )
+    updated = await requests_col.find_one({"_id": request_id})
+    serialized = serialize_request(updated)
+    subject, html = rejection_email(serialized, reason or None)
+    background.add_task(send_html, serialized["email"], subject, html)
+    return serialized
+
+
+@app.delete("/api/staff/requests/{request_id}")
+async def staff_delete_request(
+    request_id: int,
+    user: dict = Depends(current_user),
+) -> dict[str, Any]:
+    row = await requests_col.find_one({"_id": request_id})
+    if not row:
+        raise HTTPException(status_code=404, detail="Request not found.")
+    # Only pending requests may be deleted by anyone; admins can nuke any.
+    if row.get("status") != "received" and user.get("role") != "admin":
+        raise HTTPException(status_code=403, detail="Only pending requests can be deleted.")
+    await requests_col.delete_one({"_id": request_id})
+    return {"ok": True, "id": request_id}
+
+
+# --- Admin: user management ----------------------------------------------
+@app.get("/api/staff/users")
+async def list_users(_: dict = Depends(require_admin)) -> list[dict[str, Any]]:
+    rows = await users_col.find({}).sort("created_at", 1).to_list(length=200)
+    return [serialize_user(r) for r in rows]
+
+
+@app.post("/api/staff/users", status_code=201)
+async def create_user(
+    body: CreateUserBody,
+    _: dict = Depends(require_admin),
+) -> dict[str, Any]:
+    if await users_col.find_one({"username": body.username}):
+        raise HTTPException(status_code=409, detail="That username is already taken.")
+    doc = {
+        "_id": str(uuid.uuid4()),
+        "username": body.username.strip(),
+        "password_hash": hash_password(body.password),
+        "name": body.name.strip(),
+        "role": body.role,
+        "created_at": now_iso(),
+    }
+    await users_col.insert_one(doc)
+    return serialize_user(doc)
+
+
+@app.delete("/api/staff/users/{user_id}")
+async def delete_user(
+    user_id: str,
+    admin: dict = Depends(require_admin),
+) -> dict[str, Any]:
+    target = await users_col.find_one({"_id": user_id})
+    if not target:
+        raise HTTPException(status_code=404, detail="User not found.")
+    if target["_id"] == admin["_id"]:
+        raise HTTPException(status_code=400, detail="You can't delete your own account.")
+    if target["role"] == "admin":
+        remaining_admins = await users_col.count_documents({"role": "admin"})
+        if remaining_admins <= 1:
+            raise HTTPException(status_code=400, detail="At least one admin must remain.")
+    await users_col.delete_one({"_id": user_id})
+    return {"ok": True, "id": user_id}
+
+
+# --- Fallback -------------------------------------------------------------
 @app.api_route("/api/{path:path}", methods=["GET", "POST", "PUT", "DELETE", "PATCH"])
 async def api_not_found(path: str, request: Request) -> None:
     raise HTTPException(status_code=404, detail="Not found.")

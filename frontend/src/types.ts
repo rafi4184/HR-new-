@@ -1,4 +1,4 @@
-export type RequestStatus = "received" | "approved" | "paid";
+export type RequestStatus = "received" | "approved" | "rejected" | "paid";
 
 export interface ServiceRequest {
   id: number;
@@ -13,6 +13,7 @@ export interface ServiceRequest {
   fee: number | null;
   serviceLabel: string | null;
   paymentMethod: string | null;
+  rejectionReason: string | null;
   details: Record<string, unknown>;
   createdAt: string;
   updatedAt: string;

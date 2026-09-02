@@ -2,6 +2,19 @@ import type { ServiceRequest } from "../types";
 
 class ApiError extends Error {}
 
+export interface StaffUser {
+  id: string;
+  username: string;
+  name: string;
+  role: "admin" | "staff";
+  createdAt?: string;
+}
+
+export interface LoginResponse {
+  token: string;
+  user: StaffUser;
+}
+
 async function request<T>(path: string, options: RequestInit = {}): Promise<T> {
   const res = await fetch(`/api${path}`, {
     ...options,
@@ -10,27 +23,27 @@ async function request<T>(path: string, options: RequestInit = {}): Promise<T> {
       ...options.headers,
     },
   });
-
+  if (res.status === 204) return undefined as T;
   if (!res.ok) {
     const body = await res.json().catch(() => ({}));
-    throw new ApiError(body.error || `Request failed (${res.status})`);
+    throw new ApiError(body.error || body.detail || `Request failed (${res.status})`);
   }
-
   return res.json() as Promise<T>;
 }
 
+const auth = (token: string) => ({ Authorization: `Bearer ${token}` });
+
+// public
 export function submitRequest(type: string, fields: Record<string, unknown>) {
   return request<ServiceRequest>(`/requests/${type}`, {
     method: "POST",
     body: JSON.stringify(fields),
   });
 }
-
 export function trackRequest(ticket: string, name: string, dob: string) {
   const params = new URLSearchParams({ ticket, name, dob });
   return request<ServiceRequest>(`/requests/track?${params.toString()}`);
 }
-
 export function payRequest(id: number, method: string) {
   return request<ServiceRequest>(`/requests/${id}/pay`, {
     method: "POST",
@@ -38,24 +51,60 @@ export function payRequest(id: number, method: string) {
   });
 }
 
+// auth
 export function staffLogin(username: string, password: string) {
-  return request<{ token: string }>("/staff/login", {
+  return request<LoginResponse>("/auth/login", {
     method: "POST",
     body: JSON.stringify({ username, password }),
   });
 }
-
-export function staffListRequests(token: string) {
-  return request<ServiceRequest[]>("/staff/requests", {
-    headers: { Authorization: `Bearer ${token}` },
-  });
+export function fetchMe(token: string) {
+  return request<StaffUser>("/auth/me", { headers: auth(token) });
 }
 
+// staff
+export function staffListRequests(token: string) {
+  return request<ServiceRequest[]>("/staff/requests", { headers: auth(token) });
+}
 export function staffApprove(token: string, id: number, fee?: number) {
   return request<ServiceRequest>(`/staff/requests/${id}/approve`, {
     method: "POST",
-    headers: { Authorization: `Bearer ${token}` },
+    headers: auth(token),
     body: JSON.stringify({ fee }),
+  });
+}
+export function staffReject(token: string, id: number, reason: string) {
+  return request<ServiceRequest>(`/staff/requests/${id}/reject`, {
+    method: "POST",
+    headers: auth(token),
+    body: JSON.stringify({ reason }),
+  });
+}
+export function staffDeleteRequest(token: string, id: number) {
+  return request<{ ok: boolean }>(`/staff/requests/${id}`, {
+    method: "DELETE",
+    headers: auth(token),
+  });
+}
+
+// admin
+export function listUsers(token: string) {
+  return request<StaffUser[]>("/staff/users", { headers: auth(token) });
+}
+export function createUser(
+  token: string,
+  data: { username: string; password: string; name: string; role: "admin" | "staff" }
+) {
+  return request<StaffUser>("/staff/users", {
+    method: "POST",
+    headers: auth(token),
+    body: JSON.stringify(data),
+  });
+}
+export function deleteUser(token: string, id: string) {
+  return request<{ ok: boolean }>(`/staff/users/${id}`, {
+    method: "DELETE",
+    headers: auth(token),
   });
 }
 
