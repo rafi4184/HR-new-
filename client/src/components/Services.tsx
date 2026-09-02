@@ -45,12 +45,12 @@ export default function Services({ onBook }: { onBook: (tab: BookingTab) => void
         {SERVICES.map(({ icon: Icon, title, body, tab }, i) => (
           <Reveal key={title} delay={i * 0.06}>
             <motion.div
-              whileHover={{ y: -4, boxShadow: "0 14px 28px rgba(11,27,46,0.1)" }}
+              whileHover={{ y: -4, boxShadow: "0 14px 28px rgba(23,36,28,0.1)" }}
               transition={{ duration: 0.2 }}
               className="rounded-xl p-6 border border-border bg-cream-card flex flex-col h-full hover:border-teal"
             >
               <div className="w-10 h-10 rounded-lg flex items-center justify-center mb-4 bg-teal-tint">
-                <Icon size={19} color="#146B60" />
+                <Icon size={19} color="#2F5D3F" />
               </div>
               <h3 className="font-display text-lg mb-2">{title}</h3>
               <p className="text-[14px] flex-1 text-ink-muted">{body}</p>

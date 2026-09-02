@@ -35,7 +35,7 @@ export default function HowItWorks() {
                 <div className="relative z-10 w-12 h-12 rounded-full flex items-center justify-center mb-4 font-display text-lg bg-teal text-white">
                   {i + 1}
                 </div>
-                <Icon size={18} color="#146B60" className="mb-3" />
+                <Icon size={18} color="#2F5D3F" className="mb-3" />
                 <h3 className="font-display text-lg mb-2">{title}</h3>
                 <p className="text-[14px] text-ink-muted">{body}</p>
               </div>

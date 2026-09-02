@@ -95,7 +95,7 @@ export default function StaffDashboard({ onToast }: { onToast: (msg: string) => 
             <motion.div
               key={r.id}
               layout
-              whileHover={{ y: -1, boxShadow: "0 4px 18px rgba(11,27,46,0.08)" }}
+              whileHover={{ y: -1, boxShadow: "0 4px 18px rgba(23,36,28,0.08)" }}
               className="rounded-lg border border-border p-4 bg-cream-card"
             >
               <div className="flex flex-col sm:flex-row sm:items-center gap-3 sm:gap-6">

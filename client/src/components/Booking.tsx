@@ -264,7 +264,7 @@ const Booking = forwardRef<
               transition={{ duration: 0.45, ease: [0.2, 0.9, 0.3, 1.3] }}
               className="mt-5 rounded-lg px-4 py-3 flex items-center gap-3 bg-teal-pale"
             >
-              <Ticket size={18} color="#146B60" className="shrink-0" />
+              <Ticket size={18} color="#2F5D3F" className="shrink-0" />
               <div className="text-[13px] text-navy-light">
                 Your ticket number is <strong>{lastTicket}</strong>. Save it — you&apos;ll need it
                 with your name and date of birth to track this request.

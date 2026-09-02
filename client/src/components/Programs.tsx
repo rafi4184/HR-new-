@@ -10,7 +10,7 @@ export default function Programs({
   onBook: (tab: BookingTab, program?: string) => void;
 }) {
   const cardMotion = {
-    whileHover: { y: -4, boxShadow: "0 20px 40px rgba(11,27,46,0.14)" },
+    whileHover: { y: -4, boxShadow: "0 20px 40px rgba(23,36,28,0.14)" },
     transition: { duration: 0.3 },
   };
 
@@ -49,7 +49,7 @@ export default function Programs({
                 </p>
                 <button
                   onClick={() => onBook("programs", "study")}
-                  className="self-start flex items-center gap-2 px-5 py-2.5 rounded-md font-medium text-[14px] bg-gold text-navy transition-all hover:shadow-[0_10px_26px_rgba(201,162,39,0.35)] hover:-translate-y-px active:scale-[0.97]"
+                  className="self-start flex items-center gap-2 px-5 py-2.5 rounded-md font-medium text-[14px] bg-gold text-white transition-all hover:shadow-[0_10px_26px_rgba(166,64,42,0.35)] hover:-translate-y-px active:scale-[0.97]"
                 >
                   Book a consultation <ChevronRight size={15} />
                 </button>
@@ -100,7 +100,7 @@ export default function Programs({
                 </div>
                 <button
                   onClick={() => onBook("programs", "media")}
-                  className="self-start flex items-center gap-2 px-5 py-2.5 rounded-md font-medium text-[14px] bg-gold text-navy transition-all hover:shadow-[0_10px_26px_rgba(201,162,39,0.35)] hover:-translate-y-px active:scale-[0.97]"
+                  className="self-start flex items-center gap-2 px-5 py-2.5 rounded-md font-medium text-[14px] bg-gold text-white transition-all hover:shadow-[0_10px_26px_rgba(166,64,42,0.35)] hover:-translate-y-px active:scale-[0.97]"
                 >
                   Reserve a seat <ChevronRight size={15} />
                 </button>
@@ -129,7 +129,7 @@ export default function Programs({
                 </p>
                 <button
                   onClick={() => onBook("programs", "gulf")}
-                  className="self-start flex items-center gap-2 px-5 py-2.5 rounded-md font-medium text-[14px] bg-gold text-navy transition-all hover:shadow-[0_10px_26px_rgba(201,162,39,0.35)] hover:-translate-y-px active:scale-[0.97]"
+                  className="self-start flex items-center gap-2 px-5 py-2.5 rounded-md font-medium text-[14px] bg-gold text-white transition-all hover:shadow-[0_10px_26px_rgba(166,64,42,0.35)] hover:-translate-y-px active:scale-[0.97]"
                 >
                   Speak to the desk <ChevronRight size={15} />
                 </button>

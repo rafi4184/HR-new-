@@ -7,25 +7,25 @@ html {
 }
 
 body {
-  background-color: #f6f2e8;
-  color: #16222e;
-  font-family: "Inter", system-ui, sans-serif;
+  background-color: #f3eedf;
+  color: #1e2a20;
+  font-family: "IBM Plex Sans", system-ui, sans-serif;
 }
 
 ::selection {
-  background: #c9a227;
-  color: #0b1b2e;
+  background: #a6402a;
+  color: #f3eedf;
 }
 
 input:focus,
 select:focus,
 textarea:focus {
-  border-color: #146b60 !important;
-  box-shadow: 0 0 0 3px rgba(20, 107, 96, 0.12);
+  border-color: #2f5d3f !important;
+  box-shadow: 0 0 0 3px rgba(47, 93, 63, 0.12);
 }
 
 .shimmer {
-  background: linear-gradient(90deg, #f0ead9 0%, #fbf8ef 50%, #f0ead9 100%);
+  background: linear-gradient(90deg, #ece3cb 0%, #fbf7ea 50%, #ece3cb 100%);
   background-size: 300px 100%;
 }
 
@@ -43,10 +43,10 @@ textarea:focus {
   transition: border-color 0.15s ease;
 }
 .ticket-field:hover {
-  border-bottom-color: #c9bfa6;
+  border-bottom-color: #c9be9e;
 }
 .ticket-field:focus {
-  border-bottom-color: #146b60;
+  border-bottom-color: #2f5d3f;
 }
 select.ticket-field {
   cursor: pointer;

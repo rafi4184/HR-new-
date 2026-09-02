@@ -132,13 +132,13 @@ export default function PaymentModal({
                 <button
                   onClick={confirm}
                   disabled={stage === "processing"}
-                  className="w-full py-3 rounded-md font-medium text-[15px] flex items-center justify-center gap-2 bg-gold text-navy active:scale-[0.97] transition-transform disabled:opacity-85"
+                  className="w-full py-3 rounded-md font-medium text-[15px] flex items-center justify-center gap-2 bg-gold text-white active:scale-[0.97] transition-transform disabled:opacity-85"
                 >
                   {stage === "processing" ? (
                     <>
                       <motion.span
                         className="inline-block w-4 h-4 rounded-full border-2"
-                        style={{ borderColor: "#0B1B2E transparent #0B1B2E #0B1B2E" }}
+                        style={{ borderColor: "#17241C transparent #17241C #17241C" }}
                         animate={{ rotate: 360 }}
                         transition={{ duration: 0.8, repeat: Infinity, ease: "linear" }}
                       />

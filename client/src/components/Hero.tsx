@@ -47,16 +47,16 @@ export default function Hero({
         className="absolute inset-0"
         style={{
           background:
-            "linear-gradient(115deg, rgba(11,27,46,0.97) 20%, rgba(11,27,46,0.88) 45%, rgba(11,27,46,0.55) 75%, rgba(11,27,46,0.35) 100%)",
+            "linear-gradient(115deg, rgba(23,36,28,0.97) 20%, rgba(23,36,28,0.88) 45%, rgba(23,36,28,0.55) 75%, rgba(23,36,28,0.35) 100%)",
         }}
       />
       <div
         className="absolute inset-0"
-        style={{ background: "linear-gradient(to top, rgba(11,27,46,0.9), transparent 35%)" }}
+        style={{ background: "linear-gradient(to top, rgba(23,36,28,0.9), transparent 35%)" }}
       />
       <motion.div
         className="blob"
-        style={{ width: 300, height: 300, bottom: -100, left: "2%", backgroundColor: "rgba(201,162,39,0.16)" }}
+        style={{ width: 300, height: 300, bottom: -100, left: "2%", backgroundColor: "rgba(166,64,42,0.16)" }}
         animate={{ x: [0, -16, 0], y: [0, 14, 0], scale: [1, 1.06, 1] }}
         transition={{ duration: 9, repeat: Infinity, ease: "easeInOut" }}
       />
@@ -116,7 +116,7 @@ export default function Hero({
           >
             <button
               onClick={() => onBook("airport")}
-              className="flex items-center gap-2 px-5 py-3 rounded-md font-medium text-[15px] bg-gold text-navy transition-all hover:shadow-[0_10px_26px_rgba(201,162,39,0.35)] hover:-translate-y-px active:scale-[0.97]"
+              className="flex items-center gap-2 px-5 py-3 rounded-md font-medium text-[15px] bg-gold text-white transition-all hover:shadow-[0_10px_26px_rgba(166,64,42,0.35)] hover:-translate-y-px active:scale-[0.97]"
             >
               <Plane size={17} /> Book an airport pickup
             </button>
@@ -144,33 +144,30 @@ export default function Hero({
         >
           <motion.div
             ref={cardRef}
-            className="rounded-2xl overflow-hidden bg-cream"
+            className="rounded-xl overflow-hidden bg-cream-card border border-border"
             style={{ boxShadow: "0 30px 60px rgba(0,0,0,0.35)", transformPerspective: 800 }}
             animate={{ rotateX: tilt.x, rotateY: tilt.y }}
             transition={{ type: "spring", stiffness: 150, damping: 15 }}
           >
-            <div className="p-6 bg-gradient-to-br from-teal to-teal-bright">
-              <div className="flex items-center justify-between text-white">
-                <span className="font-display text-xl">Meet &amp; Greet</span>
-                <Plane size={22} />
+            <div className="flex items-center justify-between px-6 pt-5 pb-4 border-b border-dashed border-border-strong">
+              <div>
+                <div className="font-mono text-[10px] tracking-[0.2em] text-ink-faint uppercase mb-1">
+                  Case file · Concierge desk
+                </div>
+                <div className="font-display italic text-xl text-ink">Meet &amp; Greet</div>
+                <div className="text-[11px] mt-1 tracking-wide text-ink-faint">
+                  Hazrat Shahjalal Int&apos;l · Dhaka
+                </div>
               </div>
-              <div className="text-[11px] mt-1 tracking-wide text-[#D8ECE7]">
-                Hazrat Shahjalal Int&apos;l · Dhaka
+              <div className="w-10 h-10 rounded-full flex items-center justify-center bg-teal-tint shrink-0">
+                <Plane size={18} color="#2F5D3F" />
               </div>
             </div>
-            <div
-              className="relative px-6 py-5"
-              style={{
-                backgroundImage: "radial-gradient(circle, #0B1B2E 4px, transparent 4px)",
-                backgroundSize: "16px 8px",
-                backgroundRepeat: "repeat-x",
-                backgroundPosition: "top",
-              }}
-            >
-              <div className="border-t border-dashed border-[#C7BFAB] -mt-0.5" />
-              <div className="grid grid-cols-2 gap-y-4 gap-x-3 mt-5 text-[13px]">
+
+            <div className="px-6 py-5">
+              <div className="grid grid-cols-2 gap-y-4 gap-x-3 text-[13px]">
                 <div>
-                  <div className="text-[#8B7F63]">Passenger</div>
+                  <div className="text-ink-faint">Passenger</div>
                   <input
                     value={ticket.name}
                     onChange={(e) => setTicket((t) => ({ ...t, name: e.target.value }))}
@@ -179,7 +176,7 @@ export default function Hero({
                   />
                 </div>
                 <div>
-                  <div className="text-[#8B7F63]">Flight</div>
+                  <div className="text-ink-faint">Flight</div>
                   <input
                     value={ticket.flight}
                     onChange={(e) => setTicket((t) => ({ ...t, flight: e.target.value }))}
@@ -188,7 +185,7 @@ export default function Hero({
                   />
                 </div>
                 <div>
-                  <div className="text-[#8B7F63]">Purpose</div>
+                  <div className="text-ink-faint">Purpose</div>
                   <select
                     value={ticket.purpose}
                     onChange={(e) => setTicket((t) => ({ ...t, purpose: e.target.value }))}
@@ -202,7 +199,7 @@ export default function Hero({
                   </select>
                 </div>
                 <div>
-                  <div className="text-[#8B7F63]">Onward</div>
+                  <div className="text-ink-faint">Onward</div>
                   <input
                     value={ticket.onward}
                     onChange={(e) => setTicket((t) => ({ ...t, onward: e.target.value }))}
@@ -211,14 +208,29 @@ export default function Hero({
                   />
                 </div>
               </div>
-              <div className="mt-5 pt-4 flex items-center justify-between border-t border-[#E1DACB]">
-                <span className="text-[11px] text-[#8B7F63]">Fast-track · lounge · transfer</span>
-                <span className="text-[11px] font-semibold px-2.5 py-1 rounded-full bg-teal-pale text-teal">
-                  CONFIRMED
+              <div className="mt-5 pt-4 flex items-center justify-between border-t border-border">
+                <span className="text-[11px] font-mono uppercase tracking-wide text-ink-faint">
+                  Fast-track · lounge · transfer
+                </span>
+                <span className="text-[11px] font-mono font-semibold px-2.5 py-1 rounded border-2 border-teal text-teal uppercase tracking-wide">
+                  On file
                 </span>
               </div>
             </div>
           </motion.div>
+
+          <motion.div
+            className="absolute -top-4 -right-4 w-[72px] h-[72px] rounded-full flex items-center justify-center border-[3px] border-gold text-gold bg-cream-card font-mono text-[10px] font-semibold uppercase tracking-wide leading-tight text-center select-none"
+            initial={{ scale: 2.1, opacity: 0, rotate: -26 }}
+            animate={{ scale: 1, opacity: 1, rotate: -10 }}
+            transition={{ delay: 0.9, duration: 0.55, ease: [0.2, 0.8, 0.2, 1.3] }}
+            style={{ boxShadow: "0 8px 18px rgba(23,36,28,0.18)" }}
+          >
+            Priority
+            <br />
+            case
+          </motion.div>
+
           <button
             onClick={() => onUseDetails(ticket)}
             className="mt-4 w-full flex items-center justify-center gap-2 px-4 py-2.5 rounded-md text-[13px] font-medium bg-white/[0.08] text-white border border-white/[0.18] active:scale-[0.97] transition-transform hover:bg-white/[0.14]"

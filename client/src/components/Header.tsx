@@ -56,7 +56,7 @@ export default function Header({
         <div className="flex items-center gap-2">
           <a
             href="tel:+8801717013150"
-            className="hidden sm:flex items-center gap-2 text-sm px-4 py-2 rounded-full font-medium bg-gold text-navy transition-shadow hover:shadow-[0_10px_26px_rgba(201,162,39,0.35)] hover:-translate-y-px active:scale-[0.97]"
+            className="hidden sm:flex items-center gap-2 text-sm px-4 py-2 rounded-full font-medium bg-gold text-white transition-shadow hover:shadow-[0_10px_26px_rgba(166,64,42,0.35)] hover:-translate-y-px active:scale-[0.97]"
           >
             <Phone size={14} /> +880 1717‑013150
           </a>
