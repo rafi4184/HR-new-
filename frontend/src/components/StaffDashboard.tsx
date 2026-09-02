@@ -17,6 +17,9 @@ import {
   LogOut,
   KeyRound,
   Activity,
+  Search,
+  X,
+  ListChecks,
 } from "lucide-react";
 import { inputClass } from "./ui/Field";
 import StatusPill from "./ui/StatusPill";
@@ -34,6 +37,8 @@ import {
   listAuditLog,
   changePassword,
   fetchStats,
+  bulkApprove,
+  bulkReject,
   type AuditEntry,
   type StaffUser,
 } from "../lib/api";
@@ -69,6 +74,9 @@ export default function StaffDashboard({ onToast }: { onToast: (msg: string) => 
   const [selfChangeOpen, setSelfChangeOpen] = useState(false);
   const [selfChangeError, setSelfChangeError] = useState<string | null>(null);
   const [mustReset, setMustReset] = useState(false);
+  const [query, setQuery] = useState("");
+  const [selected, setSelected] = useState<Set<number>>(new Set());
+  const [bulkMode, setBulkMode] = useState<"approve" | "reject" | null>(null);
   const [resetError, setResetError] = useState<string | null>(null);
   const [decision, setDecision] = useState<RequestDecision>(null);
   const [userAction, setUserAction] = useState<UserAction>(null);
@@ -279,6 +287,70 @@ export default function StaffDashboard({ onToast }: { onToast: (msg: string) => 
     return true;
   });
 
+  const filteredRequests = requests.filter((r) => {
+    if (!query.trim()) return true;
+    const q = query.trim().toLowerCase();
+    return (
+      r.ticket.toLowerCase().includes(q) ||
+      r.name.toLowerCase().includes(q) ||
+      r.email.toLowerCase().includes(q) ||
+      r.phone.toLowerCase().includes(q) ||
+      r.summary.toLowerCase().includes(q) ||
+      r.type.toLowerCase().includes(q)
+    );
+  });
+
+  const selectableIds = filteredRequests.filter((r) => r.status === "received").map((r) => r.id);
+  const allSelected =
+    selectableIds.length > 0 && selectableIds.every((id) => selected.has(id));
+
+  const toggleSelect = (id: number) => {
+    setSelected((prev) => {
+      const next = new Set(prev);
+      if (next.has(id)) next.delete(id);
+      else next.add(id);
+      return next;
+    });
+  };
+
+  const clearSelection = () => setSelected(new Set());
+
+  const runBulk = async (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    if (!token || !bulkMode || selected.size === 0) return;
+    const form = e.currentTarget;
+    const data = Object.fromEntries(new FormData(form).entries()) as Record<string, string>;
+    setWorking(true);
+    try {
+      const ids = Array.from(selected);
+      if (bulkMode === "approve") {
+        const fee = data.fee ? Number(String(data.fee).replace(/[^0-9]/g, "")) : undefined;
+        const { approved, skipped } = await bulkApprove(token, ids, fee);
+        setRequests((rs) =>
+          rs.map((r) => approved.find((a) => a.id === r.id) || r)
+        );
+        onToast(
+          `${approved.length} approved · ${skipped.length} skipped. Emails queued.`
+        );
+      } else {
+        const reason = (data.reason || "").trim();
+        const { rejected, skipped } = await bulkReject(token, ids, reason);
+        setRequests((rs) =>
+          rs.map((r) => rejected.find((a) => a.id === r.id) || r)
+        );
+        onToast(
+          `${rejected.length} declined · ${skipped.length} skipped. Emails queued.`
+        );
+      }
+      clearSelection();
+      setBulkMode(null);
+    } catch (err) {
+      onToast(err instanceof ApiError ? err.message : "Bulk action failed.");
+    } finally {
+      setWorking(false);
+    }
+  };
+
   return (
     <section id="dashboard" className="relative px-5 md:px-10 py-20 max-w-6xl mx-auto">
       <Reveal>
@@ -431,8 +503,90 @@ export default function StaffDashboard({ onToast }: { onToast: (msg: string) => 
           </div>
         ) : (
           <div className="space-y-3">
-            <AnimatePresence initial={false}>
-              {requests.map((r) => (
+            {/* Search + bulk toolbar */}
+            <div className="flex flex-wrap items-center gap-3 mb-4">
+              <label className="relative flex-1 min-w-[220px]">
+                <Search
+                  size={14}
+                  className="absolute top-1/2 left-3 -translate-y-1/2 text-ink-faint pointer-events-none"
+                />
+                <input
+                  value={query}
+                  onChange={(e) => setQuery(e.target.value)}
+                  placeholder="Search by ticket, guest, email, phone…"
+                  data-testid="queue-search"
+                  className="w-full text-[13px] pl-9 pr-9 py-2 rounded-full border border-border-strong bg-white outline-none focus:border-teal transition-colors"
+                />
+                {query && (
+                  <button
+                    type="button"
+                    onClick={() => setQuery("")}
+                    className="absolute top-1/2 right-3 -translate-y-1/2 text-ink-faint hover:text-ink"
+                  >
+                    <X size={14} />
+                  </button>
+                )}
+              </label>
+              {selectableIds.length > 0 && (
+                <button
+                  onClick={() =>
+                    allSelected ? clearSelection() : setSelected(new Set(selectableIds))
+                  }
+                  data-testid="select-all-btn"
+                  className="flex items-center gap-1.5 text-[12px] font-medium px-3 py-2 rounded-full border border-border-strong text-ink-faint hover:text-ink transition-colors"
+                >
+                  <ListChecks size={13} />
+                  {allSelected ? "Clear selection" : "Select all pending"}
+                </button>
+              )}
+            </div>
+
+            {/* Bulk action bar */}
+            <AnimatePresence>
+              {selected.size > 0 && (
+                <motion.div
+                  initial={{ opacity: 0, y: -8, height: 0 }}
+                  animate={{ opacity: 1, y: 0, height: "auto" }}
+                  exit={{ opacity: 0, y: -8, height: 0 }}
+                  transition={{ duration: 0.25 }}
+                  data-testid="bulk-toolbar"
+                  className="flex flex-wrap items-center gap-3 rounded-xl border border-teal bg-teal-pale px-4 py-3"
+                >
+                  <span className="text-[13px] font-medium text-teal">
+                    {selected.size} selected
+                  </span>
+                  <span className="flex-1" />
+                  <button
+                    onClick={() => setBulkMode("approve")}
+                    data-testid="bulk-approve-btn"
+                    className="flex items-center gap-1.5 text-[13px] font-medium px-4 py-2 rounded-md bg-teal text-white active:scale-[0.97] transition-transform hover:shadow-[0_8px_18px_rgba(47,93,63,0.35)]"
+                  >
+                    <Check size={14} /> Approve all
+                  </button>
+                  <button
+                    onClick={() => setBulkMode("reject")}
+                    data-testid="bulk-reject-btn"
+                    className="flex items-center gap-1.5 text-[13px] font-medium px-4 py-2 rounded-md border border-[#A6402A] text-[#A6402A] active:scale-[0.97] hover:bg-[#A6402A] hover:text-white transition-colors"
+                  >
+                    <Ban size={14} /> Decline all
+                  </button>
+                  <button
+                    onClick={clearSelection}
+                    className="text-[12px] font-medium text-ink-faint hover:text-ink transition-colors"
+                  >
+                    Cancel
+                  </button>
+                </motion.div>
+              )}
+            </AnimatePresence>
+
+            {filteredRequests.length === 0 ? (
+              <div className="rounded-xl border border-dashed p-10 text-center border-border-strong text-ink-faint">
+                No cases match "{query}".
+              </div>
+            ) : (
+              <AnimatePresence initial={false}>
+                {filteredRequests.map((r) => (
                 <motion.div
                   key={r.id}
                   layout
@@ -441,9 +595,24 @@ export default function StaffDashboard({ onToast }: { onToast: (msg: string) => 
                   exit={{ opacity: 0, x: -20, transition: { duration: 0.25 } }}
                   whileHover={{ y: -1, boxShadow: "0 8px 24px rgba(23,36,28,0.10)" }}
                   data-testid={`staff-request-${r.id}`}
-                  className="rounded-xl border border-border p-4 bg-cream-card"
+                  className={`rounded-xl border p-4 transition-colors ${
+                    selected.has(r.id)
+                      ? "border-teal bg-teal-pale/40"
+                      : "border-border bg-cream-card"
+                  }`}
                 >
                   <div className="flex flex-col sm:flex-row sm:items-center gap-3 sm:gap-6">
+                    {r.status === "received" && (
+                      <label className="flex items-center pt-1 sm:pt-0 shrink-0 cursor-pointer">
+                        <input
+                          type="checkbox"
+                          checked={selected.has(r.id)}
+                          onChange={() => toggleSelect(r.id)}
+                          data-testid={`select-${r.id}`}
+                          className="w-4 h-4 accent-teal cursor-pointer"
+                        />
+                      </label>
+                    )}
                     <div className="flex-1 min-w-0">
                       <div className="flex items-center gap-2 mb-1 flex-wrap">
                         <span className="text-[11px] font-mono uppercase tracking-widest text-ink-faint">
@@ -519,8 +688,9 @@ export default function StaffDashboard({ onToast }: { onToast: (msg: string) => 
                     </div>
                   </div>
                 </motion.div>
-              ))}
-            </AnimatePresence>
+                ))}
+              </AnimatePresence>
+            )}
           </div>
         )
       ) : tab === "users" ? (
@@ -1101,6 +1271,106 @@ export default function StaffDashboard({ onToast }: { onToast: (msg: string) => 
           </motion.div>
         )}
       </AnimatePresence>
+      {/* --- Bulk action modal ------------------------------------------ */}
+      <AnimatePresence>
+        {bulkMode && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-navy/70 backdrop-blur-sm"
+            onClick={() => !working && setBulkMode(null)}
+          >
+            <motion.form
+              onSubmit={runBulk}
+              initial={{ opacity: 0, scale: 0.9, y: 12 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              exit={{ opacity: 0, scale: 0.95 }}
+              transition={{ duration: 0.35, ease: [0.2, 0.9, 0.3, 1.3] }}
+              className="w-full max-w-md rounded-2xl p-6 bg-white shadow-2xl border border-border"
+              onClick={(e) => e.stopPropagation()}
+            >
+              <div
+                className={`text-[11px] font-mono uppercase tracking-widest mb-1 ${
+                  bulkMode === "approve" ? "text-teal" : "text-[#A6402A]"
+                }`}
+              >
+                Bulk {bulkMode}
+              </div>
+              <div className="font-display text-xl mb-1">
+                {bulkMode === "approve" ? "Approve " : "Decline "}
+                {selected.size} case{selected.size === 1 ? "" : "s"}?
+              </div>
+              <p className="text-[13px] text-ink-faint mb-4">
+                Each customer will receive an individual{" "}
+                {bulkMode === "approve" ? "approval" : "rejection"} email. Non-pending items are
+                skipped automatically.
+              </p>
+
+              {bulkMode === "approve" && (
+                <label className="block mb-4">
+                  <span className="text-[12px] font-medium text-ink-soft">
+                    Shared fee for any government cases (BDT — optional)
+                  </span>
+                  <input
+                    name="fee"
+                    defaultValue=""
+                    inputMode="numeric"
+                    placeholder="Leave blank for no fee"
+                    data-testid="bulk-fee-input"
+                    className={`${inputClass} mt-1`}
+                  />
+                </label>
+              )}
+
+              {bulkMode === "reject" && (
+                <label className="block mb-4">
+                  <span className="text-[12px] font-medium text-ink-soft">
+                    Shared reason (goes into every email)
+                  </span>
+                  <textarea
+                    name="reason"
+                    rows={4}
+                    required
+                    placeholder="e.g. We're fully booked for that arrival window."
+                    data-testid="bulk-reason-input"
+                    className={`${inputClass} mt-1`}
+                  />
+                </label>
+              )}
+
+              <div className="flex items-center justify-end gap-2">
+                <button
+                  type="button"
+                  onClick={() => setBulkMode(null)}
+                  disabled={working}
+                  className="text-[13px] px-3 py-2 rounded-md text-ink-soft hover:text-ink transition-colors"
+                >
+                  Cancel
+                </button>
+                <button
+                  type="submit"
+                  disabled={working}
+                  data-testid={`bulk-${bulkMode}-confirm`}
+                  className={`flex items-center gap-1.5 text-[13px] font-medium px-4 py-2 rounded-md text-white active:scale-[0.97] transition-transform disabled:opacity-60 ${
+                    bulkMode === "approve"
+                      ? "bg-teal hover:shadow-[0_10px_24px_rgba(47,93,63,0.35)]"
+                      : "bg-[#A6402A] hover:shadow-[0_10px_24px_rgba(166,64,42,0.35)]"
+                  }`}
+                >
+                  {bulkMode === "approve" ? <Check size={14} /> : <Ban size={14} />}
+                  {working
+                    ? "Processing…"
+                    : bulkMode === "approve"
+                    ? "Approve all & email"
+                    : "Decline all & email"}
+                </button>
+              </div>
+            </motion.form>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
       {/* --- Self-service change password ------------------------------- */}
       <AnimatePresence>
         {selfChangeOpen && (

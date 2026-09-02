@@ -120,6 +120,28 @@ export function staffDeleteRequest(token: string, id: number) {
   });
 }
 
+export function bulkApprove(token: string, ids: number[], fee?: number) {
+  return request<{ approved: ServiceRequest[]; skipped: number[] }>(
+    "/staff/requests/bulk-approve",
+    {
+      method: "POST",
+      headers: auth(token),
+      body: JSON.stringify({ ids, fee }),
+    }
+  );
+}
+
+export function bulkReject(token: string, ids: number[], reason: string) {
+  return request<{ rejected: ServiceRequest[]; skipped: number[] }>(
+    "/staff/requests/bulk-reject",
+    {
+      method: "POST",
+      headers: auth(token),
+      body: JSON.stringify({ ids, reason }),
+    }
+  );
+}
+
 // admin
 export function listUsers(token: string) {
   return request<StaffUser[]>("/staff/users", { headers: auth(token) });

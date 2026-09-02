@@ -21,7 +21,11 @@ from fastapi import BackgroundTasks, Depends, FastAPI, HTTPException, Query, Req
 from fastapi.security import HTTPAuthorizationCredentials, HTTPBearer
 from motor.motor_asyncio import AsyncIOMotorClient
 from pydantic import BaseModel, EmailStr, Field, ValidationError, field_validator
+from slowapi import Limiter
+from slowapi.errors import RateLimitExceeded
+from slowapi.util import get_remote_address
 from starlette.middleware.cors import CORSMiddleware
+from starlette.responses import JSONResponse
 
 ROOT_DIR = Path(__file__).parent
 load_dotenv(ROOT_DIR / ".env")
@@ -195,6 +199,12 @@ class RejectBody(BaseModel):
     reason: str = Field(default="", max_length=800)
 
 
+class BulkBody(BaseModel):
+    ids: list[int] = Field(min_length=1, max_length=100)
+    fee: Optional[float | int | str] = None  # only used for bulk_approve
+    reason: str = Field(default="", max_length=800)  # only used for bulk_reject
+
+
 class PayBody(BaseModel):
     method: Literal["bkash", "nagad", "card"]
 
@@ -298,7 +308,19 @@ def require_admin(user: dict[str, Any] = Depends(current_user)) -> dict[str, Any
 
 
 # --- App -------------------------------------------------------------------
+limiter = Limiter(key_func=get_remote_address, default_limits=[])
+
 app = FastAPI(title="HR — The Mediator API")
+app.state.limiter = limiter
+
+
+@app.exception_handler(RateLimitExceeded)
+async def rate_limit_handler(request: Request, exc: RateLimitExceeded) -> JSONResponse:
+    return JSONResponse(
+        status_code=429,
+        content={"detail": "Too many requests. Please slow down and try again in a moment."},
+    )
+
 
 app.add_middleware(
     CORSMiddleware,
@@ -341,7 +363,8 @@ async def health() -> dict[str, bool]:
 
 # --- Public: submit / track / pay -----------------------------------------
 @app.post("/api/requests/{type_}", status_code=201)
-async def submit_request(type_: str, payload: dict[str, Any]) -> dict[str, Any]:
+@limiter.limit("10/minute;30/hour")
+async def submit_request(type_: str, payload: dict[str, Any], request: Request) -> dict[str, Any]:
     schema = REQUEST_SCHEMAS.get(type_)
     if schema is None:
         raise HTTPException(status_code=404, detail="Unknown request type.")
@@ -380,7 +403,9 @@ async def submit_request(type_: str, payload: dict[str, Any]) -> dict[str, Any]:
 
 
 @app.get("/api/requests/track")
+@limiter.limit("20/minute")
 async def track_request(
+    request: Request,
     ticket: str = Query(""),
     name: str = Query(""),
     dob: str = Query(""),
@@ -419,7 +444,8 @@ async def pay_request(request_id: int, body: PayBody) -> dict[str, Any]:
 
 # --- Auth -----------------------------------------------------------------
 @app.post("/api/auth/login")
-async def login(body: LoginBody) -> dict[str, Any]:
+@limiter.limit("10/minute")
+async def login(body: LoginBody, request: Request) -> dict[str, Any]:
     user = await users_col.find_one({"username": body.username})
     if not user or not check_password(body.password, user["password_hash"]):
         raise HTTPException(status_code=401, detail="Incorrect username or password.")
@@ -428,8 +454,9 @@ async def login(body: LoginBody) -> dict[str, Any]:
 
 # Legacy alias for the old client
 @app.post("/api/staff/login")
-async def staff_login_legacy(body: LoginBody) -> dict[str, Any]:
-    return await login(body)
+@limiter.limit("10/minute")
+async def staff_login_legacy(body: LoginBody, request: Request) -> dict[str, Any]:
+    return await login(body, request)
 
 
 @app.get("/api/auth/me")
@@ -565,6 +592,81 @@ async def staff_delete_request(
         {"prior_status": row.get("status")},
     )
     return {"ok": True, "id": request_id}
+
+
+@app.post("/api/staff/requests/bulk-approve")
+async def bulk_approve(
+    body: BulkBody,
+    background: BackgroundTasks,
+    user: dict = Depends(current_user),
+) -> dict[str, Any]:
+    fee: Optional[int] = None
+    if body.fee is not None and body.fee != "":
+        try:
+            fee = max(0, round(float(body.fee)))
+        except (TypeError, ValueError):
+            raise HTTPException(status_code=400, detail="Fee must be a number.")
+    processed: list[dict[str, Any]] = []
+    skipped: list[int] = []
+    for rid in body.ids:
+        row = await requests_col.find_one({"_id": rid})
+        if not row or row.get("status") != "received":
+            skipped.append(rid)
+            continue
+        await requests_col.update_one(
+            {"_id": rid},
+            {"$set": {"status": "approved", "fee": fee, "updated_at": now_iso()}},
+        )
+        updated = await requests_col.find_one({"_id": rid})
+        serialized = serialize_request(updated)
+        subject, html = approval_email(serialized)
+        background.add_task(send_html, serialized["email"], subject, html)
+        await log_audit(
+            user,
+            "approve",
+            {"type": "request", "id": rid, "label": serialized["ticket"]},
+            {"fee": fee, "customer": serialized["email"], "bulk": True},
+        )
+        processed.append(serialized)
+    return {"approved": processed, "skipped": skipped}
+
+
+@app.post("/api/staff/requests/bulk-reject")
+async def bulk_reject(
+    body: BulkBody,
+    background: BackgroundTasks,
+    user: dict = Depends(current_user),
+) -> dict[str, Any]:
+    reason = (body.reason or "").strip()
+    processed: list[dict[str, Any]] = []
+    skipped: list[int] = []
+    for rid in body.ids:
+        row = await requests_col.find_one({"_id": rid})
+        if not row or row.get("status") != "received":
+            skipped.append(rid)
+            continue
+        await requests_col.update_one(
+            {"_id": rid},
+            {
+                "$set": {
+                    "status": "rejected",
+                    "rejection_reason": reason or None,
+                    "updated_at": now_iso(),
+                }
+            },
+        )
+        updated = await requests_col.find_one({"_id": rid})
+        serialized = serialize_request(updated)
+        subject, html = rejection_email(serialized, reason or None)
+        background.add_task(send_html, serialized["email"], subject, html)
+        await log_audit(
+            user,
+            "reject",
+            {"type": "request", "id": rid, "label": serialized["ticket"]},
+            {"reason": reason, "customer": serialized["email"], "bulk": True},
+        )
+        processed.append(serialized)
+    return {"rejected": processed, "skipped": skipped}
 
 
 # --- Admin: user management ----------------------------------------------
