@@ -1,0 +1,66 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background-color: #f3eedf;
+  color: #1e2a20;
+  font-family: "IBM Plex Sans", system-ui, sans-serif;
+}
+
+::selection {
+  background: #a6402a;
+  color: #f3eedf;
+}
+
+input:focus,
+select:focus,
+textarea:focus {
+  border-color: #2f5d3f !important;
+  box-shadow: 0 0 0 3px rgba(47, 93, 63, 0.12);
+}
+
+.shimmer {
+  background: linear-gradient(90deg, #ece3cb 0%, #fbf7ea 50%, #ece3cb 100%);
+  background-size: 300px 100%;
+}
+
+.blob {
+  position: absolute;
+  border-radius: 9999px;
+  filter: blur(60px);
+  pointer-events: none;
+}
+
+.ticket-field {
+  border-bottom: 1px dashed transparent;
+  padding-bottom: 1px;
+  cursor: text;
+  transition: border-color 0.15s ease;
+}
+.ticket-field:hover {
+  border-bottom-color: #c9be9e;
+}
+.ticket-field:focus {
+  border-bottom-color: #2f5d3f;
+}
+select.ticket-field {
+  cursor: pointer;
+  appearance: none;
+  -webkit-appearance: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+}
