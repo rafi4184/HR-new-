@@ -1,11 +1,28 @@
-import { useState, type FormEvent } from "react";
+import { useMemo, useState, type FormEvent } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { ShieldAlert, CheckCircle2, XCircle, Phone, Mail } from "lucide-react";
+import { ShieldAlert, CheckCircle2, XCircle, Clock3, Loader2, Phone, Mail } from "lucide-react";
 import { inputClass } from "./ui/Field";
 import StatusPill from "./ui/StatusPill";
 import Reveal from "./ui/Reveal";
+import AnimatedCounter from "./ui/AnimatedCounter";
 import { staffApprove, staffReject, staffComplete, staffListRequests, staffLogin, ApiError } from "../lib/api";
 import type { ServiceRequest } from "../types";
+
+const STAT_TILES = [
+  { key: "new", label: "New", icon: Clock3, className: "bg-[#F4E7C9] text-[#8A6A12]" },
+  { key: "active", label: "In progress", icon: Loader2, className: "bg-teal-pale text-teal" },
+  { key: "completed", label: "Completed", icon: CheckCircle2, className: "bg-[#DCEEDC] text-[#2A6B2F]" },
+  { key: "rejected", label: "Not approved", icon: XCircle, className: "bg-[#F7E3DD] text-[#8A3B22]" },
+] as const;
+
+function countByStatus(requests: ServiceRequest[]) {
+  return {
+    new: requests.filter((r) => r.status === "received").length,
+    active: requests.filter((r) => r.status === "approved" || r.status === "paid").length,
+    completed: requests.filter((r) => r.status === "completed").length,
+    rejected: requests.filter((r) => r.status === "rejected").length,
+  };
+}
 
 export default function StaffDashboard({ onToast }: { onToast: (msg: string) => void }) {
   const [token, setToken] = useState<string | null>(null);
@@ -13,6 +30,7 @@ export default function StaffDashboard({ onToast }: { onToast: (msg: string) => 
   const [loginError, setLoginError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
   const [requests, setRequests] = useState<ServiceRequest[]>([]);
+  const stats = useMemo(() => countByStatus(requests), [requests]);
 
   const refresh = async (t: string) => {
     setLoading(true);
@@ -104,6 +122,41 @@ export default function StaffDashboard({ onToast }: { onToast: (msg: string) => 
         </p>
       </Reveal>
 
+      {token && !loading && requests.length > 0 && (
+        <motion.div
+          initial="hidden"
+          animate="show"
+          variants={{ show: { transition: { staggerChildren: 0.06 } } }}
+          className="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-6"
+        >
+          {STAT_TILES.map(({ key, label, icon: Icon, className }) => (
+            <motion.div
+              key={key}
+              variants={{ hidden: { opacity: 0, y: 10 }, show: { opacity: 1, y: 0 } }}
+              className="rounded-lg border border-border bg-cream-card p-4"
+            >
+              <div className={`w-8 h-8 rounded-md flex items-center justify-center mb-3 ${className}`}>
+                {key === "active" && stats.active > 0 ? (
+                  <motion.span
+                    className="flex"
+                    animate={{ rotate: 360 }}
+                    transition={{ duration: 2.5, repeat: Infinity, ease: "linear" }}
+                  >
+                    <Icon size={15} />
+                  </motion.span>
+                ) : (
+                  <Icon size={15} />
+                )}
+              </div>
+              <div className="font-display text-2xl leading-none mb-1">
+                <AnimatedCounter value={stats[key]} />
+              </div>
+              <div className="text-[12px] text-ink-faint">{label}</div>
+            </motion.div>
+          ))}
+        </motion.div>
+      )}
+
       {!token ? (
         <div className="rounded-xl border border-dashed p-10 text-center border-border-strong text-ink-faint">
           <ShieldAlert size={20} className="mx-auto mb-2" />
@@ -117,10 +170,13 @@ export default function StaffDashboard({ onToast }: { onToast: (msg: string) => 
         </div>
       ) : (
         <div className="space-y-3">
-          {requests.map((r) => (
+          {requests.map((r, i) => (
             <motion.div
               key={r.id}
               layout
+              initial={{ opacity: 0, y: 12 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: Math.min(i, 8) * 0.04, duration: 0.3 }}
               whileHover={{ y: -1, boxShadow: "0 4px 18px rgba(23,36,28,0.08)" }}
               className="rounded-lg border border-border p-4 bg-cream-card"
             >

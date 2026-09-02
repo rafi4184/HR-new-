@@ -36,6 +36,22 @@ textarea:focus {
   pointer-events: none;
 }
 
+/* Subtle print-grain texture for dark "casework" sections — a premium, tactile
+   finish instead of a flat fill. Kept faint enough to disappear at a glance. */
+.grain {
+  position: relative;
+  isolation: isolate;
+}
+.grain::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0.05;
+  mix-blend-mode: overlay;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
 .ticket-field {
   border-bottom: 1px dashed transparent;
   padding-bottom: 1px;

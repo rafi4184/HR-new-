@@ -36,7 +36,7 @@ export default function Hero({
   const heroEase = [0.2, 0.8, 0.2, 1] as const;
 
   return (
-    <section className="relative overflow-hidden px-5 md:px-10 pt-14 pb-16 bg-navy">
+    <section className="grain relative overflow-hidden px-5 md:px-10 pt-14 pb-16 bg-navy">
       <motion.img
         src={IMG_HERO_BG}
         alt=""

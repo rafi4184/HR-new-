@@ -4,7 +4,7 @@ import Reveal from "./ui/Reveal";
 
 export default function Footer() {
   return (
-    <footer id="contact" className="px-5 md:px-10 pt-16 pb-10 bg-navy text-mist overflow-hidden">
+    <footer id="contact" className="grain relative px-5 md:px-10 pt-16 pb-10 bg-navy text-mist overflow-hidden">
       <div className="max-w-6xl mx-auto grid sm:grid-cols-3 gap-10 mb-12">
         <Reveal>
           <div className="font-display text-white text-xl mb-3">HR — The Mediator</div>
