@@ -15,6 +15,8 @@ import {
   Crown,
   ShieldCheck,
   LogOut,
+  KeyRound,
+  Activity,
 } from "lucide-react";
 import { inputClass } from "./ui/Field";
 import StatusPill from "./ui/StatusPill";
@@ -29,6 +31,9 @@ import {
   listUsers,
   createUser,
   deleteUser,
+  listAuditLog,
+  changePassword,
+  type AuditEntry,
   type StaffUser,
 } from "../lib/api";
 import type { ServiceRequest } from "../types";
@@ -52,7 +57,10 @@ export default function StaffDashboard({ onToast }: { onToast: (msg: string) => 
   const [loading, setLoading] = useState(false);
   const [requests, setRequests] = useState<ServiceRequest[]>([]);
   const [users, setUsers] = useState<StaffUser[]>([]);
-  const [tab, setTab] = useState<"queue" | "users">("queue");
+  const [tab, setTab] = useState<"queue" | "users" | "audit">("queue");
+  const [audit, setAudit] = useState<AuditEntry[]>([]);
+  const [mustReset, setMustReset] = useState(false);
+  const [resetError, setResetError] = useState<string | null>(null);
   const [decision, setDecision] = useState<RequestDecision>(null);
   const [userAction, setUserAction] = useState<UserAction>(null);
   const [working, setWorking] = useState(false);
@@ -62,7 +70,9 @@ export default function StaffDashboard({ onToast }: { onToast: (msg: string) => 
     try {
       setRequests(await staffListRequests(t));
       if (currentUser.role === "admin") {
-        setUsers(await listUsers(t));
+        const [u, a] = await Promise.all([listUsers(t), listAuditLog(t)]);
+        setUsers(u);
+        setAudit(a);
       }
     } finally {
       setLoading(false);
@@ -80,11 +90,39 @@ export default function StaffDashboard({ onToast }: { onToast: (msg: string) => 
       setMe(user);
       setSignInOpen(false);
       onToast(`Welcome back, ${user.name || user.username}.`);
-      refresh(t, user);
+      if (user.mustResetPassword) {
+        setMustReset(true);
+      } else {
+        refresh(t, user);
+      }
     } catch (err) {
       setLoginError(err instanceof ApiError ? err.message : "Sign-in failed.");
     }
     form.reset();
+  };
+
+  const runPasswordReset = async (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    if (!token) return;
+    setResetError(null);
+    const form = e.currentTarget;
+    const data = Object.fromEntries(new FormData(form).entries()) as Record<string, string>;
+    if (data.new_password !== data.confirm_password) {
+      setResetError("New password and confirmation don't match.");
+      return;
+    }
+    setWorking(true);
+    try {
+      const { user } = await changePassword(token, data.current_password, data.new_password);
+      setMe(user);
+      setMustReset(false);
+      onToast("Password updated. Welcome to the desk.");
+      refresh(token, user);
+    } catch (err) {
+      setResetError(err instanceof ApiError ? err.message : "Couldn't update password.");
+    } finally {
+      setWorking(false);
+    }
   };
 
   const signOut = () => {
@@ -252,6 +290,7 @@ export default function StaffDashboard({ onToast }: { onToast: (msg: string) => 
               {[
                 { id: "queue" as const, label: "Case queue", icon: ShieldCheck },
                 { id: "users" as const, label: "Users", icon: UsersIcon },
+                { id: "audit" as const, label: "Audit log", icon: Activity },
               ].map(({ id, label, icon: Icon }) => (
                 <button
                   key={id}
@@ -384,7 +423,7 @@ export default function StaffDashboard({ onToast }: { onToast: (msg: string) => 
             </AnimatePresence>
           </div>
         )
-      ) : (
+      ) : tab === "users" ? (
         // ---------- Admin: Users panel ----------
         <div>
           <div className="flex items-center justify-between gap-3 mb-4">
@@ -444,6 +483,73 @@ export default function StaffDashboard({ onToast }: { onToast: (msg: string) => 
               ))}
             </AnimatePresence>
           </div>
+        </div>
+      ) : (
+        // ---------- Admin: Audit log ----------
+        <div className="rounded-xl border border-border overflow-hidden bg-cream-card">
+          {audit.length === 0 ? (
+            <div className="p-10 text-center text-ink-faint text-[13px]">
+              No activity recorded yet.
+            </div>
+          ) : (
+            <div>
+              {audit.map((e, i) => {
+                const tone =
+                  e.action === "approve"
+                    ? "bg-teal-pale text-teal"
+                    : e.action === "reject"
+                    ? "bg-[#F7E3DD] text-[#8A3B22]"
+                    : e.action === "delete_request" || e.action === "delete_user"
+                    ? "bg-[#F4E7C9] text-[#8A6A12]"
+                    : e.action === "create_user"
+                    ? "bg-[#DCEEDC] text-[#2A6B2F]"
+                    : "bg-cream-panel text-ink-soft";
+                const label = e.action.replace(/_/g, " ");
+                const when = new Date(e.at);
+                return (
+                  <motion.div
+                    key={e.id}
+                    initial={{ opacity: 0, x: -6 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ delay: 0.02 * i }}
+                    data-testid={`audit-${e.id}`}
+                    className="flex items-center gap-3 px-4 py-3 border-b border-border last:border-b-0"
+                  >
+                    <span
+                      className={`shrink-0 text-[10px] font-mono uppercase tracking-[0.18em] px-2 py-1 rounded-full ${tone}`}
+                    >
+                      {label}
+                    </span>
+                    <div className="flex-1 min-w-0 text-[13px]">
+                      <span className="font-medium text-ink">
+                        {e.actorUsername || "system"}
+                      </span>
+                      <span className="text-ink-faint"> {e.actorRole ? `(${e.actorRole})` : ""} · </span>
+                      <span className="text-ink">
+                        {e.targetLabel || e.targetType || "—"}
+                      </span>
+                      {e.meta && Object.keys(e.meta).length > 0 && (
+                        <span className="text-ink-faint text-[12px] ml-2">
+                          {Object.entries(e.meta)
+                            .filter(([, v]) => v !== null && v !== undefined && v !== "")
+                            .map(([k, v]) => `${k}: ${String(v)}`)
+                            .join(" · ")}
+                        </span>
+                      )}
+                    </div>
+                    <div className="shrink-0 text-[11px] font-mono text-ink-faint">
+                      {when.toLocaleString(undefined, {
+                        month: "short",
+                        day: "numeric",
+                        hour: "2-digit",
+                        minute: "2-digit",
+                      })}
+                    </div>
+                  </motion.div>
+                );
+              })}
+            </div>
+          )}
         </div>
       )}
 
@@ -739,6 +845,89 @@ export default function StaffDashboard({ onToast }: { onToast: (msg: string) => 
                   </div>
                 </>
               )}
+            </motion.form>
+          </motion.div>
+        )}
+      </AnimatePresence>
+      {/* --- Forced password reset (first-time sign in) ------------------ */}
+      <AnimatePresence>
+        {mustReset && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 z-[60] flex items-center justify-center p-4 bg-navy/85 backdrop-blur-md"
+          >
+            <motion.form
+              onSubmit={runPasswordReset}
+              initial={{ opacity: 0, scale: 0.9, y: 12 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              transition={{ duration: 0.4, ease: [0.2, 0.9, 0.3, 1.3] }}
+              className="w-full max-w-md rounded-2xl p-7 bg-white shadow-2xl border border-border relative overflow-hidden"
+            >
+              <div className="absolute -top-20 -right-16 w-56 h-56 rounded-full bg-teal/20 blur-3xl" />
+              <div className="relative">
+                <div className="w-11 h-11 rounded-full bg-teal-pale flex items-center justify-center mb-3">
+                  <KeyRound size={18} className="text-teal" />
+                </div>
+                <div className="text-[11px] font-mono uppercase tracking-[0.22em] text-teal mb-1">
+                  First sign-in
+                </div>
+                <div className="font-display text-2xl mb-1">Set your own password</div>
+                <p className="text-[13px] text-ink-faint mb-4 leading-relaxed">
+                  For safety, please replace the temporary password your admin set for you before
+                  reaching the case queue.
+                </p>
+                {resetError && (
+                  <div className="text-[13px] rounded-md px-3 py-2 mb-3 bg-[#F7E3DD] text-[#8A3B22]">
+                    {resetError}
+                  </div>
+                )}
+                <input
+                  name="current_password"
+                  type="password"
+                  required
+                  placeholder="Temporary password"
+                  data-testid="reset-current-password"
+                  className={`${inputClass} mb-3`}
+                />
+                <input
+                  name="new_password"
+                  type="password"
+                  required
+                  minLength={8}
+                  placeholder="New password (min 8 chars)"
+                  data-testid="reset-new-password"
+                  className={`${inputClass} mb-3`}
+                />
+                <input
+                  name="confirm_password"
+                  type="password"
+                  required
+                  placeholder="Confirm new password"
+                  data-testid="reset-confirm-password"
+                  className={`${inputClass} mb-4`}
+                />
+                <button
+                  type="submit"
+                  disabled={working}
+                  data-testid="reset-submit"
+                  className="w-full py-2.5 rounded-md font-medium text-[14px] bg-teal text-white active:scale-[0.97] transition-transform disabled:opacity-60"
+                >
+                  {working ? "Updating…" : "Set password & continue"}
+                </button>
+                <button
+                  type="button"
+                  onClick={() => {
+                    setToken(null);
+                    setMe(null);
+                    setMustReset(false);
+                  }}
+                  className="w-full mt-2 py-2 text-[12px] text-ink-faint hover:text-ink transition-colors"
+                >
+                  Sign out instead
+                </button>
+              </div>
             </motion.form>
           </motion.div>
         )}

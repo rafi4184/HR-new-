@@ -51,6 +51,27 @@ db = mongo_client[DB_NAME]
 requests_col = db["requests"]
 counters_col = db["counters"]
 users_col = db["users"]
+audit_col = db["audit_log"]
+
+
+async def log_audit(actor: dict[str, Any], action: str, target: dict[str, Any], meta: Optional[dict] = None) -> None:
+    """Fire-and-forget audit line. Never raises."""
+    try:
+        entry = {
+            "_id": str(uuid.uuid4()),
+            "actor_id": actor.get("_id"),
+            "actor_username": actor.get("username"),
+            "actor_role": actor.get("role"),
+            "action": action,  # approve | reject | delete_request | create_user | delete_user | password_reset
+            "target_type": target.get("type"),
+            "target_id": str(target.get("id")),
+            "target_label": target.get("label"),
+            "meta": meta or {},
+            "at": now_iso(),
+        }
+        await audit_col.insert_one(entry)
+    except Exception as e:  # noqa: BLE001
+        logger.warning("audit-log write failed: %s", e)
 
 
 async def next_request_id() -> int:
@@ -185,6 +206,11 @@ class CreateUserBody(BaseModel):
     role: Literal["admin", "staff"] = "staff"
 
 
+class ChangePasswordBody(BaseModel):
+    current_password: str = Field(min_length=1)
+    new_password: str = Field(min_length=8, max_length=200)
+
+
 # --- Serializers -----------------------------------------------------------
 def serialize_request(row: dict[str, Any]) -> dict[str, Any]:
     return {
@@ -213,7 +239,24 @@ def serialize_user(row: dict[str, Any]) -> dict[str, Any]:
         "username": row["username"],
         "name": row.get("name", ""),
         "role": row["role"],
+        "mustResetPassword": bool(row.get("must_reset_password", False)),
         "createdAt": row.get("created_at"),
+        "createdBy": row.get("created_by"),
+    }
+
+
+def serialize_audit(row: dict[str, Any]) -> dict[str, Any]:
+    return {
+        "id": row["_id"],
+        "actorId": row.get("actor_id"),
+        "actorUsername": row.get("actor_username"),
+        "actorRole": row.get("actor_role"),
+        "action": row.get("action"),
+        "targetType": row.get("target_type"),
+        "targetId": row.get("target_id"),
+        "targetLabel": row.get("target_label"),
+        "meta": row.get("meta", {}),
+        "at": row.get("at"),
     }
 
 
@@ -281,7 +324,9 @@ async def seed_bootstrap_admin() -> None:
         "password_hash": hash_password(BOOTSTRAP_ADMIN_PASSWORD),
         "name": "Desk Administrator",
         "role": "admin",
+        "must_reset_password": False,
         "created_at": now_iso(),
+        "created_by": "system",
     }
     await users_col.insert_one(admin)
     logger.info("bootstrap admin '%s' seeded", BOOTSTRAP_ADMIN_USERNAME)
@@ -390,6 +435,34 @@ async def me(user: dict = Depends(current_user)) -> dict[str, Any]:
     return serialize_user(user)
 
 
+@app.post("/api/auth/change-password")
+async def change_password(
+    body: ChangePasswordBody,
+    user: dict = Depends(current_user),
+) -> dict[str, Any]:
+    if not check_password(body.current_password, user["password_hash"]):
+        raise HTTPException(status_code=401, detail="Current password is incorrect.")
+    if body.current_password == body.new_password:
+        raise HTTPException(status_code=400, detail="Pick a password different from the old one.")
+    await users_col.update_one(
+        {"_id": user["_id"]},
+        {
+            "$set": {
+                "password_hash": hash_password(body.new_password),
+                "must_reset_password": False,
+                "password_updated_at": now_iso(),
+            }
+        },
+    )
+    fresh = await users_col.find_one({"_id": user["_id"]})
+    await log_audit(
+        user,
+        "password_reset",
+        {"type": "user", "id": user["_id"], "label": user.get("username")},
+    )
+    return {"ok": True, "user": serialize_user(fresh)}
+
+
 # --- Staff routes ---------------------------------------------------------
 @app.get("/api/staff/requests")
 async def staff_list_requests(_: dict = Depends(current_user)) -> list[dict[str, Any]]:
@@ -425,6 +498,12 @@ async def staff_approve(
     serialized = serialize_request(updated)
     subject, html = approval_email(serialized)
     background.add_task(send_html, serialized["email"], subject, html)
+    await log_audit(
+        _,
+        "approve",
+        {"type": "request", "id": request_id, "label": serialized["ticket"]},
+        {"fee": fee, "customer": serialized["email"]},
+    )
     return serialized
 
 
@@ -456,6 +535,12 @@ async def staff_reject(
     serialized = serialize_request(updated)
     subject, html = rejection_email(serialized, reason or None)
     background.add_task(send_html, serialized["email"], subject, html)
+    await log_audit(
+        _,
+        "reject",
+        {"type": "request", "id": request_id, "label": serialized["ticket"]},
+        {"reason": reason, "customer": serialized["email"]},
+    )
     return serialized
 
 
@@ -471,6 +556,12 @@ async def staff_delete_request(
     if row.get("status") != "received" and user.get("role") != "admin":
         raise HTTPException(status_code=403, detail="Only pending requests can be deleted.")
     await requests_col.delete_one({"_id": request_id})
+    await log_audit(
+        user,
+        "delete_request",
+        {"type": "request", "id": request_id, "label": row.get("ticket")},
+        {"prior_status": row.get("status")},
+    )
     return {"ok": True, "id": request_id}
 
 
@@ -484,7 +575,7 @@ async def list_users(_: dict = Depends(require_admin)) -> list[dict[str, Any]]:
 @app.post("/api/staff/users", status_code=201)
 async def create_user(
     body: CreateUserBody,
-    _: dict = Depends(require_admin),
+    admin: dict = Depends(require_admin),
 ) -> dict[str, Any]:
     if await users_col.find_one({"username": body.username}):
         raise HTTPException(status_code=409, detail="That username is already taken.")
@@ -494,9 +585,17 @@ async def create_user(
         "password_hash": hash_password(body.password),
         "name": body.name.strip(),
         "role": body.role,
+        "must_reset_password": True,
         "created_at": now_iso(),
+        "created_by": admin["_id"],
     }
     await users_col.insert_one(doc)
+    await log_audit(
+        admin,
+        "create_user",
+        {"type": "user", "id": doc["_id"], "label": doc["username"]},
+        {"role": doc["role"]},
+    )
     return serialize_user(doc)
 
 
@@ -515,7 +614,22 @@ async def delete_user(
         if remaining_admins <= 1:
             raise HTTPException(status_code=400, detail="At least one admin must remain.")
     await users_col.delete_one({"_id": user_id})
+    await log_audit(
+        admin,
+        "delete_user",
+        {"type": "user", "id": user_id, "label": target.get("username")},
+        {"role": target.get("role")},
+    )
     return {"ok": True, "id": user_id}
+
+
+@app.get("/api/staff/audit-log")
+async def read_audit_log(
+    limit: int = Query(default=200, ge=1, le=1000),
+    _: dict = Depends(require_admin),
+) -> list[dict[str, Any]]:
+    rows = await audit_col.find({}).sort("at", -1).to_list(length=limit)
+    return [serialize_audit(r) for r in rows]
 
 
 # --- Fallback -------------------------------------------------------------

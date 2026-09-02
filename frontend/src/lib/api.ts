@@ -7,7 +7,28 @@ export interface StaffUser {
   username: string;
   name: string;
   role: "admin" | "staff";
+  mustResetPassword?: boolean;
   createdAt?: string;
+  createdBy?: string | null;
+}
+
+export interface AuditEntry {
+  id: string;
+  actorId: string | null;
+  actorUsername: string | null;
+  actorRole: "admin" | "staff" | null;
+  action:
+    | "approve"
+    | "reject"
+    | "delete_request"
+    | "create_user"
+    | "delete_user"
+    | "password_reset";
+  targetType: "request" | "user" | null;
+  targetId: string | null;
+  targetLabel: string | null;
+  meta: Record<string, unknown>;
+  at: string;
 }
 
 export interface LoginResponse {
@@ -62,6 +83,18 @@ export function fetchMe(token: string) {
   return request<StaffUser>("/auth/me", { headers: auth(token) });
 }
 
+export function changePassword(
+  token: string,
+  current_password: string,
+  new_password: string,
+) {
+  return request<{ ok: boolean; user: StaffUser }>("/auth/change-password", {
+    method: "POST",
+    headers: auth(token),
+    body: JSON.stringify({ current_password, new_password }),
+  });
+}
+
 // staff
 export function staffListRequests(token: string) {
   return request<ServiceRequest[]>("/staff/requests", { headers: auth(token) });
@@ -106,6 +139,10 @@ export function deleteUser(token: string, id: string) {
     method: "DELETE",
     headers: auth(token),
   });
+}
+
+export function listAuditLog(token: string) {
+  return request<AuditEntry[]>("/staff/audit-log", { headers: auth(token) });
 }
 
 export { ApiError };

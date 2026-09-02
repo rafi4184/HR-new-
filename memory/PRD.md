@@ -66,11 +66,18 @@ approves, or declines each request and auto-emails the customer.
 - **2026-01 (turn 3)** — Full RBAC: `users` collection, bootstrap admin seeded on startup,
   admin-only user management endpoints & UI (add / delete), staff & admin delete-pending,
   animated Signature section (counters, testimonial rail, house rules).
+- **2026-01 (turn 4)** — **Forced first-login password reset** (new users get `must_reset_password=true`,
+  blocking `KeyRound` modal until they set their own password). **Audit log** collection + admin-only
+  `GET /api/staff/audit-log` endpoint with an in-dashboard tab that renders colored action pills.
+  MediaPartners rewritten as a full "As seen on air" section with Hasanur Rahman portrait,
+  BTV stamp, network chips (BTV, Channel 24, Jamuna, Daily Star), radial-glow background.
 
 ## Backlog / P0-P2
-- **P0**: Wire real payment gateway (bKash / Nagad / Stripe) into `/api/requests/{id}/pay`.
-- **P1**: Rate limiting on submit / track / login (Redis or slowapi).
-- **P1**: Force-password-reset flow when admin adds a staff account.
-- **P2**: Audit log of admin actions.
-- **P2**: Rich seed data + demo mode toggle for the dashboard.
+- **P0**: Set a real `RESEND_API_KEY` in `.env` — emails are still mocked to logs.
+- **P0**: Save-to-GitHub — user asked to "push"; must be done through the platform's
+  **Save to Github** button, not via CLI.
+- **P1**: Rate limiting on submit / track / login.
+- **P1**: Audit log filters (by actor, action, date-range) + CSV export.
+- **P2**: Real-time queue counter via SSE / websocket, so pending badge updates without refresh.
+- **P2**: Rich seed data + demo mode toggle.
 - **P2**: `vite build` production output served by FastAPI for single-process deploy.
