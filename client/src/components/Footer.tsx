@@ -24,7 +24,7 @@ export default function Footer() {
               <Phone size={14} /> 01717013150
             </div>
             <div className="flex items-center gap-2">
-              <Mail size={14} /> hasanurrahman1986@gmail.com
+              <Mail size={14} /> hrthemediator@gmail.com
             </div>
           </div>
         </Reveal>
