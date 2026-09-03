@@ -1,7 +1,9 @@
 // Supabase Edge Function: sends the automatic customer confirmation email
-// for an approve / reject / complete decision. Invoked by the
-// trg_notify_decision trigger in 0001_init.sql — never called directly by
-// the browser.
+// for a request's lifecycle — received on submission, then approve /
+// reject / complete. Invoked by trg_notify_received (AFTER INSERT) and
+// trg_notify_decision (AFTER UPDATE) — never called directly by the
+// browser. Kept as one function/one Resend integration rather than
+// splitting "received" into its own function.
 //
 // Sends a real email via Resend when RESEND_API_KEY (and optionally
 // NOTIFY_FROM_EMAIL) are set as function secrets; otherwise logs what would
@@ -10,7 +12,7 @@
 //   supabase secrets set RESEND_API_KEY=re_xxx NOTIFY_FROM_EMAIL="HR — The Mediator <concierge@hrthemediator.com>"
 
 interface DecisionPayload {
-  decision: "approved" | "rejected" | "completed";
+  decision: "received" | "approved" | "rejected" | "completed";
   ticket: string;
   type: string;
   summary: string;
@@ -22,6 +24,8 @@ interface DecisionPayload {
 
 function subjectFor(p: DecisionPayload) {
   switch (p.decision) {
+    case "received":
+      return `We've received your request — ${p.ticket}`;
     case "approved":
       return `Your request ${p.ticket} has been approved`;
     case "rejected":
@@ -33,6 +37,13 @@ function subjectFor(p: DecisionPayload) {
 
 function bodyFor(p: DecisionPayload) {
   switch (p.decision) {
+    case "received":
+      return (
+        `Hi ${p.name},\n\nThanks — we've received your ${p.type} request.\n\n` +
+        `Ticket number: ${p.ticket}\nRequest: ${p.summary}\n\n` +
+        `Save this ticket number — you'll need it along with your name and date of birth to track ` +
+        `the status of this request. Our desk will review it and be in touch.\n\n— HR — The Mediator`
+      );
     case "approved":
       return (
         `Hi ${p.name},\n\nYour ${p.type} request (${p.ticket}) has been approved by the desk.` +

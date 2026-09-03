@@ -62,23 +62,48 @@ function mapRow(row: Record<string, unknown>): ServiceRequest {
   };
 }
 
+// Wraps a Supabase call so a raw browser/runtime exception thrown before
+// we even get a {data,error} result (a broken env var producing an
+// unsendable header, a network drop, anything) never reaches the UI as
+// unreadable technical text — only a genuine ApiError (from an `error`
+// the RPC itself returned) keeps its specific message.
+async function callRpc<T>(
+  fn: () => PromiseLike<{ data: T; error: { message: string } | null }>,
+  fallback: string
+): Promise<T> {
+  let result: { data: T; error: { message: string } | null };
+  try {
+    result = await fn();
+  } catch (err) {
+    console.error(fallback, err);
+    throw new ApiError(fallback);
+  }
+  if (result.error) throw new ApiError(result.error.message);
+  return result.data;
+}
+
 export async function submitRequest(type: string, fields: Record<string, unknown>): Promise<ServiceRequest> {
   const { name, dob, phone, email, ...rest } = fields as Record<string, string>;
-  const { data, error } = await supabase.rpc("submit_request", {
-    p_type: type,
-    p_name: name,
-    p_dob: dob,
-    p_phone: phone,
-    p_email: email,
-    p_fields: rest,
-  });
-  if (error) throw new ApiError(error.message);
+  const data = await callRpc(
+    () =>
+      supabase.rpc("submit_request", {
+        p_type: type,
+        p_name: name,
+        p_dob: dob,
+        p_phone: phone,
+        p_email: email,
+        p_fields: rest,
+      }),
+    "Couldn't submit that request. Please try again."
+  );
   return mapRow(data);
 }
 
 export async function trackRequest(ticket: string, name: string, dob: string): Promise<ServiceRequest> {
-  const { data, error } = await supabase.rpc("track_request", { p_ticket: ticket, p_name: name, p_dob: dob });
-  if (error) throw new ApiError(error.message);
+  const data = await callRpc(
+    () => supabase.rpc("track_request", { p_ticket: ticket, p_name: name, p_dob: dob }),
+    "Couldn't look up that request. Please try again."
+  );
   const rows = (data ?? []) as Record<string, unknown>[];
   if (rows.length === 0) {
     throw new ApiError("No matching request. Double-check the ticket number, name, and date of birth.");
@@ -87,8 +112,10 @@ export async function trackRequest(ticket: string, name: string, dob: string): P
 }
 
 export async function payRequest(id: number, method: string): Promise<ServiceRequest> {
-  const { data, error } = await supabase.rpc("pay_request", { p_id: id, p_method: method });
-  if (error) throw new ApiError(error.message);
+  const data = await callRpc(
+    () => supabase.rpc("pay_request", { p_id: id, p_method: method }),
+    "Couldn't process that payment. Please try again."
+  );
   return mapRow(data);
 }
 
