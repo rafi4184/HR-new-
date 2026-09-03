@@ -1,9 +1,11 @@
 import { useEffect, useRef, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Plane, Landmark, ChevronRight } from "lucide-react";
+import { Plane, Landmark, ChevronRight, Phone, MapPin } from "lucide-react";
 import { BOARD_WORDS, IMG_HERO_BG, PURPOSES } from "../lib/constants";
 import HeroFX from "./HeroFX";
-import type { BookingTab } from "../types";
+import MagneticButton from "./ui/MagneticButton";
+import { listContacts } from "../lib/api";
+import type { BookingTab, Contact } from "../types";
 
 export interface HeroTicket {
   name: string;
@@ -27,6 +29,7 @@ export default function Hero({
     purpose: "Business",
     onward: "Bangladesh",
   });
+  const [contacts, setContacts] = useState<Contact[]>([]);
   const cardRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -34,10 +37,34 @@ export default function Hero({
     return () => clearInterval(iv);
   }, []);
 
+  useEffect(() => {
+    listContacts()
+      .then(setContacts)
+      .catch(() => {});
+  }, []);
+
+  const phoneContact = contacts.find((c) => c.phone)?.phone;
+  const addressContact = contacts.find((c) => c.address)?.address;
+
   const heroEase = [0.2, 0.8, 0.2, 1] as const;
 
   return (
     <section className="grain relative overflow-hidden px-5 md:px-10 pt-14 pb-16 bg-navy">
+      {/* Video background — drop a real clip at public/hero-bg.mp4 (and a
+          poster at public/images/hero-poster.jpg) to activate it. Until
+          then the element has nothing to paint, so the photo + gradient +
+          particle layers below carry the scene on their own — the hero
+          never looks broken either way. */}
+      <video
+        className="absolute inset-0 w-full h-full object-cover opacity-55"
+        autoPlay
+        muted
+        loop
+        playsInline
+        poster="/images/hero-poster.jpg"
+      >
+        <source src="/hero-bg.mp4" type="video/mp4" />
+      </video>
       <motion.img
         src={IMG_HERO_BG}
         alt=""
@@ -123,20 +150,61 @@ export default function Hero({
             initial={{ opacity: 0, y: 16 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.7, delay: 0.42, ease: heroEase }}
-            className="flex flex-wrap gap-3"
+            className="flex flex-wrap gap-3 mb-8"
           >
-            <button
+            <MagneticButton
               onClick={() => onBook("airport")}
-              className="flex items-center gap-2 px-5 py-3 rounded-md font-medium text-[15px] bg-gold text-white transition-all hover:shadow-[0_10px_26px_rgba(166,64,42,0.35)] hover:-translate-y-px active:scale-[0.97]"
+              strength={0.22}
+              className="relative overflow-hidden flex items-center gap-2 px-5 py-3 rounded-md font-medium text-[15px] bg-gold text-white transition-shadow hover:shadow-[0_10px_26px_rgba(166,64,42,0.35)] active:scale-[0.97]"
             >
-              <Plane size={17} /> Book an airport pickup
-            </button>
-            <button
+              <span className="relative z-10 flex items-center gap-2">
+                <Plane size={17} /> Book an airport pickup
+              </span>
+              <span className="absolute inset-0 overflow-hidden">
+                <span className="absolute inset-y-0 left-0 w-1/3 bg-white/25 blur-md animate-shimmerSweep" />
+              </span>
+            </MagneticButton>
+            <MagneticButton
               onClick={() => onBook("government")}
-              className="flex items-center gap-2 px-5 py-3 rounded-md font-medium text-[15px] border border-white/25 text-white active:scale-[0.97] transition-transform"
+              strength={0.35}
+              className="flex items-center gap-2 px-5 py-3 rounded-md font-medium text-[15px] border border-white/25 text-white active:scale-[0.97]"
             >
               <Landmark size={17} /> Start a government request
-            </button>
+            </MagneticButton>
+          </motion.div>
+
+          {/* Floating cards — your real contact details (from the admin-
+              editable contacts list), not fabricated stats. */}
+          <motion.div
+            initial={{ opacity: 0, y: 16 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.7, delay: 0.52, ease: heroEase }}
+            className="flex flex-wrap gap-3"
+          >
+            {phoneContact && (
+              <motion.div
+                animate={{ y: [0, -8, 0] }}
+                transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}
+                className="flex items-center gap-2.5 px-4 py-2.5 rounded-xl border border-white/[0.14] bg-white/[0.06] backdrop-blur-md"
+              >
+                <span className="relative flex h-2 w-2 shrink-0">
+                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-teal-soft opacity-60" />
+                  <span className="relative inline-flex rounded-full h-2 w-2 bg-teal-soft" />
+                </span>
+                <Phone size={13} className="text-mist shrink-0" />
+                <span className="text-[13px] text-white/85 font-medium">{phoneContact}</span>
+              </motion.div>
+            )}
+            {addressContact && (
+              <motion.div
+                animate={{ y: [0, 8, 0] }}
+                transition={{ duration: 6, repeat: Infinity, ease: "easeInOut", delay: 0.6 }}
+                className="flex items-center gap-2.5 px-4 py-2.5 rounded-xl border border-white/[0.14] bg-white/[0.06] backdrop-blur-md max-w-[280px]"
+              >
+                <MapPin size={13} className="text-gold shrink-0" />
+                <span className="text-[13px] text-white/85 font-medium truncate">{addressContact}</span>
+              </motion.div>
+            )}
           </motion.div>
         </div>
 

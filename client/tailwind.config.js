@@ -76,6 +76,10 @@ export default {
           "0%": { backgroundPosition: "-300px 0" },
           "100%": { backgroundPosition: "300px 0" },
         },
+        shimmerSweep: {
+          "0%": { transform: "translateX(-120%) skewX(-20deg)" },
+          "100%": { transform: "translateX(220%) skewX(-20deg)" },
+        },
         stampDown: {
           "0%": { transform: "scale(2.2) rotate(-14deg)", opacity: "0" },
           "55%": { transform: "scale(0.92) rotate(-8deg)", opacity: "1" },
@@ -89,6 +93,7 @@ export default {
         drawCheck: "drawCheck 0.5s ease forwards 0.15s",
         popIn: "popIn 0.45s cubic-bezier(.2,.9,.3,1.3) forwards",
         shimmer: "shimmer 1.4s infinite",
+        shimmerSweep: "shimmerSweep 2.6s ease-in-out infinite",
         stampDown: "stampDown 0.6s cubic-bezier(.2,.8,.2,1) forwards",
       },
     },
