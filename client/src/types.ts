@@ -60,17 +60,17 @@ export type StaffRole = "admin" | "executive" | "staff";
 
 export interface StaffMember {
   userId: string;
-  email: string;
+  staffId: string;
   isAdmin: boolean;
   role: StaffRole;
   managerId: string | null;
-  managerEmail: string | null;
+  managerStaffId: string | null;
   createdAt: string;
 }
 
 export interface TeamMember {
   userId: string;
-  email: string;
+  staffId: string;
   createdAt: string;
 }
 
@@ -80,4 +80,15 @@ export interface WhoAmI {
   isAdmin: boolean;
   role: StaffRole;
   managerId: string | null;
+  staffId: string | null;
+}
+
+export interface AuditLogEntry {
+  id: number;
+  actorStaffId: string | null;
+  action: string;
+  entity: string;
+  entityId: string | null;
+  metadata: Record<string, unknown>;
+  createdAt: string;
 }

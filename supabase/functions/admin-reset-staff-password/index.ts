@@ -49,7 +49,7 @@ Deno.serve(async (req) => {
 
   const { data: staffRow } = await admin
     .from("staff")
-    .select("is_admin, role")
+    .select("is_admin, role, staff_id")
     .eq("user_id", callerData.user.id)
     .maybeSingle();
 
@@ -75,7 +75,7 @@ Deno.serve(async (req) => {
   // Confirm the target is actually a staff member, not an arbitrary auth user.
   const { data: targetStaff } = await admin
     .from("staff")
-    .select("user_id, role, manager_id")
+    .select("user_id, role, manager_id, staff_id")
     .eq("user_id", userId)
     .maybeSingle();
   if (!targetStaff) {
@@ -95,6 +95,15 @@ Deno.serve(async (req) => {
   if (updateErr) {
     return json({ error: updateErr.message }, 400);
   }
+
+  await admin.from("audit_log").insert({
+    actor_user_id: callerData.user.id,
+    actor_staff_id: staffRow.staff_id,
+    action: "reset_password",
+    entity: "staff",
+    entity_id: userId,
+    metadata: { staff_id: targetStaff.staff_id },
+  });
 
   return json({ ok: true });
 });

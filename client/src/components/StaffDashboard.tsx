@@ -60,7 +60,7 @@ export default function StaffDashboard({ onToast }: { onToast: (msg: string) => 
     const form = e.currentTarget;
     const data = Object.fromEntries(new FormData(form).entries()) as Record<string, string>;
     try {
-      const { token: t } = await staffLogin(data.email, data.password);
+      const { token: t } = await staffLogin(data.staffId, data.password);
       setToken(t);
       setPinOpen(false);
       onToast("Staff mode enabled.");
@@ -316,7 +316,7 @@ export default function StaffDashboard({ onToast }: { onToast: (msg: string) => 
               onClick={(e) => e.stopPropagation()}
             >
               <div className="font-display text-lg mb-1">Change your password</div>
-              <p className="text-[13px] mb-4 text-ink-faint">{me?.email}</p>
+              <p className="text-[13px] mb-4 text-ink-faint">{me?.staffId}</p>
               <form onSubmit={handleChangePassword}>
                 <input name="newPassword" type="password" required minLength={8} placeholder="New password" className={`${inputClass} mb-3`} />
                 <input name="confirmPassword" type="password" required minLength={8} placeholder="Confirm new password" className={`${inputClass} mb-4`} />
@@ -350,11 +350,11 @@ export default function StaffDashboard({ onToast }: { onToast: (msg: string) => 
             >
               <div className="font-display text-lg mb-1">Staff sign-in</div>
               <p className="text-[13px] mb-4 text-ink-faint">
-                Enter your staff email and password to review and approve cases.
+                Enter your Staff ID and password to review and approve cases.
               </p>
               {loginError && <div className="text-[13px] text-[#8A3B22] mb-3">{loginError}</div>}
               <form onSubmit={handleLogin}>
-                <input name="email" type="email" autoFocus placeholder="Email" className={`${inputClass} mb-3`} />
+                <input name="staffId" type="text" autoFocus placeholder="Staff ID" className={`${inputClass} mb-3`} />
                 <input name="password" type="password" placeholder="Password" className={`${inputClass} mb-4`} />
                 <button
                   type="submit"

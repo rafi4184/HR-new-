@@ -1,6 +1,6 @@
 import { useEffect, useState, type FormEvent } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Trash2, Pencil, Plus, Image as ImageIcon, Video, Loader2, ShieldCheck, Shield, Users, KeyRound } from "lucide-react";
+import { Trash2, Pencil, Plus, Image as ImageIcon, Video, Loader2, ShieldCheck, Shield, Users, KeyRound, ScrollText } from "lucide-react";
 import { inputClass } from "../ui/Field";
 import {
   listContacts,
@@ -18,17 +18,29 @@ import {
   adminRemoveStaff,
   executiveListStaff,
   executiveRemoveStaff,
+  adminListAuditLog,
   ApiError,
 } from "../../lib/api";
-import type { Contact, EventItem, StaffMember, StaffRole, TeamMember, WhoAmI } from "../../types";
+import type { AuditLogEntry, Contact, EventItem, StaffMember, StaffRole, TeamMember, WhoAmI } from "../../types";
 
-type Tab = "contacts" | "events" | "staff";
+type Tab = "contacts" | "events" | "staff" | "audit";
 
 const TABS: { key: Tab; label: string }[] = [
   { key: "contacts", label: "Contacts" },
   { key: "events", label: "Events" },
   { key: "staff", label: "Staff" },
+  { key: "audit", label: "Audit log" },
 ];
+
+const ACTION_LABEL: Record<string, string> = {
+  approve_request: "Approved request",
+  reject_request: "Rejected request",
+  complete_request: "Completed request",
+  create_staff: "Created account",
+  remove_staff: "Removed access",
+  set_staff_role: "Changed role",
+  reset_password: "Reset password",
+};
 
 const ROLE_LABEL: Record<StaffRole, string> = { admin: "Admin", executive: "Executive", staff: "Staff" };
 
@@ -82,6 +94,7 @@ export default function AdminPanel({
           {tab === "contacts" && <ContactsPanel onToast={onToast} />}
           {tab === "events" && <EventsPanel onToast={onToast} />}
           {tab === "staff" && <StaffPanel currentUserId={me.userId} onToast={onToast} />}
+          {tab === "audit" && <AuditLogPanel />}
         </motion.div>
       </AnimatePresence>
     </div>
@@ -438,8 +451,8 @@ function StaffPanel({ currentUserId, onToast }: { currentUserId: string; onToast
     const form = e.currentTarget;
     const data = Object.fromEntries(new FormData(form).entries()) as Record<string, string>;
     try {
-      await adminCreateStaff(data.email, data.password, addRole, data.managerId || null);
-      onToast(`${ROLE_LABEL[addRole]} account created for ${data.email}.`);
+      await adminCreateStaff(data.staffId, data.password, addRole, data.managerId || null);
+      onToast(`${ROLE_LABEL[addRole]} account created for Staff ID "${data.staffId}".`);
       setAdding(false);
       setAddRole("staff");
       void refresh();
@@ -456,7 +469,7 @@ function StaffPanel({ currentUserId, onToast }: { currentUserId: string; onToast
     const role = data.role as StaffRole;
     try {
       await adminSetStaffRole(editingRole.userId, role, role === "staff" ? data.managerId || null : null);
-      onToast(`${editingRole.email} is now ${ROLE_LABEL[role].toLowerCase()}.`);
+      onToast(`${editingRole.staffId} is now ${ROLE_LABEL[role].toLowerCase()}.`);
       setEditingRole(null);
       void refresh();
     } catch (err) {
@@ -465,10 +478,10 @@ function StaffPanel({ currentUserId, onToast }: { currentUserId: string; onToast
   };
 
   const remove = async (member: StaffMember) => {
-    if (!window.confirm(`Remove staff access for ${member.email}?`)) return;
+    if (!window.confirm(`Remove staff access for "${member.staffId}"?`)) return;
     try {
       await adminRemoveStaff(member.userId);
-      onToast(`${member.email} no longer has staff access.`);
+      onToast(`"${member.staffId}" no longer has staff access.`);
       void refresh();
     } catch (err) {
       onToast(panelError(err, "Couldn't remove that account."));
@@ -482,7 +495,7 @@ function StaffPanel({ currentUserId, onToast }: { currentUserId: string; onToast
     const data = Object.fromEntries(new FormData(form).entries()) as Record<string, string>;
     try {
       await adminResetStaffPassword(resetting.userId, data.newPassword);
-      onToast(`Password reset for ${resetting.email}. Share the new password with them securely.`);
+      onToast(`Password reset for "${resetting.staffId}". Share the new password with them securely.`);
       setResetting(null);
     } catch (err) {
       onToast(panelError(err, "Couldn't reset that password."));
@@ -500,7 +513,7 @@ function StaffPanel({ currentUserId, onToast }: { currentUserId: string; onToast
           <Shield size={15} className="text-ink-faint shrink-0" />
         )}
         <div>
-          <div className="text-[14px] font-medium">{m.email}</div>
+          <div className="text-[14px] font-medium">{m.staffId}</div>
           <div className="text-[12px] text-ink-faint">{ROLE_LABEL[m.role]}</div>
         </div>
       </div>
@@ -581,8 +594,20 @@ function StaffPanel({ currentUserId, onToast }: { currentUserId: string; onToast
               onClick={(e) => e.stopPropagation()}
             >
               <div className="font-display text-lg mb-1">New staff account</div>
-              <p className="text-[13px] mb-4 text-ink-faint">Choose their email and a starting password — share it with them securely.</p>
-              <input name="email" type="email" placeholder="Email" required className={`${inputClass} mb-3`} />
+              <p className="text-[13px] mb-4 text-ink-faint">
+                Choose a Staff ID and a starting password — no email needed. Share both with them securely.
+              </p>
+              <input
+                name="staffId"
+                type="text"
+                placeholder="Staff ID (e.g. staff-014)"
+                required
+                minLength={2}
+                maxLength={32}
+                pattern="[a-zA-Z0-9._-]+"
+                title="Letters, numbers, dots, dashes or underscores only"
+                className={`${inputClass} mb-3`}
+              />
               <input name="password" type="text" placeholder="Password (min. 8 characters)" required minLength={8} className={`${inputClass} mb-3`} />
               <label className="block text-[12px] font-medium text-ink-faint mb-1.5">Role</label>
               <select
@@ -602,7 +627,7 @@ function StaffPanel({ currentUserId, onToast }: { currentUserId: string; onToast
                     <option value="">Not assigned yet</option>
                     {executives.map((exec) => (
                       <option key={exec.userId} value={exec.userId}>
-                        {exec.email}
+                        {exec.staffId}
                       </option>
                     ))}
                   </select>
@@ -633,7 +658,7 @@ function StaffPanel({ currentUserId, onToast }: { currentUserId: string; onToast
               onClick={(e) => e.stopPropagation()}
             >
               <div className="font-display text-lg mb-1">Change role</div>
-              <p className="text-[13px] mb-4 text-ink-faint">For {editingRole.email}.</p>
+              <p className="text-[13px] mb-4 text-ink-faint">For {editingRole.staffId}.</p>
               <label className="block text-[12px] font-medium text-ink-faint mb-1.5">Role</label>
               <select name="role" defaultValue={editingRole.role} className={`${inputClass} mb-3`}>
                 <option value="staff">Staff</option>
@@ -647,7 +672,7 @@ function StaffPanel({ currentUserId, onToast }: { currentUserId: string; onToast
                   .filter((exec) => exec.userId !== editingRole.userId)
                   .map((exec) => (
                     <option key={exec.userId} value={exec.userId}>
-                      {exec.email}
+                      {exec.staffId}
                     </option>
                   ))}
               </select>
@@ -677,7 +702,7 @@ function StaffPanel({ currentUserId, onToast }: { currentUserId: string; onToast
             >
               <div className="font-display text-lg mb-1">Reset password</div>
               <p className="text-[13px] mb-4 text-ink-faint">
-                For {resetting.email}. This immediately replaces their current password — share the
+                For {resetting.staffId}. This immediately replaces their current password — share the
                 new one with them securely.
               </p>
               <input name="newPassword" type="text" placeholder="New password (min. 8 characters)" required minLength={8} className={`${inputClass} mb-4`} />
@@ -716,10 +741,10 @@ function TeamPanel({ onToast }: { onToast: (msg: string) => void }) {
   }, []);
 
   const remove = async (member: TeamMember) => {
-    if (!window.confirm(`Remove staff access for ${member.email}?`)) return;
+    if (!window.confirm(`Remove staff access for "${member.staffId}"?`)) return;
     try {
       await executiveRemoveStaff(member.userId);
-      onToast(`${member.email} no longer has staff access.`);
+      onToast(`"${member.staffId}" no longer has staff access.`);
       void refresh();
     } catch (err) {
       onToast(panelError(err, "Couldn't remove that account."));
@@ -733,7 +758,7 @@ function TeamPanel({ onToast }: { onToast: (msg: string) => void }) {
     const data = Object.fromEntries(new FormData(form).entries()) as Record<string, string>;
     try {
       await adminResetStaffPassword(resetting.userId, data.newPassword);
-      onToast(`Password reset for ${resetting.email}. Share the new password with them securely.`);
+      onToast(`Password reset for "${resetting.staffId}". Share the new password with them securely.`);
       setResetting(null);
     } catch (err) {
       onToast(panelError(err, "Couldn't reset that password."));
@@ -757,7 +782,7 @@ function TeamPanel({ onToast }: { onToast: (msg: string) => void }) {
           <div key={m.userId} className="rounded-lg border border-border p-3.5 bg-cream-card flex items-center justify-between gap-3">
             <div className="min-w-0 flex items-center gap-2">
               <Shield size={15} className="text-ink-faint shrink-0" />
-              <div className="text-[14px] font-medium">{m.email}</div>
+              <div className="text-[14px] font-medium">{m.staffId}</div>
             </div>
             <div className="flex gap-2 shrink-0">
               <button
@@ -792,7 +817,7 @@ function TeamPanel({ onToast }: { onToast: (msg: string) => void }) {
             >
               <div className="font-display text-lg mb-1">Reset password</div>
               <p className="text-[13px] mb-4 text-ink-faint">
-                For {resetting.email}. This immediately replaces their current password — share the
+                For {resetting.staffId}. This immediately replaces their current password — share the
                 new one with them securely.
               </p>
               <input name="newPassword" type="text" placeholder="New password (min. 8 characters)" required minLength={8} className={`${inputClass} mb-4`} />
@@ -803,6 +828,76 @@ function TeamPanel({ onToast }: { onToast: (msg: string) => void }) {
           </motion.div>
         )}
       </AnimatePresence>
+    </div>
+  );
+}
+
+// ---------------------------------------------------------------------
+// Read-only history of every consequential action — who (by Staff ID),
+// what, on what, and when. Written server-side by the same functions
+// that do the work, so nothing here can be forged or quietly skipped.
+
+const ACTION_TONE: Record<string, string> = {
+  approve_request: "bg-[#DCEEDC] text-[#2A6B2F]",
+  complete_request: "bg-[#DCEEDC] text-[#2A6B2F]",
+  reject_request: "bg-[#F7E3DD] text-[#8A3B22]",
+  remove_staff: "bg-[#F7E3DD] text-[#8A3B22]",
+  create_staff: "bg-teal-pale text-teal",
+  set_staff_role: "bg-teal-pale text-teal",
+  reset_password: "bg-[#F4E7C9] text-[#8A6A12]",
+};
+
+function describeMetadata(entry: AuditLogEntry): string {
+  return Object.entries(entry.metadata)
+    .filter(([, v]) => v !== null && v !== undefined && v !== "")
+    .map(([k, v]) => `${k.replace(/_/g, " ")}: ${v}`)
+    .join(" · ");
+}
+
+function AuditLogPanel() {
+  const [entries, setEntries] = useState<AuditLogEntry[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    (async () => {
+      setLoading(true);
+      try {
+        setEntries(await adminListAuditLog(150));
+      } finally {
+        setLoading(false);
+      }
+    })();
+  }, []);
+
+  if (loading) return <div className="shimmer rounded-lg h-16 animate-shimmer" />;
+
+  if (entries.length === 0) {
+    return (
+      <div className="rounded-xl border border-dashed p-8 text-center border-border-strong text-ink-faint text-[13px]">
+        Nothing logged yet — every approval, rejection, and staff change will show up here.
+      </div>
+    );
+  }
+
+  return (
+    <div className="space-y-2">
+      {entries.map((entry) => (
+        <div key={entry.id} className="rounded-lg border border-border p-3.5 bg-cream-card flex items-start gap-3">
+          <ScrollText size={15} className="text-ink-faint shrink-0 mt-0.5" />
+          <div className="min-w-0 flex-1">
+            <div className="flex items-center gap-2 flex-wrap mb-1">
+              <span className={`text-[11px] font-medium px-2 py-0.5 rounded-full ${ACTION_TONE[entry.action] ?? "bg-navy-light text-ink-faint"}`}>
+                {ACTION_LABEL[entry.action] ?? entry.action}
+              </span>
+              <span className="text-[12px] text-ink-faint">by {entry.actorStaffId ?? "unknown"}</span>
+            </div>
+            {describeMetadata(entry) && <div className="text-[13px]">{describeMetadata(entry)}</div>}
+          </div>
+          <span className="text-[11px] text-ink-faint shrink-0 whitespace-nowrap">
+            {new Date(entry.createdAt).toLocaleString()}
+          </span>
+        </div>
+      ))}
     </div>
   );
 }

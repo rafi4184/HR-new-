@@ -121,6 +121,7 @@ received ──approve──▶ approved ──(if a fee was set)──▶ paid 
 | `admin_add_event_media` / `admin_delete_event_media` | Attach or remove a photo/video on an event | admin only |
 | `admin_list_staff` / `admin_set_staff_role` / `admin_remove_staff` | Manage who has staff/executive/admin access, and who staff report to | admin only |
 | `executive_list_staff` / `executive_remove_staff` | An executive's view of, and control over, only their own team | executive only |
+| `admin_list_audit_log(limit, before)` | Read the audit trail — who did what, on what, and when | admin only |
 
 The `requests` table itself has no policies and no grants — every read and write goes through
 one of these `SECURITY DEFINER` functions, which enforce the same rules the old Express routes
@@ -130,6 +131,17 @@ Payments are simulated for demo purposes — wire `pay_request` to a real gatewa
 bKash, Stripe) before taking this live.
 
 ## Admin panel
+
+Staff never use an email to sign in — every account (admin, executive, or staff) is identified
+by a **Staff ID** the admin picks when creating it. Supabase Auth still needs *some* email
+internally, so `admin-create-staff` generates a random, never-shown, unguessable placeholder in
+a fake domain (`@staff.hrthemediator.internal`) purely to satisfy that — nobody logs in with it.
+Sign-in goes through the `staff-login` Edge Function instead: it takes a Staff ID + password,
+resolves the ID to the right account server-side (using the `service_role` key, so the mapping
+is never exposed to the browser), and signs in on the caller's behalf, handing back a normal
+Supabase session. Both this function and the login form use one generic error — "Invalid Staff
+ID or password" — for a wrong ID or a wrong password alike, so failed attempts can't be used to
+discover which Staff IDs exist.
 
 Anyone signed in as staff can change their own password (top of the Staff dashboard). Staff
 accounts have one of three roles, an org chart baked into `public.staff` (`role` + `manager_id`):
@@ -149,15 +161,26 @@ gated so an executive can only touch their own team), since both need the `servi
 which only an Edge Function can hold securely. Nobody — not even an admin — can ever *see*
 someone's current password, only set a new one.
 
-Your own account (`hrthemediator@gmail.com`) was promoted to admin directly in the database —
-everyone you add from the panel gets whatever role you pick.
+Your original admin account (created before Staff ID login existed) got a Staff ID backfilled
+from the local part of its real email, so it kept working with no changes needed. Everyone you
+add from the panel afterward gets whatever role and Staff ID you pick — no email involved at all.
 
 **One gotcha to know:** creating a user directly from the Supabase dashboard (Authentication →
-Users → Add user) makes an account that can log in but has *no* row in `public.staff`, so it
-won't get an admin/executive/staff panel at all — it'll look like "admin can't log in." Always
-create staff/executive/admin accounts from the site's own "Add staff account" form instead; if an
-account already exists without a `staff` row, an existing admin has to add one for it directly in
-the database once.
+Users → Add user) makes an account that can log in but has *no* row in `public.staff` — no
+Staff ID, no role — so it won't get an admin/executive/staff panel at all, and `staff-login` won't
+find it either. Always create staff/executive/admin accounts from the site's own "Add staff
+account" form instead; if an account already exists without a `staff` row, an existing admin has
+to add one for it directly in the database once.
+
+## Audit log
+
+Every consequential action — approve/reject/complete a request, create or remove a staff
+account, change someone's role, reset a password — writes a row to `public.audit_log` from
+*inside* the same `SECURITY DEFINER` function or Edge Function that does the work, recording who
+(by Staff ID), what, on what, and when. It's write-only from the client's perspective (nothing
+but those functions can insert into it, and only admins can read it via `admin_list_audit_log`),
+so it can't be forged or quietly skipped by a compromised session. Visible to admins under the
+**Audit log** tab.
 
 ## Legacy server/ (not used in production anymore)
 

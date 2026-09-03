@@ -1,5 +1,5 @@
 import { supabase } from "./supabaseClient";
-import type { Contact, EventItem, ServiceRequest, StaffMember, TeamMember, WhoAmI } from "../types";
+import type { AuditLogEntry, Contact, EventItem, ServiceRequest, StaffMember, TeamMember, WhoAmI } from "../types";
 
 class ApiError extends Error {}
 
@@ -95,12 +95,24 @@ export async function payRequest(id: number, method: string): Promise<ServiceReq
 // `token` is kept in the signature for backward compatibility with the UI
 // (it's stored as the "signed in" flag) but the Supabase client already
 // attaches the active session to every RPC call on its own.
-export async function staffLogin(email: string, password: string): Promise<{ token: string }> {
-  const { data, error } = await supabase.auth.signInWithPassword({ email, password });
-  if (error) throw new ApiError(error.message);
-  const token = data.session?.access_token;
-  if (!token) throw new ApiError("Sign-in failed.");
-  return { token };
+//
+// Staff sign in with a Staff ID, never an email — the staff-login Edge
+// Function resolves the ID to the right account server-side and hands
+// back a real Supabase session, which we then adopt locally.
+export async function staffLogin(staffId: string, password: string): Promise<{ token: string }> {
+  const { data, error } = await supabase.functions.invoke("staff-login", {
+    body: { staffId, password },
+  });
+  if (error) {
+    const message = (data as { error?: string } | null)?.error ?? "Invalid Staff ID or password.";
+    throw new ApiError(message);
+  }
+  if (data?.error) throw new ApiError(data.error as string);
+
+  const { accessToken, refreshToken } = data as { accessToken: string; refreshToken: string };
+  const { error: setErr } = await supabase.auth.setSession({ access_token: accessToken, refresh_token: refreshToken });
+  if (setErr) throw new ApiError(setErr.message);
+  return { token: accessToken };
 }
 
 export async function staffLogout(): Promise<void> {
@@ -143,6 +155,7 @@ export async function whoami(): Promise<WhoAmI | null> {
     isAdmin: row.is_admin as boolean,
     role: row.role as WhoAmI["role"],
     managerId: (row.manager_id as string | null) ?? null,
+    staffId: (row.staff_id as string | null) ?? null,
   };
 }
 
@@ -252,11 +265,11 @@ export async function adminListStaff(): Promise<StaffMember[]> {
   if (error) throw new ApiError(error.message);
   return ((data ?? []) as Record<string, unknown>[]).map((row) => ({
     userId: row.user_id as string,
-    email: row.email as string,
+    staffId: row.staff_id as string,
     isAdmin: row.is_admin as boolean,
     role: row.role as StaffMember["role"],
     managerId: (row.manager_id as string | null) ?? null,
-    managerEmail: (row.manager_email as string | null) ?? null,
+    managerStaffId: (row.manager_staff_id as string | null) ?? null,
     createdAt: row.created_at as string,
   }));
 }
@@ -266,13 +279,13 @@ export async function executiveListStaff(): Promise<TeamMember[]> {
   if (error) throw new ApiError(error.message);
   return ((data ?? []) as Record<string, unknown>[]).map((row) => ({
     userId: row.user_id as string,
-    email: row.email as string,
+    staffId: row.staff_id as string,
     createdAt: row.created_at as string,
   }));
 }
 
 export async function adminCreateStaff(
-  email: string,
+  staffId: string,
   password: string,
   role: StaffMember["role"] = "staff",
   managerId?: string | null,
@@ -282,7 +295,7 @@ export async function adminCreateStaff(
   if (!token) throw new ApiError("You need to be signed in.");
 
   const { data, error } = await supabase.functions.invoke("admin-create-staff", {
-    body: { email, password, role, managerId: managerId ?? null },
+    body: { staffId, password, role, managerId: managerId ?? null },
     headers: { Authorization: `Bearer ${token}` },
   });
   if (error) {
@@ -329,6 +342,22 @@ export async function adminRemoveStaff(userId: string): Promise<void> {
 export async function executiveRemoveStaff(userId: string): Promise<void> {
   const { error } = await supabase.rpc("executive_remove_staff", { p_user_id: userId });
   if (error) throw new ApiError(error.message);
+}
+
+// --- Audit log ----------------------------------------------------------
+
+export async function adminListAuditLog(limit = 100): Promise<AuditLogEntry[]> {
+  const { data, error } = await supabase.rpc("admin_list_audit_log", { p_limit: limit });
+  if (error) throw new ApiError(error.message);
+  return ((data ?? []) as Record<string, unknown>[]).map((row) => ({
+    id: row.id as number,
+    actorStaffId: (row.actor_staff_id as string | null) ?? null,
+    action: row.action as string,
+    entity: row.entity as string,
+    entityId: (row.entity_id as string | null) ?? null,
+    metadata: (row.metadata as Record<string, unknown>) ?? {},
+    createdAt: row.created_at as string,
+  }));
 }
 
 export { ApiError };
