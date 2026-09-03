@@ -3,6 +3,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Plane, Landmark, ChevronRight, Phone, MapPin } from "lucide-react";
 import { BOARD_WORDS, IMG_HERO_BG, PURPOSES } from "../lib/constants";
 import HeroFX from "./HeroFX";
+import AmbientJourney from "./AmbientJourney";
 import MagneticButton from "./ui/MagneticButton";
 import { listContacts } from "../lib/api";
 import type { BookingTab, Contact } from "../types";
@@ -49,22 +50,7 @@ export default function Hero({
   const heroEase = [0.2, 0.8, 0.2, 1] as const;
 
   return (
-    <section className="grain relative overflow-hidden px-5 md:px-10 pt-14 pb-16 bg-navy">
-      {/* Video background — drop a real clip at public/hero-bg.mp4 (and a
-          poster at public/images/hero-poster.jpg) to activate it. Until
-          then the element has nothing to paint, so the photo + gradient +
-          particle layers below carry the scene on their own — the hero
-          never looks broken either way. */}
-      <video
-        className="absolute inset-0 w-full h-full object-cover opacity-55"
-        autoPlay
-        muted
-        loop
-        playsInline
-        poster="/images/hero-poster.jpg"
-      >
-        <source src="/hero-bg.mp4" type="video/mp4" />
-      </video>
+    <section className="grain relative overflow-hidden px-5 md:px-10 pt-14 pb-16 md:pb-28 bg-navy">
       <motion.img
         src={IMG_HERO_BG}
         alt=""
@@ -98,6 +84,7 @@ export default function Hero({
         transition={{ duration: 11, repeat: Infinity, ease: "easeInOut" }}
       />
       <HeroFX />
+      <AmbientJourney />
 
       <div className="relative max-w-6xl mx-auto grid md:grid-cols-[1.15fr_0.85fr] gap-12 items-center">
         <div>
@@ -132,7 +119,10 @@ export default function Hero({
           >
             Landing in Bangladesh
             <br />
-            shouldn&apos;t feel like paperwork.
+            shouldn&apos;t feel like{" "}
+            <span className="bg-gradient-to-br from-gold via-gold to-[#D9A441] bg-clip-text text-transparent">
+              paperwork.
+            </span>
           </motion.h1>
 
           <motion.p
