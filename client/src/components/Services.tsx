@@ -1,14 +1,41 @@
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { ArrowRight, Check } from "lucide-react";
 import CinematicBackground from "./ui/CinematicBackground";
 import Reveal from "./ui/Reveal";
+import { ScrollTrigger } from "../lib/smoothScroll";
 import { SERVICES } from "../lib/services";
 import type { BookingTab } from "../types";
 
 export default function Services({ onBook }: { onBook: (tab: BookingTab) => void }) {
   const [active, setActive] = useState(0);
   const service = SERVICES[active];
+  const stageRef = useRef<HTMLDivElement>(null);
+
+  // Turn the four-service stage into a scroll-driven chapter sequence:
+  // pin it for (N-1) viewport-heights of scroll and let scroll position
+  // — not just clicks — advance the active chapter. Skipped under
+  // prefers-reduced-motion so the section behaves like a normal, static
+  // block instead of hijacking the scrollbar.
+  useEffect(() => {
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    const el = stageRef.current;
+    if (!el) return;
+
+    const st = ScrollTrigger.create({
+      trigger: el,
+      start: "top top",
+      end: () => `+=${window.innerHeight * (SERVICES.length - 1)}`,
+      pin: true,
+      scrub: 0.6,
+      onUpdate: (self) => {
+        const idx = Math.round(self.progress * (SERVICES.length - 1));
+        setActive((current) => (current === idx ? current : idx));
+      },
+    });
+
+    return () => st.kill();
+  }, []);
 
   return (
     <section id="services" className="relative bg-navy">
@@ -21,7 +48,7 @@ export default function Services({ onBook }: { onBook: (tab: BookingTab) => void
         </Reveal>
       </div>
 
-      <div className="relative h-[560px] md:h-[620px] overflow-hidden">
+      <div ref={stageRef} className="relative h-[560px] md:h-[620px] overflow-hidden">
         <AnimatePresence mode="wait">
           <motion.div
             key={service.id}

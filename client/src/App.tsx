@@ -15,9 +15,11 @@ import FinalCta from "./components/FinalCta";
 import Footer from "./components/Footer";
 import Toast from "./components/Toast";
 import { trackRequest, ApiError } from "./lib/api";
+import { useSmoothScroll } from "./lib/smoothScroll";
 import type { BookingTab, ServiceRequest } from "./types";
 
 export default function App() {
+  useSmoothScroll();
   const [activeTab, setActiveTab] = useState<BookingTab>("airport");
   const [presetProgram, setPresetProgram] = useState("study");
   const [airportPrefill] = useState<AirportPrefill>({ name: "", flight: "", purpose: "Business" });
