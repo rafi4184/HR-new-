@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Plane, Landmark, ChevronRight } from "lucide-react";
 import { BOARD_WORDS, IMG_HERO_BG, PURPOSES } from "../lib/constants";
+import HeroFX from "./HeroFX";
 import type { BookingTab } from "../types";
 
 export interface HeroTicket {
@@ -63,6 +64,13 @@ export default function Hero({
         animate={{ x: [0, -16, 0], y: [0, 14, 0], scale: [1, 1.06, 1] }}
         transition={{ duration: 9, repeat: Infinity, ease: "easeInOut" }}
       />
+      <motion.div
+        className="blob"
+        style={{ width: 220, height: 220, top: -60, right: "18%", backgroundColor: "rgba(212,175,80,0.14)" }}
+        animate={{ x: [0, 18, 0], y: [0, -12, 0], scale: [1, 1.1, 1] }}
+        transition={{ duration: 11, repeat: Infinity, ease: "easeInOut" }}
+      />
+      <HeroFX />
 
       <div className="relative max-w-6xl mx-auto grid md:grid-cols-[1.15fr_0.85fr] gap-12 items-center">
         <div>

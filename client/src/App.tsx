@@ -6,6 +6,7 @@ import Services from "./components/Services";
 import HowItWorks from "./components/HowItWorks";
 import MediaPartners from "./components/MediaPartners";
 import Programs from "./components/Programs";
+import Events from "./components/Events";
 import Booking, { type AirportPrefill } from "./components/Booking";
 import TrackRequest from "./components/TrackRequest";
 import StaffDashboard from "./components/StaffDashboard";
@@ -89,6 +90,7 @@ export default function App() {
       <HowItWorks />
       <MediaPartners />
       <Programs onBook={scrollToBooking} />
+      <Events />
       <Booking
         ref={bookingRef}
         activeTab={activeTab}

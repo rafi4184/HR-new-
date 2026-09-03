@@ -114,6 +114,12 @@ received ──approve──▶ approved ──(if a fee was set)──▶ paid 
 | `staff_approve_request(id, fee)` | Approve, optionally setting a fee | staff only |
 | `staff_reject_request(id, note)` | Reject with an optional note | staff only |
 | `staff_complete_request(id)` | Mark an approved/paid request done | staff only |
+| `whoami()` | Who's signed in, and are they an admin | any staff |
+| `list_contacts()` / `list_events()` | Public content shown in the Footer / Events section | anyone |
+| `admin_upsert_contact` / `admin_delete_contact` | Edit the site's contact list | admin only |
+| `admin_upsert_event` / `admin_delete_event` | Create/edit/delete events | admin only |
+| `admin_add_event_media` / `admin_delete_event_media` | Attach or remove a photo/video on an event | admin only |
+| `admin_list_staff` / `admin_set_staff_admin` / `admin_remove_staff` | Manage who has staff/admin access | admin only |
 
 The `requests` table itself has no policies and no grants — every read and write goes through
 one of these `SECURITY DEFINER` functions, which enforce the same rules the old Express routes
@@ -121,6 +127,24 @@ did (state transitions, staff membership, required fields).
 
 Payments are simulated for demo purposes — wire `pay_request` to a real gateway (SSLCommerz,
 bKash, Stripe) before taking this live.
+
+## Admin panel
+
+Anyone signed in as staff can change their own password (top of the Staff dashboard). An
+**admin** (a staff row with `is_admin = true`) additionally sees a panel to:
+
+- **Contacts** — edit what shows in the site footer (phone, email, address, WhatsApp) without a
+  code change.
+- **Events** — create events and attach photos/video, shown publicly in the Events section.
+  Files go to a public Supabase Storage bucket (`event-media`); only admins can upload or delete.
+- **Staff** — create new staff accounts (email + password you set for them), promote/demote
+  admin access, or remove someone's access. Creating an account calls the `admin-create-staff`
+  Edge Function, since minting a Supabase Auth user needs the `service_role` key, which only an
+  Edge Function can hold securely.
+
+Your own account (`hrthemediator@gmail.com`) was promoted to admin directly in the database —
+everyone you add from the panel starts as plain staff unless you check "Give this person admin
+access too."
 
 ## Legacy server/ (not used in production anymore)
 

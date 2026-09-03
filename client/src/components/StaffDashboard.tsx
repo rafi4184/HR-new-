@@ -1,12 +1,23 @@
 import { useMemo, useState, type FormEvent } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { ShieldAlert, CheckCircle2, XCircle, Clock3, Loader2, Phone, Mail } from "lucide-react";
+import { ShieldAlert, CheckCircle2, XCircle, Clock3, Loader2, Phone, Mail, KeyRound } from "lucide-react";
 import { inputClass } from "./ui/Field";
 import StatusPill from "./ui/StatusPill";
 import Reveal from "./ui/Reveal";
 import AnimatedCounter from "./ui/AnimatedCounter";
-import { staffApprove, staffReject, staffComplete, staffListRequests, staffLogin, staffLogout, ApiError } from "../lib/api";
-import type { ServiceRequest } from "../types";
+import AdminPanel from "./admin/AdminPanel";
+import {
+  staffApprove,
+  staffReject,
+  staffComplete,
+  staffListRequests,
+  staffLogin,
+  staffLogout,
+  whoami,
+  changePassword,
+  ApiError,
+} from "../lib/api";
+import type { ServiceRequest, WhoAmI } from "../types";
 
 const STAT_TILES = [
   { key: "new", label: "New", icon: Clock3, className: "bg-[#F4E7C9] text-[#8A6A12]" },
@@ -26,7 +37,9 @@ function countByStatus(requests: ServiceRequest[]) {
 
 export default function StaffDashboard({ onToast }: { onToast: (msg: string) => void }) {
   const [token, setToken] = useState<string | null>(null);
+  const [me, setMe] = useState<WhoAmI | null>(null);
   const [pinOpen, setPinOpen] = useState(false);
+  const [accountOpen, setAccountOpen] = useState(false);
   const [loginError, setLoginError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
   const [requests, setRequests] = useState<ServiceRequest[]>([]);
@@ -52,10 +65,31 @@ export default function StaffDashboard({ onToast }: { onToast: (msg: string) => 
       setPinOpen(false);
       onToast("Staff mode enabled.");
       refresh(t);
+      whoami()
+        .then(setMe)
+        .catch(() => setMe(null));
     } catch (err) {
       setLoginError(err instanceof ApiError ? err.message : "Sign-in failed.");
     }
     form.reset();
+  };
+
+  const handleChangePassword = async (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    const form = e.currentTarget;
+    const data = Object.fromEntries(new FormData(form).entries()) as Record<string, string>;
+    if (data.newPassword !== data.confirmPassword) {
+      onToast("Passwords don't match.");
+      return;
+    }
+    try {
+      await changePassword(data.newPassword);
+      onToast("Password updated.");
+      setAccountOpen(false);
+      form.reset();
+    } catch (err) {
+      onToast(err instanceof ApiError ? err.message : "Couldn't update your password.");
+    }
   };
 
   const approve = async (id: number) => {
@@ -108,14 +142,31 @@ export default function StaffDashboard({ onToast }: { onToast: (msg: string) => 
       <Reveal>
         <div className="flex items-start justify-between gap-4 flex-wrap mb-2">
           <h2 className="font-display text-3xl">Staff dashboard</h2>
-          <button
-            onClick={() => (token ? void staffLogout().then(() => setToken(null)) : setPinOpen(true))}
-            className={`text-[12px] font-medium px-3 py-1.5 rounded-full border shrink-0 transition-colors active:scale-[0.97] ${
-              token ? "bg-teal text-white border-teal" : "border-border-strong text-ink-faint"
-            }`}
-          >
-            {token ? "Staff mode on — sign out" : "Staff sign-in"}
-          </button>
+          <div className="flex items-center gap-2">
+            {token && (
+              <button
+                onClick={() => setAccountOpen(true)}
+                className="flex items-center gap-1.5 text-[12px] font-medium px-3 py-1.5 rounded-full border shrink-0 border-border-strong text-ink-faint"
+              >
+                <KeyRound size={12} /> Change password
+              </button>
+            )}
+            <button
+              onClick={() =>
+                token
+                  ? void staffLogout().then(() => {
+                      setToken(null);
+                      setMe(null);
+                    })
+                  : setPinOpen(true)
+              }
+              className={`text-[12px] font-medium px-3 py-1.5 rounded-full border shrink-0 transition-colors active:scale-[0.97] ${
+                token ? "bg-teal text-white border-teal" : "border-border-strong text-ink-faint"
+              }`}
+            >
+              {token ? "Staff mode on — sign out" : "Staff sign-in"}
+            </button>
+          </div>
         </div>
         <p className="mb-8 text-ink-muted">
           {token ? "Every request with full contact details, for approval." : "Sign in to review and approve incoming requests."}
@@ -245,6 +296,41 @@ export default function StaffDashboard({ onToast }: { onToast: (msg: string) => 
           ))}
         </div>
       )}
+
+      {token && me?.isAdmin && <AdminPanel currentUserId={me.userId} onToast={onToast} />}
+
+      <AnimatePresence>
+        {accountOpen && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-navy/60"
+            onClick={() => setAccountOpen(false)}
+          >
+            <motion.div
+              initial={{ opacity: 0, scale: 0.6 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 0.4, ease: [0.2, 0.9, 0.3, 1.3] }}
+              className="w-full max-w-xs rounded-xl p-6 bg-white"
+              onClick={(e) => e.stopPropagation()}
+            >
+              <div className="font-display text-lg mb-1">Change your password</div>
+              <p className="text-[13px] mb-4 text-ink-faint">{me?.email}</p>
+              <form onSubmit={handleChangePassword}>
+                <input name="newPassword" type="password" required minLength={8} placeholder="New password" className={`${inputClass} mb-3`} />
+                <input name="confirmPassword" type="password" required minLength={8} placeholder="Confirm new password" className={`${inputClass} mb-4`} />
+                <button
+                  type="submit"
+                  className="w-full py-2.5 rounded-md font-medium text-[14px] bg-teal text-white active:scale-[0.97] transition-transform"
+                >
+                  Update password
+                </button>
+              </form>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
 
       <AnimatePresence>
         {pinOpen && (

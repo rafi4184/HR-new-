@@ -29,3 +29,42 @@ export interface IdentityFields {
 }
 
 export type BookingTab = "airport" | "hotel" | "government" | "programs";
+
+export interface Contact {
+  id: number;
+  label: string;
+  phone: string | null;
+  email: string | null;
+  address: string | null;
+  whatsapp: string | null;
+  sortOrder: number;
+}
+
+export interface EventMedia {
+  id: number;
+  mediaType: "image" | "video";
+  storagePath: string;
+  url: string;
+}
+
+export interface EventItem {
+  id: number;
+  title: string;
+  description: string | null;
+  eventDate: string | null;
+  location: string | null;
+  media: EventMedia[];
+}
+
+export interface StaffMember {
+  userId: string;
+  email: string;
+  isAdmin: boolean;
+  createdAt: string;
+}
+
+export interface WhoAmI {
+  userId: string;
+  email: string;
+  isAdmin: boolean;
+}
