@@ -1,9 +1,13 @@
 import type { BookingTab } from "../types";
+import type { SceneKind } from "../components/ui/ServiceScene";
 
 // Single source of truth for the four-service cinematic experience (hero,
 // nav, service selector). Swap `video` for a real file under
 // /public/videos/ whenever footage exists — every consumer already treats
-// video as optional and falls back to the Ken Burns `images` crossfade.
+// video as optional and falls back to the original SVG `scene`, never a
+// stock photo (a prior Unsplash "government" photo turned out to show a
+// recognizable public figure, which is exactly the failure mode this
+// avoids for good).
 export interface ServiceDef {
   id: string;
   number: string;
@@ -13,8 +17,7 @@ export interface ServiceDef {
   description: string;
   benefits: string[];
   video?: string;
-  poster: string;
-  images: string[];
+  scene: SceneKind;
   bookTab: BookingTab | null;
   accent: string;
 }
@@ -35,11 +38,7 @@ export const SERVICES: ServiceDef[] = [
       "Car staged at the curb on arrival",
     ],
     video: "/videos/airport-vip.mp4",
-    poster: "https://images.unsplash.com/photo-1436491865332-7a61a109cc05?w=1800&q=80&auto=format&fit=crop",
-    images: [
-      "https://images.unsplash.com/photo-1436491865332-7a61a109cc05?w=1800&q=80&auto=format&fit=crop",
-      "https://images.unsplash.com/photo-1436915298123-63142e2fb1a0?w=1800&q=80&auto=format&fit=crop",
-    ],
+    scene: "airport",
     bookTab: "airport",
     accent: "#A6402A",
   },
@@ -58,12 +57,7 @@ export const SERVICES: ServiceDef[] = [
       "One invoice, one point of contact",
     ],
     video: "/videos/hotel-booking.mp4",
-    poster:
-      "https://images.unsplash.com/photo-1566073771259-6a8506099945?w=1800&q=80&auto=format&fit=crop",
-    images: [
-      "https://images.unsplash.com/photo-1566073771259-6a8506099945?w=1800&q=80&auto=format&fit=crop",
-      "https://images.unsplash.com/photo-1571003123894-1f0594d2b5d9?w=1800&q=80&auto=format&fit=crop",
-    ],
+    scene: "hotel",
     bookTab: "hotel",
     accent: "#A6402A",
   },
@@ -82,12 +76,7 @@ export const SERVICES: ServiceDef[] = [
       "Direct phone briefing before work begins",
     ],
     video: "/videos/government-liaison.mp4",
-    poster:
-      "https://images.unsplash.com/photo-1541872703-74c5e44368f9?w=1800&q=80&auto=format&fit=crop",
-    images: [
-      "https://images.unsplash.com/photo-1541872703-74c5e44368f9?w=1800&q=80&auto=format&fit=crop",
-      "https://images.unsplash.com/photo-1477959858617-67f85cf4f1df?w=1800&q=80&auto=format&fit=crop",
-    ],
+    scene: "government",
     bookTab: "government",
     accent: "#A6402A",
   },
@@ -106,12 +95,7 @@ export const SERVICES: ServiceDef[] = [
       "Gulf & overseas placement support",
     ],
     video: "/videos/manpower-security.mp4",
-    poster:
-      "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=1800&q=80&auto=format&fit=crop",
-    images: [
-      "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=1800&q=80&auto=format&fit=crop",
-      "https://images.unsplash.com/photo-1497366216548-37526070297c?w=1800&q=80&auto=format&fit=crop",
-    ],
+    scene: "manpower",
     bookTab: null,
     accent: "#A6402A",
   },

@@ -1,3 +1,4 @@
+import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { ArrowDown, Plane } from "lucide-react";
 import CinematicBackground from "./ui/CinematicBackground";
@@ -6,7 +7,6 @@ import { SERVICES } from "../lib/services";
 import type { BookingTab } from "../types";
 
 const HEADLINE_WORDS = ["Your", "Access.", "Handled."];
-const HERO_IMAGES = [SERVICES[0].images[0], SERVICES[1].images[0], SERVICES[2].images[0]];
 
 export default function Hero({
   onBook,
@@ -16,10 +16,16 @@ export default function Hero({
   onContact: () => void;
 }) {
   const heroEase = [0.2, 0.8, 0.2, 1] as const;
+  const [sceneIdx, setSceneIdx] = useState(0);
+
+  useEffect(() => {
+    const iv = setInterval(() => setSceneIdx((i) => (i + 1) % SERVICES.length), 6000);
+    return () => clearInterval(iv);
+  }, []);
 
   return (
     <section className="relative h-[100svh] min-h-[640px] overflow-hidden bg-navy">
-      <CinematicBackground video="/videos/hero.mp4" images={HERO_IMAGES} />
+      <CinematicBackground video="/videos/hero.mp4" scene={SERVICES[sceneIdx].scene} />
 
       <div
         className="absolute inset-0"

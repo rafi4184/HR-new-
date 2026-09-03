@@ -2,7 +2,8 @@ import { motion } from "framer-motion";
 import type { ReactNode } from "react";
 import { GraduationCap, Radio, Globe2, ChevronRight } from "lucide-react";
 import Reveal from "./ui/Reveal";
-import { HASANUR_PHOTO, IMG_DUBAI, IMG_STUDENTS } from "../lib/constants";
+import ServiceScene from "./ui/ServiceScene";
+import { HASANUR_PHOTO, IMG_DUBAI } from "../lib/constants";
 import type { BookingTab } from "../types";
 
 function ProgramCta({ onClick, children }: { onClick: () => void; children: ReactNode }) {
@@ -55,7 +56,9 @@ export default function Programs({
               {...cardMotion}
               className="rounded-2xl overflow-hidden grid md:grid-cols-[1fr_1.3fr] bg-navy-panel"
             >
-              <img src={IMG_STUDENTS} alt="Graduates at a university" className="w-full h-56 md:h-full object-cover" />
+              <div className="relative w-full h-56 md:h-full">
+                <ServiceScene kind="airport" />
+              </div>
               <div className="p-7 md:p-8 flex flex-col justify-center">
                 <div className="flex items-center gap-2 mb-3 text-gold">
                   <GraduationCap size={18} />

@@ -58,7 +58,7 @@ export default function Services({ onBook }: { onBook: (tab: BookingTab) => void
             exit={{ opacity: 0 }}
             transition={{ duration: 0.7, ease: [0.2, 0.8, 0.2, 1] }}
           >
-            <CinematicBackground video={service.video} poster={service.poster} images={service.images} />
+            <CinematicBackground video={service.video} scene={service.scene} />
           </motion.div>
         </AnimatePresence>
         <div
