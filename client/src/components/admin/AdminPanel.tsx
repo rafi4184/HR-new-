@@ -854,50 +854,116 @@ function describeMetadata(entry: AuditLogEntry): string {
     .join(" · ");
 }
 
+const ACTION_FILTERS: { key: string; label: string }[] = [
+  { key: "all", label: "All" },
+  { key: "approve_request", label: "Approved" },
+  { key: "reject_request", label: "Rejected" },
+  { key: "complete_request", label: "Completed" },
+  { key: "create_staff", label: "Account created" },
+  { key: "remove_staff", label: "Access removed" },
+  { key: "set_staff_role", label: "Role changed" },
+  { key: "reset_password", label: "Password reset" },
+];
+
+const TIME_FILTERS: { key: string; label: string; ms: number | null }[] = [
+  { key: "24h", label: "24H", ms: 24 * 60 * 60 * 1000 },
+  { key: "7d", label: "7D", ms: 7 * 24 * 60 * 60 * 1000 },
+  { key: "30d", label: "30D", ms: 30 * 24 * 60 * 60 * 1000 },
+  { key: "all", label: "All time", ms: null },
+];
+
 function AuditLogPanel() {
   const [entries, setEntries] = useState<AuditLogEntry[]>([]);
   const [loading, setLoading] = useState(true);
+  const [actionFilter, setActionFilter] = useState("all");
+  const [timeFilter, setTimeFilter] = useState("all");
+  const [actorQuery, setActorQuery] = useState("");
 
   useEffect(() => {
     (async () => {
       setLoading(true);
       try {
-        setEntries(await adminListAuditLog(150));
+        setEntries(await adminListAuditLog(200));
       } finally {
         setLoading(false);
       }
     })();
   }, []);
 
+  const timeCutoffMs = TIME_FILTERS.find((t) => t.key === timeFilter)?.ms ?? null;
+  const now = Date.now();
+  const query = actorQuery.trim().toLowerCase();
+  const filtered = entries.filter((e) => {
+    if (actionFilter !== "all" && e.action !== actionFilter) return false;
+    if (timeCutoffMs !== null && now - new Date(e.createdAt).getTime() > timeCutoffMs) return false;
+    if (query && !(e.actorStaffId ?? "").toLowerCase().includes(query)) return false;
+    return true;
+  });
+
   if (loading) return <div className="shimmer rounded-lg h-16 animate-shimmer" />;
 
-  if (entries.length === 0) {
-    return (
-      <div className="rounded-xl border border-dashed p-8 text-center border-border-strong text-ink-faint text-[13px]">
-        Nothing logged yet — every approval, rejection, and staff change will show up here.
-      </div>
-    );
-  }
-
   return (
-    <div className="space-y-2">
-      {entries.map((entry) => (
-        <div key={entry.id} className="rounded-lg border border-border p-3.5 bg-cream-card flex items-start gap-3">
-          <ScrollText size={15} className="text-ink-faint shrink-0 mt-0.5" />
-          <div className="min-w-0 flex-1">
-            <div className="flex items-center gap-2 flex-wrap mb-1">
-              <span className={`text-[11px] font-medium px-2 py-0.5 rounded-full ${ACTION_TONE[entry.action] ?? "bg-navy-light text-ink-faint"}`}>
-                {ACTION_LABEL[entry.action] ?? entry.action}
-              </span>
-              <span className="text-[12px] text-ink-faint">by {entry.actorStaffId ?? "unknown"}</span>
-            </div>
-            {describeMetadata(entry) && <div className="text-[13px]">{describeMetadata(entry)}</div>}
-          </div>
-          <span className="text-[11px] text-ink-faint shrink-0 whitespace-nowrap">
-            {new Date(entry.createdAt).toLocaleString()}
-          </span>
+    <div>
+      <div className="flex items-center gap-1.5 mb-3 flex-wrap">
+        <span className="text-[11px] font-medium uppercase tracking-wide text-ink-faint mr-1">Filter</span>
+        {ACTION_FILTERS.map((f) => (
+          <button
+            key={f.key}
+            onClick={() => setActionFilter(f.key)}
+            className={`text-[12px] font-medium px-3 py-1.5 rounded-full border transition-colors ${
+              actionFilter === f.key ? "bg-navy text-white border-navy" : "border-border-strong text-ink-faint"
+            }`}
+          >
+            {f.label}
+          </button>
+        ))}
+        <span className="w-px h-5 bg-border-strong mx-1" />
+        {TIME_FILTERS.map((t) => (
+          <button
+            key={t.key}
+            onClick={() => setTimeFilter(t.key)}
+            className={`text-[12px] font-medium px-3 py-1.5 rounded-full border transition-colors ${
+              timeFilter === t.key ? "bg-teal text-white border-teal" : "border-border-strong text-ink-faint"
+            }`}
+          >
+            {t.label}
+          </button>
+        ))}
+      </div>
+      <input
+        value={actorQuery}
+        onChange={(e) => setActorQuery(e.target.value)}
+        placeholder="Filter by actor…"
+        className={`${inputClass} mb-4 max-w-xs`}
+      />
+
+      {filtered.length === 0 ? (
+        <div className="rounded-xl border border-dashed p-8 text-center border-border-strong text-ink-faint text-[13px]">
+          {entries.length === 0
+            ? "Nothing logged yet — every approval, rejection, and staff change will show up here."
+            : "No entries match these filters."}
         </div>
-      ))}
+      ) : (
+        <div className="space-y-2">
+          {filtered.map((entry) => (
+            <div key={entry.id} className="rounded-lg border border-border p-3.5 bg-cream-card flex items-start gap-3">
+              <ScrollText size={15} className="text-ink-faint shrink-0 mt-0.5" />
+              <div className="min-w-0 flex-1">
+                <div className="flex items-center gap-2 flex-wrap mb-1">
+                  <span className={`text-[11px] font-medium px-2 py-0.5 rounded-full ${ACTION_TONE[entry.action] ?? "bg-navy-light text-ink-faint"}`}>
+                    {ACTION_LABEL[entry.action] ?? entry.action}
+                  </span>
+                  <span className="text-[12px] text-ink-faint">by {entry.actorStaffId ?? "unknown"}</span>
+                </div>
+                {describeMetadata(entry) && <div className="text-[13px]">{describeMetadata(entry)}</div>}
+              </div>
+              <span className="text-[11px] text-ink-faint shrink-0 whitespace-nowrap">
+                {new Date(entry.createdAt).toLocaleString()}
+              </span>
+            </div>
+          ))}
+        </div>
+      )}
     </div>
   );
 }

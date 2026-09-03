@@ -1,6 +1,6 @@
 import { useMemo, useState, type FormEvent } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { ShieldAlert, CheckCircle2, XCircle, Clock3, Loader2, Phone, Mail, KeyRound } from "lucide-react";
+import { ShieldAlert, CheckCircle2, XCircle, Clock3, Loader2, Phone, Mail, KeyRound, Eye, X } from "lucide-react";
 import { inputClass } from "./ui/Field";
 import StatusPill from "./ui/StatusPill";
 import Reveal from "./ui/Reveal";
@@ -43,6 +43,7 @@ export default function StaffDashboard({ onToast }: { onToast: (msg: string) => 
   const [loginError, setLoginError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
   const [requests, setRequests] = useState<ServiceRequest[]>([]);
+  const [viewing, setViewing] = useState<ServiceRequest | null>(null);
   const stats = useMemo(() => countByStatus(requests), [requests]);
 
   const refresh = async (t: string) => {
@@ -238,6 +239,12 @@ export default function StaffDashboard({ onToast }: { onToast: (msg: string) => 
                       {r.ticket} · {r.type}
                     </span>
                     <StatusPill status={r.status} fee={r.fee} />
+                    <button
+                      onClick={() => setViewing(r)}
+                      className="flex items-center gap-1 text-[11px] font-medium px-2 py-1 rounded-full border border-border-strong text-ink-faint hover:text-ink hover:border-ink-faint transition-colors"
+                    >
+                      <Eye size={11} /> View
+                    </button>
                   </div>
                   <div className="text-[14px]">{r.summary}</div>
                   {r.status === "rejected" && r.decisionNote && (
@@ -298,6 +305,99 @@ export default function StaffDashboard({ onToast }: { onToast: (msg: string) => 
       )}
 
       {token && me && (me.isAdmin || me.role === "executive") && <AdminPanel me={me} onToast={onToast} />}
+
+      <AnimatePresence>
+        {viewing && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-navy/60"
+            onClick={() => setViewing(null)}
+          >
+            <motion.div
+              initial={{ opacity: 0, scale: 0.6 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 0.4, ease: [0.2, 0.9, 0.3, 1.3] }}
+              className="w-full max-w-lg max-h-[85vh] overflow-y-auto rounded-xl p-6 bg-white"
+              onClick={(e) => e.stopPropagation()}
+            >
+              <div className="flex items-start justify-between gap-3 mb-1">
+                <div>
+                  <div className="font-display text-lg">{viewing.ticket}</div>
+                  <div className="text-[13px] text-ink-faint">{viewing.type}</div>
+                </div>
+                <div className="flex items-center gap-2 shrink-0">
+                  <StatusPill status={viewing.status} fee={viewing.fee} />
+                  <button onClick={() => setViewing(null)} className="p-1.5 rounded-md text-ink-faint hover:text-ink">
+                    <X size={16} />
+                  </button>
+                </div>
+              </div>
+
+              <div className="text-[14px] mb-4 mt-3">{viewing.summary}</div>
+
+              <div className="rounded-lg border border-border p-3.5 bg-cream-card mb-4">
+                <div className="text-[11px] uppercase tracking-wide text-ink-faint mb-2">Customer</div>
+                <div className="grid grid-cols-2 gap-x-4 gap-y-1.5 text-[13px]">
+                  <div>
+                    <span className="text-ink-faint">Name</span> {viewing.name}
+                  </div>
+                  <div>
+                    <span className="text-ink-faint">DOB</span> {viewing.dob}
+                  </div>
+                  <div className="flex items-center gap-1">
+                    <Phone size={11} className="text-ink-faint" /> {viewing.phone}
+                  </div>
+                  <div className="flex items-center gap-1">
+                    <Mail size={11} className="text-ink-faint" /> {viewing.email}
+                  </div>
+                </div>
+              </div>
+
+              {Object.keys(viewing.details).length > 0 && (
+                <div className="rounded-lg border border-border p-3.5 bg-cream-card mb-4">
+                  <div className="text-[11px] uppercase tracking-wide text-ink-faint mb-2">Submitted details</div>
+                  <div className="space-y-1.5 text-[13px]">
+                    {Object.entries(viewing.details)
+                      .filter(([, v]) => v !== null && v !== undefined && v !== "")
+                      .map(([k, v]) => (
+                        <div key={k} className="flex gap-2">
+                          <span className="text-ink-faint shrink-0 capitalize">{k.replace(/_/g, " ")}:</span>
+                          <span className="break-words">{String(v)}</span>
+                        </div>
+                      ))}
+                  </div>
+                </div>
+              )}
+
+              <div className="rounded-lg border border-border p-3.5 bg-cream-card">
+                <div className="text-[11px] uppercase tracking-wide text-ink-faint mb-2">Timeline</div>
+                <div className="space-y-1 text-[13px]">
+                  <div>
+                    <span className="text-ink-faint">Submitted</span> {new Date(viewing.createdAt).toLocaleString()}
+                  </div>
+                  {viewing.notifiedAt && (
+                    <div>
+                      <span className="text-ink-faint">Customer notified</span> {new Date(viewing.notifiedAt).toLocaleString()}
+                    </div>
+                  )}
+                  {viewing.completedAt && (
+                    <div>
+                      <span className="text-ink-faint">Completed</span> {new Date(viewing.completedAt).toLocaleString()}
+                    </div>
+                  )}
+                  {viewing.decisionNote && (
+                    <div>
+                      <span className="text-ink-faint">Note to customer</span> {viewing.decisionNote}
+                    </div>
+                  )}
+                </div>
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
 
       <AnimatePresence>
         {accountOpen && (
