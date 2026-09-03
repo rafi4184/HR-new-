@@ -36,7 +36,8 @@ export default function Programs({
   };
 
   return (
-    <section id="programs" className="grain relative px-5 md:px-10 py-16 bg-navy-light overflow-hidden">
+    <section id="about" className="grain relative px-5 md:px-10 py-16 bg-navy-light overflow-hidden">
+      <div id="programs" className="absolute -top-24" aria-hidden="true" />
       <div className="max-w-6xl mx-auto">
         <Reveal>
           <h2 className="font-display text-3xl text-white mb-2" style={{ textWrap: "balance" }}>

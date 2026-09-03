@@ -1,7 +1,7 @@
 import { useRef, useState } from "react";
 import { MessageCircle } from "lucide-react";
 import Header from "./components/Header";
-import Hero, { type HeroTicket } from "./components/Hero";
+import Hero from "./components/Hero";
 import Services from "./components/Services";
 import HowItWorks from "./components/HowItWorks";
 import MediaPartners from "./components/MediaPartners";
@@ -11,6 +11,7 @@ import Booking, { type AirportPrefill } from "./components/Booking";
 import TrackRequest from "./components/TrackRequest";
 import StaffDashboard from "./components/StaffDashboard";
 import PaymentModal from "./components/PaymentModal";
+import FinalCta from "./components/FinalCta";
 import Footer from "./components/Footer";
 import Toast from "./components/Toast";
 import { trackRequest, ApiError } from "./lib/api";
@@ -19,8 +20,8 @@ import type { BookingTab, ServiceRequest } from "./types";
 export default function App() {
   const [activeTab, setActiveTab] = useState<BookingTab>("airport");
   const [presetProgram, setPresetProgram] = useState("study");
-  const [airportPrefill, setAirportPrefill] = useState<AirportPrefill>({ name: "", flight: "", purpose: "Business" });
-  const [airportPrefillKey, setAirportPrefillKey] = useState(0);
+  const [airportPrefill] = useState<AirportPrefill>({ name: "", flight: "", purpose: "Business" });
+  const [airportPrefillKey] = useState(0);
   const [lastTicket, setLastTicket] = useState<string | null>(null);
   const [toast, setToast] = useState<string | null>(null);
 
@@ -48,14 +49,8 @@ export default function App() {
     trackRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
   };
 
-  const useTicketDetails = (ticket: HeroTicket) => {
-    setAirportPrefill({
-      name: ticket.name.trim() === "" ? "" : ticket.name,
-      flight: ticket.flight,
-      purpose: ticket.purpose,
-    });
-    setAirportPrefillKey((k) => k + 1);
-    scrollToBooking("airport");
+  const scrollToContact = () => {
+    document.getElementById("contact")?.scrollIntoView({ behavior: "smooth", block: "start" });
   };
 
   const handleSubmitted = (ticket: string) => {
@@ -83,9 +78,9 @@ export default function App() {
   };
 
   return (
-    <div className="font-sans text-ink bg-cream">
+    <div id="top" className="font-sans text-ink bg-cream">
       <Header onBook={scrollToBooking} onTrack={scrollToTrack} />
-      <Hero onBook={scrollToBooking} onUseDetails={useTicketDetails} />
+      <Hero onBook={scrollToBooking} onContact={scrollToContact} />
       <Services onBook={scrollToBooking} />
       <HowItWorks />
       <MediaPartners />
@@ -109,6 +104,7 @@ export default function App() {
         onPay={setPayModal}
       />
       <StaffDashboard onToast={showToast} />
+      <FinalCta onBook={scrollToBooking} />
       <Footer />
 
       <PaymentModal request={payModal} onClose={() => setPayModal(null)} onPaid={handlePaid} />

@@ -1,82 +1,126 @@
-import { motion } from "framer-motion";
-import { Plane, Building2, Landmark, ShieldCheck, ChevronRight } from "lucide-react";
+import { useState } from "react";
+import { AnimatePresence, motion } from "framer-motion";
+import { ArrowRight, Check } from "lucide-react";
+import CinematicBackground from "./ui/CinematicBackground";
 import Reveal from "./ui/Reveal";
+import { SERVICES } from "../lib/services";
 import type { BookingTab } from "../types";
 
-const SERVICES = [
-  {
-    icon: Plane,
-    title: "Airport VIP reception",
-    body: "Fast-track immigration, baggage assistance, lounge access, and a car waiting at the curb.",
-    tab: "airport" as BookingTab,
-  },
-  {
-    icon: Building2,
-    title: "Hotel & car booking",
-    body: "We shortlist and reserve the stay and the vehicle to match your itinerary and budget.",
-    tab: "hotel" as BookingTab,
-  },
-  {
-    icon: Landmark,
-    title: "Government liaison",
-    body: "Passport, visa, land records, attestation — someone stands in the queue on your behalf.",
-    tab: "government" as BookingTab,
-  },
-  {
-    icon: ShieldCheck,
-    title: "Manpower & security",
-    body: "Our core practice: staffing, security personnel, and outsourced workforce for organizations.",
-    tab: null,
-  },
-];
-
 export default function Services({ onBook }: { onBook: (tab: BookingTab) => void }) {
+  const [active, setActive] = useState(0);
+  const service = SERVICES[active];
+
   return (
-    <section id="services" className="px-5 md:px-10 py-16 max-w-6xl mx-auto">
-      <Reveal>
-        <h2 className="font-display text-3xl mb-2" style={{ textWrap: "balance" }}>
-          What the desk handles
-        </h2>
-        <p className="max-w-lg mb-10 text-ink-muted">
-          Four services, one point of contact — from the runway to the registry office.
-        </p>
-      </Reveal>
-      <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-5">
-        {SERVICES.map(({ icon: Icon, title, body, tab }, i) => (
-          <Reveal key={title} delay={i * 0.06}>
-            <motion.div
-              whileHover={{ y: -4, boxShadow: "0 14px 28px rgba(23,36,28,0.1)" }}
-              transition={{ duration: 0.2 }}
-              className="rounded-xl p-6 border border-border bg-cream-card flex flex-col h-full hover:border-teal"
-            >
+    <section id="services" className="relative bg-navy">
+      <div className="px-5 md:px-10 pt-20 pb-10 max-w-6xl mx-auto">
+        <Reveal>
+          <div className="text-[12px] font-medium mb-3 tracking-[0.28em] uppercase text-gold">What the desk handles</div>
+          <h2 className="font-display text-white text-3xl md:text-5xl max-w-2xl" style={{ textWrap: "balance" }}>
+            Four services, one point of contact.
+          </h2>
+        </Reveal>
+      </div>
+
+      <div className="relative h-[560px] md:h-[620px] overflow-hidden">
+        <AnimatePresence mode="wait">
+          <motion.div
+            key={service.id}
+            className="absolute inset-0"
+            initial={{ opacity: 0, scale: 1.04 }}
+            animate={{ opacity: 1, scale: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.7, ease: [0.2, 0.8, 0.2, 1] }}
+          >
+            <CinematicBackground video={service.video} poster={service.poster} images={service.images} />
+          </motion.div>
+        </AnimatePresence>
+        <div
+          className="absolute inset-0"
+          style={{
+            background:
+              "linear-gradient(90deg, rgba(15,22,17,0.94) 0%, rgba(15,22,17,0.72) 42%, rgba(15,22,17,0.3) 75%, rgba(15,22,17,0.1) 100%)",
+          }}
+        />
+        <div className="absolute inset-0" style={{ background: "linear-gradient(to top, rgba(15,22,17,0.85), transparent 40%)" }} />
+
+        <div className="relative h-full flex items-end md:items-center px-5 md:px-10 pb-10 md:pb-0">
+          <div className="max-w-lg">
+            <AnimatePresence mode="wait">
               <motion.div
-                className="w-10 h-10 rounded-lg flex items-center justify-center mb-4 bg-teal-tint"
-                whileHover={{ rotate: -8, scale: 1.12 }}
-                transition={{ type: "spring", stiffness: 300, damping: 10 }}
+                key={service.id}
+                initial={{ opacity: 0, y: 18 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -10 }}
+                transition={{ duration: 0.45, ease: [0.2, 0.8, 0.2, 1] }}
               >
-                <Icon size={19} color="#2F5D3F" />
-              </motion.div>
-              <h3 className="font-display text-lg mb-2">{title}</h3>
-              <p className="text-[14px] flex-1 text-ink-muted">{body}</p>
-              {tab && (
-                <motion.button
-                  onClick={() => onBook(tab)}
-                  initial="rest"
-                  whileHover="hover"
-                  className="mt-4 flex items-center gap-1 text-[13px] font-medium text-teal"
+                <div className="font-mono text-gold text-sm mb-3 tracking-wide">{service.number}</div>
+                <h3 className="font-display text-white text-3xl md:text-4xl mb-3" style={{ textWrap: "balance" }}>
+                  {service.title}
+                </h3>
+                <p className="text-mist text-[15px] mb-5 italic">{service.tagline}</p>
+                <p className="text-mist-soft text-[14px] leading-relaxed mb-6">{service.description}</p>
+                <ul className="space-y-2 mb-7">
+                  {service.benefits.map((b) => (
+                    <li key={b} className="flex items-start gap-2 text-[13px] text-mist">
+                      <Check size={14} className="text-teal-soft mt-0.5 shrink-0" />
+                      {b}
+                    </li>
+                  ))}
+                </ul>
+                <button
+                  onClick={() => service.bookTab && onBook(service.bookTab)}
+                  disabled={!service.bookTab}
+                  className="group flex items-center gap-2 text-[13px] font-medium tracking-wide uppercase px-6 py-3 rounded-full bg-gold text-white active:scale-[0.97] disabled:opacity-60 disabled:cursor-default transition-transform"
                 >
-                  Request this
-                  <motion.span
-                    className="flex"
-                    variants={{ rest: { x: 0 }, hover: { x: 3 } }}
-                    transition={{ type: "spring", stiffness: 400, damping: 15 }}
-                  >
-                    <ChevronRight size={14} />
-                  </motion.span>
-                </motion.button>
-              )}
-            </motion.div>
-          </Reveal>
+                  {service.bookTab ? "Request this" : "Speak to the desk"}
+                  <ArrowRight size={14} className="transition-transform group-hover:translate-x-1" />
+                </button>
+              </motion.div>
+            </AnimatePresence>
+          </div>
+        </div>
+
+        <div className="absolute right-5 md:right-10 top-1/2 -translate-y-1/2 hidden lg:flex flex-col gap-3">
+          {SERVICES.map((s, i) => (
+            <button
+              key={s.id}
+              onClick={() => setActive(i)}
+              className={`w-11 h-11 rounded-full flex items-center justify-center font-mono text-[12px] border transition-all ${
+                i === active
+                  ? "bg-gold border-gold text-white scale-110"
+                  : "border-white/25 text-white/60 hover:border-white/60 hover:text-white"
+              }`}
+              aria-label={s.title}
+            >
+              {s.number}
+            </button>
+          ))}
+        </div>
+
+        <div className="absolute bottom-5 inset-x-5 lg:hidden flex gap-2 justify-center">
+          {SERVICES.map((s, i) => (
+            <button
+              key={s.id}
+              onClick={() => setActive(i)}
+              className={`h-1.5 rounded-full transition-all ${i === active ? "w-8 bg-gold" : "w-4 bg-white/30"}`}
+              aria-label={s.title}
+            />
+          ))}
+        </div>
+      </div>
+
+      <div className="grid grid-cols-2 md:grid-cols-4 border-t border-white/10">
+        {SERVICES.map((s, i) => (
+          <button
+            key={s.id}
+            onClick={() => setActive(i)}
+            className={`px-4 py-4 text-left border-r border-white/10 last:border-r-0 transition-colors ${
+              i === active ? "bg-white/[0.06]" : "hover:bg-white/[0.03]"
+            }`}
+          >
+            <div className="font-mono text-[11px] text-gold mb-1">{s.number}</div>
+            <div className="text-[13px] text-white/85 font-medium">{s.shortTitle}</div>
+          </button>
         ))}
       </div>
     </section>

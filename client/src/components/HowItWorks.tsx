@@ -22,7 +22,7 @@ const STEPS = [
 
 export default function HowItWorks() {
   return (
-    <section className="px-5 md:px-10 py-16 bg-cream-panel">
+    <section id="process" className="px-5 md:px-10 py-16 bg-cream-panel">
       <div className="max-w-6xl mx-auto">
         <Reveal>
           <h2 className="font-display text-3xl mb-2">How a request moves</h2>
