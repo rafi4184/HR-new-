@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { motion, useScroll, useSpring, AnimatePresence } from "framer-motion";
-import { Users, Phone, Menu, X } from "lucide-react";
+import { Phone, Menu, X } from "lucide-react";
+import LogoMark from "./ui/Logo";
 import type { BookingTab } from "../types";
 
 const LINKS = [
@@ -45,11 +46,11 @@ export default function Header({
       >
         <a href="#top" className="flex items-center gap-2.5">
           <motion.div
-            className="w-9 h-9 rounded-full flex items-center justify-center bg-gradient-to-br from-teal to-teal-soft shrink-0"
-            whileHover={{ rotate: 12, scale: 1.08 }}
+            className="shrink-0"
+            whileHover={{ rotate: 8, scale: 1.08 }}
             transition={{ type: "spring", stiffness: 300, damping: 12 }}
           >
-            <Users size={17} color="#fff" strokeWidth={2.2} />
+            <LogoMark size={36} />
           </motion.div>
           <div>
             <div className="text-white font-display text-[17px] leading-none">HR — The Mediator</div>

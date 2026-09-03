@@ -1,9 +1,28 @@
 import { forwardRef, type FormEvent } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Search, ShieldAlert, CheckCircle2, XCircle, CreditCard } from "lucide-react";
+import { Search, ShieldAlert, XCircle, CreditCard } from "lucide-react";
 import { Field, inputClass } from "./ui/Field";
 import StatusPill from "./ui/StatusPill";
+import StatusTimeline, { type TimelineStage } from "./ui/StatusTimeline";
 import type { ServiceRequest } from "../types";
+
+const STAGE_LABELS: Record<string, string> = {
+  received: "Request received",
+  approved: "Approved",
+  approved_fee_due: "Approved — fee due",
+  paid: "Paid",
+  completed: "Completed",
+};
+
+function timelineFor(result: ServiceRequest): { stages: TimelineStage[]; currentIndex: number } {
+  const hasFee = result.type === "Government Request" && result.fee != null;
+  const keys = hasFee ? ["received", "approved", "paid", "completed"] : ["received", "approved", "completed"];
+  const stages = keys.map((key) => ({
+    key,
+    label: key === "approved" && hasFee ? STAGE_LABELS.approved_fee_due : STAGE_LABELS[key],
+  }));
+  return { stages, currentIndex: Math.max(0, keys.indexOf(result.status)) };
+}
 
 const TrackRequest = forwardRef<
   HTMLElement,
@@ -95,8 +114,9 @@ const TrackRequest = forwardRef<
               </span>
               <StatusPill status={result.status} fee={result.fee} />
             </div>
-            <div className="text-[15px] mb-3">{result.summary}</div>
-            {result.status === "rejected" && (
+            <div className="text-[15px] mb-5">{result.summary}</div>
+
+            {result.status === "rejected" ? (
               <div className="flex items-start gap-2 text-[13px] text-[#8A3B22] bg-[#F7E3DD] rounded-md px-3 py-2.5">
                 <XCircle size={15} className="shrink-0 mt-0.5" />
                 <span>
@@ -104,29 +124,20 @@ const TrackRequest = forwardRef<
                   {result.decisionNote ? ` ${result.decisionNote}` : " Please contact the desk for details."}
                 </span>
               </div>
+            ) : (
+              (() => {
+                const { stages, currentIndex } = timelineFor(result);
+                return <StatusTimeline stages={stages} currentIndex={currentIndex} />;
+              })()
             )}
+
             {result.type === "Government Request" && result.status === "approved" && result.fee != null && (
               <button
                 onClick={() => onPay(result)}
-                className="flex items-center gap-2 text-[13px] font-medium px-4 py-2.5 rounded-md bg-teal text-white active:scale-[0.97] transition-transform"
+                className="mt-5 flex items-center gap-2 text-[13px] font-medium px-4 py-2.5 rounded-md bg-teal text-white active:scale-[0.97] transition-transform"
               >
                 <CreditCard size={14} /> Pay ৳{result.fee.toLocaleString()}
               </button>
-            )}
-            {(result.status === "approved" && result.fee == null) && (
-              <span className="flex items-center gap-1.5 text-[13px] text-teal">
-                <CheckCircle2 size={15} /> Approved — the desk is on it.
-              </span>
-            )}
-            {result.status === "paid" && (
-              <span className="flex items-center gap-1.5 text-[13px] text-[#8A6A12]">
-                <CheckCircle2 size={15} /> Paid — the desk is completing your request.
-              </span>
-            )}
-            {result.status === "completed" && (
-              <span className="flex items-center gap-1.5 text-[13px] text-[#2A6B2F]">
-                <CheckCircle2 size={15} /> Completed
-              </span>
             )}
           </motion.div>
         )}

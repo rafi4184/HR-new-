@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { Phone, Mail, MapPin, Facebook, Instagram, Briefcase, MessageCircle } from "lucide-react";
 import Reveal from "./ui/Reveal";
+import LogoMark from "./ui/Logo";
 import { listContacts } from "../lib/api";
 import type { Contact } from "../types";
 
@@ -52,7 +53,10 @@ export default function Footer() {
         className={`max-w-6xl mx-auto grid gap-10 mb-8 ${GRID_COLS_CLASS[Math.min(contacts.length + 1, 4)] ?? GRID_COLS_CLASS[4]}`}
       >
         <Reveal>
-          <div className="font-display text-white text-xl mb-3">HR — The Mediator</div>
+          <div className="flex items-center gap-2.5 mb-3">
+            <LogoMark size={28} />
+            <div className="font-display text-white text-xl">HR — The Mediator</div>
+          </div>
           <p className="text-[14px] leading-relaxed">
             Registered manpower, security &amp; consultancy company, Dhaka — running a concierge
             desk, a media training academy, and Gulf employment placement for Bangladesh&apos;s
