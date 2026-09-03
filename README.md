@@ -137,10 +137,12 @@ Anyone signed in as staff can change their own password (top of the Staff dashbo
   code change.
 - **Events** — create events and attach photos/video, shown publicly in the Events section.
   Files go to a public Supabase Storage bucket (`event-media`); only admins can upload or delete.
-- **Staff** — create new staff accounts (email + password you set for them), promote/demote
-  admin access, or remove someone's access. Creating an account calls the `admin-create-staff`
-  Edge Function, since minting a Supabase Auth user needs the `service_role` key, which only an
-  Edge Function can hold securely.
+- **Staff** — create new staff accounts (email + password you set for them), reset an existing
+  staff member's password (for when they forget it — nobody, including an admin, can ever *see*
+  someone's current password, only set a new one), promote/demote admin access, or remove
+  someone's access. Creating an account and resetting a password each call their own Edge
+  Function (`admin-create-staff`, `admin-reset-staff-password`), since both need the
+  `service_role` key, which only an Edge Function can hold securely.
 
 Your own account (`hrthemediator@gmail.com`) was promoted to admin directly in the database —
 everyone you add from the panel starts as plain staff unless you check "Give this person admin

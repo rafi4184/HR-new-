@@ -268,6 +268,22 @@ export async function adminCreateStaff(email: string, password: string, isAdmin 
   if (data?.error) throw new ApiError(data.error as string);
 }
 
+export async function adminResetStaffPassword(userId: string, newPassword: string): Promise<void> {
+  const { data: sessionData } = await supabase.auth.getSession();
+  const token = sessionData.session?.access_token;
+  if (!token) throw new ApiError("You need to be signed in.");
+
+  const { data, error } = await supabase.functions.invoke("admin-reset-staff-password", {
+    body: { userId, newPassword },
+    headers: { Authorization: `Bearer ${token}` },
+  });
+  if (error) {
+    const message = (data as { error?: string } | null)?.error ?? error.message;
+    throw new ApiError(message);
+  }
+  if (data?.error) throw new ApiError(data.error as string);
+}
+
 export async function adminSetStaffAdmin(userId: string, isAdmin: boolean): Promise<void> {
   const { error } = await supabase.rpc("admin_set_staff_admin", { p_user_id: userId, p_is_admin: isAdmin });
   if (error) throw new ApiError(error.message);

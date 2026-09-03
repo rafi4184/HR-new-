@@ -1,6 +1,6 @@
 import { useEffect, useState, type FormEvent } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Trash2, Pencil, Plus, Image as ImageIcon, Video, Loader2, ShieldCheck, Shield } from "lucide-react";
+import { Trash2, Pencil, Plus, Image as ImageIcon, Video, Loader2, ShieldCheck, Shield, KeyRound } from "lucide-react";
 import { inputClass } from "../ui/Field";
 import {
   listContacts,
@@ -13,6 +13,7 @@ import {
   adminDeleteEventMedia,
   adminListStaff,
   adminCreateStaff,
+  adminResetStaffPassword,
   adminSetStaffAdmin,
   adminRemoveStaff,
   ApiError,
@@ -389,6 +390,7 @@ function StaffPanel({ currentUserId, onToast }: { currentUserId: string; onToast
   const [staff, setStaff] = useState<StaffMember[]>([]);
   const [loading, setLoading] = useState(true);
   const [adding, setAdding] = useState(false);
+  const [resetting, setResetting] = useState<StaffMember | null>(null);
 
   const refresh = async () => {
     setLoading(true);
@@ -437,6 +439,20 @@ function StaffPanel({ currentUserId, onToast }: { currentUserId: string; onToast
     }
   };
 
+  const resetPassword = async (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    if (!resetting) return;
+    const form = e.currentTarget;
+    const data = Object.fromEntries(new FormData(form).entries()) as Record<string, string>;
+    try {
+      await adminResetStaffPassword(resetting.userId, data.newPassword);
+      onToast(`Password reset for ${resetting.email}. Share the new password with them securely.`);
+      setResetting(null);
+    } catch (err) {
+      onToast(panelError(err, "Couldn't reset that password."));
+    }
+  };
+
   return (
     <div>
       <button
@@ -463,6 +479,12 @@ function StaffPanel({ currentUserId, onToast }: { currentUserId: string; onToast
                 <div className="flex gap-2 shrink-0">
                   <button onClick={() => toggleAdmin(m)} className="text-[12px] font-medium px-2.5 py-1.5 rounded-md border border-border-strong text-ink-soft">
                     {m.isAdmin ? "Remove admin" : "Make admin"}
+                  </button>
+                  <button
+                    onClick={() => setResetting(m)}
+                    className="flex items-center gap-1 text-[12px] font-medium px-2.5 py-1.5 rounded-md border border-border-strong text-ink-soft"
+                  >
+                    <KeyRound size={12} /> Reset password
                   </button>
                   <button onClick={() => remove(m)} className="p-2 rounded-md border border-border-strong text-[#8A3B22]">
                     <Trash2 size={14} />
@@ -500,6 +522,36 @@ function StaffPanel({ currentUserId, onToast }: { currentUserId: string; onToast
               </label>
               <button type="submit" className="w-full py-2.5 rounded-md font-medium text-[14px] bg-teal text-white">
                 Create account
+              </button>
+            </motion.form>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      <AnimatePresence>
+        {resetting && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-navy/60"
+            onClick={() => setResetting(null)}
+          >
+            <motion.form
+              onSubmit={resetPassword}
+              initial={{ opacity: 0, scale: 0.6 }}
+              animate={{ opacity: 1, scale: 1 }}
+              className="w-full max-w-sm rounded-xl p-6 bg-white"
+              onClick={(e) => e.stopPropagation()}
+            >
+              <div className="font-display text-lg mb-1">Reset password</div>
+              <p className="text-[13px] mb-4 text-ink-faint">
+                For {resetting.email}. This immediately replaces their current password — share the
+                new one with them securely.
+              </p>
+              <input name="newPassword" type="text" placeholder="New password (min. 8 characters)" required minLength={8} className={`${inputClass} mb-4`} />
+              <button type="submit" className="w-full py-2.5 rounded-md font-medium text-[14px] bg-teal text-white">
+                Reset password
               </button>
             </motion.form>
           </motion.div>
