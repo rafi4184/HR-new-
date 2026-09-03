@@ -5,6 +5,7 @@
   "description": "HR — The Mediator: Bangladesh concierge, government-liaison, and career-training platform.",
   "workspaces": [
     "client",
+    "mediation-client",
     "server"
   ],
   "scripts": {

@@ -15,3 +15,5 @@ server/data/*.db-shm
 *.tsbuildinfo
 client/vite.config.js
 client/vite.config.d.ts
+mediation-client/vite.config.js
+mediation-client/vite.config.d.ts
