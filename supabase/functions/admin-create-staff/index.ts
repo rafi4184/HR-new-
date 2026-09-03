@@ -30,7 +30,8 @@ function json(body: unknown, status = 200) {
 interface CreateStaffPayload {
   email: string;
   password: string;
-  isAdmin?: boolean;
+  role?: "admin" | "executive" | "staff";
+  managerId?: string | null;
 }
 
 const SUPABASE_URL = Deno.env.get("SUPABASE_URL")!;
@@ -84,6 +85,24 @@ Deno.serve(async (req) => {
     return json({ error: "Password must be at least 8 characters." }, 400);
   }
 
+  const role = payload.role ?? "staff";
+  if (!["admin", "executive", "staff"].includes(role)) {
+    return json({ error: "Invalid role." }, 400);
+  }
+
+  let managerId: string | null = null;
+  if (role === "staff" && payload.managerId) {
+    const { data: manager } = await admin
+      .from("staff")
+      .select("user_id, role")
+      .eq("user_id", payload.managerId)
+      .maybeSingle();
+    if (!manager || manager.role !== "executive") {
+      return json({ error: "That manager is not an executive." }, 400);
+    }
+    managerId = payload.managerId;
+  }
+
   const { data: created, error: createErr } = await admin.auth.admin.createUser({
     email,
     password,
@@ -95,7 +114,7 @@ Deno.serve(async (req) => {
 
   const { error: staffErr } = await admin
     .from("staff")
-    .insert({ user_id: created.user.id, is_admin: payload.isAdmin ?? false });
+    .insert({ user_id: created.user.id, is_admin: role === "admin", role, manager_id: managerId });
   if (staffErr) {
     // Roll back the auth user so we don't leave an orphaned account with no staff access.
     await admin.auth.admin.deleteUser(created.user.id);

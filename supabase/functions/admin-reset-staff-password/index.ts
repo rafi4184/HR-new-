@@ -49,11 +49,11 @@ Deno.serve(async (req) => {
 
   const { data: staffRow } = await admin
     .from("staff")
-    .select("is_admin")
+    .select("is_admin, role")
     .eq("user_id", callerData.user.id)
     .maybeSingle();
 
-  if (!staffRow?.is_admin) {
+  if (!staffRow?.is_admin && staffRow?.role !== "executive") {
     return json({ error: "Admin access required" }, 403);
   }
 
@@ -75,11 +75,20 @@ Deno.serve(async (req) => {
   // Confirm the target is actually a staff member, not an arbitrary auth user.
   const { data: targetStaff } = await admin
     .from("staff")
-    .select("user_id")
+    .select("user_id, role, manager_id")
     .eq("user_id", userId)
     .maybeSingle();
   if (!targetStaff) {
     return json({ error: "That user isn't a staff member." }, 404);
+  }
+
+  // A non-admin caller must be the executive this staff member reports to
+  // — never someone else's team, and never another executive or admin.
+  if (!staffRow.is_admin) {
+    const onCallersTeam = targetStaff.role === "staff" && targetStaff.manager_id === callerData.user.id;
+    if (!onCallersTeam) {
+      return json({ error: "You can only reset passwords for your own team." }, 403);
+    }
   }
 
   const { error: updateErr } = await admin.auth.admin.updateUserById(userId, { password: newPassword });

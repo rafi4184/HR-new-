@@ -119,7 +119,8 @@ received ──approve──▶ approved ──(if a fee was set)──▶ paid 
 | `admin_upsert_contact` / `admin_delete_contact` | Edit the site's contact list | admin only |
 | `admin_upsert_event` / `admin_delete_event` | Create/edit/delete events | admin only |
 | `admin_add_event_media` / `admin_delete_event_media` | Attach or remove a photo/video on an event | admin only |
-| `admin_list_staff` / `admin_set_staff_admin` / `admin_remove_staff` | Manage who has staff/admin access | admin only |
+| `admin_list_staff` / `admin_set_staff_role` / `admin_remove_staff` | Manage who has staff/executive/admin access, and who staff report to | admin only |
+| `executive_list_staff` / `executive_remove_staff` | An executive's view of, and control over, only their own team | executive only |
 
 The `requests` table itself has no policies and no grants — every read and write goes through
 one of these `SECURITY DEFINER` functions, which enforce the same rules the old Express routes
@@ -130,23 +131,33 @@ bKash, Stripe) before taking this live.
 
 ## Admin panel
 
-Anyone signed in as staff can change their own password (top of the Staff dashboard). An
-**admin** (a staff row with `is_admin = true`) additionally sees a panel to:
+Anyone signed in as staff can change their own password (top of the Staff dashboard). Staff
+accounts have one of three roles, an org chart baked into `public.staff` (`role` + `manager_id`):
 
-- **Contacts** — edit what shows in the site footer (phone, email, address, WhatsApp) without a
-  code change.
-- **Events** — create events and attach photos/video, shown publicly in the Events section.
-  Files go to a public Supabase Storage bucket (`event-media`); only admins can upload or delete.
-- **Staff** — create new staff accounts (email + password you set for them), reset an existing
-  staff member's password (for when they forget it — nobody, including an admin, can ever *see*
-  someone's current password, only set a new one), promote/demote admin access, or remove
-  someone's access. Creating an account and resetting a password each call their own Edge
-  Function (`admin-create-staff`, `admin-reset-staff-password`), since both need the
-  `service_role` key, which only an Edge Function can hold securely.
+- **Admin** — full control: contacts, events, and every staff account (create, change anyone's
+  role, reset any password, remove access).
+- **Executive** — no contacts/events access. Sees only the staff assigned to them (`manager_id`
+  points at the executive) and can reset that team's passwords or remove their access — never
+  another executive's team, never another executive or admin.
+- **Staff** — no admin panel at all, just the request queue and their own password.
+
+Only an admin creates accounts — when adding a **staff** account, the admin picks which executive
+they report to (or leaves them unassigned) from the "Add staff account" form; an admin can change
+anyone's role and manager later from "Change role." Creating an account and resetting a password
+each call their own Edge Function (`admin-create-staff`, `admin-reset-staff-password`, both
+gated so an executive can only touch their own team), since both need the `service_role` key,
+which only an Edge Function can hold securely. Nobody — not even an admin — can ever *see*
+someone's current password, only set a new one.
 
 Your own account (`hrthemediator@gmail.com`) was promoted to admin directly in the database —
-everyone you add from the panel starts as plain staff unless you check "Give this person admin
-access too."
+everyone you add from the panel gets whatever role you pick.
+
+**One gotcha to know:** creating a user directly from the Supabase dashboard (Authentication →
+Users → Add user) makes an account that can log in but has *no* row in `public.staff`, so it
+won't get an admin/executive/staff panel at all — it'll look like "admin can't log in." Always
+create staff/executive/admin accounts from the site's own "Add staff account" form instead; if an
+account already exists without a `staff` row, an existing admin has to add one for it directly in
+the database once.
 
 ## Legacy server/ (not used in production anymore)
 

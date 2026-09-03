@@ -56,10 +56,21 @@ export interface EventItem {
   media: EventMedia[];
 }
 
+export type StaffRole = "admin" | "executive" | "staff";
+
 export interface StaffMember {
   userId: string;
   email: string;
   isAdmin: boolean;
+  role: StaffRole;
+  managerId: string | null;
+  managerEmail: string | null;
+  createdAt: string;
+}
+
+export interface TeamMember {
+  userId: string;
+  email: string;
   createdAt: string;
 }
 
@@ -67,4 +78,6 @@ export interface WhoAmI {
   userId: string;
   email: string;
   isAdmin: boolean;
+  role: StaffRole;
+  managerId: string | null;
 }

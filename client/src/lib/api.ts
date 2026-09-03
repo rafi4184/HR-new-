@@ -1,5 +1,5 @@
 import { supabase } from "./supabaseClient";
-import type { Contact, EventItem, ServiceRequest, StaffMember, WhoAmI } from "../types";
+import type { Contact, EventItem, ServiceRequest, StaffMember, TeamMember, WhoAmI } from "../types";
 
 class ApiError extends Error {}
 
@@ -137,7 +137,13 @@ export async function whoami(): Promise<WhoAmI | null> {
   const rows = (data ?? []) as Record<string, unknown>[];
   if (rows.length === 0) return null;
   const row = rows[0];
-  return { userId: row.user_id as string, email: row.email as string, isAdmin: row.is_admin as boolean };
+  return {
+    userId: row.user_id as string,
+    email: row.email as string,
+    isAdmin: row.is_admin as boolean,
+    role: row.role as WhoAmI["role"],
+    managerId: (row.manager_id as string | null) ?? null,
+  };
 }
 
 export async function changePassword(newPassword: string): Promise<void> {
@@ -248,17 +254,35 @@ export async function adminListStaff(): Promise<StaffMember[]> {
     userId: row.user_id as string,
     email: row.email as string,
     isAdmin: row.is_admin as boolean,
+    role: row.role as StaffMember["role"],
+    managerId: (row.manager_id as string | null) ?? null,
+    managerEmail: (row.manager_email as string | null) ?? null,
     createdAt: row.created_at as string,
   }));
 }
 
-export async function adminCreateStaff(email: string, password: string, isAdmin = false): Promise<void> {
+export async function executiveListStaff(): Promise<TeamMember[]> {
+  const { data, error } = await supabase.rpc("executive_list_staff");
+  if (error) throw new ApiError(error.message);
+  return ((data ?? []) as Record<string, unknown>[]).map((row) => ({
+    userId: row.user_id as string,
+    email: row.email as string,
+    createdAt: row.created_at as string,
+  }));
+}
+
+export async function adminCreateStaff(
+  email: string,
+  password: string,
+  role: StaffMember["role"] = "staff",
+  managerId?: string | null,
+): Promise<void> {
   const { data: sessionData } = await supabase.auth.getSession();
   const token = sessionData.session?.access_token;
   if (!token) throw new ApiError("You need to be signed in.");
 
   const { data, error } = await supabase.functions.invoke("admin-create-staff", {
-    body: { email, password, isAdmin },
+    body: { email, password, role, managerId: managerId ?? null },
     headers: { Authorization: `Bearer ${token}` },
   });
   if (error) {
@@ -284,13 +308,26 @@ export async function adminResetStaffPassword(userId: string, newPassword: strin
   if (data?.error) throw new ApiError(data.error as string);
 }
 
-export async function adminSetStaffAdmin(userId: string, isAdmin: boolean): Promise<void> {
-  const { error } = await supabase.rpc("admin_set_staff_admin", { p_user_id: userId, p_is_admin: isAdmin });
+export async function adminSetStaffRole(
+  userId: string,
+  role: StaffMember["role"],
+  managerId?: string | null,
+): Promise<void> {
+  const { error } = await supabase.rpc("admin_set_staff_role", {
+    p_user_id: userId,
+    p_role: role,
+    p_manager_id: managerId ?? null,
+  });
   if (error) throw new ApiError(error.message);
 }
 
 export async function adminRemoveStaff(userId: string): Promise<void> {
   const { error } = await supabase.rpc("admin_remove_staff", { p_user_id: userId });
+  if (error) throw new ApiError(error.message);
+}
+
+export async function executiveRemoveStaff(userId: string): Promise<void> {
+  const { error } = await supabase.rpc("executive_remove_staff", { p_user_id: userId });
   if (error) throw new ApiError(error.message);
 }
 

@@ -1,6 +1,6 @@
 import { useEffect, useState, type FormEvent } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Trash2, Pencil, Plus, Image as ImageIcon, Video, Loader2, ShieldCheck, Shield, KeyRound } from "lucide-react";
+import { Trash2, Pencil, Plus, Image as ImageIcon, Video, Loader2, ShieldCheck, Shield, Users, KeyRound } from "lucide-react";
 import { inputClass } from "../ui/Field";
 import {
   listContacts,
@@ -14,11 +14,13 @@ import {
   adminListStaff,
   adminCreateStaff,
   adminResetStaffPassword,
-  adminSetStaffAdmin,
+  adminSetStaffRole,
   adminRemoveStaff,
+  executiveListStaff,
+  executiveRemoveStaff,
   ApiError,
 } from "../../lib/api";
-import type { Contact, EventItem, StaffMember } from "../../types";
+import type { Contact, EventItem, StaffMember, StaffRole, TeamMember, WhoAmI } from "../../types";
 
 type Tab = "contacts" | "events" | "staff";
 
@@ -28,14 +30,30 @@ const TABS: { key: Tab; label: string }[] = [
   { key: "staff", label: "Staff" },
 ];
 
+const ROLE_LABEL: Record<StaffRole, string> = { admin: "Admin", executive: "Executive", staff: "Staff" };
+
 export default function AdminPanel({
-  currentUserId,
+  me,
   onToast,
 }: {
-  currentUserId: string;
+  me: WhoAmI;
   onToast: (msg: string) => void;
 }) {
   const [tab, setTab] = useState<Tab>("contacts");
+
+  if (!me.isAdmin) {
+    // Executives don't get contacts/events — just their own team.
+    return (
+      <div className="mt-10 pt-10 border-t border-dashed border-border-strong">
+        <div className="flex items-center gap-2 mb-1">
+          <Users size={17} className="text-teal" />
+          <h3 className="font-display text-xl">Your team</h3>
+        </div>
+        <p className="text-[13px] mb-5 text-ink-faint">The staff accounts assigned to you.</p>
+        <TeamPanel onToast={onToast} />
+      </div>
+    );
+  }
 
   return (
     <div className="mt-10 pt-10 border-t border-dashed border-border-strong">
@@ -63,7 +81,7 @@ export default function AdminPanel({
         <motion.div key={tab} initial={{ opacity: 0, y: 6 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }} transition={{ duration: 0.2 }}>
           {tab === "contacts" && <ContactsPanel onToast={onToast} />}
           {tab === "events" && <EventsPanel onToast={onToast} />}
-          {tab === "staff" && <StaffPanel currentUserId={currentUserId} onToast={onToast} />}
+          {tab === "staff" && <StaffPanel currentUserId={me.userId} onToast={onToast} />}
         </motion.div>
       </AnimatePresence>
     </div>
@@ -385,12 +403,17 @@ function EventsPanel({ onToast }: { onToast: (msg: string) => void }) {
 }
 
 // ---------------------------------------------------------------------
+// Admin's full staff view — every account, grouped by executive so it
+// reads as an org chart: admins, then each executive with their staff
+// nested underneath, then anyone not yet assigned to an executive.
 
 function StaffPanel({ currentUserId, onToast }: { currentUserId: string; onToast: (msg: string) => void }) {
   const [staff, setStaff] = useState<StaffMember[]>([]);
   const [loading, setLoading] = useState(true);
   const [adding, setAdding] = useState(false);
+  const [addRole, setAddRole] = useState<StaffRole>("staff");
   const [resetting, setResetting] = useState<StaffMember | null>(null);
+  const [editingRole, setEditingRole] = useState<StaffMember | null>(null);
 
   const refresh = async () => {
     setLoading(true);
@@ -405,26 +428,39 @@ function StaffPanel({ currentUserId, onToast }: { currentUserId: string; onToast
     void refresh();
   }, []);
 
+  const executives = staff.filter((s) => s.role === "executive");
+  const admins = staff.filter((s) => s.role === "admin");
+  const unassignedStaff = staff.filter((s) => s.role === "staff" && !s.managerId);
+  const staffFor = (execId: string) => staff.filter((s) => s.role === "staff" && s.managerId === execId);
+
   const create = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const form = e.currentTarget;
     const data = Object.fromEntries(new FormData(form).entries()) as Record<string, string>;
     try {
-      await adminCreateStaff(data.email, data.password, data.isAdmin === "on");
-      onToast(`Staff account created for ${data.email}.`);
+      await adminCreateStaff(data.email, data.password, addRole, data.managerId || null);
+      onToast(`${ROLE_LABEL[addRole]} account created for ${data.email}.`);
       setAdding(false);
+      setAddRole("staff");
       void refresh();
     } catch (err) {
       onToast(panelError(err, "Couldn't create that account."));
     }
   };
 
-  const toggleAdmin = async (member: StaffMember) => {
+  const saveRole = async (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    if (!editingRole) return;
+    const form = e.currentTarget;
+    const data = Object.fromEntries(new FormData(form).entries()) as Record<string, string>;
+    const role = data.role as StaffRole;
     try {
-      await adminSetStaffAdmin(member.userId, !member.isAdmin);
+      await adminSetStaffRole(editingRole.userId, role, role === "staff" ? data.managerId || null : null);
+      onToast(`${editingRole.email} is now ${ROLE_LABEL[role].toLowerCase()}.`);
+      setEditingRole(null);
       void refresh();
     } catch (err) {
-      onToast(panelError(err, "Couldn't update admin access."));
+      onToast(panelError(err, "Couldn't update that account."));
     }
   };
 
@@ -453,6 +489,42 @@ function StaffPanel({ currentUserId, onToast }: { currentUserId: string; onToast
     }
   };
 
+  const Row = ({ m, indent }: { m: StaffMember; indent?: boolean }) => (
+    <div className={`rounded-lg border border-border p-3.5 bg-cream-card flex items-center justify-between gap-3 ${indent ? "ml-6" : ""}`}>
+      <div className="min-w-0 flex items-center gap-2">
+        {m.role === "admin" ? (
+          <ShieldCheck size={15} className="text-teal shrink-0" />
+        ) : m.role === "executive" ? (
+          <Users size={15} className="text-teal shrink-0" />
+        ) : (
+          <Shield size={15} className="text-ink-faint shrink-0" />
+        )}
+        <div>
+          <div className="text-[14px] font-medium">{m.email}</div>
+          <div className="text-[12px] text-ink-faint">{ROLE_LABEL[m.role]}</div>
+        </div>
+      </div>
+      {m.userId !== currentUserId ? (
+        <div className="flex gap-2 shrink-0">
+          <button onClick={() => setEditingRole(m)} className="text-[12px] font-medium px-2.5 py-1.5 rounded-md border border-border-strong text-ink-soft">
+            Change role
+          </button>
+          <button
+            onClick={() => setResetting(m)}
+            className="flex items-center gap-1 text-[12px] font-medium px-2.5 py-1.5 rounded-md border border-border-strong text-ink-soft"
+          >
+            <KeyRound size={12} /> Reset password
+          </button>
+          <button onClick={() => remove(m)} className="p-2 rounded-md border border-border-strong text-[#8A3B22]">
+            <Trash2 size={14} />
+          </button>
+        </div>
+      ) : (
+        <span className="text-[12px] shrink-0 text-ink-faint">You</span>
+      )}
+    </div>
+  );
+
   return (
     <div>
       <button
@@ -464,36 +536,31 @@ function StaffPanel({ currentUserId, onToast }: { currentUserId: string; onToast
 
       {loading ? (
         <div className="shimmer rounded-lg h-16 animate-shimmer" />
+      ) : staff.length === 0 ? (
+        <div className="rounded-xl border border-dashed p-8 text-center border-border-strong text-ink-faint text-[13px]">
+          No staff accounts yet.
+        </div>
       ) : (
         <div className="space-y-2">
-          {staff.map((m) => (
-            <div key={m.userId} className="rounded-lg border border-border p-3.5 bg-cream-card flex items-center justify-between gap-3">
-              <div className="min-w-0 flex items-center gap-2">
-                {m.isAdmin ? <ShieldCheck size={15} className="text-teal shrink-0" /> : <Shield size={15} className="text-ink-faint shrink-0" />}
-                <div>
-                  <div className="text-[14px] font-medium">{m.email}</div>
-                  <div className="text-[12px] text-ink-faint">{m.isAdmin ? "Admin" : "Staff"}</div>
-                </div>
-              </div>
-              {m.userId !== currentUserId && (
-                <div className="flex gap-2 shrink-0">
-                  <button onClick={() => toggleAdmin(m)} className="text-[12px] font-medium px-2.5 py-1.5 rounded-md border border-border-strong text-ink-soft">
-                    {m.isAdmin ? "Remove admin" : "Make admin"}
-                  </button>
-                  <button
-                    onClick={() => setResetting(m)}
-                    className="flex items-center gap-1 text-[12px] font-medium px-2.5 py-1.5 rounded-md border border-border-strong text-ink-soft"
-                  >
-                    <KeyRound size={12} /> Reset password
-                  </button>
-                  <button onClick={() => remove(m)} className="p-2 rounded-md border border-border-strong text-[#8A3B22]">
-                    <Trash2 size={14} />
-                  </button>
-                </div>
-              )}
-              {m.userId === currentUserId && <span className="text-[12px] shrink-0 text-ink-faint">You</span>}
+          {admins.map((m) => (
+            <Row key={m.userId} m={m} />
+          ))}
+          {executives.map((exec) => (
+            <div key={exec.userId} className="space-y-2">
+              <Row m={exec} />
+              {staffFor(exec.userId).map((m) => (
+                <Row key={m.userId} m={m} indent />
+              ))}
             </div>
           ))}
+          {unassignedStaff.length > 0 && (
+            <div className="space-y-2">
+              <div className="text-[11px] uppercase tracking-wide text-ink-faint pt-2">Not assigned to an executive</div>
+              {unassignedStaff.map((m) => (
+                <Row key={m.userId} m={m} />
+              ))}
+            </div>
+          )}
         </div>
       )}
 
@@ -517,9 +584,30 @@ function StaffPanel({ currentUserId, onToast }: { currentUserId: string; onToast
               <p className="text-[13px] mb-4 text-ink-faint">Choose their email and a starting password — share it with them securely.</p>
               <input name="email" type="email" placeholder="Email" required className={`${inputClass} mb-3`} />
               <input name="password" type="text" placeholder="Password (min. 8 characters)" required minLength={8} className={`${inputClass} mb-3`} />
-              <label className="flex items-center gap-2 text-[13px] text-ink-soft mb-4">
-                <input type="checkbox" name="isAdmin" /> Give this person admin access too
-              </label>
+              <label className="block text-[12px] font-medium text-ink-faint mb-1.5">Role</label>
+              <select
+                name="role"
+                value={addRole}
+                onChange={(e) => setAddRole(e.target.value as StaffRole)}
+                className={`${inputClass} mb-3`}
+              >
+                <option value="staff">Staff</option>
+                <option value="executive">Executive</option>
+                <option value="admin">Admin</option>
+              </select>
+              {addRole === "staff" && executives.length > 0 && (
+                <>
+                  <label className="block text-[12px] font-medium text-ink-faint mb-1.5">Reports to (optional)</label>
+                  <select name="managerId" defaultValue="" className={`${inputClass} mb-4`}>
+                    <option value="">Not assigned yet</option>
+                    {executives.map((exec) => (
+                      <option key={exec.userId} value={exec.userId}>
+                        {exec.email}
+                      </option>
+                    ))}
+                  </select>
+                </>
+              )}
               <button type="submit" className="w-full py-2.5 rounded-md font-medium text-[14px] bg-teal text-white">
                 Create account
               </button>
@@ -527,6 +615,164 @@ function StaffPanel({ currentUserId, onToast }: { currentUserId: string; onToast
           </motion.div>
         )}
       </AnimatePresence>
+
+      <AnimatePresence>
+        {editingRole && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-navy/60"
+            onClick={() => setEditingRole(null)}
+          >
+            <motion.form
+              onSubmit={saveRole}
+              initial={{ opacity: 0, scale: 0.6 }}
+              animate={{ opacity: 1, scale: 1 }}
+              className="w-full max-w-sm rounded-xl p-6 bg-white"
+              onClick={(e) => e.stopPropagation()}
+            >
+              <div className="font-display text-lg mb-1">Change role</div>
+              <p className="text-[13px] mb-4 text-ink-faint">For {editingRole.email}.</p>
+              <label className="block text-[12px] font-medium text-ink-faint mb-1.5">Role</label>
+              <select name="role" defaultValue={editingRole.role} className={`${inputClass} mb-3`}>
+                <option value="staff">Staff</option>
+                <option value="executive">Executive</option>
+                <option value="admin">Admin</option>
+              </select>
+              <label className="block text-[12px] font-medium text-ink-faint mb-1.5">Reports to (only applies if role is Staff)</label>
+              <select name="managerId" defaultValue={editingRole.managerId ?? ""} className={`${inputClass} mb-4`}>
+                <option value="">Not assigned</option>
+                {executives
+                  .filter((exec) => exec.userId !== editingRole.userId)
+                  .map((exec) => (
+                    <option key={exec.userId} value={exec.userId}>
+                      {exec.email}
+                    </option>
+                  ))}
+              </select>
+              <button type="submit" className="w-full py-2.5 rounded-md font-medium text-[14px] bg-teal text-white">
+                Save
+              </button>
+            </motion.form>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      <AnimatePresence>
+        {resetting && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-navy/60"
+            onClick={() => setResetting(null)}
+          >
+            <motion.form
+              onSubmit={resetPassword}
+              initial={{ opacity: 0, scale: 0.6 }}
+              animate={{ opacity: 1, scale: 1 }}
+              className="w-full max-w-sm rounded-xl p-6 bg-white"
+              onClick={(e) => e.stopPropagation()}
+            >
+              <div className="font-display text-lg mb-1">Reset password</div>
+              <p className="text-[13px] mb-4 text-ink-faint">
+                For {resetting.email}. This immediately replaces their current password — share the
+                new one with them securely.
+              </p>
+              <input name="newPassword" type="text" placeholder="New password (min. 8 characters)" required minLength={8} className={`${inputClass} mb-4`} />
+              <button type="submit" className="w-full py-2.5 rounded-md font-medium text-[14px] bg-teal text-white">
+                Reset password
+              </button>
+            </motion.form>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </div>
+  );
+}
+
+// ---------------------------------------------------------------------
+// An executive's scoped view: just the staff assigned to them. No
+// contacts/events, no visibility into other executives' teams, and no
+// account-creation button — an admin assigns staff to them.
+
+function TeamPanel({ onToast }: { onToast: (msg: string) => void }) {
+  const [team, setTeam] = useState<TeamMember[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [resetting, setResetting] = useState<TeamMember | null>(null);
+
+  const refresh = async () => {
+    setLoading(true);
+    try {
+      setTeam(await executiveListStaff());
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    void refresh();
+  }, []);
+
+  const remove = async (member: TeamMember) => {
+    if (!window.confirm(`Remove staff access for ${member.email}?`)) return;
+    try {
+      await executiveRemoveStaff(member.userId);
+      onToast(`${member.email} no longer has staff access.`);
+      void refresh();
+    } catch (err) {
+      onToast(panelError(err, "Couldn't remove that account."));
+    }
+  };
+
+  const resetPassword = async (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    if (!resetting) return;
+    const form = e.currentTarget;
+    const data = Object.fromEntries(new FormData(form).entries()) as Record<string, string>;
+    try {
+      await adminResetStaffPassword(resetting.userId, data.newPassword);
+      onToast(`Password reset for ${resetting.email}. Share the new password with them securely.`);
+      setResetting(null);
+    } catch (err) {
+      onToast(panelError(err, "Couldn't reset that password."));
+    }
+  };
+
+  if (loading) return <div className="shimmer rounded-lg h-16 animate-shimmer" />;
+
+  if (team.length === 0) {
+    return (
+      <div className="rounded-xl border border-dashed p-8 text-center border-border-strong text-ink-faint text-[13px]">
+        No staff assigned to you yet — an admin assigns staff to your team.
+      </div>
+    );
+  }
+
+  return (
+    <div>
+      <div className="space-y-2">
+        {team.map((m) => (
+          <div key={m.userId} className="rounded-lg border border-border p-3.5 bg-cream-card flex items-center justify-between gap-3">
+            <div className="min-w-0 flex items-center gap-2">
+              <Shield size={15} className="text-ink-faint shrink-0" />
+              <div className="text-[14px] font-medium">{m.email}</div>
+            </div>
+            <div className="flex gap-2 shrink-0">
+              <button
+                onClick={() => setResetting(m)}
+                className="flex items-center gap-1 text-[12px] font-medium px-2.5 py-1.5 rounded-md border border-border-strong text-ink-soft"
+              >
+                <KeyRound size={12} /> Reset password
+              </button>
+              <button onClick={() => remove(m)} className="p-2 rounded-md border border-border-strong text-[#8A3B22]">
+                <Trash2 size={14} />
+              </button>
+            </div>
+          </div>
+        ))}
+      </div>
 
       <AnimatePresence>
         {resetting && (
