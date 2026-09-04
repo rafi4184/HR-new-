@@ -1,5 +1,6 @@
 import { useRef, useState } from "react";
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route, useLocation } from "react-router-dom";
+import { AnimatePresence, motion } from "framer-motion";
 import { MessageCircle } from "lucide-react";
 import Header from "./components/Header";
 import Footer from "./components/Footer";
@@ -18,6 +19,7 @@ import { SERVICE_PAGE_LIST } from "./data/servicePages";
 export default function App() {
   const [toast, setToast] = useState<string | null>(null);
   const toastTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const location = useLocation();
 
   const showToast = (msg: string) => {
     setToast(msg);
@@ -30,17 +32,27 @@ export default function App() {
       <ScrollToHash />
       <Header />
 
-      <Routes>
-        <Route path="/" element={<HomePage onToast={showToast} />} />
-        {SERVICE_PAGE_LIST.map((data) => (
-          <Route key={data.id} path={data.path} element={<ServicePage data={data} />} />
-        ))}
-        <Route path="/about-us" element={<AboutPage />} />
-        <Route path="/contact" element={<ContactPage />} />
-        <Route path="/privacy-policy" element={<PrivacyPage />} />
-        <Route path="/terms" element={<TermsPage />} />
-        <Route path="/staff" element={<StaffPage onToast={showToast} />} />
-      </Routes>
+      <AnimatePresence mode="wait" initial={false}>
+        <motion.div
+          key={location.pathname}
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          exit={{ opacity: 0, y: -10 }}
+          transition={{ duration: 0.25, ease: [0.2, 0.8, 0.2, 1] }}
+        >
+          <Routes location={location}>
+            <Route path="/" element={<HomePage onToast={showToast} />} />
+            {SERVICE_PAGE_LIST.map((data) => (
+              <Route key={data.id} path={data.path} element={<ServicePage data={data} />} />
+            ))}
+            <Route path="/about-us" element={<AboutPage />} />
+            <Route path="/contact" element={<ContactPage />} />
+            <Route path="/privacy-policy" element={<PrivacyPage />} />
+            <Route path="/terms" element={<TermsPage />} />
+            <Route path="/staff" element={<StaffPage onToast={showToast} />} />
+          </Routes>
+        </motion.div>
+      </AnimatePresence>
 
       <FinalCta />
       <Footer />

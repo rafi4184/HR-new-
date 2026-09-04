@@ -13,7 +13,7 @@ export default function Header() {
   const closeTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 12);
+    const onScroll = () => setScrolled(window.scrollY > 40);
     onScroll();
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
@@ -32,11 +32,13 @@ export default function Header() {
 
   return (
     <header
-      className={`sticky top-0 inset-x-0 z-40 bg-white transition-shadow ${scrolled ? "shadow-soft" : ""} border-b border-border`}
+      className={`sticky top-0 inset-x-0 z-40 transition-all duration-300 ${
+        scrolled ? "bg-white shadow-soft border-b border-border" : "bg-transparent border-b border-transparent"
+      }`}
     >
       <div className="flex items-center justify-between px-5 md:px-10 py-3.5 max-w-7xl mx-auto">
         <Link to="/" className="flex items-center gap-2.5 shrink-0" onClick={() => setMobileOpen(false)}>
-          <LogoMark size={34} />
+          <LogoMark size={34} className="text-navy" animated />
           <div>
             <div className="text-navy font-display text-[17px] leading-none">HR — The Mediator</div>
             <div className="text-[10px] leading-none mt-1 tracking-wide text-ink-faint">

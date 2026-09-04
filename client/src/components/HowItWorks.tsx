@@ -1,3 +1,4 @@
+import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
 import { ArrowRight } from "lucide-react";
 import Reveal from "./ui/Reveal";
@@ -12,16 +13,31 @@ const STEPS = [
 export default function HowItWorks() {
   return (
     <section className="px-5 md:px-10 py-16 md:py-20 max-w-7xl mx-auto">
-      <Reveal className="text-center max-w-2xl mx-auto mb-12">
+      <Reveal className="text-center max-w-2xl mx-auto mb-14">
         <div className="text-[12px] font-medium mb-3 tracking-[0.2em] uppercase text-gold-deep">Simple process</div>
         <h2 className="font-display text-3xl md:text-4xl text-navy">How HR — The Mediator Works</h2>
       </Reveal>
 
-      <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-10">
+      <div className="relative grid sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-10">
+        <motion.div
+          className="hidden lg:block absolute top-[38px] left-0 right-0 h-px bg-border-strong origin-left"
+          initial={{ scaleX: 0 }}
+          whileInView={{ scaleX: 1 }}
+          viewport={{ once: true, amount: 0.4 }}
+          transition={{ duration: 1, ease: [0.2, 0.8, 0.2, 1], delay: 0.1 }}
+        />
         {STEPS.map((s, i) => (
-          <Reveal key={s.n} delay={i * 0.08}>
-            <div className="rounded-2xl border border-border bg-white p-6 h-full shadow-card">
-              <div className="font-display text-3xl text-gold-deep mb-3">{s.n}</div>
+          <Reveal key={s.n} delay={i * 0.1}>
+            <div className="relative rounded-2xl border border-border bg-white p-6 h-full shadow-card">
+              <motion.div
+                className="relative z-10 inline-flex items-center justify-center w-11 h-11 rounded-full font-display text-[15px] mb-4 bg-navy text-white"
+                initial={{ scale: 0.5, opacity: 0 }}
+                whileInView={{ scale: 1, opacity: 1 }}
+                viewport={{ once: true, amount: 0.6 }}
+                transition={{ duration: 0.45, delay: i * 0.1 + 0.15, ease: [0.2, 0.9, 0.3, 1.3] }}
+              >
+                {s.n}
+              </motion.div>
               <h3 className="font-display text-lg text-navy mb-2">{s.title}</h3>
               <p className="text-[13.5px] text-ink-muted leading-relaxed">{s.body}</p>
             </div>

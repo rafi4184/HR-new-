@@ -53,7 +53,7 @@ export default function Footer() {
         <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-10 mb-12">
           <div>
             <div className="flex items-center gap-2.5 mb-3">
-              <LogoMark size={30} />
+              <LogoMark size={30} className="text-white" />
               <div className="font-display text-white text-xl">HR — The Mediator</div>
             </div>
             <p className="text-[14px] leading-relaxed">

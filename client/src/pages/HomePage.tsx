@@ -2,10 +2,12 @@ import { useRef, useState } from "react";
 import { useSeo } from "../lib/useSeo";
 import Hero from "../components/Hero";
 import ServicesGrid from "../components/ServicesGrid";
+import PlatformHub from "../components/PlatformHub";
 import CoursesCareersTeaser from "../components/CoursesCareersTeaser";
 import HowItWorks from "../components/HowItWorks";
 import WhoWeHelp from "../components/WhoWeHelp";
 import WhyChooseUs from "../components/WhyChooseUs";
+import StatsRow from "../components/StatsRow";
 import MediaPartners from "../components/MediaPartners";
 import Events from "../components/Events";
 import Booking, { type AirportPrefill } from "../components/Booking";
@@ -64,10 +66,12 @@ export default function HomePage({ onToast }: { onToast: (msg: string) => void }
     <div>
       <Hero />
       <ServicesGrid />
-      <CoursesCareersTeaser />
+      <PlatformHub />
       <HowItWorks />
-      <WhoWeHelp />
       <WhyChooseUs />
+      <WhoWeHelp />
+      <CoursesCareersTeaser />
+      <StatsRow />
       <MediaPartners />
       <Events />
       <Booking
