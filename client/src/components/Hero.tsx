@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { motion } from "framer-motion";
 import { ArrowDown, Plane } from "lucide-react";
 import CinematicBackground from "./ui/CinematicBackground";
@@ -7,6 +7,18 @@ import { SERVICES } from "../lib/services";
 import type { BookingTab } from "../types";
 
 const HEADLINE_WORDS = ["Your", "Access.", "Handled."];
+
+// Slow-drifting dust motes for ambient depth — purely decorative, so
+// fixed positions/delays are fine (no need for per-render randomness).
+const PARTICLES = [
+  { left: "12%", top: "70%", size: 3, delay: 0 },
+  { left: "22%", top: "30%", size: 2, delay: 1.4 },
+  { left: "38%", top: "58%", size: 2.5, delay: 2.8 },
+  { left: "58%", top: "22%", size: 2, delay: 0.6 },
+  { left: "72%", top: "62%", size: 3, delay: 3.6 },
+  { left: "85%", top: "38%", size: 2, delay: 1.9 },
+  { left: "48%", top: "78%", size: 2.5, delay: 4.4 },
+];
 
 export default function Hero({
   onBook,
@@ -17,6 +29,10 @@ export default function Hero({
 }) {
   const heroEase = [0.2, 0.8, 0.2, 1] as const;
   const [sceneIdx, setSceneIdx] = useState(0);
+  const reduceMotion = useMemo(
+    () => typeof window !== "undefined" && window.matchMedia("(prefers-reduced-motion: reduce)").matches,
+    []
+  );
 
   useEffect(() => {
     const iv = setInterval(() => setSceneIdx((i) => (i + 1) % SERVICES.length), 6000);
@@ -25,20 +41,44 @@ export default function Hero({
 
   return (
     <section className="relative h-[100svh] min-h-[640px] overflow-hidden bg-navy">
-      <CinematicBackground video="/videos/hero.mp4" scene={SERVICES[sceneIdx].scene} />
+      <CinematicBackground video="/videos/hero.mp4" scene={SERVICES[sceneIdx].scene} premium />
 
       <div
         className="absolute inset-0"
         style={{
           background:
-            "linear-gradient(180deg, rgba(15,22,17,0.75) 0%, rgba(15,22,17,0.55) 38%, rgba(15,22,17,0.82) 78%, rgba(15,22,17,0.96) 100%)",
+            "linear-gradient(180deg, rgba(15,22,17,0.78) 0%, rgba(15,22,17,0.52) 38%, rgba(15,22,17,0.8) 78%, rgba(15,22,17,0.97) 100%)",
         }}
       />
       <div
         className="absolute inset-0"
-        style={{ background: "linear-gradient(100deg, rgba(15,22,17,0.55) 0%, rgba(15,22,17,0.1) 55%, transparent 80%)" }}
+        style={{ background: "linear-gradient(100deg, rgba(15,22,17,0.6) 0%, rgba(15,22,17,0.12) 55%, transparent 80%)" }}
+      />
+      <div
+        className="absolute inset-0"
+        style={{ background: "radial-gradient(60% 45% at 50% 38%, rgba(217,164,65,0.08), transparent 70%)" }}
+        aria-hidden="true"
+      />
+      <div
+        className="absolute inset-0"
+        style={{ boxShadow: "inset 0 0 18vw rgba(15,22,17,0.55)" }}
+        aria-hidden="true"
       />
       <div className="grain absolute inset-0 opacity-40" aria-hidden="true" />
+
+      {!reduceMotion && (
+        <div className="absolute inset-0 overflow-hidden pointer-events-none" aria-hidden="true">
+          {PARTICLES.map((p, i) => (
+            <motion.span
+              key={i}
+              className="absolute rounded-full bg-gold/50"
+              style={{ left: p.left, top: p.top, width: p.size, height: p.size }}
+              animate={{ y: [0, -26, 0], opacity: [0, 0.7, 0] }}
+              transition={{ duration: 7 + (i % 3), repeat: Infinity, delay: p.delay, ease: "easeInOut" }}
+            />
+          ))}
+        </div>
+      )}
 
       <div className="relative h-full flex flex-col items-center justify-center px-5 md:px-10 text-center">
         <motion.div
@@ -52,20 +92,29 @@ export default function Hero({
           <span className="w-6 h-px bg-gold" />
         </motion.div>
 
-        <h1 className="font-display text-white text-[3rem] sm:text-[4.5rem] md:text-[6rem] leading-[0.98] mb-7 max-w-5xl">
+        <h1 className="relative font-display text-white text-[3rem] sm:text-[4.5rem] md:text-[6rem] leading-[0.98] mb-7 max-w-5xl">
           {HEADLINE_WORDS.map((word, i) => (
             <motion.span
               key={word}
-              initial={{ opacity: 0, y: 34 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.85, delay: 0.25 + i * 0.12, ease: heroEase }}
-              className={`inline-block mr-4 last:mr-0 ${
+              initial={{ opacity: 0, y: 34, filter: "blur(10px)" }}
+              animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+              transition={{ duration: 0.95, delay: 0.25 + i * 0.12, ease: heroEase }}
+              className={`relative inline-block mr-4 last:mr-0 ${
                 i === HEADLINE_WORDS.length - 1
                   ? "italic bg-gradient-to-br from-gold via-gold to-[#D9A441] bg-clip-text text-transparent"
                   : ""
               }`}
             >
               {word}
+              {i === HEADLINE_WORDS.length - 1 && (
+                <motion.span
+                  initial={{ scaleX: 0 }}
+                  animate={{ scaleX: 1 }}
+                  transition={{ duration: 0.7, delay: 1.05, ease: heroEase }}
+                  className="absolute left-0 right-0 -bottom-1 md:-bottom-2 h-[3px] bg-gradient-to-r from-gold via-[#D9A441] to-transparent origin-left"
+                  aria-hidden="true"
+                />
+              )}
             </motion.span>
           ))}
         </h1>
@@ -84,8 +133,13 @@ export default function Hero({
           initial={{ opacity: 0, y: 16 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.7, delay: 0.8, ease: heroEase }}
-          className="flex flex-wrap items-center justify-center gap-4"
+          className="relative flex flex-wrap items-center justify-center gap-4"
         >
+          <div
+            className="absolute -inset-x-10 -inset-y-6 -z-10 rounded-full blur-2xl opacity-60"
+            style={{ background: "radial-gradient(closest-side, rgba(166,64,42,0.22), transparent 75%)" }}
+            aria-hidden="true"
+          />
           <MagneticButton
             onClick={() => onBook("airport")}
             strength={0.25}
