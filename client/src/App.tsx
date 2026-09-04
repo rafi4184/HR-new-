@@ -1,5 +1,5 @@
 import { useRef, useState } from "react";
-import { Routes, Route, useLocation } from "react-router-dom";
+import { Routes, Route, useLocation, Link } from "react-router-dom";
 import { AnimatePresence, motion } from "framer-motion";
 import { MessageCircle } from "lucide-react";
 import Header from "./components/Header";
@@ -28,7 +28,7 @@ export default function App() {
   };
 
   return (
-    <div className="font-sans text-ink bg-white">
+    <div className="font-sans text-ink bg-white pb-[68px] lg:pb-0">
       <ScrollToHash />
       <Header />
 
@@ -60,11 +60,18 @@ export default function App() {
 
       <a
         href="tel:+8801717013150"
-        className="fixed bottom-5 right-5 z-40 w-14 h-14 rounded-full flex items-center justify-center shadow-card-hover bg-gold text-navy hover:bg-gold-deep hover:text-white active:scale-[0.97] transition-colors"
+        className="fixed bottom-[84px] right-4 lg:bottom-5 lg:right-5 z-40 w-14 h-14 rounded-full flex items-center justify-center shadow-card-hover bg-gold text-navy hover:bg-gold-deep hover:text-white active:scale-[0.97] transition-colors"
         aria-label="Call the desk"
       >
         <MessageCircle size={22} />
       </a>
+
+      <Link
+        to="/#request-service"
+        className="lg:hidden fixed bottom-0 inset-x-0 z-40 flex items-center justify-center gap-2 py-4 bg-gold text-navy font-medium text-[14px] tracking-wide uppercase shadow-card-hover"
+      >
+        Request a Service
+      </Link>
     </div>
   );
 }
