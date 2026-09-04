@@ -10,7 +10,7 @@ const FALLBACK_CONTACTS: Contact[] = [
   {
     id: -1,
     label: "Reach the desk",
-    phone: "01682343364",
+    phone: "01717013150",
     email: "hrthemediator@gmail.com",
     address: null,
     whatsapp: null,

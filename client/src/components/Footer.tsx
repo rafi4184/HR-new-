@@ -4,13 +4,15 @@ import { Phone, Mail, MapPin, Facebook, Instagram, MessageCircle } from "lucide-
 import LogoMark from "./ui/Logo";
 import { listContacts } from "../lib/api";
 import { SERVICES } from "../lib/services";
+import { useRequestHref } from "../lib/useRequestHref";
+import AmbientGlow from "./ui/AmbientGlow";
 import type { Contact } from "../types";
 
 const FALLBACK_CONTACTS: Contact[] = [
   {
     id: -1,
     label: "Reach the desk",
-    phone: "01682343364",
+    phone: "01717013150",
     email: "hrthemediator@gmail.com",
     address: null,
     whatsapp: null,
@@ -32,11 +34,11 @@ const QUICK_LINKS = [
   { label: "About Us", to: "/about-us" },
   { label: "Contact", to: "/contact" },
   { label: "Track a Request", to: "/#track" },
-  { label: "Request a Service", to: "/#request-service" },
   { label: "Staff Login", to: "/staff" },
 ];
 
 export default function Footer() {
+  const requestHref = useRequestHref();
   const [contacts, setContacts] = useState<Contact[]>(FALLBACK_CONTACTS);
 
   useEffect(() => {
@@ -48,8 +50,9 @@ export default function Footer() {
   }, []);
 
   return (
-    <footer id="contact" className="bg-navy text-mist">
-      <div className="px-5 md:px-10 pt-16 pb-8 max-w-7xl mx-auto">
+    <footer id="contact" className="relative bg-navy text-mist overflow-hidden">
+      <AmbientGlow variant="dark" />
+      <div className="relative px-5 md:px-10 pt-16 pb-8 max-w-7xl mx-auto">
         <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-10 mb-12">
           <div>
             <div className="flex items-center gap-2.5 mb-3">
@@ -102,6 +105,9 @@ export default function Footer() {
                   {l.label}
                 </Link>
               ))}
+              <Link to={requestHref} className="hover:text-white transition-colors">
+                Request a Service
+              </Link>
             </div>
           </div>
 

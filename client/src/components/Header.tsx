@@ -4,8 +4,10 @@ import { motion, AnimatePresence } from "framer-motion";
 import { ChevronDown, Menu, X } from "lucide-react";
 import LogoMark from "./ui/Logo";
 import { SERVICES } from "../lib/services";
+import { useRequestHref } from "../lib/useRequestHref";
 
 export default function Header() {
+  const requestHref = useRequestHref();
   const [mobileOpen, setMobileOpen] = useState(false);
   const [mobileServicesOpen, setMobileServicesOpen] = useState(false);
   const [servicesOpen, setServicesOpen] = useState(false);
@@ -131,7 +133,7 @@ export default function Header() {
             Track Request
           </Link>
           <Link
-            to="/#request-service"
+            to={requestHref}
             className="text-[13px] font-medium tracking-wide px-5 py-2.5 rounded-full bg-gradient-to-r from-gold to-[#E0B563] text-navy hover:from-gold-deep hover:to-gold-deep hover:text-white transition-colors"
           >
             Request a Service
@@ -140,7 +142,7 @@ export default function Header() {
 
         <div className="lg:hidden flex items-center gap-1.5 shrink-0">
           <Link
-            to="/#request-service"
+            to={requestHref}
             className="text-[12px] sm:text-[12.5px] font-medium px-2.5 sm:px-3.5 py-2 rounded-full bg-gradient-to-r from-gold to-[#E0B563] text-navy whitespace-nowrap"
           >
             <span className="sm:hidden">Request</span>
@@ -207,7 +209,7 @@ export default function Header() {
                 Track Request
               </Link>
               <Link
-                to="/#request-service"
+                to={requestHref}
                 onClick={() => setMobileOpen(false)}
                 className="mt-3 text-center text-[14px] font-medium px-5 py-3 rounded-full bg-gradient-to-r from-gold to-[#E0B563] text-navy"
               >
