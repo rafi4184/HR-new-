@@ -33,6 +33,7 @@ const QUICK_LINKS = [
   { label: "Contact", to: "/contact" },
   { label: "Track a Request", to: "/#track" },
   { label: "Request a Service", to: "/#request-service" },
+  { label: "Staff Login", to: "/staff" },
 ];
 
 export default function Footer() {
