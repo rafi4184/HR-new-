@@ -240,6 +240,8 @@ function EventsPanel({ onToast }: { onToast: (msg: string) => void }) {
   const [loading, setLoading] = useState(true);
   const [editing, setEditing] = useState<EventItem | "new" | null>(null);
   const [uploadingFor, setUploadingFor] = useState<number | null>(null);
+  const [newFiles, setNewFiles] = useState<File[]>([]);
+  const [saving, setSaving] = useState(false);
 
   const refresh = async () => {
     setLoading(true);
@@ -254,23 +256,38 @@ function EventsPanel({ onToast }: { onToast: (msg: string) => void }) {
     void refresh();
   }, []);
 
+  const openEditor = (target: EventItem | "new") => {
+    setNewFiles([]);
+    setEditing(target);
+  };
+
   const save = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const form = e.currentTarget;
     const data = Object.fromEntries(new FormData(form).entries()) as Record<string, string>;
+    setSaving(true);
     try {
-      await adminUpsertEvent({
+      const saved = await adminUpsertEvent({
         id: editing !== "new" && editing ? editing.id : undefined,
         title: data.title,
         description: data.description,
         eventDate: data.eventDate || undefined,
         location: data.location,
       });
+      const startIndex = editing !== "new" && editing ? editing.media.length : 0;
+      for (let i = 0; i < newFiles.length; i++) {
+        const file = newFiles[i];
+        const mediaType = file.type.startsWith("video/") ? "video" : "image";
+        await adminUploadEventMedia(saved.id, file, mediaType, startIndex + i);
+      }
       onToast("Event saved.");
       setEditing(null);
+      setNewFiles([]);
       void refresh();
     } catch (err) {
       onToast(panelError(err, "Couldn't save that event."));
+    } finally {
+      setSaving(false);
     }
   };
 
@@ -311,7 +328,7 @@ function EventsPanel({ onToast }: { onToast: (msg: string) => void }) {
   return (
     <div>
       <button
-        onClick={() => setEditing("new")}
+        onClick={() => openEditor("new")}
         className="flex items-center gap-1.5 text-[13px] font-medium px-3 py-2 rounded-md bg-teal text-white mb-4 active:scale-[0.97] transition-transform"
       >
         <Plus size={15} /> Add event
@@ -335,7 +352,7 @@ function EventsPanel({ onToast }: { onToast: (msg: string) => void }) {
                   </div>
                 </div>
                 <div className="flex gap-2 shrink-0">
-                  <button onClick={() => setEditing(ev)} className="p-2 rounded-md border border-border-strong text-ink-soft">
+                  <button onClick={() => openEditor(ev)} className="p-2 rounded-md border border-border-strong text-ink-soft">
                     <Pencil size={14} />
                   </button>
                   <button onClick={() => remove(ev)} className="p-2 rounded-md border border-border-strong text-[#8A3B22]">
@@ -391,7 +408,7 @@ function EventsPanel({ onToast }: { onToast: (msg: string) => void }) {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-navy/60"
-            onClick={() => setEditing(null)}
+            onClick={() => !saving && setEditing(null)}
           >
             <motion.form
               onSubmit={save}
@@ -404,9 +421,31 @@ function EventsPanel({ onToast }: { onToast: (msg: string) => void }) {
               <input name="title" placeholder="Title" defaultValue={editing !== "new" ? editing.title : ""} required className={`${inputClass} mb-3`} />
               <textarea name="description" placeholder="Description" defaultValue={editing !== "new" ? (editing.description ?? "") : ""} rows={3} className={`${inputClass} mb-3`} />
               <input name="eventDate" type="date" defaultValue={editing !== "new" ? (editing.eventDate ?? "") : ""} className={`${inputClass} mb-3`} />
-              <input name="location" placeholder="Location" defaultValue={editing !== "new" ? (editing.location ?? "") : ""} className={`${inputClass} mb-4`} />
-              <button type="submit" className="w-full py-2.5 rounded-md font-medium text-[14px] bg-teal text-white">
-                Save
+              <input name="location" placeholder="Location" defaultValue={editing !== "new" ? (editing.location ?? "") : ""} className={`${inputClass} mb-3`} />
+
+              <label className="block text-[12px] font-medium text-ink-faint mb-1.5">
+                {editing === "new" ? "Photos / video" : "Add more photos / video"}
+              </label>
+              <label className="flex items-center gap-1.5 text-[12px] font-medium px-3 py-2.5 rounded-md border border-dashed border-border-strong text-ink-soft cursor-pointer mb-4 justify-center hover:border-ink-faint transition-colors">
+                <ImageIcon size={14} />
+                {newFiles.length > 0 ? `${newFiles.length} file${newFiles.length > 1 ? "s" : ""} selected` : "Choose photos or a video"}
+                <input
+                  type="file"
+                  accept="image/*,video/*"
+                  multiple
+                  className="hidden"
+                  disabled={saving}
+                  onChange={(e) => setNewFiles(Array.from(e.target.files ?? []))}
+                />
+              </label>
+
+              <button
+                type="submit"
+                disabled={saving}
+                className="w-full py-2.5 rounded-md font-medium text-[14px] bg-teal text-white flex items-center justify-center gap-2 disabled:opacity-70"
+              >
+                {saving && <Loader2 size={14} className="animate-spin" />}
+                {saving ? "Saving…" : "Save"}
               </button>
             </motion.form>
           </motion.div>
