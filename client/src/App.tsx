@@ -7,6 +7,7 @@ import Footer from "./components/Footer";
 import FinalCta from "./components/FinalCta";
 import Toast from "./components/Toast";
 import ScrollToHash from "./components/ScrollToHash";
+import ScrollProgress from "./components/ScrollProgress";
 import HomePage from "./pages/HomePage";
 import ServicePage from "./pages/ServicePage";
 import AboutPage from "./pages/AboutPage";
@@ -29,6 +30,7 @@ export default function App() {
 
   return (
     <div className="font-sans text-ink bg-white">
+      <ScrollProgress />
       <ScrollToHash />
       <Header />
 

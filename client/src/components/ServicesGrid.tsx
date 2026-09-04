@@ -57,9 +57,13 @@ export default function ServicesGrid() {
                     isMatch && activeMatches ? "border-gold" : "border-border"
                   }`}
                 >
-                  <div className="w-12 h-12 rounded-xl bg-gold-pale flex items-center justify-center mb-5 group-hover:bg-gold group-hover:text-white transition-colors text-gold-deep">
+                  <motion.div
+                    className="w-12 h-12 rounded-xl bg-gold-pale flex items-center justify-center mb-5 group-hover:bg-gold group-hover:text-white transition-colors text-gold-deep"
+                    animate={{ y: [0, -4, 0] }}
+                    transition={{ duration: 3.5, repeat: Infinity, ease: "easeInOut", delay: i * 0.25 }}
+                  >
                     <s.icon size={22} />
-                  </div>
+                  </motion.div>
                   <h3 className="font-display text-lg text-navy mb-2">{s.title}</h3>
                   <p className="text-[13.5px] text-ink-muted leading-relaxed mb-5 flex-1">{s.summary}</p>
                   <span className="inline-flex items-center gap-1.5 text-[13px] font-medium text-gold-deep group-hover:gap-2.5 transition-all">

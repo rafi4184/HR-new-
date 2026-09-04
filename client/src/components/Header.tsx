@@ -28,7 +28,16 @@ export default function Header() {
   };
 
   const linkClass = ({ isActive }: { isActive: boolean }) =>
-    `text-[14px] font-medium transition-colors ${isActive ? "text-navy" : "text-ink-soft hover:text-navy"}`;
+    `relative group py-1 text-[14px] font-medium transition-colors ${isActive ? "text-navy" : "text-ink-soft hover:text-navy"}`;
+
+  const NavUnderline = ({ isActive }: { isActive: boolean }) => (
+    <span
+      aria-hidden="true"
+      className={`absolute left-0 -bottom-0.5 h-[1.5px] bg-gradient-to-r from-gold to-gold-deep rounded-full transition-transform duration-300 origin-left ${
+        isActive ? "w-full scale-x-100" : "w-full scale-x-0 group-hover:scale-x-100"
+      }`}
+    />
+  );
 
   return (
     <header
@@ -50,7 +59,12 @@ export default function Header() {
 
         <nav className="hidden lg:flex items-center gap-7">
           <NavLink to="/" className={linkClass} end>
-            Home
+            {({ isActive }) => (
+              <>
+                Home
+                <NavUnderline isActive={isActive} />
+              </>
+            )}
           </NavLink>
 
           <div className="relative" onMouseEnter={openServices} onMouseLeave={scheduleCloseServices}>
@@ -92,10 +106,20 @@ export default function Header() {
           </div>
 
           <NavLink to="/about-us" className={linkClass}>
-            About Us
+            {({ isActive }) => (
+              <>
+                About Us
+                <NavUnderline isActive={isActive} />
+              </>
+            )}
           </NavLink>
           <NavLink to="/contact" className={linkClass}>
-            Contact
+            {({ isActive }) => (
+              <>
+                Contact
+                <NavUnderline isActive={isActive} />
+              </>
+            )}
           </NavLink>
         </nav>
 

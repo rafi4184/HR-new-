@@ -71,6 +71,12 @@ export default function PlatformHub() {
           </svg>
 
           <motion.div
+            aria-hidden="true"
+            className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-24 h-24 rounded-full bg-gold/25 pointer-events-none"
+            animate={{ scale: [1, 1.45, 1], opacity: [0.5, 0, 0.5] }}
+            transition={{ duration: 3.2, repeat: Infinity, ease: "easeInOut" }}
+          />
+          <motion.div
             initial={{ opacity: 0, scale: 0.7 }}
             whileInView={{ opacity: 1, scale: 1 }}
             viewport={{ once: true, amount: 0.4 }}
