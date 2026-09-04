@@ -170,6 +170,13 @@ export async function staffComplete(_token: string, id: number): Promise<Service
   return mapRow(data);
 }
 
+// Soft delete — admin only. The row stays in the database for audit/
+// compliance purposes; this just hides it from every staff view.
+export async function adminDeleteRequest(id: number): Promise<void> {
+  const { error } = await supabase.rpc("admin_delete_request", { p_id: id });
+  if (error) throw new ApiError(error.message);
+}
+
 export async function whoami(): Promise<WhoAmI | null> {
   const { data, error } = await supabase.rpc("whoami");
   if (error) throw new ApiError(error.message);

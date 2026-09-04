@@ -1,6 +1,6 @@
 import { useMemo, useState, type FormEvent } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { ShieldAlert, CheckCircle2, XCircle, Clock3, Loader2, Phone, Mail, KeyRound, Eye, X } from "lucide-react";
+import { ShieldAlert, CheckCircle2, XCircle, Clock3, Loader2, Phone, Mail, KeyRound, Eye, X, Trash2 } from "lucide-react";
 import { inputClass } from "./ui/Field";
 import StatusPill from "./ui/StatusPill";
 import Reveal from "./ui/Reveal";
@@ -15,6 +15,7 @@ import {
   staffLogout,
   whoami,
   changePassword,
+  adminDeleteRequest,
   ApiError,
 } from "../lib/api";
 import type { ServiceRequest, WhoAmI } from "../types";
@@ -138,6 +139,17 @@ export default function StaffDashboard({ onToast }: { onToast: (msg: string) => 
     }
   };
 
+  const remove = async (r: ServiceRequest) => {
+    if (!window.confirm(`Delete ${r.ticket}? The customer record stays for audit purposes but disappears from this list.`)) return;
+    try {
+      await adminDeleteRequest(r.id);
+      setRequests((rs) => rs.filter((x) => x.id !== r.id));
+      onToast(`${r.ticket} deleted.`);
+    } catch (err) {
+      onToast(err instanceof ApiError ? err.message : "Couldn't delete that request.");
+    }
+  };
+
   return (
     <section className="px-5 md:px-10 py-16 max-w-4xl mx-auto">
       <Reveal>
@@ -245,6 +257,14 @@ export default function StaffDashboard({ onToast }: { onToast: (msg: string) => 
                     >
                       <Eye size={11} /> View
                     </button>
+                    {me?.isAdmin && (
+                      <button
+                        onClick={() => remove(r)}
+                        className="flex items-center gap-1 text-[11px] font-medium px-2 py-1 rounded-full border border-border-strong text-[#8A3B22] hover:border-[#8A3B22] transition-colors"
+                      >
+                        <Trash2 size={11} /> Delete
+                      </button>
+                    )}
                   </div>
                   <div className="text-[14px]">{r.summary}</div>
                   {r.status === "rejected" && r.decisionNote && (
