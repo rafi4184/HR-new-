@@ -36,7 +36,7 @@ export default function ServicePage({ data }: { data: ServicePageData }) {
           <p className="text-[16px] text-ink-muted leading-relaxed max-w-2xl mx-auto mb-8">{data.intro}</p>
           <button
             onClick={() => bookingRef.current?.scrollIntoView({ behavior: "smooth", block: "start" })}
-            className="inline-flex items-center gap-2 px-7 py-3.5 rounded-full font-medium text-[14px] tracking-wide uppercase bg-gold text-navy hover:bg-gold-deep hover:text-white transition-colors"
+            className="inline-flex items-center gap-2 px-7 py-3.5 rounded-full font-medium text-[14px] tracking-wide uppercase bg-gradient-to-r from-gold to-[#E0B563] text-navy hover:from-gold-deep hover:to-gold-deep hover:text-white transition-colors"
           >
             {data.cta} <ArrowRight size={15} />
           </button>

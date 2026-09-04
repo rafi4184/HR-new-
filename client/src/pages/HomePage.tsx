@@ -66,14 +66,6 @@ export default function HomePage({ onToast }: { onToast: (msg: string) => void }
     <div>
       <Hero />
       <ServicesGrid />
-      <PlatformHub />
-      <HowItWorks />
-      <WhyChooseUs />
-      <WhoWeHelp />
-      <CoursesCareersTeaser />
-      <StatsRow />
-      <MediaPartners />
-      <Events />
       <Booking
         ref={bookingRef}
         activeTab={activeTab}
@@ -85,6 +77,14 @@ export default function HomePage({ onToast }: { onToast: (msg: string) => void }
         onSubmitted={handleSubmitted}
       />
       <TrackRequest ref={trackRef} loading={trackLoading} result={trackResult} onSubmit={runTrack} onPay={setPayModal} />
+      <PlatformHub />
+      <HowItWorks />
+      <WhyChooseUs />
+      <WhoWeHelp />
+      <CoursesCareersTeaser />
+      <StatsRow />
+      <MediaPartners />
+      <Events />
       <Faq items={HOME_FAQS} />
 
       <PaymentModal request={payModal} onClose={() => setPayModal(null)} onPaid={handlePaid} />

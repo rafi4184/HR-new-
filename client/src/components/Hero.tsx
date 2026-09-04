@@ -13,7 +13,21 @@ export default function Hero() {
 
   return (
     <section ref={ref} className="relative px-5 md:px-10 pt-14 pb-16 md:pt-20 md:pb-24 bg-paper-soft overflow-hidden">
-      <div className="max-w-7xl mx-auto grid lg:grid-cols-2 gap-12 items-center">
+      <motion.div
+        aria-hidden="true"
+        className="absolute -top-24 -left-24 w-[420px] h-[420px] rounded-full blur-3xl pointer-events-none"
+        style={{ background: "radial-gradient(circle, rgba(201,151,59,0.22), transparent 70%)" }}
+        animate={{ x: [0, 24, 0], y: [0, 16, 0] }}
+        transition={{ duration: 14, repeat: Infinity, ease: "easeInOut" }}
+      />
+      <motion.div
+        aria-hidden="true"
+        className="absolute -bottom-32 -right-16 w-[480px] h-[480px] rounded-full blur-3xl pointer-events-none"
+        style={{ background: "radial-gradient(circle, rgba(15,37,64,0.1), transparent 70%)" }}
+        animate={{ x: [0, -20, 0], y: [0, -14, 0] }}
+        transition={{ duration: 16, repeat: Infinity, ease: "easeInOut" }}
+      />
+      <div className="relative max-w-7xl mx-auto grid lg:grid-cols-2 gap-12 items-center">
         <div>
           <motion.div
             initial={{ opacity: 0, y: 12 }}
@@ -56,7 +70,7 @@ export default function Hero() {
               as="link"
               to="/#services"
               strength={0.3}
-              className="group inline-flex items-center gap-2 px-7 py-3.5 rounded-full font-medium text-[14px] tracking-wide uppercase bg-gold text-navy hover:bg-gold-deep hover:text-white transition-colors"
+              className="group inline-flex items-center gap-2 px-7 py-3.5 rounded-full font-medium text-[14px] tracking-wide uppercase bg-gradient-to-r from-gold to-[#E0B563] text-navy hover:from-gold-deep hover:to-gold-deep hover:text-white transition-colors"
             >
               Explore Services
               <ArrowRight size={15} className="transition-transform group-hover:translate-x-1" />

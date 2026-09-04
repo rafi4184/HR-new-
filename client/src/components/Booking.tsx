@@ -75,7 +75,7 @@ const Booking = forwardRef<
     <button
       type="submit"
       disabled={submitting}
-      className="w-full sm:w-auto px-6 py-3 rounded-lg font-medium text-[15px] bg-gold text-navy hover:bg-gold-deep hover:text-white active:scale-[0.97] transition-colors disabled:opacity-60 disabled:cursor-not-allowed"
+      className="w-full sm:w-auto px-6 py-3 rounded-lg font-medium text-[15px] bg-gradient-to-r from-gold to-[#E0B563] text-navy hover:from-gold-deep hover:to-gold-deep hover:text-white active:scale-[0.97] transition-colors disabled:opacity-60 disabled:cursor-not-allowed"
     >
       {submitting ? "Submitting…" : label}
     </button>

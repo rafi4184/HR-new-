@@ -8,7 +8,7 @@ export default function FinalCta() {
         <h2 className="font-display text-2xl md:text-3xl text-navy mb-4">Need Assistance?</h2>
         <Link
           to="/#request-service"
-          className="group inline-flex items-center gap-2 px-7 py-3.5 rounded-full font-medium text-[14px] tracking-wide uppercase bg-navy text-white hover:bg-navy-soft transition-colors"
+          className="group inline-flex items-center gap-2 px-7 py-3.5 rounded-full font-medium text-[14px] tracking-wide uppercase bg-gradient-to-r from-navy to-navy-soft text-white hover:from-navy-soft hover:to-navy transition-colors"
         >
           Request a Service
           <ArrowRight size={15} className="transition-transform group-hover:translate-x-1" />

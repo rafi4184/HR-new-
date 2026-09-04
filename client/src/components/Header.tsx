@@ -37,11 +37,12 @@ export default function Header() {
       }`}
     >
       <div className="flex items-center justify-between px-5 md:px-10 py-3.5 max-w-7xl mx-auto">
-        <Link to="/" className="flex items-center gap-2.5 shrink-0" onClick={() => setMobileOpen(false)}>
-          <LogoMark size={34} className="text-navy" animated />
-          <div>
-            <div className="text-navy font-display text-[17px] leading-none">HR — The Mediator</div>
-            <div className="text-[10px] leading-none mt-1 tracking-wide text-ink-faint">
+        <Link to="/" className="flex items-center gap-2 sm:gap-2.5 min-w-0 shrink" onClick={() => setMobileOpen(false)}>
+          <LogoMark size={30} className="text-navy shrink-0 sm:hidden" animated />
+          <LogoMark size={34} className="text-navy shrink-0 hidden sm:block" animated />
+          <div className="min-w-0">
+            <div className="text-navy font-display text-[15px] sm:text-[17px] leading-none truncate">HR — The Mediator</div>
+            <div className="hidden sm:block text-[10px] leading-none mt-1 tracking-wide text-ink-faint">
               Trusted Service &amp; Support Partner
             </div>
           </div>
@@ -107,19 +108,28 @@ export default function Header() {
           </Link>
           <Link
             to="/#request-service"
-            className="text-[13px] font-medium tracking-wide px-5 py-2.5 rounded-full bg-gold text-navy hover:bg-gold-deep hover:text-white transition-colors"
+            className="text-[13px] font-medium tracking-wide px-5 py-2.5 rounded-full bg-gradient-to-r from-gold to-[#E0B563] text-navy hover:from-gold-deep hover:to-gold-deep hover:text-white transition-colors"
           >
             Request a Service
           </Link>
         </div>
 
-        <button
-          onClick={() => setMobileOpen((v) => !v)}
-          className="lg:hidden w-9 h-9 rounded-full flex items-center justify-center text-navy"
-          aria-label="Menu"
-        >
-          {mobileOpen ? <X size={20} /> : <Menu size={20} />}
-        </button>
+        <div className="lg:hidden flex items-center gap-1.5 shrink-0">
+          <Link
+            to="/#request-service"
+            className="text-[12px] sm:text-[12.5px] font-medium px-2.5 sm:px-3.5 py-2 rounded-full bg-gradient-to-r from-gold to-[#E0B563] text-navy whitespace-nowrap"
+          >
+            <span className="sm:hidden">Request</span>
+            <span className="hidden sm:inline">Request a Service</span>
+          </Link>
+          <button
+            onClick={() => setMobileOpen((v) => !v)}
+            className="w-8 h-8 sm:w-9 sm:h-9 rounded-full flex items-center justify-center text-navy shrink-0"
+            aria-label="Menu"
+          >
+            {mobileOpen ? <X size={20} /> : <Menu size={20} />}
+          </button>
+        </div>
       </div>
 
       <AnimatePresence>
@@ -175,7 +185,7 @@ export default function Header() {
               <Link
                 to="/#request-service"
                 onClick={() => setMobileOpen(false)}
-                className="mt-3 text-center text-[14px] font-medium px-5 py-3 rounded-full bg-gold text-navy"
+                className="mt-3 text-center text-[14px] font-medium px-5 py-3 rounded-full bg-gradient-to-r from-gold to-[#E0B563] text-navy"
               >
                 Request a Service
               </Link>
