@@ -13,15 +13,15 @@ export default function LogoMark({ size = 36, className = "" }: { size?: number;
       role="img"
       aria-label="HR — The Mediator"
     >
-      <circle cx="24" cy="24" r="24" fill="#17241C" />
+      <circle cx="24" cy="24" r="24" fill="#0F2540" />
       <path
         d="M13 33 V19.5 A11 11 0 0 1 35 19.5 V33"
         fill="none"
-        stroke="#A6402A"
+        stroke="#C9973B"
         strokeWidth="3"
         strokeLinecap="round"
       />
-      <path d="M9 33.5 H39" stroke="#D9A441" strokeWidth="2.5" strokeLinecap="round" />
+      <path d="M9 33.5 H39" stroke="#C9973B" strokeWidth="2.5" strokeLinecap="round" />
     </svg>
   );
 }

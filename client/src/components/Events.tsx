@@ -28,8 +28,8 @@ export default function Events() {
   return (
     <section id="events" className="px-5 md:px-10 py-16 max-w-6xl mx-auto">
       <Reveal>
-        <div className="text-[13px] font-medium mb-2 text-teal uppercase tracking-wide">On the ground</div>
-        <h2 className="font-display text-3xl mb-10">Recent events</h2>
+        <div className="text-[12px] font-medium mb-2 text-gold-deep uppercase tracking-wide">On the ground</div>
+        <h2 className="font-display text-3xl mb-10 text-navy">Recent Events</h2>
       </Reveal>
 
       {!loaded ? (
@@ -50,7 +50,7 @@ export default function Events() {
                 viewport={{ once: true, amount: 0.2 }}
                 transition={{ duration: 0.5, delay: Math.min(i, 6) * 0.06 }}
                 whileHover={{ y: -3 }}
-                className="rounded-xl overflow-hidden border border-border bg-cream-card"
+                className="rounded-xl overflow-hidden border border-border bg-white shadow-card"
               >
                 <div className="aspect-[16/10] bg-navy/10 overflow-hidden">
                   {cover?.mediaType === "image" && <img src={cover.url} alt={ev.title} className="w-full h-full object-cover" />}

@@ -1,61 +1,43 @@
-import { motion } from "framer-motion";
-import { MessageSquareText, FileCheck2, Handshake } from "lucide-react";
+import { Link } from "react-router-dom";
+import { ArrowRight } from "lucide-react";
 import Reveal from "./ui/Reveal";
 
 const STEPS = [
-  {
-    icon: MessageSquareText,
-    title: "Tell us what you need",
-    body: "Submit a request from any desk below — flight details, a hotel brief, or a government case.",
-  },
-  {
-    icon: FileCheck2,
-    title: "We review & approve",
-    body: "Our desk checks the case and approves it. You get a confirmation the moment we do.",
-  },
-  {
-    icon: Handshake,
-    title: "We deliver, on the ground",
-    body: "You're met at the gate, checked in, or handed a finished document — not a status update.",
-  },
+  { n: "01", title: "Choose Your Service", body: "Select the service you need." },
+  { n: "02", title: "Submit Your Request", body: "Tell us what you need and when you need it." },
+  { n: "03", title: "We Coordinate", body: "Our team coordinates the appropriate service and support." },
+  { n: "04", title: "Get Assistance", body: "Receive professional support from start to finish." },
 ];
 
 export default function HowItWorks() {
   return (
-    <section id="process" className="px-5 md:px-10 py-16 bg-cream-panel">
-      <div className="max-w-6xl mx-auto">
-        <Reveal>
-          <h2 className="font-display text-3xl mb-2">How a request moves</h2>
-          <p className="max-w-lg mb-10 text-ink-muted">Three steps, whichever desk you use.</p>
-        </Reveal>
-        <div className="grid sm:grid-cols-3 gap-8 relative">
-          <motion.div
-            className="hidden sm:block absolute top-6 left-0 right-0 h-px bg-border-strong origin-left"
-            initial={{ scaleX: 0 }}
-            whileInView={{ scaleX: 1 }}
-            viewport={{ once: true, amount: 0.4 }}
-            transition={{ duration: 1, ease: [0.2, 0.8, 0.2, 1], delay: 0.1 }}
-          />
-          {STEPS.map(({ icon: Icon, title, body }, i) => (
-            <Reveal key={title} delay={i * 0.1}>
-              <div className="relative">
-                <motion.div
-                  className="relative z-10 w-12 h-12 rounded-full flex items-center justify-center mb-4 font-display text-lg bg-teal text-white"
-                  initial={{ scale: 0.4, opacity: 0 }}
-                  whileInView={{ scale: 1, opacity: 1 }}
-                  viewport={{ once: true, amount: 0.6 }}
-                  transition={{ duration: 0.45, delay: i * 0.1 + 0.15, ease: [0.2, 0.9, 0.3, 1.3] }}
-                >
-                  {i + 1}
-                </motion.div>
-                <Icon size={18} color="#2F5D3F" className="mb-3" />
-                <h3 className="font-display text-lg mb-2">{title}</h3>
-                <p className="text-[14px] text-ink-muted">{body}</p>
-              </div>
-            </Reveal>
-          ))}
-        </div>
+    <section className="px-5 md:px-10 py-16 md:py-20 max-w-7xl mx-auto">
+      <Reveal className="text-center max-w-2xl mx-auto mb-12">
+        <div className="text-[12px] font-medium mb-3 tracking-[0.2em] uppercase text-gold-deep">Simple process</div>
+        <h2 className="font-display text-3xl md:text-4xl text-navy">How HR — The Mediator Works</h2>
+      </Reveal>
+
+      <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-10">
+        {STEPS.map((s, i) => (
+          <Reveal key={s.n} delay={i * 0.08}>
+            <div className="rounded-2xl border border-border bg-white p-6 h-full shadow-card">
+              <div className="font-display text-3xl text-gold-deep mb-3">{s.n}</div>
+              <h3 className="font-display text-lg text-navy mb-2">{s.title}</h3>
+              <p className="text-[13.5px] text-ink-muted leading-relaxed">{s.body}</p>
+            </div>
+          </Reveal>
+        ))}
       </div>
+
+      <Reveal className="text-center">
+        <Link
+          to="/#request-service"
+          className="group inline-flex items-center gap-2 px-7 py-3.5 rounded-full font-medium text-[14px] tracking-wide uppercase bg-navy text-white hover:bg-navy-soft transition-colors"
+        >
+          Request a Service
+          <ArrowRight size={15} className="transition-transform group-hover:translate-x-1" />
+        </Link>
+      </Reveal>
     </section>
   );
 }

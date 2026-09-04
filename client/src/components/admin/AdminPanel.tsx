@@ -59,7 +59,7 @@ export default function AdminPanel({
     return (
       <div className="mt-10 pt-10 border-t border-dashed border-border-strong">
         <div className="flex items-center gap-2 mb-1">
-          <Users size={17} className="text-teal" />
+          <Users size={17} className="text-navy" />
           <h3 className="font-display text-xl">Your team</h3>
         </div>
         <p className="text-[13px] mb-5 text-ink-faint">The staff accounts assigned to you.</p>
@@ -71,7 +71,7 @@ export default function AdminPanel({
   return (
     <div className="mt-10 pt-10 border-t border-dashed border-border-strong">
       <div className="flex items-center gap-2 mb-1">
-        <ShieldCheck size={17} className="text-teal" />
+        <ShieldCheck size={17} className="text-navy" />
         <h3 className="font-display text-xl">Admin</h3>
       </div>
       <p className="text-[13px] mb-5 text-ink-faint">Manage what the public site shows and who can sign in as staff.</p>
@@ -82,7 +82,7 @@ export default function AdminPanel({
             key={t.key}
             onClick={() => setTab(t.key)}
             className={`text-[13px] font-medium px-3.5 py-1.5 rounded-full border transition-colors ${
-              tab === t.key ? "bg-teal text-white border-teal" : "border-border-strong text-ink-faint"
+              tab === t.key ? "bg-navy text-white border-navy" : "border-border-strong text-ink-faint"
             }`}
           >
             {t.label}
@@ -163,7 +163,7 @@ function ContactsPanel({ onToast }: { onToast: (msg: string) => void }) {
     <div>
       <button
         onClick={() => setEditing("new")}
-        className="flex items-center gap-1.5 text-[13px] font-medium px-3 py-2 rounded-md bg-teal text-white mb-4 active:scale-[0.97] transition-transform"
+        className="flex items-center gap-1.5 text-[13px] font-medium px-3 py-2 rounded-md bg-navy text-white mb-4 active:scale-[0.97] transition-transform"
       >
         <Plus size={15} /> Add contact
       </button>
@@ -177,7 +177,7 @@ function ContactsPanel({ onToast }: { onToast: (msg: string) => void }) {
       ) : (
         <div className="space-y-2">
           {contacts.map((c) => (
-            <div key={c.id} className="rounded-lg border border-border p-3.5 bg-cream-card flex items-center justify-between gap-3">
+            <div key={c.id} className="rounded-lg border border-border p-3.5 bg-white flex items-center justify-between gap-3">
               <div className="min-w-0">
                 <div className="text-[14px] font-medium">{c.label}</div>
                 <div className="text-[12px] text-ink-faint flex flex-wrap gap-x-3">
@@ -222,7 +222,7 @@ function ContactsPanel({ onToast }: { onToast: (msg: string) => void }) {
               <input name="email" type="email" placeholder="Email" defaultValue={editing !== "new" ? (editing.email ?? "") : ""} className={`${inputClass} mb-3`} />
               <input name="address" placeholder="Address" defaultValue={editing !== "new" ? (editing.address ?? "") : ""} className={`${inputClass} mb-3`} />
               <input name="sortOrder" type="number" placeholder="Order (0 = first)" defaultValue={editing !== "new" ? editing.sortOrder : 0} className={`${inputClass} mb-4`} />
-              <button type="submit" className="w-full py-2.5 rounded-md font-medium text-[14px] bg-teal text-white">
+              <button type="submit" className="w-full py-2.5 rounded-md font-medium text-[14px] bg-navy text-white">
                 Save
               </button>
             </motion.form>
@@ -329,7 +329,7 @@ function EventsPanel({ onToast }: { onToast: (msg: string) => void }) {
     <div>
       <button
         onClick={() => openEditor("new")}
-        className="flex items-center gap-1.5 text-[13px] font-medium px-3 py-2 rounded-md bg-teal text-white mb-4 active:scale-[0.97] transition-transform"
+        className="flex items-center gap-1.5 text-[13px] font-medium px-3 py-2 rounded-md bg-navy text-white mb-4 active:scale-[0.97] transition-transform"
       >
         <Plus size={15} /> Add event
       </button>
@@ -343,7 +343,7 @@ function EventsPanel({ onToast }: { onToast: (msg: string) => void }) {
       ) : (
         <div className="space-y-3">
           {events.map((ev) => (
-            <div key={ev.id} className="rounded-lg border border-border p-3.5 bg-cream-card">
+            <div key={ev.id} className="rounded-lg border border-border p-3.5 bg-white">
               <div className="flex items-center justify-between gap-3 mb-2">
                 <div className="min-w-0">
                   <div className="text-[14px] font-medium">{ev.title}</div>
@@ -442,7 +442,7 @@ function EventsPanel({ onToast }: { onToast: (msg: string) => void }) {
               <button
                 type="submit"
                 disabled={saving}
-                className="w-full py-2.5 rounded-md font-medium text-[14px] bg-teal text-white flex items-center justify-center gap-2 disabled:opacity-70"
+                className="w-full py-2.5 rounded-md font-medium text-[14px] bg-navy text-white flex items-center justify-center gap-2 disabled:opacity-70"
               >
                 {saving && <Loader2 size={14} className="animate-spin" />}
                 {saving ? "Saving…" : "Save"}
@@ -543,12 +543,12 @@ function StaffPanel({ currentUserId, onToast }: { currentUserId: string; onToast
   };
 
   const Row = ({ m, indent }: { m: StaffMember; indent?: boolean }) => (
-    <div className={`rounded-lg border border-border p-3.5 bg-cream-card flex items-center justify-between gap-3 ${indent ? "ml-6" : ""}`}>
+    <div className={`rounded-lg border border-border p-3.5 bg-white flex items-center justify-between gap-3 ${indent ? "ml-6" : ""}`}>
       <div className="min-w-0 flex items-center gap-2">
         {m.role === "admin" ? (
-          <ShieldCheck size={15} className="text-teal shrink-0" />
+          <ShieldCheck size={15} className="text-navy shrink-0" />
         ) : m.role === "executive" ? (
-          <Users size={15} className="text-teal shrink-0" />
+          <Users size={15} className="text-navy shrink-0" />
         ) : (
           <Shield size={15} className="text-ink-faint shrink-0" />
         )}
@@ -582,7 +582,7 @@ function StaffPanel({ currentUserId, onToast }: { currentUserId: string; onToast
     <div>
       <button
         onClick={() => setAdding(true)}
-        className="flex items-center gap-1.5 text-[13px] font-medium px-3 py-2 rounded-md bg-teal text-white mb-4 active:scale-[0.97] transition-transform"
+        className="flex items-center gap-1.5 text-[13px] font-medium px-3 py-2 rounded-md bg-navy text-white mb-4 active:scale-[0.97] transition-transform"
       >
         <Plus size={15} /> Add staff account
       </button>
@@ -673,7 +673,7 @@ function StaffPanel({ currentUserId, onToast }: { currentUserId: string; onToast
                   </select>
                 </>
               )}
-              <button type="submit" className="w-full py-2.5 rounded-md font-medium text-[14px] bg-teal text-white">
+              <button type="submit" className="w-full py-2.5 rounded-md font-medium text-[14px] bg-navy text-white">
                 Create account
               </button>
             </motion.form>
@@ -716,7 +716,7 @@ function StaffPanel({ currentUserId, onToast }: { currentUserId: string; onToast
                     </option>
                   ))}
               </select>
-              <button type="submit" className="w-full py-2.5 rounded-md font-medium text-[14px] bg-teal text-white">
+              <button type="submit" className="w-full py-2.5 rounded-md font-medium text-[14px] bg-navy text-white">
                 Save
               </button>
             </motion.form>
@@ -746,7 +746,7 @@ function StaffPanel({ currentUserId, onToast }: { currentUserId: string; onToast
                 new one with them securely.
               </p>
               <input name="newPassword" type="text" placeholder="New password (min. 8 characters)" required minLength={8} className={`${inputClass} mb-4`} />
-              <button type="submit" className="w-full py-2.5 rounded-md font-medium text-[14px] bg-teal text-white">
+              <button type="submit" className="w-full py-2.5 rounded-md font-medium text-[14px] bg-navy text-white">
                 Reset password
               </button>
             </motion.form>
@@ -819,7 +819,7 @@ function TeamPanel({ onToast }: { onToast: (msg: string) => void }) {
     <div>
       <div className="space-y-2">
         {team.map((m) => (
-          <div key={m.userId} className="rounded-lg border border-border p-3.5 bg-cream-card flex items-center justify-between gap-3">
+          <div key={m.userId} className="rounded-lg border border-border p-3.5 bg-white flex items-center justify-between gap-3">
             <div className="min-w-0 flex items-center gap-2">
               <Shield size={15} className="text-ink-faint shrink-0" />
               <div className="text-[14px] font-medium">{m.staffId}</div>
@@ -861,7 +861,7 @@ function TeamPanel({ onToast }: { onToast: (msg: string) => void }) {
                 new one with them securely.
               </p>
               <input name="newPassword" type="text" placeholder="New password (min. 8 characters)" required minLength={8} className={`${inputClass} mb-4`} />
-              <button type="submit" className="w-full py-2.5 rounded-md font-medium text-[14px] bg-teal text-white">
+              <button type="submit" className="w-full py-2.5 rounded-md font-medium text-[14px] bg-navy text-white">
                 Reset password
               </button>
             </motion.form>
@@ -883,8 +883,8 @@ const ACTION_TONE: Record<string, string> = {
   reject_request: "bg-[#F7E3DD] text-[#8A3B22]",
   remove_staff: "bg-[#F7E3DD] text-[#8A3B22]",
   delete_request: "bg-[#F7E3DD] text-[#8A3B22]",
-  create_staff: "bg-teal-pale text-teal",
-  set_staff_role: "bg-teal-pale text-teal",
+  create_staff: "bg-gold-pale text-gold-deep",
+  set_staff_role: "bg-gold-pale text-gold-deep",
   reset_password: "bg-[#F4E7C9] text-[#8A6A12]",
 };
 
@@ -965,7 +965,7 @@ function AuditLogPanel() {
             key={t.key}
             onClick={() => setTimeFilter(t.key)}
             className={`text-[12px] font-medium px-3 py-1.5 rounded-full border transition-colors ${
-              timeFilter === t.key ? "bg-teal text-white border-teal" : "border-border-strong text-ink-faint"
+              timeFilter === t.key ? "bg-navy text-white border-navy" : "border-border-strong text-ink-faint"
             }`}
           >
             {t.label}
@@ -988,7 +988,7 @@ function AuditLogPanel() {
       ) : (
         <div className="space-y-2">
           {filtered.map((entry) => (
-            <div key={entry.id} className="rounded-lg border border-border p-3.5 bg-cream-card flex items-start gap-3">
+            <div key={entry.id} className="rounded-lg border border-border p-3.5 bg-white flex items-start gap-3">
               <ScrollText size={15} className="text-ink-faint shrink-0 mt-0.5" />
               <div className="min-w-0 flex-1">
                 <div className="flex items-center gap-2 flex-wrap mb-1">

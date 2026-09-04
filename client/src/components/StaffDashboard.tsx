@@ -22,7 +22,7 @@ import type { ServiceRequest, WhoAmI } from "../types";
 
 const STAT_TILES = [
   { key: "new", label: "New", icon: Clock3, className: "bg-[#F4E7C9] text-[#8A6A12]" },
-  { key: "active", label: "In progress", icon: Loader2, className: "bg-teal-pale text-teal" },
+  { key: "active", label: "In progress", icon: Loader2, className: "bg-gold-pale text-gold-deep" },
   { key: "completed", label: "Completed", icon: CheckCircle2, className: "bg-[#DCEEDC] text-[#2A6B2F]" },
   { key: "rejected", label: "Not approved", icon: XCircle, className: "bg-[#F7E3DD] text-[#8A3B22]" },
 ] as const;
@@ -174,7 +174,7 @@ export default function StaffDashboard({ onToast }: { onToast: (msg: string) => 
                   : setPinOpen(true)
               }
               className={`text-[12px] font-medium px-3 py-1.5 rounded-full border shrink-0 transition-colors active:scale-[0.97] ${
-                token ? "bg-teal text-white border-teal" : "border-border-strong text-ink-faint"
+                token ? "bg-navy text-white border-navy" : "border-border-strong text-ink-faint"
               }`}
             >
               {token ? "Staff mode on — sign out" : "Staff sign-in"}
@@ -197,7 +197,7 @@ export default function StaffDashboard({ onToast }: { onToast: (msg: string) => 
             <motion.div
               key={key}
               variants={{ hidden: { opacity: 0, y: 10 }, show: { opacity: 1, y: 0 } }}
-              className="rounded-lg border border-border bg-cream-card p-4"
+              className="rounded-lg border border-border bg-white p-4"
             >
               <div className={`w-8 h-8 rounded-md flex items-center justify-center mb-3 ${className}`}>
                 {key === "active" && stats.active > 0 ? (
@@ -242,7 +242,7 @@ export default function StaffDashboard({ onToast }: { onToast: (msg: string) => 
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: Math.min(i, 8) * 0.04, duration: 0.3 }}
               whileHover={{ y: -1, boxShadow: "0 4px 18px rgba(23,36,28,0.08)" }}
-              className="rounded-lg border border-border p-4 bg-cream-card"
+              className="rounded-lg border border-border p-4 bg-white"
             >
               <div className="flex flex-col sm:flex-row sm:items-center gap-3 sm:gap-6">
                 <div className="flex-1 min-w-0">
@@ -285,7 +285,7 @@ export default function StaffDashboard({ onToast }: { onToast: (msg: string) => 
                   <div className="flex gap-2 shrink-0">
                     <button
                       onClick={() => approve(r.id)}
-                      className="text-[13px] font-medium px-3 py-2 rounded-md bg-teal text-white active:scale-[0.97] transition-transform"
+                      className="text-[13px] font-medium px-3 py-2 rounded-md bg-navy text-white active:scale-[0.97] transition-transform"
                     >
                       Approve
                     </button>
@@ -303,7 +303,7 @@ export default function StaffDashboard({ onToast }: { onToast: (msg: string) => 
                 {((r.status === "approved" && r.fee == null) || r.status === "paid") && (
                   <button
                     onClick={() => complete(r.id)}
-                    className="text-[13px] font-medium px-3 py-2 rounded-md shrink-0 bg-teal text-white active:scale-[0.97] transition-transform"
+                    className="text-[13px] font-medium px-3 py-2 rounded-md shrink-0 bg-navy text-white active:scale-[0.97] transition-transform"
                   >
                     Mark complete
                   </button>
@@ -357,7 +357,7 @@ export default function StaffDashboard({ onToast }: { onToast: (msg: string) => 
 
               <div className="text-[14px] mb-4 mt-3">{viewing.summary}</div>
 
-              <div className="rounded-lg border border-border p-3.5 bg-cream-card mb-4">
+              <div className="rounded-lg border border-border p-3.5 bg-white mb-4">
                 <div className="text-[11px] uppercase tracking-wide text-ink-faint mb-2">Customer</div>
                 <div className="grid grid-cols-2 gap-x-4 gap-y-1.5 text-[13px]">
                   <div>
@@ -376,7 +376,7 @@ export default function StaffDashboard({ onToast }: { onToast: (msg: string) => 
               </div>
 
               {Object.keys(viewing.details).length > 0 && (
-                <div className="rounded-lg border border-border p-3.5 bg-cream-card mb-4">
+                <div className="rounded-lg border border-border p-3.5 bg-white mb-4">
                   <div className="text-[11px] uppercase tracking-wide text-ink-faint mb-2">Submitted details</div>
                   <div className="space-y-1.5 text-[13px]">
                     {Object.entries(viewing.details)
@@ -391,7 +391,7 @@ export default function StaffDashboard({ onToast }: { onToast: (msg: string) => 
                 </div>
               )}
 
-              <div className="rounded-lg border border-border p-3.5 bg-cream-card">
+              <div className="rounded-lg border border-border p-3.5 bg-white">
                 <div className="text-[11px] uppercase tracking-wide text-ink-faint mb-2">Timeline</div>
                 <div className="space-y-1 text-[13px]">
                   <div>
@@ -442,7 +442,7 @@ export default function StaffDashboard({ onToast }: { onToast: (msg: string) => 
                 <input name="confirmPassword" type="password" required minLength={8} placeholder="Confirm new password" className={`${inputClass} mb-4`} />
                 <button
                   type="submit"
-                  className="w-full py-2.5 rounded-md font-medium text-[14px] bg-teal text-white active:scale-[0.97] transition-transform"
+                  className="w-full py-2.5 rounded-md font-medium text-[14px] bg-navy text-white active:scale-[0.97] transition-transform"
                 >
                   Update password
                 </button>
@@ -478,7 +478,7 @@ export default function StaffDashboard({ onToast }: { onToast: (msg: string) => 
                 <input name="password" type="password" placeholder="Password" className={`${inputClass} mb-4`} />
                 <button
                   type="submit"
-                  className="w-full py-2.5 rounded-md font-medium text-[14px] bg-teal text-white active:scale-[0.97] transition-transform"
+                  className="w-full py-2.5 rounded-md font-medium text-[14px] bg-navy text-white active:scale-[0.97] transition-transform"
                 >
                   Sign in
                 </button>

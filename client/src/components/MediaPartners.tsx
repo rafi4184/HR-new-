@@ -5,7 +5,7 @@ export default function MediaPartners() {
   const loop = [...MEDIA_PARTNERS, ...MEDIA_PARTNERS];
 
   return (
-    <section className="py-10 bg-cream-card border-y border-border overflow-hidden">
+    <section className="py-8 bg-paper-soft border-y border-border overflow-hidden">
       <div className="max-w-6xl mx-auto px-5 md:px-10 flex flex-col sm:flex-row items-center gap-5 sm:gap-10">
         <span className="text-[12px] font-medium shrink-0 text-ink-faint">
           Our news-presenter trainer appears on

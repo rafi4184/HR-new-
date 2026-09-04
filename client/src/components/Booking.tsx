@@ -1,6 +1,6 @@
 import { forwardRef, useState, type FormEvent } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Plane, Car, Landmark, GraduationCap, Clock, Ticket } from "lucide-react";
+import { PlaneTakeoff, CarFront, Landmark, GraduationCap, Clock, Ticket } from "lucide-react";
 import { Field, IdentityFields, inputClass } from "./ui/Field";
 import { GOV_SERVICES, PROGRAMS, PURPOSES } from "../lib/constants";
 import { submitRequest, ApiError } from "../lib/api";
@@ -12,9 +12,9 @@ export interface AirportPrefill {
   purpose: string;
 }
 
-const TABS: { id: BookingTab; label: string; icon: typeof Plane }[] = [
-  { id: "airport", label: "Airport VIP", icon: Plane },
-  { id: "hotel", label: "Hotel & car", icon: Car },
+const TABS: { id: BookingTab; label: string; icon: typeof PlaneTakeoff }[] = [
+  { id: "airport", label: "Airport VIP", icon: PlaneTakeoff },
+  { id: "hotel", label: "Hotel & car", icon: CarFront },
   { id: "government", label: "Government request", icon: Landmark },
   { id: "programs", label: "Courses & careers", icon: GraduationCap },
 ];
@@ -29,13 +29,30 @@ const Booking = forwardRef<
     airportPrefillKey: number;
     lastTicket: string | null;
     onSubmitted: (ticket: string) => void;
+    lockedTab?: BookingTab;
+    id?: string;
+    heading?: string;
+    subheading?: string;
   }
 >(function Booking(
-  { activeTab, setActiveTab, presetProgram, airportPrefill, airportPrefillKey, lastTicket, onSubmitted },
+  {
+    activeTab,
+    setActiveTab,
+    presetProgram,
+    airportPrefill,
+    airportPrefillKey,
+    lastTicket,
+    onSubmitted,
+    lockedTab,
+    id = "request-service",
+    heading = "Request a Service",
+    subheading = "Pick the service you need. Every request gets a ticket number you can track.",
+  },
   ref
 ) {
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const tab = lockedTab ?? activeTab;
 
   const handleSubmit = async (type: string, e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -58,64 +75,64 @@ const Booking = forwardRef<
     <button
       type="submit"
       disabled={submitting}
-      className="w-full sm:w-auto px-6 py-3 rounded-md font-medium text-[15px] bg-teal text-white active:scale-[0.97] transition-transform disabled:opacity-60 disabled:cursor-not-allowed"
+      className="w-full sm:w-auto px-6 py-3 rounded-lg font-medium text-[15px] bg-gold text-navy hover:bg-gold-deep hover:text-white active:scale-[0.97] transition-colors disabled:opacity-60 disabled:cursor-not-allowed"
     >
       {submitting ? "Submitting…" : label}
     </button>
   );
 
   return (
-    <section id="booking" ref={ref} className="px-5 md:px-10 py-16 bg-cream-card">
+    <section id={id} ref={ref} className="px-5 md:px-10 py-16 md:py-20 bg-paper-soft">
       <div className="max-w-3xl mx-auto">
         <motion.div
           initial={{ opacity: 0, y: 18 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, amount: 0.2 }}
-          transition={{ duration: 0.7 }}
+          transition={{ duration: 0.6 }}
         >
-          <h2 className="font-display text-3xl mb-2">Make a request</h2>
-          <p className="mb-8 text-ink-muted">
-            Pick the desk you need. Every request gets a ticket number you can track.
-          </p>
+          <h2 className="font-display text-3xl md:text-4xl mb-2 text-navy">{heading}</h2>
+          <p className="mb-8 text-ink-muted">{subheading}</p>
         </motion.div>
 
-        <div className="flex gap-2 mb-8 flex-wrap">
-          {TABS.map(({ id, label, icon: Icon }) => (
-            <button
-              key={id}
-              onClick={() => setActiveTab(id)}
-              className={`relative overflow-hidden flex items-center gap-2 px-4 py-2.5 rounded-md text-[14px] font-medium transition-colors ${
-                activeTab === id ? "text-white" : "bg-cream-panel text-ink-soft hover:text-ink"
-              }`}
-            >
-              {activeTab === id && (
-                <motion.span
-                  layoutId="bookingTabIndicator"
-                  className="absolute inset-0 bg-teal rounded-md"
-                  transition={{ type: "spring", stiffness: 400, damping: 32 }}
-                />
-              )}
-              <span className="relative z-10 flex items-center gap-2">
-                <Icon size={15} /> {label}
-              </span>
-            </button>
-          ))}
-        </div>
+        {!lockedTab && (
+          <div className="flex gap-2 mb-8 flex-wrap">
+            {TABS.map(({ id: tabId, label, icon: Icon }) => (
+              <button
+                key={tabId}
+                onClick={() => setActiveTab(tabId)}
+                className={`relative overflow-hidden flex items-center gap-2 px-4 py-2.5 rounded-lg text-[14px] font-medium transition-colors ${
+                  tab === tabId ? "text-white" : "bg-paper-panel text-ink-soft hover:text-navy"
+                }`}
+              >
+                {tab === tabId && (
+                  <motion.span
+                    layoutId="bookingTabIndicator"
+                    className="absolute inset-0 bg-navy rounded-lg"
+                    transition={{ type: "spring", stiffness: 400, damping: 32 }}
+                  />
+                )}
+                <span className="relative z-10 flex items-center gap-2">
+                  <Icon size={15} /> {label}
+                </span>
+              </button>
+            ))}
+          </div>
+        )}
 
         <AnimatePresence mode="wait">
           <motion.div
-            key={`${activeTab}-${airportPrefillKey}`}
+            key={`${tab}-${airportPrefillKey}`}
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.3 }}
-            className="rounded-xl border border-border bg-white p-6 md:p-8"
+            className="rounded-2xl border border-border bg-white shadow-card p-6 md:p-8"
           >
             {error && (
-              <div className="mb-5 text-[13px] rounded-md px-4 py-3 bg-[#F7E3DD] text-[#8A3B22]">{error}</div>
+              <div className="mb-5 text-[13px] rounded-lg px-4 py-3 bg-[#FBEAE5] text-[#9A3412]">{error}</div>
             )}
 
-            {activeTab === "airport" && (
+            {tab === "airport" && (
               <form onSubmit={(e) => handleSubmit("airport", e)}>
                 <div className="grid sm:grid-cols-2 gap-x-5">
                   <IdentityFields defaultName={airportPrefill.name} />
@@ -135,7 +152,7 @@ const Booking = forwardRef<
                       <option>Osmani Int&apos;l, Sylhet</option>
                     </select>
                   </Field>
-                  <Field label="Arrival date" required>
+                  <Field label="Preferred date" required>
                     <input name="date" type="date" required className={inputClass} />
                   </Field>
                   <Field label="Arrival time">
@@ -152,18 +169,18 @@ const Booking = forwardRef<
                     <input name="travelers" type="number" min="1" defaultValue="1" className={inputClass} />
                   </Field>
                 </div>
-                <Field label="Notes for the concierge">
-                  <textarea name="notes" rows={3} className={inputClass} />
+                <Field label="Description of request">
+                  <textarea name="notes" rows={3} placeholder="Anything else we should know" className={inputClass} />
                 </Field>
                 {submitBtn("Submit airport request")}
               </form>
             )}
 
-            {activeTab === "hotel" && (
+            {tab === "hotel" && (
               <form onSubmit={(e) => handleSubmit("hotel", e)}>
                 <div className="grid sm:grid-cols-2 gap-x-5">
                   <IdentityFields />
-                  <Field label="City" required>
+                  <Field label="Location / City" required>
                     <input name="city" required placeholder="Dhaka, Rajshahi..." className={inputClass} />
                   </Field>
                   <Field label="Hotel tier">
@@ -173,7 +190,7 @@ const Booking = forwardRef<
                       <option>Luxury</option>
                     </select>
                   </Field>
-                  <Field label="Check-in" required>
+                  <Field label="Check-in (preferred date)" required>
                     <input name="checkin" type="date" required className={inputClass} />
                   </Field>
                   <Field label="Check-out" required>
@@ -192,23 +209,23 @@ const Booking = forwardRef<
                     <input name="pickup" className={inputClass} />
                   </Field>
                 </div>
-                <Field label="Notes for the concierge">
+                <Field label="Description of request">
                   <textarea name="notes" rows={3} className={inputClass} />
                 </Field>
                 {submitBtn("Submit hotel & car request")}
               </form>
             )}
 
-            {activeTab === "government" && (
+            {tab === "government" && (
               <form onSubmit={(e) => handleSubmit("government", e)}>
-                <div className="mb-5 text-[13px] rounded-md px-4 py-3 flex gap-2 bg-[#F4E7C9] text-[#7A5E13]">
+                <div className="mb-5 text-[13px] rounded-lg px-4 py-3 flex gap-2 bg-gold-pale text-[#7A5E13]">
                   <Clock size={16} className="shrink-0 mt-0.5" />
                   Our desk reviews every case individually and confirms scope directly with you by
                   phone before any work begins.
                 </div>
                 <div className="grid sm:grid-cols-2 gap-x-5">
                   <IdentityFields />
-                  <Field label="Service needed" required>
+                  <Field label="Service required" required>
                     <select name="service" required className={inputClass} defaultValue="">
                       <option value="" disabled>
                         Select a service
@@ -225,14 +242,14 @@ const Booking = forwardRef<
                     </select>
                   </Field>
                 </div>
-                <Field label="Describe the issue" required>
+                <Field label="Description of request" required>
                   <textarea name="description" rows={4} required className={inputClass} />
                 </Field>
                 {submitBtn("Submit government request")}
               </form>
             )}
 
-            {activeTab === "programs" && (
+            {tab === "programs" && (
               <form onSubmit={(e) => handleSubmit("program", e)}>
                 <div className="grid sm:grid-cols-2 gap-x-5">
                   <IdentityFields />
@@ -256,8 +273,8 @@ const Booking = forwardRef<
                     <input name="background" className={inputClass} />
                   </Field>
                 </div>
-                <Field label="What are you hoping to get out of it?">
-                  <textarea name="notes" rows={3} className={inputClass} />
+                <Field label="Description of request">
+                  <textarea name="notes" rows={3} placeholder="What are you hoping to get out of it?" className={inputClass} />
                 </Field>
                 {submitBtn("Submit enrollment request")}
               </form>
@@ -271,10 +288,10 @@ const Booking = forwardRef<
               initial={{ opacity: 0, scale: 0.6 }}
               animate={{ opacity: 1, scale: 1 }}
               transition={{ duration: 0.45, ease: [0.2, 0.9, 0.3, 1.3] }}
-              className="mt-5 rounded-lg px-4 py-3 flex items-center gap-3 bg-teal-pale"
+              className="mt-5 rounded-lg px-4 py-3 flex items-center gap-3 bg-gold-pale"
             >
-              <Ticket size={18} color="#2F5D3F" className="shrink-0" />
-              <div className="text-[13px] text-navy-light">
+              <Ticket size={18} color="#A97C24" className="shrink-0" />
+              <div className="text-[13px] text-navy">
                 Your ticket number is <strong>{lastTicket}</strong>. Save it — you&apos;ll need it
                 with your name and date of birth to track this request.
               </div>

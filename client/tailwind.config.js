@@ -9,50 +9,51 @@ export default {
         mono: ["'IBM Plex Mono'", "ui-monospace", "monospace"],
       },
       colors: {
-        // dark "casework" ground — deep forest-charcoal, replacing the old navy
+        // deep navy — primary text, headings, and the dark footer band
         navy: {
-          DEFAULT: "#17241C",
-          light: "#1C2C22",
-          panel: "#23352A",
+          DEFAULT: "#0F2540",
+          deep: "#0A1B30",
+          soft: "#1B3A5C",
         },
-        // primary accent — institutional forest green
-        teal: {
-          DEFAULT: "#2F5D3F",
-          bright: "#3F7B52",
-          soft: "#5A9468",
-          tint: "#E9EFE3",
-          pale: "#DEE8DA",
-        },
-        // stamp-ink accent — used for primary calls to action and seals
+        // subtle premium gold accent
         gold: {
-          DEFAULT: "#A6402A",
+          DEFAULT: "#C9973B",
+          deep: "#A97C24",
+          pale: "#FBF1DC",
+          tint: "#F4E6C8",
         },
-        // warm case-paper ground
-        cream: {
-          DEFAULT: "#F3EEDF",
-          card: "#FBF7EA",
-          panel: "#ECE3CB",
+        // bright, clean paper ground
+        paper: {
+          DEFAULT: "#FFFFFF",
+          soft: "#F7F9FC",
+          panel: "#F1F4F9",
         },
+        // primary text/heading ink (navy family) and supporting shades
         ink: {
-          DEFAULT: "#1E2A20",
-          soft: "#4C5B49",
-          muted: "#5B6856",
-          faint: "#8A7A52",
+          DEFAULT: "#132A46",
+          soft: "#3B5573",
+          muted: "#5E7690",
+          faint: "#8598AC",
         },
         border: {
-          DEFAULT: "#DBD0AF",
-          strong: "#CBBE96",
+          DEFAULT: "#E5EAF1",
+          strong: "#D3DBE6",
         },
         mist: {
-          DEFAULT: "#B9C2AE",
-          soft: "#9CAF97",
-          faint: "#CBD4C0",
+          DEFAULT: "#C7D3E0",
+          soft: "#AEC0D4",
+          faint: "#DCE4EE",
         },
       },
+      boxShadow: {
+        card: "0 2px 10px rgba(15,37,64,0.06)",
+        "card-hover": "0 18px 40px rgba(15,37,64,0.12)",
+        soft: "0 1px 3px rgba(15,37,64,0.08)",
+      },
       borderRadius: {
-        lg: "0.375rem",
-        xl: "0.5rem",
-        "2xl": "0.75rem",
+        lg: "0.5rem",
+        xl: "0.875rem",
+        "2xl": "1.25rem",
       },
       keyframes: {
         heroUp: {
@@ -76,16 +77,6 @@ export default {
           "0%": { backgroundPosition: "-300px 0" },
           "100%": { backgroundPosition: "300px 0" },
         },
-        shimmerSweep: {
-          "0%": { transform: "translateX(-120%) skewX(-20deg)" },
-          "100%": { transform: "translateX(220%) skewX(-20deg)" },
-        },
-        stampDown: {
-          "0%": { transform: "scale(2.2) rotate(-14deg)", opacity: "0" },
-          "55%": { transform: "scale(0.92) rotate(-8deg)", opacity: "1" },
-          "70%": { transform: "scale(1.05) rotate(-8deg)" },
-          "100%": { transform: "scale(1) rotate(-8deg)", opacity: "1" },
-        },
       },
       animation: {
         heroUp: "heroUp 0.7s cubic-bezier(.2,.8,.2,1) forwards",
@@ -93,8 +84,6 @@ export default {
         drawCheck: "drawCheck 0.5s ease forwards 0.15s",
         popIn: "popIn 0.45s cubic-bezier(.2,.9,.3,1.3) forwards",
         shimmer: "shimmer 1.4s infinite",
-        shimmerSweep: "shimmerSweep 2.6s ease-in-out infinite",
-        stampDown: "stampDown 0.6s cubic-bezier(.2,.8,.2,1) forwards",
       },
     },
   },

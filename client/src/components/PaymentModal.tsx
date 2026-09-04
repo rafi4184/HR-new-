@@ -107,7 +107,7 @@ export default function PaymentModal({
                       disabled={stage === "processing"}
                       onClick={() => setMethod(m)}
                       className={`flex-1 text-[13px] font-medium py-2 rounded-md capitalize transition-colors ${
-                        method === m ? "bg-teal text-white" : "bg-cream-panel text-ink-soft"
+                        method === m ? "bg-navy text-white" : "bg-paper-panel text-ink-soft"
                       }`}
                     >
                       {m === "bkash" ? "bKash" : m === "nagad" ? "Nagad" : "Card"}
@@ -132,13 +132,13 @@ export default function PaymentModal({
                 <button
                   onClick={confirm}
                   disabled={stage === "processing"}
-                  className="w-full py-3 rounded-md font-medium text-[15px] flex items-center justify-center gap-2 bg-gold text-white active:scale-[0.97] transition-transform disabled:opacity-85"
+                  className="w-full py-3 rounded-md font-medium text-[15px] flex items-center justify-center gap-2 bg-gold text-navy hover:bg-gold-deep hover:text-white active:scale-[0.97] transition-colors disabled:opacity-85"
                 >
                   {stage === "processing" ? (
                     <>
                       <motion.span
                         className="inline-block w-4 h-4 rounded-full border-2"
-                        style={{ borderColor: "#17241C transparent #17241C #17241C" }}
+                        style={{ borderColor: "#0F2540 transparent #0F2540 #0F2540" }}
                         animate={{ rotate: 360 }}
                         transition={{ duration: 0.8, repeat: Infinity, ease: "linear" }}
                       />

@@ -47,13 +47,13 @@ const TrackRequest = forwardRef<
         viewport={{ once: true, amount: 0.2 }}
         transition={{ duration: 0.7 }}
       >
-        <h2 className="font-display text-3xl mb-2">Track your request</h2>
+        <h2 className="font-display text-3xl mb-2 text-navy">Track Your Request</h2>
         <p className="mb-8 text-ink-muted">
           Enter your ticket number, full name, and date of birth exactly as submitted.
         </p>
       </motion.div>
 
-      <form onSubmit={runTrack} className="rounded-xl border border-border p-6 md:p-8 mb-6 bg-cream-card">
+      <form onSubmit={runTrack} className="rounded-2xl border border-border p-6 md:p-8 mb-6 bg-white shadow-card">
         <div className="grid sm:grid-cols-3 gap-x-5">
           <Field label="Ticket number" required>
             <input name="ticket" required placeholder="HRM-100..." className={inputClass} />
@@ -68,7 +68,7 @@ const TrackRequest = forwardRef<
         <button
           type="submit"
           disabled={loading}
-          className="flex items-center gap-2 px-6 py-3 rounded-md font-medium text-[15px] bg-teal text-white active:scale-[0.97] transition-transform disabled:opacity-60"
+          className="flex items-center gap-2 px-6 py-3 rounded-md font-medium text-[15px] bg-navy text-white active:scale-[0.97] transition-transform disabled:opacity-60"
         >
           <Search size={16} /> Check status
         </button>
@@ -134,7 +134,7 @@ const TrackRequest = forwardRef<
             {result.type === "Government Request" && result.status === "approved" && result.fee != null && (
               <button
                 onClick={() => onPay(result)}
-                className="mt-5 flex items-center gap-2 text-[13px] font-medium px-4 py-2.5 rounded-md bg-teal text-white active:scale-[0.97] transition-transform"
+                className="mt-5 flex items-center gap-2 text-[13px] font-medium px-4 py-2.5 rounded-md bg-navy text-white active:scale-[0.97] transition-transform"
               >
                 <CreditCard size={14} /> Pay ৳{result.fee.toLocaleString()}
               </button>

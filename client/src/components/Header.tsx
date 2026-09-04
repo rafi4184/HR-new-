@@ -1,140 +1,183 @@
-import { useEffect, useState } from "react";
-import { motion, useScroll, useSpring, AnimatePresence } from "framer-motion";
-import { Phone, Menu, X } from "lucide-react";
+import { useEffect, useRef, useState } from "react";
+import { Link, NavLink } from "react-router-dom";
+import { motion, AnimatePresence } from "framer-motion";
+import { ChevronDown, Menu, X } from "lucide-react";
 import LogoMark from "./ui/Logo";
-import type { BookingTab } from "../types";
+import { SERVICES } from "../lib/services";
 
-const LINKS = [
-  { label: "Services", href: "#services" },
-  { label: "About", href: "#about" },
-  { label: "Why Us", href: "#process" },
-  { label: "Contact", href: "#contact" },
-];
-
-export default function Header({
-  onBook,
-  onTrack,
-}: {
-  onBook: (tab: BookingTab, program?: string) => void;
-  onTrack: () => void;
-}) {
-  const [open, setOpen] = useState(false);
+export default function Header() {
+  const [mobileOpen, setMobileOpen] = useState(false);
+  const [mobileServicesOpen, setMobileServicesOpen] = useState(false);
+  const [servicesOpen, setServicesOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
-  const { scrollYProgress } = useScroll();
-  const progress = useSpring(scrollYProgress, { stiffness: 120, damping: 25, restDelta: 0.001 });
+  const closeTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 40);
+    const onScroll = () => setScrolled(window.scrollY > 12);
     onScroll();
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
+  const openServices = () => {
+    if (closeTimer.current) clearTimeout(closeTimer.current);
+    setServicesOpen(true);
+  };
+  const scheduleCloseServices = () => {
+    closeTimer.current = setTimeout(() => setServicesOpen(false), 150);
+  };
+
+  const linkClass = ({ isActive }: { isActive: boolean }) =>
+    `text-[14px] font-medium transition-colors ${isActive ? "text-navy" : "text-ink-soft hover:text-navy"}`;
+
   return (
     <header
-      className={`fixed top-0 inset-x-0 z-40 transition-all duration-500 ${
-        scrolled ? "bg-navy/85 backdrop-blur-md border-b border-white/10" : "bg-transparent border-b border-transparent"
-      }`}
+      className={`sticky top-0 inset-x-0 z-40 bg-white transition-shadow ${scrolled ? "shadow-soft" : ""} border-b border-border`}
     >
-      <div className="h-[2px] w-full bg-white/[0.05]">
-        <motion.div className="h-full bg-gradient-to-r from-teal to-gold origin-left" style={{ scaleX: progress }} />
-      </div>
-      <div
-        className={`flex items-center justify-between px-5 md:px-10 transition-all duration-500 ${
-          scrolled ? "py-3" : "py-5"
-        }`}
-      >
-        <a href="#top" className="flex items-center gap-2.5">
-          <motion.div
-            className="shrink-0"
-            whileHover={{ rotate: 8, scale: 1.08 }}
-            transition={{ type: "spring", stiffness: 300, damping: 12 }}
-          >
-            <LogoMark size={36} />
-          </motion.div>
+      <div className="flex items-center justify-between px-5 md:px-10 py-3.5 max-w-7xl mx-auto">
+        <Link to="/" className="flex items-center gap-2.5 shrink-0" onClick={() => setMobileOpen(false)}>
+          <LogoMark size={34} />
           <div>
-            <div className="text-white font-display text-[17px] leading-none">HR — The Mediator</div>
-            <div className="text-[10px] leading-none mt-1 tracking-wide text-mist-soft">Private concierge desk</div>
+            <div className="text-navy font-display text-[17px] leading-none">HR — The Mediator</div>
+            <div className="text-[10px] leading-none mt-1 tracking-wide text-ink-faint">
+              Trusted Service &amp; Support Partner
+            </div>
           </div>
-        </a>
+        </Link>
 
-        <nav className="hidden md:flex items-center gap-8 text-[13px] tracking-wide text-mist-faint">
-          {LINKS.map((l) => (
-            <a key={l.label} href={l.href} className="group relative py-1 hover:text-white transition-colors">
-              {l.label}
-              <span className="absolute left-0 -bottom-0.5 h-px w-full origin-left scale-x-0 bg-gold transition-transform duration-300 group-hover:scale-x-100" />
-            </a>
-          ))}
-          <button onClick={onTrack} className="group relative py-1 hover:text-white transition-colors">
-            My Request
-            <span className="absolute left-0 -bottom-0.5 h-px w-full origin-left scale-x-0 bg-gold transition-transform duration-300 group-hover:scale-x-100" />
-          </button>
+        <nav className="hidden lg:flex items-center gap-7">
+          <NavLink to="/" className={linkClass} end>
+            Home
+          </NavLink>
+
+          <div className="relative" onMouseEnter={openServices} onMouseLeave={scheduleCloseServices}>
+            <button
+              className="flex items-center gap-1 text-[14px] font-medium text-ink-soft hover:text-navy transition-colors"
+              onClick={() => setServicesOpen((v) => !v)}
+              aria-expanded={servicesOpen}
+            >
+              Services <ChevronDown size={14} className={`transition-transform ${servicesOpen ? "rotate-180" : ""}`} />
+            </button>
+            <AnimatePresence>
+              {servicesOpen && (
+                <motion.div
+                  initial={{ opacity: 0, y: 8 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: 8 }}
+                  transition={{ duration: 0.15 }}
+                  className="absolute left-1/2 -translate-x-1/2 top-full pt-3 w-72"
+                >
+                  <div className="rounded-xl border border-border bg-white shadow-card-hover p-2">
+                    {SERVICES.map((s) => (
+                      <Link
+                        key={s.id}
+                        to={s.path}
+                        onClick={() => setServicesOpen(false)}
+                        className="flex items-start gap-3 px-3 py-2.5 rounded-lg hover:bg-paper-soft transition-colors"
+                      >
+                        <s.icon size={18} className="text-gold-deep mt-0.5 shrink-0" />
+                        <div>
+                          <div className="text-[14px] font-medium text-navy">{s.navLabel}</div>
+                          <div className="text-[12px] text-ink-faint line-clamp-1">{s.summary}</div>
+                        </div>
+                      </Link>
+                    ))}
+                  </div>
+                </motion.div>
+              )}
+            </AnimatePresence>
+          </div>
+
+          <NavLink to="/about-us" className={linkClass}>
+            About Us
+          </NavLink>
+          <NavLink to="/contact" className={linkClass}>
+            Contact
+          </NavLink>
         </nav>
 
-        <div className="flex items-center gap-2">
-          <motion.button
-            onClick={() => onBook("airport")}
-            className="hidden sm:flex items-center gap-2 text-[12px] tracking-wide uppercase px-4 py-2.5 rounded-full font-medium bg-gold text-white active:scale-[0.97]"
-            whileHover={{ y: -1, boxShadow: "0 10px 26px rgba(166,64,42,0.35)" }}
+        <div className="hidden lg:flex items-center gap-3">
+          <Link
+            to="/#track"
+            className="text-[13px] font-medium text-ink-faint hover:text-navy transition-colors"
           >
-            <Phone size={13} /> Speak With Our Desk
-          </motion.button>
-          <button
-            onClick={() => setOpen((v) => !v)}
-            className="md:hidden w-9 h-9 rounded-full flex items-center justify-center bg-white/[0.08] transition-colors hover:bg-white/[0.14]"
-            aria-label="Menu"
+            Track Request
+          </Link>
+          <Link
+            to="/#request-service"
+            className="text-[13px] font-medium tracking-wide px-5 py-2.5 rounded-full bg-gold text-navy hover:bg-gold-deep hover:text-white transition-colors"
           >
-            {open ? <X size={18} color="#fff" /> : <Menu size={18} color="#fff" />}
-          </button>
+            Request a Service
+          </Link>
         </div>
+
+        <button
+          onClick={() => setMobileOpen((v) => !v)}
+          className="lg:hidden w-9 h-9 rounded-full flex items-center justify-center text-navy"
+          aria-label="Menu"
+        >
+          {mobileOpen ? <X size={20} /> : <Menu size={20} />}
+        </button>
       </div>
 
       <AnimatePresence>
-        {open && (
+        {mobileOpen && (
           <motion.nav
-            initial={{ opacity: 0, clipPath: "inset(0 0 100% 0)" }}
-            animate={{ opacity: 1, clipPath: "inset(0 0 0% 0)" }}
-            exit={{ opacity: 0, clipPath: "inset(0 0 100% 0)" }}
-            transition={{ duration: 0.4, ease: [0.2, 0.8, 0.2, 1] }}
-            className="md:hidden fixed inset-0 top-0 h-[100svh] bg-navy flex flex-col justify-center px-8 gap-1"
+            initial={{ height: 0, opacity: 0 }}
+            animate={{ height: "auto", opacity: 1 }}
+            exit={{ height: 0, opacity: 0 }}
+            transition={{ duration: 0.25 }}
+            className="lg:hidden border-t border-border bg-white overflow-hidden"
           >
-            {LINKS.map((l, i) => (
-              <motion.a
-                key={l.label}
-                href={l.href}
-                onClick={() => setOpen(false)}
-                initial={{ opacity: 0, x: -16 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ delay: 0.1 + i * 0.06 }}
-                className="font-display text-white text-4xl py-3 border-b border-white/10"
+            <div className="px-5 py-4 flex flex-col gap-1">
+              <Link to="/" onClick={() => setMobileOpen(false)} className="py-2.5 text-[15px] font-medium text-navy">
+                Home
+              </Link>
+              <button
+                onClick={() => setMobileServicesOpen((v) => !v)}
+                className="py-2.5 flex items-center justify-between text-[15px] font-medium text-navy"
               >
-                {l.label}
-              </motion.a>
-            ))}
-            <motion.button
-              initial={{ opacity: 0, x: -16 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ delay: 0.1 + LINKS.length * 0.06 }}
-              onClick={() => {
-                setOpen(false);
-                onTrack();
-              }}
-              className="font-display text-white text-4xl py-3 border-b border-white/10 text-left"
-            >
-              My Request
-            </motion.button>
-            <motion.button
-              initial={{ opacity: 0, y: 12 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.1 + (LINKS.length + 1) * 0.06 }}
-              onClick={() => {
-                setOpen(false);
-                onBook("airport");
-              }}
-              className="mt-8 flex items-center justify-center gap-2 text-[13px] tracking-wide uppercase px-6 py-4 rounded-full font-medium bg-gold text-white active:scale-[0.97]"
-            >
-              <Phone size={14} /> Speak With Our Desk
-            </motion.button>
+                Services
+                <ChevronDown size={16} className={`transition-transform ${mobileServicesOpen ? "rotate-180" : ""}`} />
+              </button>
+              <AnimatePresence>
+                {mobileServicesOpen && (
+                  <motion.div
+                    initial={{ height: 0, opacity: 0 }}
+                    animate={{ height: "auto", opacity: 1 }}
+                    exit={{ height: 0, opacity: 0 }}
+                    className="pl-3 flex flex-col overflow-hidden"
+                  >
+                    {SERVICES.map((s) => (
+                      <Link
+                        key={s.id}
+                        to={s.path}
+                        onClick={() => setMobileOpen(false)}
+                        className="py-2 text-[14px] text-ink-soft"
+                      >
+                        {s.navLabel}
+                      </Link>
+                    ))}
+                  </motion.div>
+                )}
+              </AnimatePresence>
+              <Link to="/about-us" onClick={() => setMobileOpen(false)} className="py-2.5 text-[15px] font-medium text-navy">
+                About Us
+              </Link>
+              <Link to="/contact" onClick={() => setMobileOpen(false)} className="py-2.5 text-[15px] font-medium text-navy">
+                Contact
+              </Link>
+              <Link to="/#track" onClick={() => setMobileOpen(false)} className="py-2.5 text-[15px] font-medium text-ink-soft">
+                Track Request
+              </Link>
+              <Link
+                to="/#request-service"
+                onClick={() => setMobileOpen(false)}
+                className="mt-3 text-center text-[14px] font-medium px-5 py-3 rounded-full bg-gold text-navy"
+              >
+                Request a Service
+              </Link>
+            </div>
           </motion.nav>
         )}
       </AnimatePresence>

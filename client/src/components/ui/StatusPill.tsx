@@ -3,8 +3,8 @@ import type { RequestStatus } from "../../types";
 
 const MAP: Record<string, { text: string; className: string }> = {
   received: { text: "Received — pending review", className: "bg-[#F4E7C9] text-[#8A6A12]" },
-  approved: { text: "Approved", className: "bg-teal-pale text-teal" },
-  approved_fee_due: { text: "Approved — fee due", className: "bg-teal-pale text-teal" },
+  approved: { text: "Approved", className: "bg-gold-pale text-gold-deep" },
+  approved_fee_due: { text: "Approved — fee due", className: "bg-gold-pale text-gold-deep" },
   rejected: { text: "Not approved", className: "bg-[#F7E3DD] text-[#8A3B22]" },
   paid: { text: "Paid — in progress", className: "bg-[#F4E7C9] text-[#8A6A12]" },
   completed: { text: "Completed", className: "bg-[#DCEEDC] text-[#2A6B2F]" },

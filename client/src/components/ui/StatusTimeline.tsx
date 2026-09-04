@@ -23,7 +23,7 @@ export default function StatusTimeline({
       <div className="relative flex justify-between sm:hidden gap-4">
         <div className="absolute left-[13px] top-2 bottom-2 w-px bg-border" />
         <motion.div
-          className="absolute left-[13px] top-2 w-px bg-teal origin-top"
+          className="absolute left-[13px] top-2 w-px bg-navy origin-top"
           style={{ height: `${progress * 100}%` }}
           initial={{ height: 0 }}
           animate={{ height: `${progress * 100}%` }}
@@ -39,7 +39,7 @@ export default function StatusTimeline({
       <div className="relative hidden sm:flex items-start">
         <div className="absolute left-0 right-0 top-[13px] h-px bg-border" />
         <motion.div
-          className="absolute left-0 top-[13px] h-px bg-teal origin-left"
+          className="absolute left-0 top-[13px] h-px bg-navy origin-left"
           initial={{ width: 0 }}
           animate={{ width: `${progress * 100}%` }}
           transition={{ duration: 0.8, ease: [0.2, 0.8, 0.2, 1] }}
@@ -67,7 +67,7 @@ function Stage({
     <div className="relative z-10 shrink-0">
       {state === "active" && (
         <motion.span
-          className="absolute -inset-1.5 rounded-full bg-teal/25"
+          className="absolute -inset-1.5 rounded-full bg-navy/25"
           animate={{ scale: [1, 1.6, 1], opacity: [0.6, 0, 0.6] }}
           transition={{ duration: 1.8, repeat: Infinity, ease: "easeInOut" }}
         />
@@ -75,16 +75,16 @@ function Stage({
       <div
         className={`relative w-[26px] h-[26px] rounded-full flex items-center justify-center border-2 ${
           state === "done"
-            ? "bg-teal border-teal"
+            ? "bg-navy border-navy"
             : state === "active"
-              ? "bg-cream-card border-teal"
-              : "bg-cream-card border-border"
+              ? "bg-white border-navy"
+              : "bg-white border-border"
         }`}
       >
         {state === "done" ? (
           <Check size={13} color="#fff" />
         ) : (
-          <span className={`w-2 h-2 rounded-full ${state === "active" ? "bg-teal" : "bg-border-strong"}`} />
+          <span className={`w-2 h-2 rounded-full ${state === "active" ? "bg-navy" : "bg-border-strong"}`} />
         )}
       </div>
     </div>
