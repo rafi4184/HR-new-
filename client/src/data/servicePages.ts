@@ -72,12 +72,12 @@ export const SERVICE_PAGES: Record<string, ServicePageData> = {
     path: "/airport-vip",
     navLabel: "Airport VIP",
     title: "Airport VIP Reception",
-    metaTitle: "Airport VIP Service Bangladesh | HR — The Mediator",
+    metaTitle: "Dhaka Airport Pickup & VIP Service | Bangladesh | HR — The Mediator",
     metaDescription:
-      "Airport VIP meet & greet, arrival and departure assistance in Bangladesh. Fast-track support, baggage assistance and passenger coordination at Dhaka and other Bangladesh airports.",
-    h1: "Airport VIP Reception in Bangladesh",
+      "Dhaka airport pickup and VIP meet & greet, arrival and departure assistance across Bangladesh. Fast-track support, baggage assistance and passenger coordination at Dhaka and other Bangladesh airports.",
+    h1: "Airport VIP Reception & Pickup in Dhaka, Bangladesh",
     intro:
-      "A meet-and-greet officer at the aircraft door, fast-track immigration support, baggage assistance, and a car already waiting at the curb. Our airport VIP service is built for travellers, families and business visitors who want a smooth, well-coordinated arrival or departure anywhere in Bangladesh.",
+      "A meet-and-greet officer at the aircraft door, fast-track immigration support, baggage assistance, and a car already waiting at the curb for your Dhaka airport pickup. Our airport VIP service is built for travellers, families and business visitors who want a smooth, well-coordinated arrival or departure anywhere in Bangladesh.",
     whoFor: [
       "International visitors arriving in Dhaka, Chattogram or Sylhet",
       "Bangladeshi families welcoming relatives home",
@@ -367,12 +367,12 @@ export const SERVICE_PAGES: Record<string, ServicePageData> = {
     path: "/study-work-gulf",
     navLabel: "International Careers — Study & Work in the Gulf",
     title: "International Careers — Study & Work in the Gulf",
-    metaTitle: "Study and Work in the Gulf from Bangladesh | Gulf Jobs & University Admission | HR — The Mediator",
+    metaTitle: "Gulf & Middle East Jobs + Study Abroad from Bangladesh | HR — The Mediator",
     metaDescription:
-      "Study-abroad guidance and Gulf employment support for candidates from Bangladesh — university admission, career placement, visa and pre-departure assistance.",
-    h1: "Study & Work in the Gulf — International Careers",
+      "Employment in the Gulf and Middle East, and study abroad guidance, for candidates from Dhaka, Rajshahi and across Bangladesh — university admission, career placement, visa and pre-departure assistance.",
+    h1: "Gulf & Middle East Jobs and Study Abroad — International Careers",
     intro:
-      "Verified placement, not a broker's promise. Manpower export and recruitment support for the UAE, Qatar, Saudi Arabia and wider Gulf markets, plus study-abroad guidance for students, drawing on our licensed staffing and outsourcing practice.",
+      "Verified placement, not a broker's promise. Manpower export and recruitment support for jobs in the UAE, Qatar, Saudi Arabia and the wider Gulf and Middle East, plus study-abroad guidance for students from Dhaka, Rajshahi and across Bangladesh, drawing on our licensed staffing and outsourcing practice.",
     whoFor: [
       "Students seeking university admission or study-abroad guidance",
       "Jobseekers pursuing Gulf employment opportunities",

@@ -445,10 +445,13 @@ export const servicePagesT: Record<
   }
 > = {
   "airport-vip": {
-    h1: { en: "Airport VIP Reception in Bangladesh", bn: "বাংলাদেশে এয়ারপোর্ট ভিআইপি রিসেপশন" },
+    h1: {
+      en: "Airport VIP Reception & Pickup in Dhaka, Bangladesh",
+      bn: "ঢাকা, বাংলাদেশে এয়ারপোর্ট ভিআইপি রিসেপশন ও পিকআপ",
+    },
     intro: {
-      en: "A meet-and-greet officer at the aircraft door, fast-track immigration support, baggage assistance, and a car already waiting at the curb. Our airport VIP service is built for travellers, families and business visitors who want a smooth, well-coordinated arrival or departure anywhere in Bangladesh.",
-      bn: "বিমানের দরজায় একজন মিট-অ্যান্ড-গ্রিট কর্মকর্তা, ফাস্ট-ট্র্যাক ইমিগ্রেশন সহায়তা, লাগেজ সহায়তা এবং কার্বেই অপেক্ষমান একটি গাড়ি। আমাদের এয়ারপোর্ট ভিআইপি সেবা তৈরি করা হয়েছে ভ্রমণকারী, পরিবার ও ব্যবসায়িক অতিথিদের জন্য, যারা বাংলাদেশের যেকোনো স্থানে একটি মসৃণ, সুসমন্বিত আগমন বা প্রস্থান চান।",
+      en: "A meet-and-greet officer at the aircraft door, fast-track immigration support, baggage assistance, and a car already waiting at the curb for your Dhaka airport pickup. Our airport VIP service is built for travellers, families and business visitors who want a smooth, well-coordinated arrival or departure anywhere in Bangladesh.",
+      bn: "বিমানের দরজায় একজন মিট-অ্যান্ড-গ্রিট কর্মকর্তা, ফাস্ট-ট্র্যাক ইমিগ্রেশন সহায়তা, লাগেজ সহায়তা এবং আপনার ঢাকা এয়ারপোর্ট পিকআপের জন্য কার্বেই অপেক্ষমান একটি গাড়ি। আমাদের এয়ারপোর্ট ভিআইপি সেবা তৈরি করা হয়েছে ভ্রমণকারী, পরিবার ও ব্যবসায়িক অতিথিদের জন্য, যারা বাংলাদেশের যেকোনো স্থানে একটি মসৃণ, সুসমন্বিত আগমন বা প্রস্থান চান।",
     },
     whoFor: [
       { en: "International visitors arriving in Dhaka, Chattogram or Sylhet", bn: "ঢাকা, চট্টগ্রাম বা সিলেটে আগমনকারী আন্তর্জাতিক অতিথি" },
@@ -644,10 +647,13 @@ export const servicePagesT: Record<
   },
 
   "study-work-gulf": {
-    h1: { en: "Study & Work in the Gulf — International Careers", bn: "গালফে পড়াশোনা ও কাজ — আন্তর্জাতিক ক্যারিয়ার" },
+    h1: {
+      en: "Gulf & Middle East Jobs and Study Abroad — International Careers",
+      bn: "গালফ ও মধ্যপ্রাচ্যে চাকরি এবং বিদেশে পড়াশোনা — আন্তর্জাতিক ক্যারিয়ার",
+    },
     intro: {
-      en: "Verified placement, not a broker's promise. Manpower export and recruitment support for the UAE, Qatar, Saudi Arabia and wider Gulf markets, plus study-abroad guidance for students, drawing on our licensed staffing and outsourcing practice.",
-      bn: "যাচাইকৃত প্লেসমেন্ট, কোনো দালালের প্রতিশ্রুতি নয়। ইউএই, কাতার, সৌদি আরব ও বিস্তৃত গালফ বাজারের জন্য জনশক্তি রপ্তানি ও নিয়োগ সহায়তা, পাশাপাশি শিক্ষার্থীদের জন্য বিদেশে পড়াশোনার দিকনির্দেশনা, আমাদের লাইসেন্সপ্রাপ্ত স্টাফিং ও আউটসোর্সিং প্র্যাকটিসের অভিজ্ঞতায়।",
+      en: "Verified placement, not a broker's promise. Manpower export and recruitment support for jobs in the UAE, Qatar, Saudi Arabia and the wider Gulf and Middle East, plus study-abroad guidance for students from Dhaka, Rajshahi and across Bangladesh, drawing on our licensed staffing and outsourcing practice.",
+      bn: "যাচাইকৃত প্লেসমেন্ট, কোনো দালালের প্রতিশ্রুতি নয়। ইউএই, কাতার, সৌদি আরব ও বিস্তৃত গালফ এবং মধ্যপ্রাচ্যে চাকরির জন্য জনশক্তি রপ্তানি ও নিয়োগ সহায়তা, পাশাপাশি ঢাকা, রাজশাহী ও সমগ্র বাংলাদেশের শিক্ষার্থীদের জন্য বিদেশে পড়াশোনার দিকনির্দেশনা, আমাদের লাইসেন্সপ্রাপ্ত স্টাফিং ও আউটসোর্সিং প্র্যাকটিসের অভিজ্ঞতায়।",
     },
     whoFor: [
       { en: "Students seeking university admission or study-abroad guidance", bn: "বিশ্ববিদ্যালয় ভর্তি বা বিদেশে পড়াশোনার দিকনির্দেশনা খুঁজছেন এমন শিক্ষার্থী" },

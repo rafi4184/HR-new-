@@ -94,6 +94,7 @@ export function useSeo(opts: SeoOptions) {
             "@type": "PostalAddress",
             streetAddress: "The Meditor, 4th floor, Green Chayera Manzil, Greater Road Mosque, Kadirganj",
             addressLocality: "Rajshahi",
+            postalCode: "6000",
             addressCountry: "BD",
           },
         },
