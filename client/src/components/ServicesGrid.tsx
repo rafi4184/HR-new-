@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { ArrowRight, Plane, Landmark, Users, GraduationCap } from "lucide-react";
 import Reveal from "./ui/Reveal";
+import AmbientGlow from "./ui/AmbientGlow";
 import { SERVICES } from "../lib/services";
 import { useDict, useT } from "../lib/i18n";
 import { servicesGrid, servicesList } from "../lib/translations";
@@ -21,7 +22,9 @@ export default function ServicesGrid() {
   const activeMatches = INTENTS.find((i) => i.id === intent)?.matches as readonly string[] | undefined;
 
   return (
-    <section id="services" className="px-5 md:px-10 py-16 md:py-20 max-w-7xl mx-auto">
+    <section id="services" className="relative px-5 md:px-10 py-16 md:py-20 max-w-7xl mx-auto overflow-hidden">
+      <AmbientGlow variant="light" />
+      <div className="relative">
       <Reveal className="text-center max-w-2xl mx-auto mb-10">
         <div className="text-[12px] font-medium mb-3 tracking-[0.2em] uppercase text-gold-deep">{T.eyebrow}</div>
         <h2 className="font-display text-3xl md:text-4xl text-navy">{T.h2}</h2>
@@ -94,6 +97,7 @@ export default function ServicesGrid() {
           </motion.p>
         )}
       </AnimatePresence>
+      </div>
     </section>
   );
 }

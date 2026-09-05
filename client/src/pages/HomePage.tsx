@@ -70,7 +70,6 @@ export default function HomePage({ onToast }: { onToast: (msg: string) => void }
   return (
     <div>
       <Hero />
-      <ServicesGrid />
       <Booking
         ref={bookingRef}
         activeTab={activeTab}
@@ -81,6 +80,7 @@ export default function HomePage({ onToast }: { onToast: (msg: string) => void }
         lastTicket={lastTicket}
         onSubmitted={handleSubmitted}
       />
+      <ServicesGrid />
       <TrackRequest ref={trackRef} loading={trackLoading} result={trackResult} onSubmit={runTrack} onPay={setPayModal} />
       <PlatformHub />
       <HowItWorks />

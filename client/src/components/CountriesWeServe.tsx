@@ -1,4 +1,5 @@
 import Reveal from "./ui/Reveal";
+import AmbientGlow from "./ui/AmbientGlow";
 import { useDict, useLanguage } from "../lib/i18n";
 import { countriesWeServe } from "../lib/translations";
 
@@ -11,8 +12,9 @@ export default function CountriesWeServe() {
   const { lang } = useLanguage();
 
   return (
-    <section className="px-5 md:px-10 py-16 md:py-20 bg-white">
-      <div className="max-w-5xl mx-auto">
+    <section className="relative px-5 md:px-10 py-16 md:py-20 bg-white overflow-hidden">
+      <AmbientGlow variant="light" />
+      <div className="relative max-w-5xl mx-auto">
         <Reveal className="text-center max-w-2xl mx-auto mb-10">
           <div className="text-[12px] font-medium mb-3 tracking-[0.2em] uppercase text-gold-deep">{T.eyebrow}</div>
           <h2 className="font-display text-3xl md:text-4xl text-navy mb-3">{T.h2}</h2>

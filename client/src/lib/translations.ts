@@ -206,11 +206,11 @@ export const whoWeHelp = {
 };
 
 export const coursesCareersTeaser = {
-  eyebrow: { en: "Courses & Careers", bn: "কোর্স ও ক্যারিয়ার" },
-  h2: { en: "Two career tracks, one team behind you", bn: "দুটি ক্যারিয়ার পথ, একই দল আপনার পাশে" },
+  eyebrow: { en: "Courses & International Careers", bn: "কোর্স ও আন্তর্জাতিক ক্যারিয়ার" },
+  h2: { en: "Three paths, one team behind you", bn: "তিনটি পথ, একই দল আপনার পাশে" },
   subtitle: {
-    en: "Professional training and international placement support — not just media training.",
-    bn: "পেশাদার প্রশিক্ষণ ও আন্তর্জাতিক প্লেসমেন্ট সহায়তা — শুধু মিডিয়া প্রশিক্ষণ নয়।",
+    en: "Professional training, study-abroad guidance, and Gulf/Middle East job placement — coordinated by one desk in Bangladesh.",
+    bn: "পেশাদার প্রশিক্ষণ, বিদেশে পড়াশোনার নির্দেশনা এবং গালফ/মধ্যপ্রাচ্যে চাকরি প্রাপ্তি — বাংলাদেশে একটি ডেস্ক দ্বারা সমন্বিত।",
   },
   trackOneLabel: { en: "Track One", bn: "ট্র্যাক ১" },
   trackOneTitle: { en: "Media & Public Speaking Academy", bn: "মিডিয়া ও পাবলিক স্পিকিং একাডেমি" },
@@ -220,12 +220,19 @@ export const coursesCareersTeaser = {
   },
   trackOneCta: { en: "Explore Academy", bn: "একাডেমি দেখুন" },
   trackTwoLabel: { en: "Track Two", bn: "ট্র্যাক ২" },
-  trackTwoTitle: { en: "International Careers — Study & Work in the Gulf", bn: "আন্তর্জাতিক ক্যারিয়ার — গালফে পড়াশোনা ও কাজ" },
+  trackTwoTitle: { en: "Study Abroad", bn: "বিদেশে পড়াশোনা" },
   trackTwoBody: {
-    en: "Overseas university admission, study-abroad guidance, Gulf employment opportunities, career placement, and visa/pre-departure support.",
-    bn: "বিদেশে বিশ্ববিদ্যালয় ভর্তি, বিদেশে পড়াশোনার দিকনির্দেশনা, গালফ কর্মসংস্থানের সুযোগ, ক্যারিয়ার প্লেসমেন্ট এবং ভিসা/প্রস্থান-পূর্ব সহায়তা।",
+    en: "Overseas university admission support, eligibility guidance, and visa/pre-departure assistance for students pursuing education abroad.",
+    bn: "বিদেশে বিশ্ববিদ্যালয় ভর্তি সহায়তা, যোগ্যতা যাচাই নির্দেশনা এবং বিদেশে পড়াশোনার জন্য ভিসা/প্রস্থান-পূর্ব সহায়তা।",
   },
-  trackTwoCta: { en: "Explore International Careers", bn: "আন্তর্জাতিক ক্যারিয়ার দেখুন" },
+  trackTwoCta: { en: "Explore Study Abroad", bn: "বিদেশে পড়াশোনা দেখুন" },
+  trackThreeLabel: { en: "Track Three", bn: "ট্র্যাক ৩" },
+  trackThreeTitle: { en: "Jobs in Gulf & Middle East", bn: "গালফ ও মধ্যপ্রাচ্যে চাকরি" },
+  trackThreeBody: {
+    en: "Gulf and Middle East employment opportunities, documentation support, and pre-departure assistance for jobseekers from Bangladesh.",
+    bn: "গালফ ও মধ্যপ্রাচ্যে কর্মসংস্থানের সুযোগ, কাগজপত্র সহায়তা এবং বাংলাদেশ থেকে চাকরিপ্রার্থীদের জন্য প্রস্থান-পূর্ব সহায়তা।",
+  },
+  trackThreeCta: { en: "Explore Gulf & Middle East Jobs", bn: "গালফ ও মধ্যপ্রাচ্যের চাকরি দেখুন" },
 };
 
 export const statsRow = {
