@@ -25,6 +25,14 @@ export const hero = {
   requestService: { en: "Request a Service", bn: "সেবার জন্য অনুরোধ করুন" },
 };
 
+export const heroOrbit = {
+  airport: { en: "Airport VIP Reception", bn: "এয়ারপোর্ট ভিআইপি রিসেপশন" },
+  government: { en: "Government Request", bn: "সরকারি কাজে সহায়তা" },
+  manpower: { en: "Manpower & Security", bn: "জনবল ও নিরাপত্তা" },
+  courses: { en: "Courses & Careers", bn: "কোর্স ও ক্যারিয়ার" },
+  scrollCue: { en: "Scroll to explore services", bn: "সেবাসমূহ দেখতে স্ক্রল করুন" },
+};
+
 export const servicesGrid = {
   eyebrow: { en: "What we offer", bn: "আমরা যা প্রদান করি" },
   h2: { en: "What Do You Need Help With?", bn: "আপনার কী সহায়তা প্রয়োজন?" },

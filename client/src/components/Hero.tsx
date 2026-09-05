@@ -1,22 +1,24 @@
 import { useRef } from "react";
+import { Link } from "react-router-dom";
 import { motion, useScroll, useTransform } from "framer-motion";
 import { ArrowRight, ChevronDown, PlaneTakeoff, Landmark, GraduationCap, ShieldCheck } from "lucide-react";
 import MagneticButton from "./ui/MagneticButton";
 import { IMG_HERO_BG } from "../lib/constants";
-import { useDict } from "../lib/i18n";
-import { hero } from "../lib/translations";
+import { useDict, useLanguage } from "../lib/i18n";
+import { hero, heroOrbit } from "../lib/translations";
 
 const ease = [0.2, 0.8, 0.2, 1] as const;
 
 const ORBIT_ICONS = [
-  { Icon: PlaneTakeoff, style: { top: "-8%", left: "-6%" }, delay: 0 },
-  { Icon: Landmark, style: { top: "8%", right: "-8%" }, delay: 0.9 },
-  { Icon: ShieldCheck, style: { bottom: "10%", left: "-9%" }, delay: 1.8 },
-  { Icon: GraduationCap, style: { bottom: "-7%", right: "-5%" }, delay: 2.7 },
+  { Icon: PlaneTakeoff, style: { top: "-8%", left: "-6%" }, delay: 0, to: "/airport-vip", labelKey: "airport" as const },
+  { Icon: Landmark, style: { top: "8%", right: "-8%" }, delay: 0.9, to: "/government-request", labelKey: "government" as const },
+  { Icon: ShieldCheck, style: { bottom: "10%", left: "-9%" }, delay: 1.8, to: "/manpower-security", labelKey: "manpower" as const },
+  { Icon: GraduationCap, style: { bottom: "-7%", right: "-5%" }, delay: 2.7, to: "/courses-careers", labelKey: "courses" as const },
 ];
 
 export default function Hero() {
   const T = useDict(hero);
+  const { lang } = useLanguage();
   const ref = useRef<HTMLElement>(null);
   const { scrollYProgress } = useScroll({ target: ref, offset: ["start start", "end start"] });
   const imgY = useTransform(scrollYProgress, [0, 1], ["0%", "18%"]);
@@ -124,31 +126,43 @@ export default function Hero() {
             />
           </div>
 
-          {ORBIT_ICONS.map(({ Icon, style, delay }, i) => (
+          {ORBIT_ICONS.map(({ Icon, style, delay, to, labelKey }, i) => (
             <motion.div
               key={i}
-              aria-hidden="true"
-              className="hidden sm:flex absolute w-12 h-12 rounded-xl bg-white shadow-card-hover items-center justify-center text-gold-deep border border-border"
+              className="hidden sm:block absolute"
               style={style}
               animate={{ y: [0, -10, 0] }}
               transition={{ duration: 4.5, repeat: Infinity, ease: "easeInOut", delay }}
             >
-              <Icon size={20} />
+              <Link
+                to={to}
+                aria-label={heroOrbit[labelKey][lang]}
+                title={heroOrbit[labelKey][lang]}
+                className="flex w-12 h-12 rounded-xl bg-white shadow-card-hover items-center justify-center text-gold-deep border border-border hover:bg-gold hover:text-navy hover:scale-110 transition-all cursor-pointer"
+              >
+                <Icon size={20} />
+              </Link>
             </motion.div>
           ))}
         </motion.div>
       </div>
 
       <motion.div
-        aria-hidden="true"
-        className="relative mt-10 flex justify-center text-ink-faint"
+        className="relative mt-10 flex justify-center"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ delay: 0.9, duration: 0.6 }}
       >
-        <motion.div animate={{ y: [0, 8, 0] }} transition={{ duration: 1.8, repeat: Infinity, ease: "easeInOut" }}>
-          <ChevronDown size={20} />
-        </motion.div>
+        <a
+          href="/#services"
+          aria-label={heroOrbit.scrollCue[lang]}
+          title={heroOrbit.scrollCue[lang]}
+          className="text-ink-faint hover:text-gold-deep transition-colors cursor-pointer"
+        >
+          <motion.div animate={{ y: [0, 8, 0] }} transition={{ duration: 1.8, repeat: Infinity, ease: "easeInOut" }}>
+            <ChevronDown size={20} />
+          </motion.div>
+        </a>
       </motion.div>
     </section>
   );
