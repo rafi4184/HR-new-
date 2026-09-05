@@ -41,11 +41,18 @@ export const serviceNavGroups = {
       title: { en: "Hotel & Car", bn: "হোটেল ও গাড়ি" },
       summary: { en: "Hotel booking and private car service.", bn: "হোটেল বুকিং ও ব্যক্তিগত গাড়ি সেবা।" },
     },
-    studyWorkGulf: {
-      title: { en: "Study & Work in the Gulf", bn: "গালফে পড়াশোনা ও কাজ" },
+    studyAbroad: {
+      title: { en: "Study Abroad", bn: "বিদেশে পড়াশোনা" },
       summary: {
-        en: "Gulf/Middle East jobs and study-abroad guidance.",
-        bn: "গালফ/মধ্যপ্রাচ্যে চাকরি ও বিদেশে পড়াশোনার নির্দেশনা।",
+        en: "University admission & visa guidance.",
+        bn: "বিশ্ববিদ্যালয় ভর্তি ও ভিসা নির্দেশনা।",
+      },
+    },
+    jobsGulf: {
+      title: { en: "Jobs in Gulf & Middle East", bn: "গালফ ও মধ্যপ্রাচ্যে চাকরি" },
+      summary: {
+        en: "Gulf/Middle East employment & pre-departure support.",
+        bn: "গালফ/মধ্যপ্রাচ্যে চাকরি ও প্রস্থান-পূর্ব সহায়তা।",
       },
     },
     coursesCareers: {

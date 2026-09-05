@@ -1,8 +1,8 @@
-import { PlaneTakeoff, CarFront, Globe2, GraduationCap, Mic, Landmark, ShieldCheck } from "lucide-react";
+import { PlaneTakeoff, CarFront, GraduationCap, Briefcase, Mic, Landmark, ShieldCheck } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
 
 export interface NavGroupItem {
-  key: "airport" | "hotel" | "studyWorkGulf" | "coursesCareers" | "mediaPublicSpeaking" | "government" | "manpower";
+  key: "airport" | "hotel" | "studyAbroad" | "jobsGulf" | "coursesCareers" | "mediaPublicSpeaking" | "government" | "manpower";
   path: string;
   icon: LucideIcon;
 }
@@ -23,13 +23,16 @@ export const NAV_GROUPS: NavGroup[] = [
   {
     key: "study",
     items: [
-      { key: "studyWorkGulf", path: "/study-work-gulf", icon: Globe2 },
-      { key: "coursesCareers", path: "/courses-careers", icon: GraduationCap },
+      { key: "studyAbroad", path: "/study-work-gulf", icon: GraduationCap },
+      { key: "jobsGulf", path: "/study-work-gulf", icon: Briefcase },
     ],
   },
   {
     key: "media",
-    items: [{ key: "mediaPublicSpeaking", path: "/media-public-speaking", icon: Mic }],
+    items: [
+      { key: "mediaPublicSpeaking", path: "/media-public-speaking", icon: Mic },
+      { key: "coursesCareers", path: "/courses-careers", icon: GraduationCap },
+    ],
   },
   {
     key: "government",
