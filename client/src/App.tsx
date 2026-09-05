@@ -34,7 +34,7 @@ export default function App() {
       <ScrollToHash />
       <Header />
 
-      <AnimatePresence mode="wait" initial={false}>
+      <AnimatePresence mode="wait">
         <motion.div
           key={location.pathname}
           initial={{ opacity: 0, y: 10 }}
