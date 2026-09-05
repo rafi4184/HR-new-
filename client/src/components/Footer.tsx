@@ -6,6 +6,8 @@ import { listContacts } from "../lib/api";
 import { SERVICES } from "../lib/services";
 import { useRequestHref } from "../lib/useRequestHref";
 import AmbientGlow from "./ui/AmbientGlow";
+import { useDict, useT } from "../lib/i18n";
+import { footer, servicesList } from "../lib/translations";
 import type { Contact } from "../types";
 
 const FALLBACK_CONTACTS: Contact[] = [
@@ -29,16 +31,9 @@ const FALLBACK_CONTACTS: Contact[] = [
   },
 ];
 
-const QUICK_LINKS = [
-  { label: "Home", to: "/" },
-  { label: "About Us", to: "/about-us" },
-  { label: "Contact", to: "/contact" },
-  { label: "Track a Request", to: "/#track" },
-  { label: "Staff Login", to: "/staff" },
-];
-
 export default function Footer() {
   const requestHref = useRequestHref();
+  const T = useDict(footer);
   const [contacts, setContacts] = useState<Contact[]>(FALLBACK_CONTACTS);
 
   useEffect(() => {
@@ -48,6 +43,14 @@ export default function Footer() {
       })
       .catch(() => {});
   }, []);
+
+  const quickLinks = [
+    { label: T.home, to: "/" },
+    { label: T.aboutUs, to: "/about-us" },
+    { label: T.contact, to: "/contact" },
+    { label: T.trackARequest, to: "/#track" },
+    { label: T.staffLogin, to: "/staff" },
+  ];
 
   return (
     <footer id="contact" className="relative bg-navy text-mist overflow-hidden">
@@ -59,11 +62,7 @@ export default function Footer() {
               <LogoMark size={30} className="text-white" />
               <div className="font-display text-white text-xl">HR — The Mediator</div>
             </div>
-            <p className="text-[14px] leading-relaxed">
-              Your trusted service &amp; support partner in Bangladesh — concierge, transport,
-              government assistance, manpower, security, education and career services for
-              individuals, families, businesses and international clients.
-            </p>
+            <p className="text-[14px] leading-relaxed">{T.description}</p>
             <div className="flex items-center gap-3 mt-5">
               <a
                 href="https://www.facebook.com/hrmediator"
@@ -87,32 +86,32 @@ export default function Footer() {
           </div>
 
           <div>
-            <div className="text-white text-sm font-medium mb-3">Services</div>
+            <div className="text-white text-sm font-medium mb-3">{T.servicesHeading}</div>
             <div className="flex flex-col gap-2 text-[14px]">
-              {SERVICES.map((s) => (
+              {SERVICES.map((s, i) => (
                 <Link key={s.id} to={s.path} className="hover:text-white transition-colors">
-                  {s.navLabel}
+                  <ServiceLabel index={i} fallback={s.navLabel} />
                 </Link>
               ))}
             </div>
           </div>
 
           <div>
-            <div className="text-white text-sm font-medium mb-3">Quick Links</div>
+            <div className="text-white text-sm font-medium mb-3">{T.quickLinksHeading}</div>
             <div className="flex flex-col gap-2 text-[14px]">
-              {QUICK_LINKS.map((l) => (
-                <Link key={l.label} to={l.to} className="hover:text-white transition-colors">
+              {quickLinks.map((l) => (
+                <Link key={l.to} to={l.to} className="hover:text-white transition-colors">
                   {l.label}
                 </Link>
               ))}
               <Link to={requestHref} className="hover:text-white transition-colors">
-                Request a Service
+                {T.requestService}
               </Link>
             </div>
           </div>
 
           <div>
-            <div className="text-white text-sm font-medium mb-3">Contact</div>
+            <div className="text-white text-sm font-medium mb-3">{T.contactHeading}</div>
             <div className="space-y-2.5 text-[14px]">
               {contacts.map((c) => (
                 <div key={c.id}>
@@ -143,17 +142,25 @@ export default function Footer() {
         </div>
 
         <div className="pt-6 border-t border-white/10 flex flex-col sm:flex-row justify-between gap-3 text-[12px]">
-          <span>© {new Date().getFullYear()} HR — The Mediator Limited. All rights reserved.</span>
+          <span>
+            © {new Date().getFullYear()} {T.copyright}
+          </span>
           <div className="flex items-center gap-4">
             <Link to="/privacy-policy" className="hover:text-white transition-colors">
-              Privacy Policy
+              {T.privacyPolicy}
             </Link>
             <Link to="/terms" className="hover:text-white transition-colors">
-              Terms &amp; Conditions
+              {T.termsConditions}
             </Link>
           </div>
         </div>
       </div>
     </footer>
   );
+}
+
+function ServiceLabel({ index, fallback }: { index: number; fallback: string }) {
+  const entry = servicesList[index];
+  const value = useT(entry ? entry.shortTitle : { en: fallback, bn: fallback });
+  return <>{value}</>;
 }

@@ -2,57 +2,47 @@ import { motion } from "framer-motion";
 import { PlaneTakeoff, Landmark, ShieldCheck, GraduationCap } from "lucide-react";
 import Reveal from "./ui/Reveal";
 import LogoMark from "./ui/Logo";
+import { useDict, useLanguage } from "../lib/i18n";
+import { platformHub } from "../lib/translations";
 
-const BRANCHES = [
-  {
-    id: "travel",
-    label: "Travel",
-    icon: PlaneTakeoff,
-    items: ["Airport VIP", "Hotel & Car"],
-    pos: { top: "6%", left: "8%" },
-    line: { x2: 22, y2: 12 },
-  },
-  {
-    id: "support",
-    label: "Support",
-    icon: Landmark,
-    items: ["Government Request", "Local Assistance"],
-    pos: { top: "6%", right: "8%" },
-    line: { x2: 78, y2: 12 },
-  },
-  {
-    id: "workforce",
-    label: "Workforce",
-    icon: ShieldCheck,
-    items: ["Manpower", "Security"],
-    pos: { bottom: "4%", left: "8%" },
-    line: { x2: 22, y2: 88 },
-  },
-  {
-    id: "future",
-    label: "Future",
-    icon: GraduationCap,
-    items: ["Courses", "Study & Gulf Careers"],
-    pos: { bottom: "4%", right: "8%" },
-    line: { x2: 78, y2: 88 },
-  },
+const ICONS = [PlaneTakeoff, Landmark, ShieldCheck, GraduationCap];
+const POSITIONS = [
+  { top: "6%", left: "8%" },
+  { top: "6%", right: "8%" },
+  { bottom: "4%", left: "8%" },
+  { bottom: "4%", right: "8%" },
+];
+const LINES = [
+  { x2: 22, y2: 12 },
+  { x2: 78, y2: 12 },
+  { x2: 22, y2: 88 },
+  { x2: 78, y2: 88 },
 ];
 
 export default function PlatformHub() {
+  const T = useDict({ eyebrow: platformHub.eyebrow, h2: platformHub.h2 });
+  const { lang } = useLanguage();
+  const branches = platformHub.branches.map((b, i) => ({
+    id: b.label.en,
+    label: b.label[lang],
+    items: b.items.map((it) => it[lang]),
+    icon: ICONS[i],
+    pos: POSITIONS[i],
+    line: LINES[i],
+  }));
+
   return (
     <section className="px-5 md:px-10 py-16 md:py-24 bg-paper-panel overflow-hidden">
       <div className="max-w-5xl mx-auto">
         <Reveal className="text-center max-w-2xl mx-auto mb-14">
-          <div className="text-[12px] font-medium mb-3 tracking-[0.2em] uppercase text-gold-deep">
-            One Platform
-          </div>
-          <h2 className="font-display text-3xl md:text-4xl text-navy">Many Ways We Can Help</h2>
+          <div className="text-[12px] font-medium mb-3 tracking-[0.2em] uppercase text-gold-deep">{T.eyebrow}</div>
+          <h2 className="font-display text-3xl md:text-4xl text-navy">{T.h2}</h2>
         </Reveal>
 
         {/* Desktop: radial hub layout */}
         <div className="hidden lg:block relative mx-auto" style={{ width: "100%", maxWidth: 680, height: 520 }}>
           <svg viewBox="0 0 100 100" preserveAspectRatio="none" className="absolute inset-0 w-full h-full">
-            {BRANCHES.map((b, i) => (
+            {branches.map((b, i) => (
               <motion.line
                 key={b.id}
                 x1={50}
@@ -86,7 +76,7 @@ export default function PlatformHub() {
             <LogoMark size={40} className="text-white" />
           </motion.div>
 
-          {BRANCHES.map((b, i) => (
+          {branches.map((b, i) => (
             <motion.div
               key={b.id}
               initial={{ opacity: 0, y: 12 }}
@@ -109,7 +99,7 @@ export default function PlatformHub() {
         <div className="lg:hidden relative pl-8">
           <div className="absolute left-[11px] top-2 bottom-2 w-px bg-border" />
           <div className="flex flex-col gap-6">
-            {BRANCHES.map((b, i) => (
+            {branches.map((b, i) => (
               <Reveal key={b.id} delay={i * 0.08}>
                 <div className="relative">
                   <div className="absolute -left-8 top-0.5 w-[22px] h-[22px] rounded-full bg-navy flex items-center justify-center">

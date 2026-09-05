@@ -3,11 +3,15 @@ import { Link, NavLink } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { ChevronDown, Menu, X } from "lucide-react";
 import LogoMark from "./ui/Logo";
+import LanguageToggle from "./ui/LanguageToggle";
 import { SERVICES } from "../lib/services";
 import { useRequestHref } from "../lib/useRequestHref";
+import { useDict, useT } from "../lib/i18n";
+import { header, servicesList } from "../lib/translations";
 
 export default function Header() {
   const requestHref = useRequestHref();
+  const T = useDict(header);
   const [mobileOpen, setMobileOpen] = useState(false);
   const [mobileServicesOpen, setMobileServicesOpen] = useState(false);
   const [servicesOpen, setServicesOpen] = useState(false);
@@ -53,9 +57,7 @@ export default function Header() {
           <LogoMark size={34} className="text-navy shrink-0 hidden sm:block" animated />
           <div className="min-w-0">
             <div className="text-navy font-display text-[15px] sm:text-[17px] leading-none truncate">HR — The Mediator</div>
-            <div className="hidden sm:block text-[10px] leading-none mt-1 tracking-wide text-ink-faint">
-              Trusted Service &amp; Support Partner
-            </div>
+            <div className="hidden sm:block text-[10px] leading-none mt-1 tracking-wide text-ink-faint">{T.tagline}</div>
           </div>
         </Link>
 
@@ -63,7 +65,7 @@ export default function Header() {
           <NavLink to="/" className={linkClass} end>
             {({ isActive }) => (
               <>
-                Home
+                {T.home}
                 <NavUnderline isActive={isActive} />
               </>
             )}
@@ -75,7 +77,7 @@ export default function Header() {
               onClick={() => setServicesOpen((v) => !v)}
               aria-expanded={servicesOpen}
             >
-              Services <ChevronDown size={14} className={`transition-transform ${servicesOpen ? "rotate-180" : ""}`} />
+              {T.services} <ChevronDown size={14} className={`transition-transform ${servicesOpen ? "rotate-180" : ""}`} />
             </button>
             <AnimatePresence>
               {servicesOpen && (
@@ -87,7 +89,7 @@ export default function Header() {
                   className="absolute left-1/2 -translate-x-1/2 top-full pt-3 w-72"
                 >
                   <div className="rounded-xl border border-border bg-white shadow-card-hover p-2">
-                    {SERVICES.map((s) => (
+                    {SERVICES.map((s, i) => (
                       <Link
                         key={s.id}
                         to={s.path}
@@ -96,8 +98,12 @@ export default function Header() {
                       >
                         <s.icon size={18} className="text-gold-deep mt-0.5 shrink-0" />
                         <div>
-                          <div className="text-[14px] font-medium text-navy">{s.navLabel}</div>
-                          <div className="text-[12px] text-ink-faint line-clamp-1">{s.summary}</div>
+                          <div className="text-[14px] font-medium text-navy">
+                            <ServiceLabel field="shortTitle" index={i} fallback={s.navLabel} />
+                          </div>
+                          <div className="text-[12px] text-ink-faint line-clamp-1">
+                            <ServiceLabel field="summary" index={i} fallback={s.summary} />
+                          </div>
                         </div>
                       </Link>
                     ))}
@@ -110,7 +116,7 @@ export default function Header() {
           <NavLink to="/about-us" className={linkClass}>
             {({ isActive }) => (
               <>
-                About Us
+                {T.aboutUs}
                 <NavUnderline isActive={isActive} />
               </>
             )}
@@ -118,7 +124,7 @@ export default function Header() {
           <NavLink to="/contact" className={linkClass}>
             {({ isActive }) => (
               <>
-                Contact
+                {T.contact}
                 <NavUnderline isActive={isActive} />
               </>
             )}
@@ -126,32 +132,31 @@ export default function Header() {
         </nav>
 
         <div className="hidden lg:flex items-center gap-3">
-          <Link
-            to="/#track"
-            className="text-[13px] font-medium text-ink-faint hover:text-navy transition-colors"
-          >
-            Track Request
+          <LanguageToggle />
+          <Link to="/#track" className="text-[13px] font-medium text-ink-faint hover:text-navy transition-colors">
+            {T.trackRequest}
           </Link>
           <Link
             to={requestHref}
             className="text-[13px] font-medium tracking-wide px-5 py-2.5 rounded-full bg-gradient-to-r from-gold to-[#E0B563] text-navy hover:from-gold-deep hover:to-gold-deep hover:text-white transition-colors"
           >
-            Request a Service
+            {T.requestService}
           </Link>
         </div>
 
         <div className="lg:hidden flex items-center gap-1.5 shrink-0">
+          <LanguageToggle className="mr-0.5" />
           <Link
             to={requestHref}
             className="text-[12px] sm:text-[12.5px] font-medium px-2.5 sm:px-3.5 py-2 rounded-full bg-gradient-to-r from-gold to-[#E0B563] text-navy whitespace-nowrap"
           >
-            <span className="sm:hidden">Request</span>
-            <span className="hidden sm:inline">Request a Service</span>
+            <span className="sm:hidden">{T.requestShort}</span>
+            <span className="hidden sm:inline">{T.requestService}</span>
           </Link>
           <button
             onClick={() => setMobileOpen((v) => !v)}
             className="w-8 h-8 sm:w-9 sm:h-9 rounded-full flex items-center justify-center text-navy shrink-0"
-            aria-label="Menu"
+            aria-label={T.menu}
           >
             {mobileOpen ? <X size={20} /> : <Menu size={20} />}
           </button>
@@ -169,13 +174,13 @@ export default function Header() {
           >
             <div className="px-5 py-4 flex flex-col gap-1">
               <Link to="/" onClick={() => setMobileOpen(false)} className="py-2.5 text-[15px] font-medium text-navy">
-                Home
+                {T.home}
               </Link>
               <button
                 onClick={() => setMobileServicesOpen((v) => !v)}
                 className="py-2.5 flex items-center justify-between text-[15px] font-medium text-navy"
               >
-                Services
+                {T.services}
                 <ChevronDown size={16} className={`transition-transform ${mobileServicesOpen ? "rotate-180" : ""}`} />
               </button>
               <AnimatePresence>
@@ -186,34 +191,29 @@ export default function Header() {
                     exit={{ height: 0, opacity: 0 }}
                     className="pl-3 flex flex-col overflow-hidden"
                   >
-                    {SERVICES.map((s) => (
-                      <Link
-                        key={s.id}
-                        to={s.path}
-                        onClick={() => setMobileOpen(false)}
-                        className="py-2 text-[14px] text-ink-soft"
-                      >
-                        {s.navLabel}
+                    {SERVICES.map((s, i) => (
+                      <Link key={s.id} to={s.path} onClick={() => setMobileOpen(false)} className="py-2 text-[14px] text-ink-soft">
+                        <ServiceLabel field="shortTitle" index={i} fallback={s.navLabel} />
                       </Link>
                     ))}
                   </motion.div>
                 )}
               </AnimatePresence>
               <Link to="/about-us" onClick={() => setMobileOpen(false)} className="py-2.5 text-[15px] font-medium text-navy">
-                About Us
+                {T.aboutUs}
               </Link>
               <Link to="/contact" onClick={() => setMobileOpen(false)} className="py-2.5 text-[15px] font-medium text-navy">
-                Contact
+                {T.contact}
               </Link>
               <Link to="/#track" onClick={() => setMobileOpen(false)} className="py-2.5 text-[15px] font-medium text-ink-soft">
-                Track Request
+                {T.trackRequest}
               </Link>
               <Link
                 to={requestHref}
                 onClick={() => setMobileOpen(false)}
                 className="mt-3 text-center text-[14px] font-medium px-5 py-3 rounded-full bg-gradient-to-r from-gold to-[#E0B563] text-navy"
               >
-                Request a Service
+                {T.requestService}
               </Link>
             </div>
           </motion.nav>
@@ -221,4 +221,18 @@ export default function Header() {
       </AnimatePresence>
     </header>
   );
+}
+
+function ServiceLabel({
+  field,
+  index,
+  fallback,
+}: {
+  field: "shortTitle" | "summary";
+  index: number;
+  fallback: string;
+}) {
+  const entry = servicesList[index];
+  const value = useT(entry ? entry[field] : { en: fallback, bn: fallback });
+  return <>{value}</>;
 }

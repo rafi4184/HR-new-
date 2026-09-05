@@ -8,6 +8,8 @@ import Booking, { type AirportPrefill } from "../components/Booking";
 import type { ServicePageData } from "../data/servicePages";
 import { SERVICE_PAGES } from "../data/servicePages";
 import type { BookingTab } from "../types";
+import { useDict, useLanguage, useT } from "../lib/i18n";
+import { servicePageUi, servicePagesT, serviceNavLabelsT } from "../lib/translations";
 
 export default function ServicePage({ data }: { data: ServicePageData }) {
   useSeo({
@@ -18,6 +20,18 @@ export default function ServicePage({ data }: { data: ServicePageData }) {
     serviceSchema: { name: data.title, description: data.metaDescription },
   });
 
+  const { lang } = useLanguage();
+  const ui = useDict(servicePageUi);
+  const tr = servicePagesT[data.id];
+  const navLabel = useT(serviceNavLabelsT[data.id] ?? { en: data.navLabel, bn: data.navLabel });
+  const h1 = useT(tr?.h1 ?? { en: data.h1, bn: data.h1 });
+  const intro = useT(tr?.intro ?? { en: data.intro, bn: data.intro });
+  const cta = useT(tr?.cta ?? { en: data.cta, bn: data.cta });
+  const whoFor = tr ? tr.whoFor.map((w) => w[lang]) : data.whoFor;
+  const included = tr ? tr.included.map((w) => w[lang]) : data.included;
+  const process = tr ? tr.process.map((p) => ({ title: p.title[lang], body: p.body[lang] })) : data.process;
+  const faqs = tr ? tr.faqs.map((f) => ({ question: f.question[lang], answer: f.answer[lang] })) : data.faqs;
+
   const [activeTab, setActiveTab] = useState<BookingTab>(data.bookTab ?? "airport");
   const [lastTicket, setLastTicket] = useState<string | null>(null);
   const [airportPrefill] = useState<AirportPrefill>({ name: "", flight: "", purpose: "Business" });
@@ -27,27 +41,25 @@ export default function ServicePage({ data }: { data: ServicePageData }) {
     <div>
       <section className="px-5 md:px-10 py-14 md:py-20 bg-paper-soft">
         <div className="max-w-4xl mx-auto text-center">
-          <div className="text-[12px] font-medium mb-3 tracking-[0.2em] uppercase text-gold-deep">
-            {data.navLabel}
-          </div>
+          <div className="text-[12px] font-medium mb-3 tracking-[0.2em] uppercase text-gold-deep">{navLabel}</div>
           <h1 className="font-display text-3xl md:text-5xl text-navy mb-5" style={{ textWrap: "balance" }}>
-            {data.h1}
+            {h1}
           </h1>
-          <p className="text-[16px] text-ink-muted leading-relaxed max-w-2xl mx-auto mb-8">{data.intro}</p>
+          <p className="text-[16px] text-ink-muted leading-relaxed max-w-2xl mx-auto mb-8">{intro}</p>
           <button
             onClick={() => bookingRef.current?.scrollIntoView({ behavior: "smooth", block: "start" })}
             className="inline-flex items-center gap-2 px-7 py-3.5 rounded-full font-medium text-[14px] tracking-wide uppercase bg-gradient-to-r from-gold to-[#E0B563] text-navy hover:from-gold-deep hover:to-gold-deep hover:text-white transition-colors"
           >
-            {data.cta} <ArrowRight size={15} />
+            {cta} <ArrowRight size={15} />
           </button>
         </div>
       </section>
 
       <section className="px-5 md:px-10 py-14 max-w-5xl mx-auto grid md:grid-cols-2 gap-10">
         <Reveal>
-          <h2 className="font-display text-2xl text-navy mb-4">Who This Is For</h2>
+          <h2 className="font-display text-2xl text-navy mb-4">{ui.whoThisIsFor}</h2>
           <ul className="space-y-2.5">
-            {data.whoFor.map((item) => (
+            {whoFor.map((item) => (
               <li key={item} className="flex items-start gap-2.5 text-[14.5px] text-ink-soft">
                 <Check size={16} className="text-gold-deep shrink-0 mt-0.5" />
                 {item}
@@ -56,9 +68,9 @@ export default function ServicePage({ data }: { data: ServicePageData }) {
           </ul>
         </Reveal>
         <Reveal delay={0.08}>
-          <h2 className="font-display text-2xl text-navy mb-4">What&apos;s Included</h2>
+          <h2 className="font-display text-2xl text-navy mb-4">{ui.whatsIncluded}</h2>
           <ul className="space-y-2.5">
-            {data.included.map((item) => (
+            {included.map((item) => (
               <li key={item} className="flex items-start gap-2.5 text-[14.5px] text-ink-soft">
                 <Check size={16} className="text-gold-deep shrink-0 mt-0.5" />
                 {item}
@@ -71,10 +83,10 @@ export default function ServicePage({ data }: { data: ServicePageData }) {
       <section className="px-5 md:px-10 py-14 bg-paper-panel">
         <div className="max-w-5xl mx-auto">
           <Reveal className="text-center mb-10">
-            <h2 className="font-display text-2xl md:text-3xl text-navy">How the Process Works</h2>
+            <h2 className="font-display text-2xl md:text-3xl text-navy">{ui.howTheProcessWorks}</h2>
           </Reveal>
           <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-5">
-            {data.process.map((step, i) => (
+            {process.map((step, i) => (
               <Reveal key={step.title} delay={i * 0.07}>
                 <div className="rounded-xl bg-white border border-border p-5 h-full shadow-card">
                   <div className="font-display text-2xl text-gold-deep mb-2">{String(i + 1).padStart(2, "0")}</div>
@@ -87,13 +99,13 @@ export default function ServicePage({ data }: { data: ServicePageData }) {
         </div>
       </section>
 
-      <Faq items={data.faqs} title={`${data.navLabel} FAQs`} />
+      <Faq items={faqs} title={`${navLabel} ${ui.faqsSuffix}`} />
 
       <Booking
         ref={bookingRef}
         id="service-request"
-        heading={data.cta}
-        subheading="Fill in the details below and our team will follow up directly."
+        heading={cta}
+        subheading={ui.bookingSubheading}
         activeTab={activeTab}
         setActiveTab={setActiveTab}
         lockedTab={data.bookTab ?? undefined}
@@ -106,24 +118,28 @@ export default function ServicePage({ data }: { data: ServicePageData }) {
 
       {data.related.length > 0 && (
         <section className="px-5 md:px-10 py-14 max-w-5xl mx-auto">
-          <h2 className="font-display text-2xl text-navy mb-6 text-center">Related Services</h2>
+          <h2 className="font-display text-2xl text-navy mb-6 text-center">{ui.relatedServices}</h2>
           <div className="flex flex-wrap justify-center gap-3">
             {data.related.map((id) => {
               const page = SERVICE_PAGES[id];
               if (!page) return null;
-              return (
-                <Link
-                  key={id}
-                  to={page.path}
-                  className="px-5 py-2.5 rounded-full border border-border text-[13.5px] font-medium text-navy hover:border-gold hover:bg-gold-pale transition-colors"
-                >
-                  {page.navLabel}
-                </Link>
-              );
+              return <RelatedLink key={id} id={id} path={page.path} fallback={page.navLabel} />;
             })}
           </div>
         </section>
       )}
     </div>
+  );
+}
+
+function RelatedLink({ id, path, fallback }: { id: string; path: string; fallback: string }) {
+  const label = useT(serviceNavLabelsT[id] ?? { en: fallback, bn: fallback });
+  return (
+    <Link
+      to={path}
+      className="px-5 py-2.5 rounded-full border border-border text-[13.5px] font-medium text-navy hover:border-gold hover:bg-gold-pale transition-colors"
+    >
+      {label}
+    </Link>
   );
 }

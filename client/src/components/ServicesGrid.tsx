@@ -4,25 +4,27 @@ import { motion, AnimatePresence } from "framer-motion";
 import { ArrowRight, Plane, Landmark, Users, GraduationCap } from "lucide-react";
 import Reveal from "./ui/Reveal";
 import { SERVICES } from "../lib/services";
+import { useDict, useT } from "../lib/i18n";
+import { servicesGrid, servicesList } from "../lib/translations";
 
 const INTENTS = [
-  { id: "travel", label: "I am travelling", icon: Plane, matches: ["airport", "hotel"] },
-  { id: "local", label: "I need local assistance", icon: Landmark, matches: ["government"] },
-  { id: "people", label: "I need people or security", icon: Users, matches: ["manpower"] },
-  { id: "abroad", label: "I want to study or work abroad", icon: GraduationCap, matches: ["courses"] },
+  { id: "travel", key: "travel", icon: Plane, matches: ["airport", "hotel"] },
+  { id: "local", key: "local", icon: Landmark, matches: ["government"] },
+  { id: "people", key: "people", icon: Users, matches: ["manpower"] },
+  { id: "abroad", key: "abroad", icon: GraduationCap, matches: ["courses"] },
 ] as const;
 
 export default function ServicesGrid() {
+  const T = useDict({ eyebrow: servicesGrid.eyebrow, h2: servicesGrid.h2, highlightNote: servicesGrid.highlightNote });
+  const intentsT = useDict(servicesGrid.intents);
   const [intent, setIntent] = useState<(typeof INTENTS)[number]["id"] | null>(null);
   const activeMatches = INTENTS.find((i) => i.id === intent)?.matches as readonly string[] | undefined;
 
   return (
     <section id="services" className="px-5 md:px-10 py-16 md:py-20 max-w-7xl mx-auto">
       <Reveal className="text-center max-w-2xl mx-auto mb-10">
-        <div className="text-[12px] font-medium mb-3 tracking-[0.2em] uppercase text-gold-deep">
-          What we offer
-        </div>
-        <h2 className="font-display text-3xl md:text-4xl text-navy">What Do You Need Help With?</h2>
+        <div className="text-[12px] font-medium mb-3 tracking-[0.2em] uppercase text-gold-deep">{T.eyebrow}</div>
+        <h2 className="font-display text-3xl md:text-4xl text-navy">{T.h2}</h2>
       </Reveal>
 
       <Reveal delay={0.05} className="flex flex-wrap justify-center gap-2.5 mb-12">
@@ -37,7 +39,7 @@ export default function ServicesGrid() {
             }`}
           >
             <i.icon size={15} />
-            {i.label}
+            {intentsT[i.key]}
           </button>
         ))}
       </Reveal>
@@ -64,10 +66,14 @@ export default function ServicesGrid() {
                   >
                     <s.icon size={22} />
                   </motion.div>
-                  <h3 className="font-display text-lg text-navy mb-2">{s.title}</h3>
-                  <p className="text-[13.5px] text-ink-muted leading-relaxed mb-5 flex-1">{s.summary}</p>
+                  <h3 className="font-display text-lg text-navy mb-2">
+                    <ServiceText field="title" index={i} fallback={s.title} />
+                  </h3>
+                  <p className="text-[13.5px] text-ink-muted leading-relaxed mb-5 flex-1">
+                    <ServiceText field="summary" index={i} fallback={s.summary} />
+                  </p>
                   <span className="inline-flex items-center gap-1.5 text-[13px] font-medium text-gold-deep group-hover:gap-2.5 transition-all">
-                    {s.cta} <ArrowRight size={14} />
+                    <ServiceText field="cta" index={i} fallback={s.cta} /> <ArrowRight size={14} />
                   </span>
                 </Link>
               </motion.div>
@@ -84,10 +90,24 @@ export default function ServicesGrid() {
             exit={{ opacity: 0, height: 0 }}
             className="text-center text-[13px] text-ink-faint mt-6"
           >
-            Highlighted above — the services that best match what you told us.
+            {T.highlightNote}
           </motion.p>
         )}
       </AnimatePresence>
     </section>
   );
+}
+
+function ServiceText({
+  field,
+  index,
+  fallback,
+}: {
+  field: "title" | "summary" | "cta";
+  index: number;
+  fallback: string;
+}) {
+  const entry = servicesList[index];
+  const value = useT(entry ? entry[field] : { en: fallback, bn: fallback });
+  return <>{value}</>;
 }

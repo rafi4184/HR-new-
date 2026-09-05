@@ -4,6 +4,8 @@ import { CalendarDays, MapPin } from "lucide-react";
 import Reveal from "./ui/Reveal";
 import { listEvents } from "../lib/api";
 import type { EventItem } from "../types";
+import { useDict } from "../lib/i18n";
+import { events } from "../lib/translations";
 
 function formatDate(iso: string | null) {
   if (!iso) return null;
@@ -11,7 +13,8 @@ function formatDate(iso: string | null) {
 }
 
 export default function Events() {
-  const [events, setEvents] = useState<EventItem[]>([]);
+  const T = useDict(events);
+  const [items, setEvents] = useState<EventItem[]>([]);
   const [loaded, setLoaded] = useState(false);
 
   useEffect(() => {
@@ -23,13 +26,13 @@ export default function Events() {
       .catch(() => setLoaded(true));
   }, []);
 
-  if (loaded && events.length === 0) return null;
+  if (loaded && items.length === 0) return null;
 
   return (
     <section id="events" className="px-5 md:px-10 py-16 max-w-6xl mx-auto">
       <Reveal>
-        <div className="text-[12px] font-medium mb-2 text-gold-deep uppercase tracking-wide">On the ground</div>
-        <h2 className="font-display text-3xl mb-10 text-navy">Recent Events</h2>
+        <div className="text-[12px] font-medium mb-2 text-gold-deep uppercase tracking-wide">{T.eyebrow}</div>
+        <h2 className="font-display text-3xl mb-10 text-navy">{T.h2}</h2>
       </Reveal>
 
       {!loaded ? (
@@ -40,7 +43,7 @@ export default function Events() {
         </div>
       ) : (
         <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
-          {events.map((ev, i) => {
+          {items.map((ev, i) => {
             const cover = ev.media[0];
             return (
               <motion.div

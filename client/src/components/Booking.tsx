@@ -2,9 +2,11 @@ import { forwardRef, useState, type FormEvent } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { PlaneTakeoff, CarFront, Landmark, GraduationCap, Clock, Ticket } from "lucide-react";
 import { Field, IdentityFields, inputClass } from "./ui/Field";
-import { GOV_SERVICES, PROGRAMS, PURPOSES } from "../lib/constants";
+import { PROGRAMS } from "../lib/constants";
 import { submitRequest, ApiError } from "../lib/api";
 import type { BookingTab } from "../types";
+import { useDict, useLanguage } from "../lib/i18n";
+import { bookingT, govServicesT, purposesT, programsT } from "../lib/translations";
 
 export interface AirportPrefill {
   name: string;
@@ -12,11 +14,11 @@ export interface AirportPrefill {
   purpose: string;
 }
 
-const TABS: { id: BookingTab; label: string; icon: typeof PlaneTakeoff }[] = [
-  { id: "airport", label: "Airport VIP", icon: PlaneTakeoff },
-  { id: "hotel", label: "Hotel & car", icon: CarFront },
-  { id: "government", label: "Government request", icon: Landmark },
-  { id: "programs", label: "Courses & careers", icon: GraduationCap },
+const TAB_META: { id: BookingTab; icon: typeof PlaneTakeoff }[] = [
+  { id: "airport", icon: PlaneTakeoff },
+  { id: "hotel", icon: CarFront },
+  { id: "government", icon: Landmark },
+  { id: "programs", icon: GraduationCap },
 ];
 
 const Booking = forwardRef<
@@ -45,11 +47,33 @@ const Booking = forwardRef<
     onSubmitted,
     lockedTab,
     id = "request-service",
-    heading = "Request a Service",
-    subheading = "Pick the service you need. Every request gets a ticket number you can track.",
+    heading,
+    subheading,
   },
   ref
 ) {
+  const { lang } = useLanguage();
+  const T = useDict({
+    submitting: bookingT.submitting,
+    submitAirport: bookingT.submitAirport,
+    submitHotel: bookingT.submitHotel,
+    submitGovernment: bookingT.submitGovernment,
+    submitProgram: bookingT.submitProgram,
+    errorFallback: bookingT.errorFallback,
+    govNotice: bookingT.govNotice,
+    ticketSaved: bookingT.ticketSaved,
+    defaultHeading: bookingT.defaultHeading,
+    defaultSubheading: bookingT.defaultSubheading,
+  });
+  const fields = useDict(bookingT.fields);
+  const tabsT = useDict(bookingT.tabs);
+  const airportsT = useDict(bookingT.airports);
+  const hotelTiersT = useDict(bookingT.hotelTiers);
+  const carOptionsT = useDict(bookingT.carOptions);
+  const urgencyT = useDict(bookingT.urgencyOptions);
+  const batchT = useDict(bookingT.batchOptions);
+  const placeholders = useDict(bookingT.placeholders);
+
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const tab = lockedTab ?? activeTab;
@@ -65,7 +89,7 @@ const Booking = forwardRef<
       onSubmitted(created.ticket);
       form.reset();
     } catch (err) {
-      setError(err instanceof ApiError ? err.message : "Couldn't submit that request. Please try again.");
+      setError(err instanceof ApiError ? err.message : T.errorFallback);
     } finally {
       setSubmitting(false);
     }
@@ -77,7 +101,7 @@ const Booking = forwardRef<
       disabled={submitting}
       className="w-full sm:w-auto px-6 py-3 rounded-lg font-medium text-[15px] bg-gradient-to-r from-gold to-[#E0B563] text-navy hover:from-gold-deep hover:to-gold-deep hover:text-white active:scale-[0.97] transition-colors disabled:opacity-60 disabled:cursor-not-allowed"
     >
-      {submitting ? "Submitting…" : label}
+      {submitting ? T.submitting : label}
     </button>
   );
 
@@ -90,13 +114,13 @@ const Booking = forwardRef<
           viewport={{ once: true, amount: 0.2 }}
           transition={{ duration: 0.6 }}
         >
-          <h2 className="font-display text-3xl md:text-4xl mb-2 text-navy">{heading}</h2>
-          <p className="mb-8 text-ink-muted">{subheading}</p>
+          <h2 className="font-display text-3xl md:text-4xl mb-2 text-navy">{heading ?? T.defaultHeading}</h2>
+          <p className="mb-8 text-ink-muted">{subheading ?? T.defaultSubheading}</p>
         </motion.div>
 
         {!lockedTab && (
           <div className="flex gap-2 mb-8 flex-wrap">
-            {TABS.map(({ id: tabId, label, icon: Icon }) => (
+            {TAB_META.map(({ id: tabId, icon: Icon }) => (
               <button
                 key={tabId}
                 onClick={() => setActiveTab(tabId)}
@@ -112,7 +136,7 @@ const Booking = forwardRef<
                   />
                 )}
                 <span className="relative z-10 flex items-center gap-2">
-                  <Icon size={15} /> {label}
+                  <Icon size={15} /> {tabsT[tabId]}
                 </span>
               </button>
             ))}
@@ -128,51 +152,56 @@ const Booking = forwardRef<
             transition={{ duration: 0.3 }}
             className="rounded-2xl border border-border bg-white shadow-card p-6 md:p-8"
           >
-            {error && (
-              <div className="mb-5 text-[13px] rounded-lg px-4 py-3 bg-[#FBEAE5] text-[#9A3412]">{error}</div>
-            )}
+            {error && <div className="mb-5 text-[13px] rounded-lg px-4 py-3 bg-[#FBEAE5] text-[#9A3412]">{error}</div>}
 
             {tab === "airport" && (
               <form onSubmit={(e) => handleSubmit("airport", e)}>
                 <div className="grid sm:grid-cols-2 gap-x-5">
                   <IdentityFields defaultName={airportPrefill.name} />
-                  <Field label="Flight number" required>
+                  <Field label={fields.flightNumber} required>
                     <input
                       name="flight"
                       required
                       defaultValue={airportPrefill.flight}
-                      placeholder="e.g. BG 147"
+                      placeholder={placeholders.flightExample}
                       className={inputClass}
                     />
                   </Field>
-                  <Field label="Arrival airport" required>
-                    <select name="airport" required className={inputClass} defaultValue="Hazrat Shahjalal Int'l, Dhaka">
-                      <option>Hazrat Shahjalal Int&apos;l, Dhaka</option>
-                      <option>Shah Amanat Int&apos;l, Chattogram</option>
-                      <option>Osmani Int&apos;l, Sylhet</option>
+                  <Field label={fields.arrivalAirport} required>
+                    <select name="airport" required className={inputClass} defaultValue={airportsT.dhaka}>
+                      <option>{airportsT.dhaka}</option>
+                      <option>{airportsT.chattogram}</option>
+                      <option>{airportsT.sylhet}</option>
                     </select>
                   </Field>
-                  <Field label="Preferred date" required>
+                  <Field label={fields.preferredDate} required>
                     <input name="date" type="date" required className={inputClass} />
                   </Field>
-                  <Field label="Arrival time">
+                  <Field label={fields.arrivalTime}>
                     <input name="time" type="time" className={inputClass} />
                   </Field>
-                  <Field label="Purpose of visit" required>
-                    <select name="purpose" required defaultValue={airportPrefill.purpose || "Business"} className={inputClass}>
-                      {PURPOSES.map((p) => (
-                        <option key={p}>{p}</option>
+                  <Field label={fields.purposeOfVisit} required>
+                    <select
+                      name="purpose"
+                      required
+                      defaultValue={
+                        purposesT.find((p) => p.en === (airportPrefill.purpose || "Business"))?.[lang] ?? purposesT[0][lang]
+                      }
+                      className={inputClass}
+                    >
+                      {purposesT.map((p) => (
+                        <option key={p.en}>{p[lang]}</option>
                       ))}
                     </select>
                   </Field>
-                  <Field label="Travelers">
+                  <Field label={fields.travelers}>
                     <input name="travelers" type="number" min="1" defaultValue="1" className={inputClass} />
                   </Field>
                 </div>
-                <Field label="Description of request">
-                  <textarea name="notes" rows={3} placeholder="Anything else we should know" className={inputClass} />
+                <Field label={fields.description}>
+                  <textarea name="notes" rows={3} placeholder={placeholders.airportNotes} className={inputClass} />
                 </Field>
-                {submitBtn("Submit airport request")}
+                {submitBtn(T.submitAirport)}
               </form>
             )}
 
@@ -180,39 +209,39 @@ const Booking = forwardRef<
               <form onSubmit={(e) => handleSubmit("hotel", e)}>
                 <div className="grid sm:grid-cols-2 gap-x-5">
                   <IdentityFields />
-                  <Field label="Location / City" required>
-                    <input name="city" required placeholder="Dhaka, Rajshahi..." className={inputClass} />
+                  <Field label={fields.locationCity} required>
+                    <input name="city" required placeholder={placeholders.cityExample} className={inputClass} />
                   </Field>
-                  <Field label="Hotel tier">
-                    <select name="tier" className={inputClass} defaultValue="Standard">
-                      <option>Standard</option>
-                      <option>Business</option>
-                      <option>Luxury</option>
+                  <Field label={fields.hotelTier}>
+                    <select name="tier" className={inputClass} defaultValue={hotelTiersT.standard}>
+                      <option>{hotelTiersT.standard}</option>
+                      <option>{hotelTiersT.business}</option>
+                      <option>{hotelTiersT.luxury}</option>
                     </select>
                   </Field>
-                  <Field label="Check-in (preferred date)" required>
+                  <Field label={fields.checkin} required>
                     <input name="checkin" type="date" required className={inputClass} />
                   </Field>
-                  <Field label="Check-out" required>
+                  <Field label={fields.checkout} required>
                     <input name="checkout" type="date" required className={inputClass} />
                   </Field>
-                  <Field label="Car type">
-                    <select name="car" className={inputClass} defaultValue="Sedan, self-drive">
-                      <option>Sedan, self-drive</option>
-                      <option>Sedan, with driver</option>
-                      <option>SUV, with driver</option>
-                      <option>Van, with driver</option>
-                      <option>No car needed</option>
+                  <Field label={fields.carType}>
+                    <select name="car" className={inputClass} defaultValue={carOptionsT.sedanSelf}>
+                      <option>{carOptionsT.sedanSelf}</option>
+                      <option>{carOptionsT.sedanDriver}</option>
+                      <option>{carOptionsT.suvDriver}</option>
+                      <option>{carOptionsT.vanDriver}</option>
+                      <option>{carOptionsT.noCar}</option>
                     </select>
                   </Field>
-                  <Field label="Pickup location">
+                  <Field label={fields.pickupLocation}>
                     <input name="pickup" className={inputClass} />
                   </Field>
                 </div>
-                <Field label="Description of request">
+                <Field label={fields.description}>
                   <textarea name="notes" rows={3} className={inputClass} />
                 </Field>
-                {submitBtn("Submit hotel & car request")}
+                {submitBtn(T.submitHotel)}
               </form>
             )}
 
@@ -220,32 +249,31 @@ const Booking = forwardRef<
               <form onSubmit={(e) => handleSubmit("government", e)}>
                 <div className="mb-5 text-[13px] rounded-lg px-4 py-3 flex gap-2 bg-gold-pale text-[#7A5E13]">
                   <Clock size={16} className="shrink-0 mt-0.5" />
-                  Our desk reviews every case individually and confirms scope directly with you by
-                  phone before any work begins.
+                  {T.govNotice}
                 </div>
                 <div className="grid sm:grid-cols-2 gap-x-5">
                   <IdentityFields />
-                  <Field label="Service required" required>
+                  <Field label={fields.serviceRequired} required>
                     <select name="service" required className={inputClass} defaultValue="">
                       <option value="" disabled>
-                        Select a service
+                        {fields.selectAService}
                       </option>
-                      {GOV_SERVICES.map((label) => (
-                        <option key={label}>{label}</option>
+                      {govServicesT.map((g) => (
+                        <option key={g.en}>{g[lang]}</option>
                       ))}
                     </select>
                   </Field>
-                  <Field label="Urgency">
-                    <select name="urgency" className={inputClass} defaultValue="Standard">
-                      <option>Standard</option>
-                      <option>Urgent</option>
+                  <Field label={fields.urgency}>
+                    <select name="urgency" className={inputClass} defaultValue={urgencyT.standard}>
+                      <option>{urgencyT.standard}</option>
+                      <option>{urgencyT.urgent}</option>
                     </select>
                   </Field>
                 </div>
-                <Field label="Description of request" required>
+                <Field label={fields.description} required>
                   <textarea name="description" rows={4} required className={inputClass} />
                 </Field>
-                {submitBtn("Submit government request")}
+                {submitBtn(T.submitGovernment)}
               </form>
             )}
 
@@ -253,30 +281,33 @@ const Booking = forwardRef<
               <form onSubmit={(e) => handleSubmit("program", e)}>
                 <div className="grid sm:grid-cols-2 gap-x-5">
                   <IdentityFields />
-                  <Field label="Program" required>
+                  <Field label={fields.program} required>
                     <select key={presetProgram} name="program" required defaultValue={presetProgram} className={inputClass}>
-                      {PROGRAMS.map((p) => (
-                        <option key={p.id} value={p.id}>
-                          {p.label}
-                        </option>
-                      ))}
+                      {PROGRAMS.map((p) => {
+                        const tp = programsT.find((x) => x.id === p.id);
+                        return (
+                          <option key={p.id} value={p.id}>
+                            {tp ? tp[lang] : p.label}
+                          </option>
+                        );
+                      })}
                     </select>
                   </Field>
-                  <Field label="Preferred batch">
-                    <select name="batch" className={inputClass} defaultValue="Offline, Bangladesh campus">
-                      <option>Offline, Bangladesh campus</option>
-                      <option>Online, Zoom</option>
-                      <option>Not applicable</option>
+                  <Field label={fields.preferredBatch}>
+                    <select name="batch" className={inputClass} defaultValue={batchT.offline}>
+                      <option>{batchT.offline}</option>
+                      <option>{batchT.online}</option>
+                      <option>{batchT.notApplicable}</option>
                     </select>
                   </Field>
-                  <Field label="Current education / occupation">
+                  <Field label={fields.currentEducation}>
                     <input name="background" className={inputClass} />
                   </Field>
                 </div>
-                <Field label="Description of request">
-                  <textarea name="notes" rows={3} placeholder="What are you hoping to get out of it?" className={inputClass} />
+                <Field label={fields.description}>
+                  <textarea name="notes" rows={3} placeholder={placeholders.programGoal} className={inputClass} />
                 </Field>
-                {submitBtn("Submit enrollment request")}
+                {submitBtn(T.submitProgram)}
               </form>
             )}
           </motion.div>
@@ -292,8 +323,12 @@ const Booking = forwardRef<
             >
               <Ticket size={18} color="#A97C24" className="shrink-0" />
               <div className="text-[13px] text-navy">
-                Your ticket number is <strong>{lastTicket}</strong>. Save it — you&apos;ll need it
-                with your name and date of birth to track this request.
+                {T.ticketSaved.split("{ticket}").map((part, i, arr) => (
+                  <span key={i}>
+                    {part}
+                    {i < arr.length - 1 && <strong>{lastTicket}</strong>}
+                  </span>
+                ))}
               </div>
             </motion.div>
           )}

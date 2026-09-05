@@ -5,23 +5,22 @@ import { Field, inputClass } from "./ui/Field";
 import StatusPill from "./ui/StatusPill";
 import StatusTimeline, { type TimelineStage } from "./ui/StatusTimeline";
 import type { ServiceRequest } from "../types";
+import { useDict } from "../lib/i18n";
+import { trackRequestT } from "../lib/translations";
 
-const STAGE_LABELS: Record<string, string> = {
-  received: "Request received",
-  approved: "Approved",
-  approved_fee_due: "Approved — fee due",
-  paid: "Paid",
-  completed: "Completed",
-};
-
-function timelineFor(result: ServiceRequest): { stages: TimelineStage[]; currentIndex: number } {
+function timelineFor(
+  result: ServiceRequest,
+  stageLabels: Record<"received" | "approved" | "approvedFeeDue" | "paid" | "completed", string>
+): { stages: TimelineStage[]; currentIndex: number } {
   const hasFee = result.type === "Government Request" && result.fee != null;
-  const keys = hasFee ? ["received", "approved", "paid", "completed"] : ["received", "approved", "completed"];
+  const keys: (keyof typeof stageLabels)[] = hasFee
+    ? ["received", "approved", "paid", "completed"]
+    : ["received", "approved", "completed"];
   const stages = keys.map((key) => ({
     key,
-    label: key === "approved" && hasFee ? STAGE_LABELS.approved_fee_due : STAGE_LABELS[key],
+    label: key === "approved" && hasFee ? stageLabels.approvedFeeDue : stageLabels[key],
   }));
-  return { stages, currentIndex: Math.max(0, keys.indexOf(result.status)) };
+  return { stages, currentIndex: Math.max(0, keys.indexOf(result.status as keyof typeof stageLabels)) };
 }
 
 const TrackRequest = forwardRef<
@@ -33,6 +32,20 @@ const TrackRequest = forwardRef<
     onPay: (req: ServiceRequest) => void;
   }
 >(function TrackRequest({ loading, result, onSubmit, onPay }, ref) {
+  const T = useDict({
+    h2: trackRequestT.h2,
+    subtitle: trackRequestT.subtitle,
+    ticketNumber: trackRequestT.ticketNumber,
+    fullName: trackRequestT.fullName,
+    dob: trackRequestT.dob,
+    checkStatus: trackRequestT.checkStatus,
+    notFound: trackRequestT.notFound,
+    rejected: trackRequestT.rejected,
+    contactDeskFallback: trackRequestT.contactDeskFallback,
+    payButton: trackRequestT.payButton,
+  });
+  const stageLabels = useDict(trackRequestT.stageLabels);
+
   const runTrack = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const data = Object.fromEntries(new FormData(e.currentTarget).entries()) as Record<string, string>;
@@ -47,21 +60,19 @@ const TrackRequest = forwardRef<
         viewport={{ once: true, amount: 0.2 }}
         transition={{ duration: 0.7 }}
       >
-        <h2 className="font-display text-3xl mb-2 text-navy">Track Your Request</h2>
-        <p className="mb-8 text-ink-muted">
-          Enter your ticket number, full name, and date of birth exactly as submitted.
-        </p>
+        <h2 className="font-display text-3xl mb-2 text-navy">{T.h2}</h2>
+        <p className="mb-8 text-ink-muted">{T.subtitle}</p>
       </motion.div>
 
       <form onSubmit={runTrack} className="rounded-2xl border border-border p-6 md:p-8 mb-6 bg-white shadow-card">
         <div className="grid sm:grid-cols-3 gap-x-5">
-          <Field label="Ticket number" required>
+          <Field label={T.ticketNumber} required>
             <input name="ticket" required placeholder="HRM-100..." className={inputClass} />
           </Field>
-          <Field label="Full name" required>
+          <Field label={T.fullName} required>
             <input name="name" required className={inputClass} />
           </Field>
-          <Field label="Date of birth" required>
+          <Field label={T.dob} required>
             <input name="dob" type="date" required className={inputClass} />
           </Field>
         </div>
@@ -70,7 +81,7 @@ const TrackRequest = forwardRef<
           disabled={loading}
           className="flex items-center gap-2 px-6 py-3 rounded-md font-medium text-[15px] bg-navy text-white active:scale-[0.97] transition-transform disabled:opacity-60"
         >
-          <Search size={16} /> Check status
+          <Search size={16} /> {T.checkStatus}
         </button>
       </form>
 
@@ -93,10 +104,7 @@ const TrackRequest = forwardRef<
             className="rounded-lg px-5 py-4 flex items-start gap-3 bg-[#F7E3DD] text-[#8A3B22]"
           >
             <ShieldAlert size={18} className="shrink-0 mt-0.5" />
-            <div className="text-[14px]">
-              No matching request. Double-check the ticket number, name, and date of birth exactly
-              as submitted.
-            </div>
+            <div className="text-[14px]">{T.notFound}</div>
           </motion.div>
         )}
 
@@ -120,13 +128,13 @@ const TrackRequest = forwardRef<
               <div className="flex items-start gap-2 text-[13px] text-[#8A3B22] bg-[#F7E3DD] rounded-md px-3 py-2.5">
                 <XCircle size={15} className="shrink-0 mt-0.5" />
                 <span>
-                  This request was not approved.
-                  {result.decisionNote ? ` ${result.decisionNote}` : " Please contact the desk for details."}
+                  {T.rejected}
+                  {result.decisionNote ? ` ${result.decisionNote}` : ` ${T.contactDeskFallback}`}
                 </span>
               </div>
             ) : (
               (() => {
-                const { stages, currentIndex } = timelineFor(result);
+                const { stages, currentIndex } = timelineFor(result, stageLabels);
                 return <StatusTimeline stages={stages} currentIndex={currentIndex} />;
               })()
             )}
@@ -136,7 +144,7 @@ const TrackRequest = forwardRef<
                 onClick={() => onPay(result)}
                 className="mt-5 flex items-center gap-2 text-[13px] font-medium px-4 py-2.5 rounded-md bg-navy text-white active:scale-[0.97] transition-transform"
               >
-                <CreditCard size={14} /> Pay ৳{result.fee.toLocaleString()}
+                <CreditCard size={14} /> {T.payButton.replace("{fee}", result.fee.toLocaleString())}
               </button>
             )}
           </motion.div>

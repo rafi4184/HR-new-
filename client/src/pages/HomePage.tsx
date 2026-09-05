@@ -17,8 +17,12 @@ import Faq from "../components/Faq";
 import { HOME_FAQS } from "../data/servicePages";
 import { trackRequest, ApiError } from "../lib/api";
 import type { BookingTab, ServiceRequest } from "../types";
+import { useLanguage } from "../lib/i18n";
+import { homeFaqs } from "../lib/translations";
 
 export default function HomePage({ onToast }: { onToast: (msg: string) => void }) {
+  const { lang } = useLanguage();
+  const translatedFaqs = homeFaqs.map((f) => ({ question: f.question[lang], answer: f.answer[lang] }));
   useSeo({
     title: "HR — The Mediator | Trusted Services & Support in Bangladesh",
     description:
@@ -85,7 +89,7 @@ export default function HomePage({ onToast }: { onToast: (msg: string) => void }
       <StatsRow />
       <MediaPartners />
       <Events />
-      <Faq items={HOME_FAQS} />
+      <Faq items={translatedFaqs} />
 
       <PaymentModal request={payModal} onClose={() => setPayModal(null)} onPaid={handlePaid} />
     </div>

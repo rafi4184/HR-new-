@@ -1,6 +1,6 @@
 import { useEffect, useState, type FormEvent } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Trash2, Pencil, Plus, Image as ImageIcon, Video, Loader2, ShieldCheck, Shield, Users, KeyRound, ScrollText } from "lucide-react";
+import { Trash2, Pencil, Plus, Image as ImageIcon, Video, Loader2, ShieldCheck, Shield, Users, KeyRound, ScrollText, CalendarDays } from "lucide-react";
 import { inputClass } from "../ui/Field";
 import {
   listContacts,
@@ -53,6 +53,23 @@ export default function AdminPanel({
   onToast: (msg: string) => void;
 }) {
   const [tab, setTab] = useState<Tab>("contacts");
+
+  if (me.role === "staff") {
+    // Plain staff don't get contacts/staff-management/audit — just events,
+    // so they can post recent success stories and seminars themselves.
+    return (
+      <div className="mt-10 pt-10 border-t border-dashed border-border-strong">
+        <div className="flex items-center gap-2 mb-1">
+          <CalendarDays size={17} className="text-navy" />
+          <h3 className="font-display text-xl">Events</h3>
+        </div>
+        <p className="text-[13px] mb-5 text-ink-faint">
+          Post recent success stories and seminars — everyone visiting the site will see them.
+        </p>
+        <EventsPanel onToast={onToast} />
+      </div>
+    );
+  }
 
   if (!me.isAdmin) {
     // Executives don't get contacts/events — just their own team.

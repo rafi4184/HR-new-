@@ -3,6 +3,8 @@ import { motion, useScroll, useTransform } from "framer-motion";
 import { ArrowRight, ChevronDown, PlaneTakeoff, Landmark, GraduationCap, ShieldCheck } from "lucide-react";
 import MagneticButton from "./ui/MagneticButton";
 import { IMG_HERO_BG } from "../lib/constants";
+import { useDict } from "../lib/i18n";
+import { hero } from "../lib/translations";
 
 const ease = [0.2, 0.8, 0.2, 1] as const;
 
@@ -14,6 +16,7 @@ const ORBIT_ICONS = [
 ];
 
 export default function Hero() {
+  const T = useDict(hero);
   const ref = useRef<HTMLElement>(null);
   const { scrollYProgress } = useScroll({ target: ref, offset: ["start start", "end start"] });
   const imgY = useTransform(scrollYProgress, [0, 1], ["0%", "18%"]);
@@ -51,7 +54,7 @@ export default function Hero() {
             className="flex items-center gap-2 mb-5 text-[12px] tracking-[0.2em] uppercase text-gold-deep font-medium"
           >
             <span className="w-6 h-px bg-gold-deep" />
-            Bangladesh · Trusted Service Partner
+            {T.eyebrow}
           </motion.div>
 
           <motion.h1
@@ -61,7 +64,7 @@ export default function Hero() {
             className="font-display text-navy text-[2.5rem] sm:text-[3.4rem] leading-[1.08] mb-6"
             style={{ textWrap: "balance" }}
           >
-            Your Gateway to Trusted Services in Bangladesh
+            {T.h1}
           </motion.h1>
 
           <motion.p
@@ -70,9 +73,7 @@ export default function Hero() {
             transition={{ duration: 0.7, delay: 0.2, ease }}
             className="text-[16px] md:text-[18px] text-ink-muted leading-relaxed mb-9 max-w-xl"
           >
-            From airport assistance and private transportation to government-request support,
-            manpower, security, education and international careers — HR — The Mediator connects
-            you with the services you need, coordinated by one trusted desk in Bangladesh.
+            {T.paragraph}
           </motion.p>
 
           <motion.div
@@ -87,7 +88,7 @@ export default function Hero() {
               strength={0.3}
               className="group inline-flex items-center gap-2 px-7 py-3.5 rounded-full font-medium text-[14px] tracking-wide uppercase bg-gradient-to-r from-gold to-[#E0B563] text-navy hover:from-gold-deep hover:to-gold-deep hover:text-white transition-colors"
             >
-              Explore Services
+              {T.exploreServices}
               <ArrowRight size={15} className="transition-transform group-hover:translate-x-1" />
             </MagneticButton>
             <MagneticButton
@@ -96,7 +97,7 @@ export default function Hero() {
               strength={0.3}
               className="px-7 py-3.5 rounded-full font-medium text-[14px] tracking-wide uppercase border border-navy text-navy hover:bg-navy hover:text-white transition-colors"
             >
-              Request a Service
+              {T.requestService}
             </MagneticButton>
           </motion.div>
         </div>
