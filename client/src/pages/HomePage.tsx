@@ -43,6 +43,11 @@ export default function HomePage({ onToast }: { onToast: (msg: string) => void }
   const bookingRef = useRef<HTMLElement>(null);
   const trackRef = useRef<HTMLElement>(null);
 
+  const goToBooking = (tab: BookingTab | null) => {
+    if (tab) setActiveTab(tab);
+    bookingRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
+  };
+
   const handleSubmitted = (ticket: string) => {
     setLastTicket(ticket);
     onToast(`Request ${ticket} received — track it anytime with your name, date of birth, and ticket number.`);
@@ -82,7 +87,7 @@ export default function HomePage({ onToast }: { onToast: (msg: string) => void }
       />
       <ServicesGrid />
       <TrackRequest ref={trackRef} loading={trackLoading} result={trackResult} onSubmit={runTrack} onPay={setPayModal} />
-      <PlatformHub />
+      <PlatformHub onBranchClick={goToBooking} />
       <HowItWorks />
       <WhyChooseUs />
       <WhoWeHelp />

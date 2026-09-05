@@ -4,6 +4,7 @@ import Reveal from "./ui/Reveal";
 import LogoMark from "./ui/Logo";
 import { useDict, useLanguage } from "../lib/i18n";
 import { platformHub } from "../lib/translations";
+import type { BookingTab } from "../types";
 
 const ICONS = [PlaneTakeoff, Landmark, ShieldCheck, GraduationCap];
 const POSITIONS = [
@@ -18,8 +19,11 @@ const LINES = [
   { x2: 22, y2: 88 },
   { x2: 78, y2: 88 },
 ];
+// Travel -> Airport VIP tab, Support -> Government tab, Workforce -> no
+// matching Booking tab (manpower isn't bookable via the tabbed form), Future -> Courses/programs tab.
+const BRANCH_TABS: (BookingTab | null)[] = ["airport", "government", null, "programs"];
 
-export default function PlatformHub() {
+export default function PlatformHub({ onBranchClick }: { onBranchClick?: (tab: BookingTab | null) => void }) {
   const T = useDict({ eyebrow: platformHub.eyebrow, h2: platformHub.h2 });
   const { lang } = useLanguage();
   const branches = platformHub.branches.map((b, i) => ({
@@ -77,21 +81,24 @@ export default function PlatformHub() {
           </motion.div>
 
           {branches.map((b, i) => (
-            <motion.div
+            <motion.button
               key={b.id}
+              type="button"
+              onClick={() => onBranchClick?.(BRANCH_TABS[i])}
               initial={{ opacity: 0, y: 12 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, amount: 0.4 }}
+              whileHover={{ y: -3 }}
               transition={{ duration: 0.5, delay: 0.35 + i * 0.1, ease: [0.2, 0.8, 0.2, 1] }}
               style={b.pos}
-              className="absolute w-52 rounded-xl bg-white border border-border shadow-card p-4"
+              className="absolute w-52 rounded-xl bg-white border border-border shadow-card hover:shadow-card-hover hover:border-gold p-4 text-left cursor-pointer transition-shadow"
             >
               <div className="flex items-center gap-2 mb-2 text-gold-deep">
                 <b.icon size={17} />
                 <span className="font-display text-[15px] text-navy">{b.label}</span>
               </div>
               <div className="text-[12.5px] text-ink-muted leading-relaxed">{b.items.join(" · ")}</div>
-            </motion.div>
+            </motion.button>
           ))}
         </div>
 
@@ -101,13 +108,17 @@ export default function PlatformHub() {
           <div className="flex flex-col gap-6">
             {branches.map((b, i) => (
               <Reveal key={b.id} delay={i * 0.08}>
-                <div className="relative">
+                <button
+                  type="button"
+                  onClick={() => onBranchClick?.(BRANCH_TABS[i])}
+                  className="relative text-left w-full cursor-pointer"
+                >
                   <div className="absolute -left-8 top-0.5 w-[22px] h-[22px] rounded-full bg-navy flex items-center justify-center">
                     <b.icon size={12} color="#fff" />
                   </div>
                   <div className="font-display text-[16px] text-navy mb-1">{b.label}</div>
                   <div className="text-[13.5px] text-ink-muted">{b.items.join(" · ")}</div>
-                </div>
+                </button>
               </Reveal>
             ))}
           </div>
