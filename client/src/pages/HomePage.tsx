@@ -4,6 +4,7 @@ import Hero from "../components/Hero";
 import ServicesGrid from "../components/ServicesGrid";
 import PlatformHub from "../components/PlatformHub";
 import CoursesCareersTeaser from "../components/CoursesCareersTeaser";
+import CountriesWeServe from "../components/CountriesWeServe";
 import HowItWorks from "../components/HowItWorks";
 import WhoWeHelp from "../components/WhoWeHelp";
 import WhyChooseUs from "../components/WhyChooseUs";
@@ -86,6 +87,7 @@ export default function HomePage({ onToast }: { onToast: (msg: string) => void }
       <WhyChooseUs />
       <WhoWeHelp />
       <CoursesCareersTeaser />
+      <CountriesWeServe />
       <StatsRow />
       <MediaPartners />
       <Events />

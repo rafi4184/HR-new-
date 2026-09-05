@@ -1,7 +1,7 @@
 import { useRef, useState } from "react";
 import { Routes, Route, useLocation } from "react-router-dom";
 import { AnimatePresence, motion } from "framer-motion";
-import { Phone } from "lucide-react";
+import { Phone, MessageCircle } from "lucide-react";
 import Header from "./components/Header";
 import Footer from "./components/Footer";
 import FinalCta from "./components/FinalCta";
@@ -59,6 +59,16 @@ export default function App() {
       <FinalCta />
       <Footer />
       <Toast message={toast} />
+
+      <a
+        href="https://wa.me/8801717013150?text=Hi%2C%20I%27d%20like%20to%20request%20a%20service%20from%20HR%20%E2%80%94%20The%20Mediator."
+        target="_blank"
+        rel="noopener noreferrer"
+        className="fixed bottom-24 right-5 z-40 w-14 h-14 rounded-full flex items-center justify-center shadow-card-hover bg-[#25D366] text-white hover:brightness-95 active:scale-[0.97] transition-all"
+        aria-label="Chat on WhatsApp"
+      >
+        <MessageCircle size={22} />
+      </a>
 
       <a
         href="tel:+8801717013150"

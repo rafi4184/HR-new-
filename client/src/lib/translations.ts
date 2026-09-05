@@ -25,6 +25,68 @@ export const hero = {
   requestService: { en: "Request a Service", bn: "সেবার জন্য অনুরোধ করুন" },
 };
 
+export const serviceNavGroups = {
+  categories: {
+    travel: { en: "Travel & VIP Services", bn: "ভ্রমণ ও ভিআইপি সেবা" },
+    study: { en: "Study Abroad & Jobs Abroad", bn: "বিদেশে পড়াশোনা ও চাকরি" },
+    media: { en: "Media & Courses", bn: "মিডিয়া ও কোর্স" },
+    government: { en: "Government & Manpower", bn: "সরকারি ও জনবল সেবা" },
+  },
+  items: {
+    airport: {
+      title: { en: "Airport VIP", bn: "এয়ারপোর্ট ভিআইপি" },
+      summary: { en: "Meet & greet, arrivals and departures.", bn: "মিট অ্যান্ড গ্রিট, আগমন ও প্রস্থান সহায়তা।" },
+    },
+    hotel: {
+      title: { en: "Hotel & Car", bn: "হোটেল ও গাড়ি" },
+      summary: { en: "Hotel booking and private car service.", bn: "হোটেল বুকিং ও ব্যক্তিগত গাড়ি সেবা।" },
+    },
+    studyWorkGulf: {
+      title: { en: "Study & Work in the Gulf", bn: "গালফে পড়াশোনা ও কাজ" },
+      summary: {
+        en: "Gulf/Middle East jobs and study-abroad guidance.",
+        bn: "গালফ/মধ্যপ্রাচ্যে চাকরি ও বিদেশে পড়াশোনার নির্দেশনা।",
+      },
+    },
+    coursesCareers: {
+      title: { en: "Courses & Careers", bn: "কোর্স ও ক্যারিয়ার" },
+      summary: { en: "Overview of all training & career tracks.", bn: "সকল প্রশিক্ষণ ও ক্যারিয়ার ট্র্যাকের সংক্ষিপ্ত বিবরণ।" },
+    },
+    mediaPublicSpeaking: {
+      title: { en: "Media & Public Speaking Academy", bn: "মিডিয়া ও পাবলিক স্পিকিং একাডেমি" },
+      summary: { en: "Presentation & broadcast training.", bn: "উপস্থাপনা ও সম্প্রচার প্রশিক্ষণ।" },
+    },
+    government: {
+      title: { en: "Government Request", bn: "সরকারি কাজের সহায়তা" },
+      summary: { en: "Documentation & administrative support.", bn: "কাগজপত্র ও প্রশাসনিক সহায়তা।" },
+    },
+    manpower: {
+      title: { en: "Manpower & Security", bn: "জনবল ও নিরাপত্তা" },
+      summary: { en: "Staffing & security for businesses.", bn: "ব্যবসার জন্য জনবল ও নিরাপত্তা।" },
+    },
+  },
+};
+
+export const countriesWeServe = {
+  eyebrow: { en: "Where we help you go", bn: "যেখানে আমরা আপনাকে যেতে সাহায্য করি" },
+  h2: { en: "Countries We Serve", bn: "আমরা যেসব দেশে সেবা দিই" },
+  intro: {
+    en: "Study-abroad guidance and Gulf/Middle East job placement, coordinated from our desk in Bangladesh.",
+    bn: "বাংলাদেশে আমাদের ডেস্ক থেকে সমন্বিত বিদেশে পড়াশোনার নির্দেশনা এবং গালফ/মধ্যপ্রাচ্যে চাকরি প্রাপ্তি।",
+  },
+  countries: [
+    { flag: "🇦🇪", name: { en: "UAE", bn: "সংযুক্ত আরব আমিরাত" } },
+    { flag: "🇸🇦", name: { en: "Saudi Arabia", bn: "সৌদি আরব" } },
+    { flag: "🇶🇦", name: { en: "Qatar", bn: "কাতার" } },
+    { flag: "🇰🇼", name: { en: "Kuwait", bn: "কুয়েত" } },
+    { flag: "🇴🇲", name: { en: "Oman", bn: "ওমান" } },
+    { flag: "🇧🇭", name: { en: "Bahrain", bn: "বাহরাইন" } },
+    { flag: "🇬🇧", name: { en: "United Kingdom", bn: "যুক্তরাজ্য" } },
+    { flag: "🇦🇺", name: { en: "Australia", bn: "অস্ট্রেলিয়া" } },
+    { flag: "🇨🇦", name: { en: "Canada", bn: "কানাডা" } },
+  ],
+};
+
 export const heroOrbit = {
   airport: { en: "Airport VIP Reception", bn: "এয়ারপোর্ট ভিআইপি রিসেপশন" },
   government: { en: "Government Request", bn: "সরকারি কাজে সহায়তা" },

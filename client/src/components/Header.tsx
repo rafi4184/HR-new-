@@ -4,10 +4,10 @@ import { motion, AnimatePresence } from "framer-motion";
 import { ChevronDown, Menu, X } from "lucide-react";
 import LogoMark from "./ui/Logo";
 import LanguageToggle from "./ui/LanguageToggle";
-import { SERVICES } from "../lib/services";
+import { NAV_GROUPS } from "../lib/serviceNavGroups";
 import { useRequestHref } from "../lib/useRequestHref";
 import { useDict, useT } from "../lib/i18n";
-import { header, servicesList } from "../lib/translations";
+import { header, serviceNavGroups } from "../lib/translations";
 
 export default function Header() {
   const requestHref = useRequestHref();
@@ -86,26 +86,33 @@ export default function Header() {
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, y: 8 }}
                   transition={{ duration: 0.15 }}
-                  className="absolute left-1/2 -translate-x-1/2 top-full pt-3 w-72"
+                  className="absolute left-1/2 -translate-x-1/2 top-full pt-3 w-[560px]"
                 >
-                  <div className="rounded-xl border border-border bg-white shadow-card-hover p-2">
-                    {SERVICES.map((s, i) => (
-                      <Link
-                        key={s.id}
-                        to={s.path}
-                        onClick={() => setServicesOpen(false)}
-                        className="flex items-start gap-3 px-3 py-2.5 rounded-lg hover:bg-paper-soft transition-colors"
-                      >
-                        <s.icon size={18} className="text-gold-deep mt-0.5 shrink-0" />
-                        <div>
-                          <div className="text-[14px] font-medium text-navy">
-                            <ServiceLabel field="shortTitle" index={i} fallback={s.navLabel} />
-                          </div>
-                          <div className="text-[12px] text-ink-faint line-clamp-1">
-                            <ServiceLabel field="summary" index={i} fallback={s.summary} />
-                          </div>
+                  <div className="rounded-xl border border-border bg-white shadow-card-hover p-4 grid grid-cols-2 gap-2">
+                    {NAV_GROUPS.map((group) => (
+                      <div key={group.key} className="p-1">
+                        <div className="px-2 pb-1.5 text-[11px] font-semibold uppercase tracking-wide text-gold-deep">
+                          <GroupLabel groupKey={group.key} />
                         </div>
-                      </Link>
+                        {group.items.map((item) => (
+                          <Link
+                            key={item.key}
+                            to={item.path}
+                            onClick={() => setServicesOpen(false)}
+                            className="flex items-start gap-3 px-2 py-2 rounded-lg hover:bg-paper-soft transition-colors"
+                          >
+                            <item.icon size={17} className="text-gold-deep mt-0.5 shrink-0" />
+                            <div>
+                              <div className="text-[13.5px] font-medium text-navy">
+                                <ItemLabel itemKey={item.key} field="title" />
+                              </div>
+                              <div className="text-[11.5px] text-ink-faint line-clamp-1">
+                                <ItemLabel itemKey={item.key} field="summary" />
+                              </div>
+                            </div>
+                          </Link>
+                        ))}
+                      </div>
                     ))}
                   </div>
                 </motion.div>
@@ -191,10 +198,23 @@ export default function Header() {
                     exit={{ height: 0, opacity: 0 }}
                     className="pl-3 flex flex-col overflow-hidden"
                   >
-                    {SERVICES.map((s, i) => (
-                      <Link key={s.id} to={s.path} onClick={() => setMobileOpen(false)} className="py-2 text-[14px] text-ink-soft">
-                        <ServiceLabel field="shortTitle" index={i} fallback={s.navLabel} />
-                      </Link>
+                    {NAV_GROUPS.map((group) => (
+                      <div key={group.key} className="mb-1">
+                        <div className="pt-2 pb-1 text-[11px] font-semibold uppercase tracking-wide text-gold-deep">
+                          <GroupLabel groupKey={group.key} />
+                        </div>
+                        {group.items.map((item) => (
+                          <Link
+                            key={item.key}
+                            to={item.path}
+                            onClick={() => setMobileOpen(false)}
+                            className="py-2 flex items-center gap-2 text-[14px] text-ink-soft"
+                          >
+                            <item.icon size={15} className="text-gold-deep shrink-0" />
+                            <ItemLabel itemKey={item.key} field="title" />
+                          </Link>
+                        ))}
+                      </div>
                     ))}
                   </motion.div>
                 )}
@@ -223,16 +243,16 @@ export default function Header() {
   );
 }
 
-function ServiceLabel({
+function GroupLabel({ groupKey }: { groupKey: keyof typeof serviceNavGroups.categories }) {
+  return <>{useT(serviceNavGroups.categories[groupKey])}</>;
+}
+
+function ItemLabel({
+  itemKey,
   field,
-  index,
-  fallback,
 }: {
-  field: "shortTitle" | "summary";
-  index: number;
-  fallback: string;
+  itemKey: keyof typeof serviceNavGroups.items;
+  field: "title" | "summary";
 }) {
-  const entry = servicesList[index];
-  const value = useT(entry ? entry[field] : { en: fallback, bn: fallback });
-  return <>{value}</>;
+  return <>{useT(serviceNavGroups.items[itemKey][field])}</>;
 }
