@@ -121,7 +121,7 @@ export default function ResumeUpload() {
               <button
                 type="submit"
                 disabled={submitting}
-                className="w-full mt-2 px-6 py-3 rounded-lg font-medium text-[15px] bg-gradient-to-r from-gold to-[#5AD1A8] text-navy hover:from-gold-deep hover:to-gold-deep hover:text-white transition-colors disabled:opacity-60 disabled:cursor-not-allowed"
+                className="w-full mt-2 px-6 py-3 rounded-lg font-medium text-[15px] bg-gold text-white hover:bg-gold-deep transition-colors disabled:opacity-60 disabled:cursor-not-allowed"
               >
                 {submitting ? T.submitting : T.submit}
               </button>

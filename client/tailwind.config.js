@@ -9,44 +9,40 @@ export default {
         mono: ["'IBM Plex Mono'", "ui-monospace", "monospace"],
       },
       colors: {
-        // brand indigo-blue (from the logo gradient) — primary text, headings,
-        // dark footer band. Token name kept as "navy" for compatibility with
-        // the many existing text-navy/bg-navy usages across components.
+        // primary navy — headings, primary text, dark footer band
         navy: {
-          DEFAULT: "#2B3A7E",
-          deep: "#1A2252",
-          soft: "#4A58A8",
+          DEFAULT: "#102A43",
+          deep: "#0B1E30",
+          soft: "#2864A6",
         },
-        // brand teal-green (from the logo gradient) — accent, CTAs, highlights.
-        // Token name kept as "gold" for compatibility with existing usages;
-        // it now carries the green half of the brand gradient.
+        // premium gold accent — used sparingly: primary CTA, highlights
         gold: {
-          DEFAULT: "#2FBF8F",
-          deep: "#1E9A70",
-          pale: "#E3F9F0",
-          tint: "#C8F0E0",
+          DEFAULT: "#C6A15B",
+          deep: "#A9843D",
+          pale: "#F5EEDF",
+          tint: "#EDE0C4",
         },
-        // raw brand gradient endpoints, for bg-gradient-to-r from-brand-blue to-brand-green
+        // secondary blue — interactive elements, links, secondary accents
         brand: {
-          blue: "#2B3A7E",
-          green: "#2FBF8F",
+          blue: "#2864A6",
+          navy: "#102A43",
         },
         // bright, clean paper ground
         paper: {
           DEFAULT: "#FFFFFF",
-          soft: "#F7F9FC",
-          panel: "#F0F3FA",
+          soft: "#F5F8FC",
+          panel: "#EAF3FC",
         },
-        // primary text/heading ink (blue family) and supporting shades
+        // primary text/heading ink and supporting shades
         ink: {
-          DEFAULT: "#1A2451",
-          soft: "#3D4A85",
-          muted: "#636FA0",
-          faint: "#96A0C7",
+          DEFAULT: "#243447",
+          soft: "#3C4A5E",
+          muted: "#64748B",
+          faint: "#94A3B8",
         },
         border: {
-          DEFAULT: "#E3E7F3",
-          strong: "#CDD3E8",
+          DEFAULT: "#E2E8F0",
+          strong: "#CBD5E1",
         },
         mist: {
           DEFAULT: "#C2CBE3",
@@ -55,13 +51,13 @@ export default {
         },
       },
       backgroundImage: {
-        "brand-gradient": "linear-gradient(135deg, #2B3A7E 0%, #2FBF8F 100%)",
-        "brand-gradient-soft": "linear-gradient(135deg, rgba(43,58,126,0.08) 0%, rgba(47,191,143,0.08) 100%)",
+        "brand-gradient": "linear-gradient(135deg, #102A43 0%, #2864A6 100%)",
+        "brand-gradient-soft": "linear-gradient(135deg, rgba(16,42,67,0.06) 0%, rgba(40,100,166,0.06) 100%)",
       },
       boxShadow: {
-        card: "0 2px 10px rgba(27,34,82,0.07)",
-        "card-hover": "0 18px 40px rgba(27,34,82,0.14)",
-        soft: "0 1px 3px rgba(27,34,82,0.09)",
+        card: "0 2px 10px rgba(16,42,67,0.06)",
+        "card-hover": "0 18px 40px rgba(16,42,67,0.12)",
+        soft: "0 1px 3px rgba(16,42,67,0.08)",
       },
       borderRadius: {
         lg: "0.5rem",

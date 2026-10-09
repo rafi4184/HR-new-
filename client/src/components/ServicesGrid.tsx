@@ -138,7 +138,7 @@ function StoryChapter({
         animate={{
           width: active ? 18 : 14,
           height: active ? 18 : 14,
-          borderColor: active ? "#2FBF8F" : "#CDD3E8",
+          borderColor: active ? "#C6A15B" : "#CBD5E1",
         }}
         transition={{ duration: 0.4, ease: [0.2, 0.9, 0.3, 1.3] }}
       >

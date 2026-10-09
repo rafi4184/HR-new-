@@ -26,7 +26,7 @@ const FALLBACK_CONTACTS: Contact[] = [
     label: "Find us",
     phone: null,
     email: null,
-    address: "The Meditor, 4th floor, Green Chayera Manzil, Greater Road Mosque, Kadirganj, Rajshahi",
+    address: "House 7A, Road 16, Block F, Aziz Mohallah, Mohammadpur, Dhaka",
     whatsapp: null,
     sortOrder: 1,
   },

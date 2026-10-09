@@ -8,20 +8,20 @@ html {
 
 body {
   background-color: #ffffff;
-  color: #1a2451;
+  color: #243447;
   font-family: "IBM Plex Sans", system-ui, sans-serif;
 }
 
 ::selection {
-  background: #2fbf8f;
-  color: #1a2252;
+  background: #c6a15b;
+  color: #102a43;
 }
 
 input:focus,
 select:focus,
 textarea:focus {
-  border-color: #2fbf8f !important;
-  box-shadow: 0 0 0 3px rgba(47, 191, 143, 0.16);
+  border-color: #2864a6 !important;
+  box-shadow: 0 0 0 3px rgba(40, 100, 166, 0.16);
 }
 
 .shimmer {
@@ -43,10 +43,10 @@ textarea:focus {
   transition: border-color 0.15s ease;
 }
 .ticket-field:hover {
-  border-bottom-color: #cdd3e8;
+  border-bottom-color: #cbd5e1;
 }
 .ticket-field:focus {
-  border-bottom-color: #2fbf8f;
+  border-bottom-color: #2864a6;
 }
 select.ticket-field {
   cursor: pointer;

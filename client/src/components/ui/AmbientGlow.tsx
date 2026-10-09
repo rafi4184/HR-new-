@@ -1,11 +1,11 @@
 import { motion } from "framer-motion";
 
 const TONES = {
-  gold: "rgba(47,191,143,0.22)",
-  goldSoft: "rgba(47,191,143,0.14)",
-  navy: "rgba(43,58,126,0.35)",
-  goldLight: "rgba(47,191,143,0.07)",
-  navyLight: "rgba(43,58,126,0.05)",
+  gold: "rgba(198,161,91,0.22)",
+  goldSoft: "rgba(198,161,91,0.14)",
+  navy: "rgba(16,42,67,0.35)",
+  goldLight: "rgba(198,161,91,0.07)",
+  navyLight: "rgba(16,42,67,0.05)",
 } as const;
 
 // Slow-drifting blurred blobs used to keep sections feeling "alive" without

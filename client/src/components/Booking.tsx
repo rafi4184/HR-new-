@@ -99,7 +99,7 @@ const Booking = forwardRef<
     <button
       type="submit"
       disabled={submitting}
-      className="w-full sm:w-auto px-6 py-3 rounded-lg font-medium text-[15px] bg-gradient-to-r from-gold to-[#5AD1A8] text-navy hover:from-gold-deep hover:to-gold-deep hover:text-white active:scale-[0.97] transition-colors disabled:opacity-60 disabled:cursor-not-allowed"
+      className="w-full sm:w-auto px-6 py-3 rounded-lg font-medium text-[15px] bg-gold text-white hover:bg-gold-deep active:scale-[0.97] transition-colors disabled:opacity-60 disabled:cursor-not-allowed"
     >
       {submitting ? T.submitting : label}
     </button>
@@ -321,7 +321,7 @@ const Booking = forwardRef<
               transition={{ duration: 0.45, ease: [0.2, 0.9, 0.3, 1.3] }}
               className="mt-5 rounded-lg px-4 py-3 flex items-center gap-3 bg-gold-pale"
             >
-              <Ticket size={18} color="#1E9A70" className="shrink-0" />
+              <Ticket size={18} color="#A9843D" className="shrink-0" />
               <div className="text-[13px] text-navy">
                 {T.ticketSaved.split("{ticket}").map((part, i, arr) => (
                   <span key={i}>

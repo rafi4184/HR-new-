@@ -49,7 +49,7 @@ export default function AboutPage() {
           <p className="text-ink-muted mb-8">{T.exploreBody}</p>
           <Link
             to="/#services"
-            className="group inline-flex items-center gap-2 px-7 py-3.5 rounded-full font-medium text-[14px] tracking-wide uppercase bg-gradient-to-r from-gold to-[#5AD1A8] text-navy hover:from-gold-deep hover:to-gold-deep hover:text-white transition-colors"
+            className="group inline-flex items-center gap-2 px-7 py-3.5 rounded-full font-medium text-[14px] tracking-wide uppercase bg-gold text-white hover:bg-gold-deep transition-colors"
           >
             {T.viewAllServices}
             <ArrowRight size={15} className="transition-transform group-hover:translate-x-1" />

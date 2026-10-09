@@ -132,13 +132,13 @@ export default function PaymentModal({
                 <button
                   onClick={confirm}
                   disabled={stage === "processing"}
-                  className="w-full py-3 rounded-md font-medium text-[15px] flex items-center justify-center gap-2 bg-gradient-to-r from-gold to-[#5AD1A8] text-navy hover:from-gold-deep hover:to-gold-deep hover:text-white active:scale-[0.97] transition-colors disabled:opacity-85"
+                  className="w-full py-3 rounded-md font-medium text-[15px] flex items-center justify-center gap-2 bg-gold text-white hover:bg-gold-deep active:scale-[0.97] transition-colors disabled:opacity-85"
                 >
                   {stage === "processing" ? (
                     <>
                       <motion.span
                         className="inline-block w-4 h-4 rounded-full border-2"
-                        style={{ borderColor: "#2B3A7E transparent #2B3A7E #2B3A7E" }}
+                        style={{ borderColor: "#102A43 transparent #102A43 #102A43" }}
                         animate={{ rotate: 360 }}
                         transition={{ duration: 0.8, repeat: Infinity, ease: "linear" }}
                       />
