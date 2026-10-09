@@ -25,9 +25,9 @@ export default function HomePage({ onToast }: { onToast: (msg: string) => void }
   const { lang } = useLanguage();
   const translatedFaqs = homeFaqs.map((f) => ({ question: f.question[lang], answer: f.answer[lang] }));
   useSeo({
-    title: "HR — The Mediator | Trusted Services & Support in Bangladesh",
+    title: "HR — The Mediator | Dhaka Airport Terminal 3 VIP Service & Jobs in Saudi Arabia",
     description:
-      "HR — The Mediator connects individuals, families, businesses and international clients with trusted concierge, transport, government assistance, manpower, security, education and career services across Bangladesh.",
+      "HR — The Mediator connects individuals, families, businesses and international clients with premium VIP service at Dhaka Airport Terminal 3, plus trusted transport, government assistance, manpower, security, education and career services — including jobs in Saudi Arabia and the Middle East — across Bangladesh.",
     path: "/",
     faq: HOME_FAQS,
   });

@@ -55,6 +55,16 @@ export const HOME_FAQS: Faq[] = [
       "Yes. Our International Careers track supports Gulf employment placement, including documentation and pre-departure assistance for candidates from Bangladesh.",
   },
   {
+    question: "Do you help people in Dhaka find jobs in Saudi Arabia or the Middle East?",
+    answer:
+      "Yes. Candidates based in Dhaka, Rajshahi or anywhere in Bangladesh can apply through our International Careers programme for employment in Saudi Arabia, the UAE, Qatar and the wider Middle East, with documentation and pre-departure support included.",
+  },
+  {
+    question: "Do you offer premium or VIP service at Dhaka Airport Terminal 3?",
+    answer:
+      "Yes. Our Airport VIP Reception is built around Hazrat Shahjalal International Airport's new Terminal 3 in Dhaka — meet & greet, fast-track immigration, baggage assistance and a car staged at the curb for arrivals and departures.",
+  },
+  {
     question: "Can you help students study in the Gulf?",
     answer:
       "Yes. We provide study-abroad guidance, university admission support, and visa/documentation assistance for students pursuing education opportunities in the Gulf and other regions.",
@@ -367,12 +377,12 @@ export const SERVICE_PAGES: Record<string, ServicePageData> = {
     path: "/study-work-gulf",
     navLabel: "International Careers — Study & Work in the Gulf",
     title: "International Careers — Study & Work in the Gulf",
-    metaTitle: "Gulf & Middle East Jobs + Study Abroad from Bangladesh | HR — The Mediator",
+    metaTitle: "Jobs in Saudi Arabia & Middle East from Dhaka + Study Abroad | HR — The Mediator",
     metaDescription:
-      "Employment in the Gulf and Middle East, and study abroad guidance, for candidates from Dhaka, Rajshahi and across Bangladesh — university admission, career placement, visa and pre-departure assistance.",
-    h1: "Gulf & Middle East Jobs and Study Abroad — International Careers",
+      "Employment in Saudi Arabia, the UAE, Qatar and the wider Middle East, and study abroad guidance, for candidates from Dhaka, Rajshahi and across Bangladesh — university admission, career placement, visa and pre-departure assistance.",
+    h1: "Dhaka to Saudi Arabia & Middle East Jobs — Study & Work Abroad",
     intro:
-      "Verified placement, not a broker's promise. Manpower export and recruitment support for jobs in the UAE, Qatar, Saudi Arabia and the wider Gulf and Middle East, plus study-abroad guidance for students from Dhaka, Rajshahi and across Bangladesh, drawing on our licensed staffing and outsourcing practice.",
+      "Verified placement, not a broker's promise. Manpower export and recruitment support for jobs in Saudi Arabia, the UAE, Qatar and the wider Gulf and Middle East — applied for from Dhaka, Rajshahi or anywhere in Bangladesh — plus study-abroad guidance for students, drawing on our licensed staffing and outsourcing practice.",
     whoFor: [
       "Students seeking university admission or study-abroad guidance",
       "Jobseekers pursuing Gulf employment opportunities",
@@ -395,7 +405,12 @@ export const SERVICE_PAGES: Record<string, ServicePageData> = {
     faqs: [
       {
         question: "Which Gulf countries do you support placement for?",
-        answer: "The UAE, Qatar, Saudi Arabia, and wider Gulf markets.",
+        answer: "Saudi Arabia, the UAE, Qatar, and wider Gulf and Middle East markets.",
+      },
+      {
+        question: "How can I apply for a job in Saudi Arabia or the Middle East from Dhaka?",
+        answer:
+          "Submit a request through our International Careers programme with your background and target country. Our Dhaka-based desk reviews your case, matches you with a suitable employment path, and handles documentation and pre-departure support.",
       },
       {
         question: "Do you help with visa and documentation?",

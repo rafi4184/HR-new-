@@ -19,7 +19,7 @@ interface SeoOptions {
 }
 
 const SITE_URL = "https://www.hrthemediator.com";
-const DEFAULT_IMAGE = `${SITE_URL}/images/hasanur-rahman.jpg`;
+const DEFAULT_IMAGE = `${SITE_URL}/logo-full.png`;
 
 function setMeta(attr: "name" | "property", key: string, content: string) {
   let el = document.head.querySelector<HTMLMetaElement>(`meta[${attr}="${key}"]`);
