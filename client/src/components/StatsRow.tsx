@@ -8,7 +8,7 @@ export default function StatsRow() {
   const T = useDict(statsRow);
   const stats = [
     { value: 5, label: T.coreServices },
-    { value: 1, label: T.trustedPoint },
+    { value: 2, label: T.officeLocations },
     { value: 4, label: T.customerGroups },
   ];
 

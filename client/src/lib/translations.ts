@@ -52,17 +52,10 @@ export const serviceNavGroups = {
       summary: { en: "Hotel booking and private car service.", bn: "হোটেল বুকিং ও ব্যক্তিগত গাড়ি সেবা।" },
     },
     studyAbroad: {
-      title: { en: "Study Abroad", bn: "বিদেশে পড়াশোনা" },
+      title: { en: "Study & Work in the Gulf", bn: "গালফে পড়াশোনা ও কর্মসংস্থান" },
       summary: {
-        en: "University admission & visa guidance.",
-        bn: "বিশ্ববিদ্যালয় ভর্তি ও ভিসা নির্দেশনা।",
-      },
-    },
-    jobsGulf: {
-      title: { en: "Jobs in Gulf & Middle East", bn: "গালফ ও মধ্যপ্রাচ্যে চাকরি" },
-      summary: {
-        en: "Gulf/Middle East employment & pre-departure support.",
-        bn: "গালফ/মধ্যপ্রাচ্যে চাকরি ও প্রস্থান-পূর্ব সহায়তা।",
+        en: "University admission, Gulf/Middle East jobs & visa guidance.",
+        bn: "বিশ্ববিদ্যালয় ভর্তি, গালফ/মধ্যপ্রাচ্যে চাকরি ও ভিসা নির্দেশনা।",
       },
     },
     coursesCareers: {
@@ -308,7 +301,7 @@ export const coursesCareersTeaser = {
 
 export const statsRow = {
   coreServices: { en: "Core Services", bn: "মূল সেবা" },
-  trustedPoint: { en: "Trusted Point of Contact", bn: "বিশ্বস্ত যোগাযোগ কেন্দ্র" },
+  officeLocations: { en: "Office Locations", bn: "অফিসের অবস্থান" },
   customerGroups: { en: "Customer Groups We Serve", bn: "আমরা যাদের সেবা দিই" },
   bangladesh: { en: "Bangladesh", bn: "বাংলাদেশ" },
   ourHome: { en: "Our Home", bn: "আমাদের ঘর" },
