@@ -50,7 +50,7 @@ export default function App() {
               <Route key={data.id} path={data.path} element={<ServicePage data={data} />} />
             ))}
             <Route path="/about-us" element={<AboutPage />} />
-            <Route path="/events" element={<EventsPage />} />
+            <Route path="/events" element={<EventsPage onToast={showToast} />} />
             <Route path="/contact" element={<ContactPage />} />
             <Route path="/privacy-policy" element={<PrivacyPage />} />
             <Route path="/terms" element={<TermsPage />} />

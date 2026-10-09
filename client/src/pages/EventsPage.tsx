@@ -1,12 +1,13 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
-import { CalendarDays, MapPin, Mic, Landmark, ArrowRight, Sparkles } from "lucide-react";
+import { CalendarDays, MapPin, Mic, Landmark, ArrowRight, Sparkles, ShieldCheck } from "lucide-react";
 import { useSeo } from "../lib/useSeo";
 import Reveal from "../components/ui/Reveal";
 import AmbientGlow from "../components/ui/AmbientGlow";
-import { listEvents } from "../lib/api";
-import type { EventItem } from "../types";
+import EventsManager from "../components/EventsManager";
+import { listEvents, whoami } from "../lib/api";
+import type { EventItem, WhoAmI } from "../types";
 import { useDict } from "../lib/i18n";
 import { eventsPageT } from "../lib/translations";
 
@@ -15,7 +16,7 @@ function formatDate(iso: string | null) {
   return new Date(iso).toLocaleDateString("en-GB", { day: "numeric", month: "short", year: "numeric" });
 }
 
-export default function EventsPage() {
+export default function EventsPage({ onToast }: { onToast: (msg: string) => void }) {
   useSeo({
     title: "Events & Success Stories | Media Training & Government Relations | HR — The Mediator",
     description:
@@ -26,6 +27,7 @@ export default function EventsPage() {
   const T = useDict(eventsPageT);
   const [items, setEvents] = useState<EventItem[]>([]);
   const [loaded, setLoaded] = useState(false);
+  const [me, setMe] = useState<WhoAmI | null>(null);
 
   useEffect(() => {
     listEvents()
@@ -34,10 +36,39 @@ export default function EventsPage() {
         setLoaded(true);
       })
       .catch(() => setLoaded(true));
+    whoami()
+      .then(setMe)
+      .catch(() => setMe(null));
   }, []);
+
+  const refreshPublic = () => {
+    void listEvents().then(setEvents).catch(() => {});
+  };
+
+  const canManage = !!me && (me.role === "staff" || me.isAdmin);
 
   return (
     <div>
+      {canManage && (
+        <section className="px-5 md:px-10 pt-10 pb-2 max-w-6xl mx-auto">
+          <div className="rounded-xl border border-border bg-paper-panel p-5">
+            <div className="flex items-center gap-2 mb-1">
+              <ShieldCheck size={16} className="text-navy" />
+              <h2 className="font-display text-lg text-navy">Staff: manage events</h2>
+            </div>
+            <p className="text-[13px] mb-4 text-ink-faint">
+              Signed in as {me?.staffId}. Add, edit, upload photos/video, or delete events below — changes go live on this page immediately.
+            </p>
+            <EventsManager
+              onToast={(msg) => {
+                onToast(msg);
+                refreshPublic();
+              }}
+            />
+          </div>
+        </section>
+      )}
+
       <section className="relative px-5 md:px-10 py-14 md:py-20 bg-paper-soft overflow-hidden text-center">
         <AmbientGlow variant="light" />
         <div className="relative max-w-3xl mx-auto">
