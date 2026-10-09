@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { Link, NavLink } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
-import { ChevronDown, Menu, X } from "lucide-react";
+import { ChevronDown, Menu, X, UserCog } from "lucide-react";
 import LogoMark from "./ui/Logo";
 import LanguageToggle from "./ui/LanguageToggle";
 import { NAV_GROUPS } from "../lib/serviceNavGroups";
@@ -152,6 +152,14 @@ export default function Header() {
             {T.trackRequest}
           </Link>
           <Link
+            to="/staff"
+            title={T.staffLogin}
+            aria-label={T.staffLogin}
+            className="flex items-center justify-center w-8 h-8 rounded-full text-ink-faint hover:text-navy hover:bg-paper-soft transition-colors"
+          >
+            <UserCog size={17} />
+          </Link>
+          <Link
             to={requestHref}
             className="text-[13px] font-medium tracking-wide px-5 py-2.5 rounded-full bg-gold text-white hover:bg-gold-deep transition-colors"
           >
@@ -238,6 +246,13 @@ export default function Header() {
               </Link>
               <Link to="/#track" onClick={() => setMobileOpen(false)} className="py-2.5 text-[15px] font-medium text-ink-soft">
                 {T.trackRequest}
+              </Link>
+              <Link
+                to="/staff"
+                onClick={() => setMobileOpen(false)}
+                className="py-2.5 flex items-center gap-2 text-[15px] font-medium text-ink-soft"
+              >
+                <UserCog size={16} /> {T.staffLogin}
               </Link>
               <Link
                 to={requestHref}

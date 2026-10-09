@@ -13,6 +13,7 @@ export const header = {
   requestShort: { en: "Request", bn: "অনুরোধ" },
   menu: { en: "Menu", bn: "মেনু" },
   events: { en: "Events", bn: "ইভেন্ট" },
+  staffLogin: { en: "Staff Login", bn: "স্টাফ লগইন" },
 };
 
 export const hero = {
