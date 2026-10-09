@@ -112,37 +112,75 @@ export default function EventsPage({ onToast }: { onToast: (msg: string) => void
             <p className="text-[14px] text-ink-muted leading-relaxed">{T.emptyBody}</p>
           </Reveal>
         ) : (
-          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            {items.map((ev, i) => (
-              <motion.div
-                key={ev.id}
-                initial={{ opacity: 0, y: 18 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, amount: 0.2 }}
-                transition={{ duration: 0.55, delay: Math.min(i, 8) * 0.06 }}
-                whileHover={{ y: -4 }}
-                className="rounded-2xl overflow-hidden border border-border bg-white shadow-card hover:shadow-card-hover transition-shadow"
-              >
-                <EventMediaCarousel media={ev.media} title={ev.title} />
-                <div className="p-5">
-                  <div className="font-display text-lg mb-1.5 text-navy">{ev.title}</div>
-                  <div className="flex flex-wrap gap-x-3 gap-y-1 text-[12px] mb-2.5 text-ink-faint">
-                    {ev.eventDate && (
-                      <span className="flex items-center gap-1">
-                        <CalendarDays size={12} /> {formatDate(ev.eventDate)}
+          <>
+            <Reveal>
+              <div className="rounded-2xl overflow-hidden border border-border bg-white shadow-card-hover grid md:grid-cols-2 mb-12">
+                <div className="md:order-2">
+                  <EventMediaCarousel media={items[0].media} title={items[0].title} className="md:h-full" />
+                </div>
+                <div className="p-7 md:p-9 flex flex-col justify-center md:order-1">
+                  <div className="text-[11px] font-semibold uppercase tracking-[0.2em] text-gold-deep mb-3">{T.latestLabel}</div>
+                  <h2 className="font-display text-2xl md:text-3xl text-navy mb-3" style={{ textWrap: "balance" }}>
+                    {items[0].title}
+                  </h2>
+                  <div className="flex flex-wrap gap-x-4 gap-y-1.5 text-[12.5px] mb-4 text-ink-faint">
+                    {items[0].eventDate && (
+                      <span className="flex items-center gap-1.5">
+                        <CalendarDays size={13} /> {formatDate(items[0].eventDate)}
                       </span>
                     )}
-                    {ev.location && (
-                      <span className="flex items-center gap-1">
-                        <MapPin size={12} /> {ev.location}
+                    {items[0].location && (
+                      <span className="flex items-center gap-1.5">
+                        <MapPin size={13} /> {items[0].location}
                       </span>
                     )}
                   </div>
-                  {ev.description && <p className="text-[13.5px] text-ink-soft leading-relaxed">{ev.description}</p>}
+                  {items[0].description && (
+                    <p className="text-[14.5px] text-ink-soft leading-relaxed">{items[0].description}</p>
+                  )}
                 </div>
-              </motion.div>
-            ))}
-          </div>
+              </div>
+            </Reveal>
+
+            {items.length > 1 && (
+              <>
+                <Reveal>
+                  <h3 className="font-display text-xl text-navy mb-6">{T.moreLabel}</h3>
+                </Reveal>
+                <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                  {items.slice(1).map((ev, i) => (
+                    <motion.div
+                      key={ev.id}
+                      initial={{ opacity: 0, y: 18 }}
+                      whileInView={{ opacity: 1, y: 0 }}
+                      viewport={{ once: true, amount: 0.2 }}
+                      transition={{ duration: 0.55, delay: Math.min(i, 8) * 0.06 }}
+                      whileHover={{ y: -4 }}
+                      className="rounded-2xl overflow-hidden border border-border bg-white shadow-card hover:shadow-card-hover transition-shadow"
+                    >
+                      <EventMediaCarousel media={ev.media} title={ev.title} />
+                      <div className="p-5">
+                        <div className="font-display text-lg mb-1.5 text-navy">{ev.title}</div>
+                        <div className="flex flex-wrap gap-x-3 gap-y-1 text-[12px] mb-2.5 text-ink-faint">
+                          {ev.eventDate && (
+                            <span className="flex items-center gap-1">
+                              <CalendarDays size={12} /> {formatDate(ev.eventDate)}
+                            </span>
+                          )}
+                          {ev.location && (
+                            <span className="flex items-center gap-1">
+                              <MapPin size={12} /> {ev.location}
+                            </span>
+                          )}
+                        </div>
+                        {ev.description && <p className="text-[13.5px] text-ink-soft leading-relaxed">{ev.description}</p>}
+                      </div>
+                    </motion.div>
+                  ))}
+                </div>
+              </>
+            )}
+          </>
         )}
       </section>
 

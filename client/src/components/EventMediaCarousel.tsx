@@ -8,7 +8,15 @@ const SLIDE_DURATION_MS = 3500;
 // cover image with tiny thumbnails underneath. Every photo gets equal
 // billing and the card cycles through them on its own; hovering pauses it
 // so visitors can read a caption-like moment without it jumping away.
-export default function EventMediaCarousel({ media, title }: { media: EventItem["media"]; title: string }) {
+export default function EventMediaCarousel({
+  media,
+  title,
+  className = "",
+}: {
+  media: EventItem["media"];
+  title: string;
+  className?: string;
+}) {
   const [index, setIndex] = useState(0);
   const [paused, setPaused] = useState(false);
 
@@ -22,12 +30,12 @@ export default function EventMediaCarousel({ media, title }: { media: EventItem[
 
   const current = media[index];
   if (!current) {
-    return <div className="aspect-[16/10] bg-navy/10" />;
+    return <div className={`aspect-[16/10] bg-navy/10 ${className}`} />;
   }
 
   return (
     <div
-      className="relative aspect-[16/10] bg-navy/10 overflow-hidden"
+      className={`relative aspect-[16/10] bg-navy/10 overflow-hidden ${className}`}
       onMouseEnter={() => setPaused(true)}
       onMouseLeave={() => setPaused(false)}
     >

@@ -344,6 +344,8 @@ export const eventsPageT = {
     en: "Seminars from our media and public-speaking academy, and updates from our government-relations casework — a running record of the training sessions, workshops and milestones behind HR — The Mediator's work in Bangladesh.",
     bn: "আমাদের মিডিয়া ও পাবলিক স্পিকিং একাডেমির সেমিনার, এবং আমাদের সরকারি সম্পর্ক সংক্রান্ত কাজের হালনাগাদ — বাংলাদেশে এইচআর দ্য মিডিয়েটরের কাজের পেছনের প্রশিক্ষণ সেশন, কর্মশালা ও মাইলফলকের একটি চলমান রেকর্ড।",
   },
+  latestLabel: { en: "Latest", bn: "সর্বশেষ" },
+  moreLabel: { en: "More Events & Success Stories", bn: "আরও ইভেন্ট ও সাফল্যের গল্প" },
   emptyTitle: { en: "New events are on the way", bn: "নতুন ইভেন্ট শীঘ্রই আসছে" },
   emptyBody: {
     en: "We're preparing our next media training seminar and government-relations update. Check back soon, or follow our social channels for the latest.",
