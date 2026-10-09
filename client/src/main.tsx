@@ -4,12 +4,15 @@ import { BrowserRouter } from "react-router-dom";
 import "./index.css";
 import App from "./App";
 import { LanguageProvider } from "./lib/i18n";
+import { SiteContentProvider } from "./lib/siteContent";
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
     <BrowserRouter>
       <LanguageProvider>
-        <App />
+        <SiteContentProvider>
+          <App />
+        </SiteContentProvider>
       </LanguageProvider>
     </BrowserRouter>
   </StrictMode>

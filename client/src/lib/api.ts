@@ -402,6 +402,31 @@ export async function adminListAuditLog(limit = 100): Promise<AuditLogEntry[]> {
   }));
 }
 
+// --- Site content (staff/admin-editable public copy) --------------------
+
+export interface SiteContentRow {
+  key: string;
+  valueEn: string;
+  valueBn: string;
+  updatedAt: string;
+}
+
+export async function getSiteContent(): Promise<SiteContentRow[]> {
+  const { data, error } = await supabase.rpc("get_site_content");
+  if (error) throw new ApiError(error.message);
+  return ((data ?? []) as Record<string, unknown>[]).map((row) => ({
+    key: row.key as string,
+    valueEn: row.value_en as string,
+    valueBn: row.value_bn as string,
+    updatedAt: row.updated_at as string,
+  }));
+}
+
+export async function adminSetSiteContent(key: string, valueEn: string, valueBn: string): Promise<void> {
+  const { error } = await supabase.rpc("admin_set_site_content", { p_key: key, p_value_en: valueEn, p_value_bn: valueBn });
+  if (error) throw new ApiError(error.message);
+}
+
 // --- Resumes -------------------------------------------------------------
 
 function mapResume(row: Record<string, unknown>): ResumeSubmission {

@@ -8,6 +8,7 @@ import { useRequestHref } from "../lib/useRequestHref";
 import AmbientGlow from "./ui/AmbientGlow";
 import { useDict, useT } from "../lib/i18n";
 import { footer, servicesList } from "../lib/translations";
+import { useSiteText } from "../lib/siteContent";
 import type { Contact } from "../types";
 
 const FALLBACK_CONTACTS: Contact[] = [
@@ -34,6 +35,7 @@ const FALLBACK_CONTACTS: Contact[] = [
 export default function Footer() {
   const requestHref = useRequestHref();
   const T = useDict(footer);
+  const description = useSiteText("footer.description");
   const [contacts, setContacts] = useState<Contact[]>(FALLBACK_CONTACTS);
 
   useEffect(() => {
@@ -63,7 +65,7 @@ export default function Footer() {
               <LogoMark size={30} className="text-white" />
               <div className="font-display text-white text-xl">HR — The Mediator</div>
             </div>
-            <p className="text-[14px] leading-relaxed">{T.description}</p>
+            <p className="text-[14px] leading-relaxed">{description}</p>
             <div className="flex items-center gap-3 mt-5">
               <a
                 href="https://www.facebook.com/hrmediator"

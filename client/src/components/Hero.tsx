@@ -6,6 +6,7 @@ import MagneticButton from "./ui/MagneticButton";
 import { IMG_HERO_BG } from "../lib/constants";
 import { useDict, useLanguage } from "../lib/i18n";
 import { hero, heroOrbit } from "../lib/translations";
+import { useSiteText } from "../lib/siteContent";
 
 const ease = [0.2, 0.8, 0.2, 1] as const;
 
@@ -24,6 +25,9 @@ const FLIGHT_PATH = "M14,86 C 30,70 40,55 58,42 C 72,32 82,24 90,14";
 export default function Hero() {
   const T = useDict(hero);
   const { lang } = useLanguage();
+  const eyebrow = useSiteText("hero.eyebrow");
+  const h1 = useSiteText("hero.h1");
+  const paragraph = useSiteText("hero.paragraph");
   const ref = useRef<HTMLElement>(null);
   const { scrollYProgress } = useScroll({ target: ref, offset: ["start start", "end start"] });
   const imgY = useTransform(scrollYProgress, [0, 1], ["0%", "18%"]);
@@ -61,7 +65,7 @@ export default function Hero() {
             className="flex items-center gap-2 mb-5 text-[12px] tracking-[0.2em] uppercase text-gold-deep font-medium"
           >
             <span className="w-6 h-px bg-gold-deep" />
-            {T.eyebrow}
+            {eyebrow}
           </motion.div>
 
           <motion.h1
@@ -71,7 +75,7 @@ export default function Hero() {
             className="font-display text-navy text-[2.5rem] sm:text-[3.4rem] leading-[1.08] mb-6"
             style={{ textWrap: "balance" }}
           >
-            {T.h1}
+            {h1}
           </motion.h1>
 
           <motion.p
@@ -80,7 +84,7 @@ export default function Hero() {
             transition={{ duration: 0.7, delay: 0.2, ease }}
             className="text-[16px] md:text-[18px] text-ink-muted leading-relaxed mb-9 max-w-xl"
           >
-            {T.paragraph}
+            {paragraph}
           </motion.p>
 
           <motion.div

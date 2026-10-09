@@ -22,16 +22,19 @@ import {
   staffListResumes,
   staffReviewResume,
   getResumeDownloadUrl,
+  adminSetSiteContent,
   ApiError,
 } from "../../lib/api";
+import { SITE_CONTENT_KEYS, useSiteContentRaw, useReloadSiteContent } from "../../lib/siteContent";
 import type { AuditLogEntry, Contact, EventItem, ResumeSubmission, StaffMember, StaffRole, TeamMember, WhoAmI } from "../../types";
 
-type Tab = "contacts" | "events" | "resumes" | "staff" | "audit";
+type Tab = "contacts" | "events" | "resumes" | "content" | "staff" | "audit";
 
 const TABS: { key: Tab; label: string }[] = [
   { key: "contacts", label: "Contacts" },
   { key: "events", label: "Events" },
   { key: "resumes", label: "Resumes" },
+  { key: "content", label: "Site Content" },
   { key: "staff", label: "Staff" },
   { key: "audit", label: "Audit log" },
 ];
@@ -53,6 +56,8 @@ const ACTION_LABEL: Record<string, string> = {
   delete_event: "Deleted event",
   add_event_media: "Added event media",
   delete_event_media: "Removed event media",
+  set_site_content: "Edited site content",
+  review_resume: "Reviewed resume",
 };
 
 const ROLE_LABEL: Record<StaffRole, string> = { admin: "Admin", executive: "Executive", staff: "Staff" };
@@ -87,6 +92,13 @@ export default function AdminPanel({
         </div>
         <p className="text-[13px] mb-5 text-ink-faint">Jobseeker resumes submitted for employment placement.</p>
         <ResumesPanel onToast={onToast} />
+
+        <div className="flex items-center gap-2 mb-1 mt-10 pt-10 border-t border-dashed border-border-strong">
+          <Pencil size={17} className="text-navy" />
+          <h3 className="font-display text-xl">Site Content</h3>
+        </div>
+        <p className="text-[13px] mb-5 text-ink-faint">Edit the wording visitors see on key pages, in English and Bangla.</p>
+        <ContentPanel onToast={onToast} />
       </div>
     );
   }
@@ -132,6 +144,7 @@ export default function AdminPanel({
           {tab === "contacts" && <ContactsPanel onToast={onToast} />}
           {tab === "events" && <EventsPanel onToast={onToast} />}
           {tab === "resumes" && <ResumesPanel onToast={onToast} />}
+          {tab === "content" && <ContentPanel onToast={onToast} />}
           {tab === "staff" && <StaffPanel currentUserId={me.userId} onToast={onToast} />}
           {tab === "audit" && <AuditLogPanel />}
         </motion.div>
@@ -1197,6 +1210,89 @@ function ResumesPanel({ onToast }: { onToast: (msg: string) => void }) {
           ))}
         </div>
       )}
+    </div>
+  );
+}
+
+// ---------------------------------------------------------------------
+
+function ContentPanel({ onToast }: { onToast: (msg: string) => void }) {
+  const groups = Array.from(new Set(SITE_CONTENT_KEYS.map((d) => d.group)));
+  return (
+    <div className="space-y-8">
+      {groups.map((group) => (
+        <div key={group}>
+          <h4 className="font-display text-base text-navy mb-3">{group}</h4>
+          <div className="space-y-4">
+            {SITE_CONTENT_KEYS.filter((d) => d.group === group).map((def) => (
+              <ContentField key={def.key} field={def} onToast={onToast} />
+            ))}
+          </div>
+        </div>
+      ))}
+    </div>
+  );
+}
+
+function ContentField({
+  field,
+  onToast,
+}: {
+  field: (typeof SITE_CONTENT_KEYS)[number];
+  onToast: (msg: string) => void;
+}) {
+  const current = useSiteContentRaw(field.key);
+  const reload = useReloadSiteContent();
+  const [valueEn, setValueEn] = useState(current.en);
+  const [valueBn, setValueBn] = useState(current.bn);
+  const [saving, setSaving] = useState(false);
+
+  const dirty = valueEn !== current.en || valueBn !== current.bn;
+  const Box = field.multiline ? "textarea" : "input";
+
+  const save = async () => {
+    setSaving(true);
+    try {
+      await adminSetSiteContent(field.key, valueEn, valueBn);
+      reload();
+      onToast(`Updated "${field.label}".`);
+    } catch (err) {
+      onToast(panelError(err, "Couldn't save that field."));
+    } finally {
+      setSaving(false);
+    }
+  };
+
+  return (
+    <div className="rounded-lg border border-border p-4 bg-white">
+      <div className="text-[13px] font-medium text-navy mb-3">{field.label}</div>
+      <div className="grid sm:grid-cols-2 gap-3">
+        <label className="block">
+          <span className="block text-[11px] mb-1 text-ink-faint uppercase tracking-wide">English</span>
+          <Box
+            value={valueEn}
+            onChange={(e) => setValueEn(e.target.value)}
+            rows={field.multiline ? 3 : undefined}
+            className={inputClass}
+          />
+        </label>
+        <label className="block">
+          <span className="block text-[11px] mb-1 text-ink-faint uppercase tracking-wide">বাংলা</span>
+          <Box
+            value={valueBn}
+            onChange={(e) => setValueBn(e.target.value)}
+            rows={field.multiline ? 3 : undefined}
+            className={inputClass}
+          />
+        </label>
+      </div>
+      <button
+        onClick={save}
+        disabled={!dirty || saving}
+        className="mt-3 text-[12.5px] font-medium px-4 py-1.5 rounded-full bg-navy text-white disabled:opacity-40 disabled:cursor-not-allowed transition-opacity"
+      >
+        {saving ? "Saving…" : "Save"}
+      </button>
     </div>
   );
 }

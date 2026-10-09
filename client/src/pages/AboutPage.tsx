@@ -5,6 +5,7 @@ import Reveal from "../components/ui/Reveal";
 import { HASANUR_PHOTO } from "../lib/constants";
 import { useDict } from "../lib/i18n";
 import { aboutPageT } from "../lib/translations";
+import { useSiteText } from "../lib/siteContent";
 
 export default function AboutPage() {
   useSeo({
@@ -15,6 +16,8 @@ export default function AboutPage() {
   });
 
   const T = useDict(aboutPageT);
+  const para1 = useSiteText("about.para1");
+  const para2 = useSiteText("about.para2");
 
   return (
     <div>
@@ -35,8 +38,8 @@ export default function AboutPage() {
         <Reveal delay={0.08}>
           <h2 className="font-display text-2xl text-navy mb-3">Md. Hasanur Rahman</h2>
           <p className="text-[13px] text-gold-deep font-medium mb-4 uppercase tracking-wide">{T.founderRole}</p>
-          <p className="text-[14.5px] text-ink-muted leading-relaxed mb-4">{T.para1}</p>
-          <p className="text-[14.5px] text-ink-muted leading-relaxed">{T.para2}</p>
+          <p className="text-[14.5px] text-ink-muted leading-relaxed mb-4">{para1}</p>
+          <p className="text-[14.5px] text-ink-muted leading-relaxed">{para2}</p>
         </Reveal>
       </section>
 
