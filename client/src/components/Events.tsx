@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
-import { CalendarDays, MapPin } from "lucide-react";
+import { CalendarDays, MapPin, ArrowRight } from "lucide-react";
 import Reveal from "./ui/Reveal";
 import { listEvents } from "../lib/api";
 import type { EventItem } from "../types";
@@ -13,7 +14,7 @@ function formatDate(iso: string | null) {
 }
 
 export default function Events() {
-  const T = useDict(events);
+  const T = useDict({ eyebrow: events.eyebrow, h2: events.h2, viewAll: events.viewAll });
   const [items, setEvents] = useState<EventItem[]>([]);
   const [loaded, setLoaded] = useState(false);
 
@@ -30,9 +31,17 @@ export default function Events() {
 
   return (
     <section id="events" className="px-5 md:px-10 py-16 max-w-6xl mx-auto">
-      <Reveal>
-        <div className="text-[12px] font-medium mb-2 text-gold-deep uppercase tracking-wide">{T.eyebrow}</div>
-        <h2 className="font-display text-3xl mb-10 text-navy">{T.h2}</h2>
+      <Reveal className="flex items-end justify-between flex-wrap gap-4 mb-10">
+        <div>
+          <div className="text-[12px] font-medium mb-2 text-gold-deep uppercase tracking-wide">{T.eyebrow}</div>
+          <h2 className="font-display text-3xl text-navy">{T.h2}</h2>
+        </div>
+        <Link
+          to="/events"
+          className="inline-flex items-center gap-1.5 text-[13px] font-medium text-gold-deep hover:gap-2.5 transition-all"
+        >
+          {T.viewAll} <ArrowRight size={14} />
+        </Link>
       </Reveal>
 
       {!loaded ? (

@@ -46,6 +46,7 @@ export default function Footer() {
 
   const quickLinks = [
     { label: T.home, to: "/" },
+    { label: T.events, to: "/events" },
     { label: T.aboutUs, to: "/about-us" },
     { label: T.contact, to: "/contact" },
     { label: T.trackARequest, to: "/#track" },

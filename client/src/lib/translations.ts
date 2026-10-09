@@ -12,6 +12,7 @@ export const header = {
   requestService: { en: "Request a Service", bn: "সেবার জন্য অনুরোধ করুন" },
   requestShort: { en: "Request", bn: "অনুরোধ" },
   menu: { en: "Menu", bn: "মেনু" },
+  events: { en: "Events", bn: "ইভেন্ট" },
 };
 
 export const hero = {
@@ -319,6 +320,33 @@ export const mediaPartners = {
 export const events = {
   eyebrow: { en: "On the ground", bn: "মাঠপর্যায়ে" },
   h2: { en: "Recent Events", bn: "সাম্প্রতিক ইভেন্ট" },
+  viewAll: { en: "View All Events", bn: "সকল ইভেন্ট দেখুন" },
+};
+
+export const eventsPageT = {
+  eyebrow: { en: "Media Training & Government Relations", bn: "মিডিয়া প্রশিক্ষণ ও সরকারি সম্পর্ক" },
+  h1: { en: "Our Events & Success Stories", bn: "আমাদের ইভেন্ট ও সাফল্যের গল্প" },
+  intro: {
+    en: "Seminars from our media and public-speaking academy, and updates from our government-relations casework — a running record of the training sessions, workshops and milestones behind HR — The Mediator's work in Bangladesh.",
+    bn: "আমাদের মিডিয়া ও পাবলিক স্পিকিং একাডেমির সেমিনার, এবং আমাদের সরকারি সম্পর্ক সংক্রান্ত কাজের হালনাগাদ — বাংলাদেশে এইচআর দ্য মিডিয়েটরের কাজের পেছনের প্রশিক্ষণ সেশন, কর্মশালা ও মাইলফলকের একটি চলমান রেকর্ড।",
+  },
+  emptyTitle: { en: "New events are on the way", bn: "নতুন ইভেন্ট শীঘ্রই আসছে" },
+  emptyBody: {
+    en: "We're preparing our next media training seminar and government-relations update. Check back soon, or follow our social channels for the latest.",
+    bn: "আমরা আমাদের পরবর্তী মিডিয়া প্রশিক্ষণ সেমিনার ও সরকারি সম্পর্ক সংক্রান্ত হালনাগাদ প্রস্তুত করছি। শীঘ্রই আবার দেখুন, অথবা সর্বশেষ তথ্যের জন্য আমাদের সোশ্যাল চ্যানেল অনুসরণ করুন।",
+  },
+  ctaMediaHeading: { en: "Interested in media training?", bn: "মিডিয়া প্রশিক্ষণে আগ্রহী?" },
+  ctaMediaBody: {
+    en: "Join our media and public-speaking academy, taught by a working national news presenter.",
+    bn: "একজন কর্মরত জাতীয় সংবাদ উপস্থাপকের পরিচালিত আমাদের মিডিয়া ও পাবলিক স্পিকিং একাডেমিতে যোগ দিন।",
+  },
+  ctaMediaButton: { en: "Explore Courses & Careers", bn: "কোর্স ও ক্যারিয়ার দেখুন" },
+  ctaGovHeading: { en: "Need government-request assistance?", bn: "সরকারি কাজে সহায়তা প্রয়োজন?" },
+  ctaGovBody: {
+    en: "Our desk coordinates passport, visa, NID, land registry and attestation cases from start to finish.",
+    bn: "আমাদের ডেস্ক পাসপোর্ট, ভিসা, এনআইডি, জমি নিবন্ধন ও সত্যায়ন সংক্রান্ত কেস শুরু থেকে শেষ পর্যন্ত সমন্বয় করে।",
+  },
+  ctaGovButton: { en: "Explore Government Services", bn: "সরকারি সেবা দেখুন" },
 };
 
 export const faqDefault = {
@@ -394,6 +422,7 @@ export const footer = {
   quickLinksHeading: { en: "Quick Links", bn: "দ্রুত লিংক" },
   contactHeading: { en: "Contact", bn: "যোগাযোগ" },
   home: { en: "Home", bn: "হোম" },
+  events: { en: "Events", bn: "ইভেন্ট" },
   aboutUs: { en: "About Us", bn: "আমাদের সম্পর্কে" },
   contact: { en: "Contact", bn: "যোগাযোগ" },
   trackARequest: { en: "Track a Request", bn: "অনুরোধ ট্র্যাক করুন" },

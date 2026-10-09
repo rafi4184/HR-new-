@@ -11,6 +11,7 @@ import ScrollProgress from "./components/ScrollProgress";
 import HomePage from "./pages/HomePage";
 import ServicePage from "./pages/ServicePage";
 import AboutPage from "./pages/AboutPage";
+import EventsPage from "./pages/EventsPage";
 import ContactPage from "./pages/ContactPage";
 import PrivacyPage from "./pages/PrivacyPage";
 import TermsPage from "./pages/TermsPage";
@@ -48,6 +49,7 @@ export default function App() {
               <Route key={data.id} path={data.path} element={<ServicePage data={data} />} />
             ))}
             <Route path="/about-us" element={<AboutPage />} />
+            <Route path="/events" element={<EventsPage />} />
             <Route path="/contact" element={<ContactPage />} />
             <Route path="/privacy-policy" element={<PrivacyPage />} />
             <Route path="/terms" element={<TermsPage />} />

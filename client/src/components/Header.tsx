@@ -120,6 +120,14 @@ export default function Header() {
             </AnimatePresence>
           </div>
 
+          <NavLink to="/events" className={linkClass}>
+            {({ isActive }) => (
+              <>
+                {T.events}
+                <NavUnderline isActive={isActive} />
+              </>
+            )}
+          </NavLink>
           <NavLink to="/about-us" className={linkClass}>
             {({ isActive }) => (
               <>
@@ -219,6 +227,9 @@ export default function Header() {
                   </motion.div>
                 )}
               </AnimatePresence>
+              <Link to="/events" onClick={() => setMobileOpen(false)} className="py-2.5 text-[15px] font-medium text-navy">
+                {T.events}
+              </Link>
               <Link to="/about-us" onClick={() => setMobileOpen(false)} className="py-2.5 text-[15px] font-medium text-navy">
                 {T.aboutUs}
               </Link>
