@@ -92,7 +92,7 @@ export function useSeo(opts: SeoOptions) {
           telephone: "+8801717013150",
           address: {
             "@type": "PostalAddress",
-            streetAddress: "7A/16 Aziz Mohollah, Mohammadpur",
+            streetAddress: "7A/16, Block-F, Aziz Mohalla, Mohammadpur",
             addressLocality: "Dhaka",
             postalCode: "1207",
             addressCountry: "BD",

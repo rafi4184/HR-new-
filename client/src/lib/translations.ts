@@ -621,7 +621,7 @@ export const contactPageT = {
   },
   requestService: { en: "Request a Service", bn: "সেবার জন্য অনুরোধ করুন" },
   fallbackReachDesk: { en: "Reach the desk", bn: "ডেস্কে যোগাযোগ করুন" },
-  fallbackFindUs: { en: "Find us", bn: "আমাদের ঠিকানা" },
+  fallbackFindUs: { en: "Corporate Head Office", bn: "প্রধান কার্যালয়" },
 };
 
 // ---------------------------------------------------------------------

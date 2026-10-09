@@ -23,10 +23,10 @@ const FALLBACK_CONTACTS: Contact[] = [
   },
   {
     id: -2,
-    label: "Find us — Bangladesh",
+    label: "Corporate Head Office",
     phone: null,
     email: null,
-    address: "7A/16 Aziz Mohollah, Mohammadpur, Dhaka 1207, Bangladesh",
+    address: "7A/16, Block-F, Aziz Mohalla, Mohammadpur, Dhaka-1207, Bangladesh",
     whatsapp: null,
     sortOrder: 1,
   },
