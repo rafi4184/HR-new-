@@ -5,6 +5,7 @@ import { useSeo } from "../lib/useSeo";
 import Reveal from "../components/ui/Reveal";
 import Faq from "../components/Faq";
 import Booking, { type AirportPrefill } from "../components/Booking";
+import ResumeUpload from "../components/ResumeUpload";
 import type { ServicePageData } from "../data/servicePages";
 import { SERVICE_PAGES } from "../data/servicePages";
 import type { BookingTab } from "../types";
@@ -100,6 +101,8 @@ export default function ServicePage({ data }: { data: ServicePageData }) {
       </section>
 
       <Faq items={faqs} title={`${navLabel} ${ui.faqsSuffix}`} />
+
+      {data.id === "study-work-gulf" && <ResumeUpload />}
 
       <Booking
         ref={bookingRef}

@@ -323,6 +323,26 @@ export const events = {
   viewAll: { en: "View All Events", bn: "সকল ইভেন্ট দেখুন" },
 };
 
+export const resumeUploadT = {
+  eyebrow: { en: "Looking for employment?", bn: "কর্মসংস্থান খুঁজছেন?" },
+  h2: { en: "Upload Your Resume", bn: "আপনার জীবনবৃত্তান্ত আপলোড করুন" },
+  intro: {
+    en: "Share your CV and our team will review it for suitable opportunities in Saudi Arabia, the UAE, Qatar and the wider Middle East.",
+    bn: "আপনার সিভি শেয়ার করুন, আমাদের দল সৌদি আরব, আরব আমিরাত, কাতার ও মধ্যপ্রাচ্যের উপযুক্ত সুযোগের জন্য তা পর্যালোচনা করবে।",
+  },
+  nameLabel: { en: "Full name", bn: "পূর্ণ নাম" },
+  emailLabel: { en: "Email", bn: "ইমেইল" },
+  phoneLabel: { en: "Phone (optional)", bn: "ফোন (ঐচ্ছিক)" },
+  roleLabel: { en: "Target role (optional)", bn: "লক্ষ্য পদবি (ঐচ্ছিক)" },
+  countryLabel: { en: "Target country (optional)", bn: "লক্ষ্য দেশ (ঐচ্ছিক)" },
+  noteLabel: { en: "Note (optional)", bn: "নোট (ঐচ্ছিক)" },
+  fileLabel: { en: "Resume (PDF or Word, max 10MB)", bn: "জীবনবৃত্তান্ত (PDF বা Word, সর্বোচ্চ ১০MB)" },
+  submit: { en: "Submit Resume", bn: "জীবনবৃত্তান্ত জমা দিন" },
+  submitting: { en: "Submitting…", bn: "জমা দেওয়া হচ্ছে…" },
+  success: { en: "Thank you — we've received your resume and will be in touch.", bn: "ধন্যবাদ — আমরা আপনার জীবনবৃত্তান্ত পেয়েছি এবং শীঘ্রই যোগাযোগ করব।" },
+  errorGeneric: { en: "Something went wrong. Please try again.", bn: "কিছু ভুল হয়েছে। আবার চেষ্টা করুন।" },
+};
+
 export const eventsPageT = {
   eyebrow: { en: "Media Training & Government Relations", bn: "মিডিয়া প্রশিক্ষণ ও সরকারি সম্পর্ক" },
   h1: { en: "Our Events & Success Stories", bn: "আমাদের ইভেন্ট ও সাফল্যের গল্প" },

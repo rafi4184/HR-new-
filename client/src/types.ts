@@ -92,3 +92,21 @@ export interface AuditLogEntry {
   metadata: Record<string, unknown>;
   createdAt: string;
 }
+
+export type ResumeStatus = "new" | "reviewed" | "contacted";
+
+export interface ResumeSubmission {
+  id: number;
+  name: string;
+  email: string;
+  phone: string | null;
+  targetRole: string | null;
+  targetCountry: string | null;
+  note: string | null;
+  fileName: string;
+  storagePath: string;
+  status: ResumeStatus;
+  reviewerNote: string | null;
+  reviewedAt: string | null;
+  createdAt: string;
+}

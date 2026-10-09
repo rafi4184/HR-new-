@@ -1,6 +1,6 @@
 import { useEffect, useState, type FormEvent } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Trash2, Pencil, Plus, Image as ImageIcon, Video, Loader2, ShieldCheck, Shield, Users, KeyRound, ScrollText, CalendarDays } from "lucide-react";
+import { Trash2, Pencil, Plus, Image as ImageIcon, Video, Loader2, ShieldCheck, Shield, Users, KeyRound, ScrollText, CalendarDays, FileText, Download } from "lucide-react";
 import { inputClass } from "../ui/Field";
 import {
   listContacts,
@@ -19,15 +19,19 @@ import {
   executiveListStaff,
   executiveRemoveStaff,
   adminListAuditLog,
+  staffListResumes,
+  staffReviewResume,
+  getResumeDownloadUrl,
   ApiError,
 } from "../../lib/api";
-import type { AuditLogEntry, Contact, EventItem, StaffMember, StaffRole, TeamMember, WhoAmI } from "../../types";
+import type { AuditLogEntry, Contact, EventItem, ResumeSubmission, StaffMember, StaffRole, TeamMember, WhoAmI } from "../../types";
 
-type Tab = "contacts" | "events" | "staff" | "audit";
+type Tab = "contacts" | "events" | "resumes" | "staff" | "audit";
 
 const TABS: { key: Tab; label: string }[] = [
   { key: "contacts", label: "Contacts" },
   { key: "events", label: "Events" },
+  { key: "resumes", label: "Resumes" },
   { key: "staff", label: "Staff" },
   { key: "audit", label: "Audit log" },
 ];
@@ -40,7 +44,15 @@ const ACTION_LABEL: Record<string, string> = {
   create_staff: "Created account",
   remove_staff: "Removed access",
   set_staff_role: "Changed role",
+  set_staff_admin: "Changed admin access",
   reset_password: "Reset password",
+  login: "Logged in",
+  logout: "Logged out",
+  create_event: "Created event",
+  update_event: "Updated event",
+  delete_event: "Deleted event",
+  add_event_media: "Added event media",
+  delete_event_media: "Removed event media",
 };
 
 const ROLE_LABEL: Record<StaffRole, string> = { admin: "Admin", executive: "Executive", staff: "Staff" };
@@ -55,8 +67,9 @@ export default function AdminPanel({
   const [tab, setTab] = useState<Tab>("contacts");
 
   if (me.role === "staff") {
-    // Plain staff don't get contacts/staff-management/audit — just events,
-    // so they can post recent success stories and seminars themselves.
+    // Plain staff don't get contacts/staff-management/audit — just events
+    // and resumes, so they can post recent success stories and seminars,
+    // and review jobseeker resumes, themselves.
     return (
       <div className="mt-10 pt-10 border-t border-dashed border-border-strong">
         <div className="flex items-center gap-2 mb-1">
@@ -67,6 +80,13 @@ export default function AdminPanel({
           Post recent success stories and seminars — everyone visiting the site will see them.
         </p>
         <EventsPanel onToast={onToast} />
+
+        <div className="flex items-center gap-2 mb-1 mt-10 pt-10 border-t border-dashed border-border-strong">
+          <FileText size={17} className="text-navy" />
+          <h3 className="font-display text-xl">Resumes</h3>
+        </div>
+        <p className="text-[13px] mb-5 text-ink-faint">Jobseeker resumes submitted for employment placement.</p>
+        <ResumesPanel onToast={onToast} />
       </div>
     );
   }
@@ -111,6 +131,7 @@ export default function AdminPanel({
         <motion.div key={tab} initial={{ opacity: 0, y: 6 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }} transition={{ duration: 0.2 }}>
           {tab === "contacts" && <ContactsPanel onToast={onToast} />}
           {tab === "events" && <EventsPanel onToast={onToast} />}
+          {tab === "resumes" && <ResumesPanel onToast={onToast} />}
           {tab === "staff" && <StaffPanel currentUserId={me.userId} onToast={onToast} />}
           {tab === "audit" && <AuditLogPanel />}
         </motion.div>
@@ -900,9 +921,17 @@ const ACTION_TONE: Record<string, string> = {
   reject_request: "bg-[#F7E3DD] text-[#8A3B22]",
   remove_staff: "bg-[#F7E3DD] text-[#8A3B22]",
   delete_request: "bg-[#F7E3DD] text-[#8A3B22]",
+  delete_event: "bg-[#F7E3DD] text-[#8A3B22]",
+  delete_event_media: "bg-[#F7E3DD] text-[#8A3B22]",
   create_staff: "bg-gold-pale text-gold-deep",
   set_staff_role: "bg-gold-pale text-gold-deep",
+  set_staff_admin: "bg-gold-pale text-gold-deep",
+  create_event: "bg-gold-pale text-gold-deep",
+  update_event: "bg-gold-pale text-gold-deep",
+  add_event_media: "bg-gold-pale text-gold-deep",
   reset_password: "bg-[#F4E7C9] text-[#8A6A12]",
+  login: "bg-paper-panel text-ink-soft",
+  logout: "bg-paper-panel text-ink-soft",
 };
 
 function describeMetadata(entry: AuditLogEntry): string {
@@ -914,13 +943,19 @@ function describeMetadata(entry: AuditLogEntry): string {
 
 const ACTION_FILTERS: { key: string; label: string }[] = [
   { key: "all", label: "All" },
+  { key: "login", label: "Logins" },
+  { key: "logout", label: "Logouts" },
   { key: "approve_request", label: "Approved" },
   { key: "reject_request", label: "Rejected" },
   { key: "complete_request", label: "Completed" },
   { key: "delete_request", label: "Deleted request" },
+  { key: "create_event", label: "Event created" },
+  { key: "update_event", label: "Event updated" },
+  { key: "delete_event", label: "Event deleted" },
   { key: "create_staff", label: "Account created" },
   { key: "remove_staff", label: "Access removed" },
   { key: "set_staff_role", label: "Role changed" },
+  { key: "set_staff_admin", label: "Admin access changed" },
   { key: "reset_password", label: "Password reset" },
 ];
 
@@ -1019,6 +1054,145 @@ function AuditLogPanel() {
               <span className="text-[11px] text-ink-faint shrink-0 whitespace-nowrap">
                 {new Date(entry.createdAt).toLocaleString()}
               </span>
+            </div>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+}
+
+// ---------------------------------------------------------------------
+
+const RESUME_STATUS_LABEL: Record<ResumeSubmission["status"], string> = {
+  new: "New",
+  reviewed: "Reviewed",
+  contacted: "Contacted",
+};
+
+const RESUME_STATUS_TONE: Record<ResumeSubmission["status"], string> = {
+  new: "bg-gold-pale text-gold-deep",
+  reviewed: "bg-paper-panel text-ink-soft",
+  contacted: "bg-[#DCEEDC] text-[#2A6B2F]",
+};
+
+function ResumesPanel({ onToast }: { onToast: (msg: string) => void }) {
+  const [resumes, setResumes] = useState<ResumeSubmission[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [statusFilter, setStatusFilter] = useState<"all" | ResumeSubmission["status"]>("all");
+  const [busyId, setBusyId] = useState<number | null>(null);
+
+  const refresh = async () => {
+    setLoading(true);
+    try {
+      setResumes(await staffListResumes());
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    void refresh();
+  }, []);
+
+  const download = async (r: ResumeSubmission) => {
+    try {
+      const url = await getResumeDownloadUrl(r.storagePath);
+      window.open(url, "_blank", "noopener,noreferrer");
+    } catch (err) {
+      onToast(panelError(err, "Couldn't open that resume."));
+    }
+  };
+
+  const setStatus = async (r: ResumeSubmission, status: ResumeSubmission["status"]) => {
+    setBusyId(r.id);
+    try {
+      await staffReviewResume(r.id, status);
+      onToast(`Marked as ${RESUME_STATUS_LABEL[status].toLowerCase()}.`);
+      void refresh();
+    } catch (err) {
+      onToast(panelError(err, "Couldn't update that resume."));
+    } finally {
+      setBusyId(null);
+    }
+  };
+
+  if (loading) return <div className="shimmer rounded-lg h-16 animate-shimmer" />;
+
+  const filtered = statusFilter === "all" ? resumes : resumes.filter((r) => r.status === statusFilter);
+
+  return (
+    <div>
+      <div className="flex items-center gap-1.5 mb-4 flex-wrap">
+        <span className="text-[11px] font-medium uppercase tracking-wide text-ink-faint mr-1">Filter</span>
+        {(["all", "new", "reviewed", "contacted"] as const).map((s) => (
+          <button
+            key={s}
+            onClick={() => setStatusFilter(s)}
+            className={`text-[12px] font-medium px-3 py-1.5 rounded-full border transition-colors ${
+              statusFilter === s ? "bg-navy text-white border-navy" : "border-border-strong text-ink-faint"
+            }`}
+          >
+            {s === "all" ? "All" : RESUME_STATUS_LABEL[s]}
+          </button>
+        ))}
+      </div>
+
+      {filtered.length === 0 ? (
+        <div className="rounded-xl border border-dashed p-8 text-center border-border-strong text-ink-faint text-[13px]">
+          {resumes.length === 0 ? "No resumes submitted yet." : "No resumes match this filter."}
+        </div>
+      ) : (
+        <div className="space-y-2.5">
+          {filtered.map((r) => (
+            <div key={r.id} className="rounded-lg border border-border p-4 bg-white">
+              <div className="flex items-start justify-between gap-3 flex-wrap mb-2">
+                <div className="min-w-0">
+                  <div className="flex items-center gap-2 flex-wrap mb-1">
+                    <span className="font-display text-[15px] text-navy">{r.name}</span>
+                    <span className={`text-[11px] font-medium px-2 py-0.5 rounded-full ${RESUME_STATUS_TONE[r.status]}`}>
+                      {RESUME_STATUS_LABEL[r.status]}
+                    </span>
+                  </div>
+                  <div className="text-[12.5px] text-ink-faint">
+                    {r.email}
+                    {r.phone ? ` · ${r.phone}` : ""}
+                  </div>
+                  {(r.targetRole || r.targetCountry) && (
+                    <div className="text-[12.5px] text-ink-soft mt-0.5">
+                      {[r.targetRole, r.targetCountry].filter(Boolean).join(" · ")}
+                    </div>
+                  )}
+                  {r.note && <div className="text-[13px] text-ink-soft mt-1.5">{r.note}</div>}
+                </div>
+                <span className="text-[11px] text-ink-faint whitespace-nowrap">{new Date(r.createdAt).toLocaleString()}</span>
+              </div>
+              <div className="flex items-center gap-2 flex-wrap mt-2.5">
+                <button
+                  onClick={() => download(r)}
+                  className="inline-flex items-center gap-1.5 text-[12.5px] font-medium px-3 py-1.5 rounded-full border border-border-strong text-ink-soft hover:border-navy hover:text-navy transition-colors"
+                >
+                  <Download size={13} /> {r.fileName}
+                </button>
+                {r.status !== "reviewed" && (
+                  <button
+                    disabled={busyId === r.id}
+                    onClick={() => setStatus(r, "reviewed")}
+                    className="text-[12.5px] font-medium px-3 py-1.5 rounded-full border border-border-strong text-ink-soft hover:border-navy hover:text-navy transition-colors disabled:opacity-50"
+                  >
+                    Mark reviewed
+                  </button>
+                )}
+                {r.status !== "contacted" && (
+                  <button
+                    disabled={busyId === r.id}
+                    onClick={() => setStatus(r, "contacted")}
+                    className="text-[12.5px] font-medium px-3 py-1.5 rounded-full border border-border-strong text-ink-soft hover:border-navy hover:text-navy transition-colors disabled:opacity-50"
+                  >
+                    Mark contacted
+                  </button>
+                )}
+              </div>
             </div>
           ))}
         </div>

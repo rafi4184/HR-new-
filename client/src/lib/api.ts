@@ -1,9 +1,10 @@
 import { supabase } from "./supabaseClient";
-import type { AuditLogEntry, Contact, EventItem, ServiceRequest, StaffMember, TeamMember, WhoAmI } from "../types";
+import type { AuditLogEntry, Contact, EventItem, ResumeSubmission, ServiceRequest, StaffMember, TeamMember, WhoAmI } from "../types";
 
 class ApiError extends Error {}
 
 const EVENT_MEDIA_BUCKET = "event-media";
+const RESUME_BUCKET = "resumes";
 
 function mapContact(row: Record<string, unknown>): Contact {
   return {
@@ -143,6 +144,13 @@ export async function staffLogin(staffId: string, password: string): Promise<{ t
 }
 
 export async function staffLogout(): Promise<void> {
+  // Best-effort audit log entry before the session is torn down — a failure
+  // here (e.g. already signed out) should never block actually signing out.
+  try {
+    await supabase.rpc("staff_log_logout");
+  } catch {
+    /* ignore */
+  }
   await supabase.auth.signOut();
 }
 
@@ -392,6 +400,76 @@ export async function adminListAuditLog(limit = 100): Promise<AuditLogEntry[]> {
     metadata: (row.metadata as Record<string, unknown>) ?? {},
     createdAt: row.created_at as string,
   }));
+}
+
+// --- Resumes -------------------------------------------------------------
+
+function mapResume(row: Record<string, unknown>): ResumeSubmission {
+  return {
+    id: row.id as number,
+    name: row.name as string,
+    email: row.email as string,
+    phone: (row.phone as string | null) ?? null,
+    targetRole: (row.target_role as string | null) ?? null,
+    targetCountry: (row.target_country as string | null) ?? null,
+    note: (row.note as string | null) ?? null,
+    fileName: row.file_name as string,
+    storagePath: row.storage_path as string,
+    status: row.status as ResumeSubmission["status"],
+    reviewerNote: (row.reviewer_note as string | null) ?? null,
+    reviewedAt: (row.reviewed_at as string | null) ?? null,
+    createdAt: row.created_at as string,
+  };
+}
+
+export interface ResumeSubmitInput {
+  name: string;
+  email: string;
+  phone?: string;
+  targetRole?: string;
+  targetCountry?: string;
+  note?: string;
+}
+
+export async function submitResume(input: ResumeSubmitInput, file: File): Promise<ResumeSubmission> {
+  const ext = file.name.split(".").pop() ?? "bin";
+  const path = `${crypto.randomUUID()}.${ext}`;
+  const { error: uploadErr } = await supabase.storage.from(RESUME_BUCKET).upload(path, file, {
+    contentType: file.type,
+    upsert: false,
+  });
+  if (uploadErr) throw new ApiError(uploadErr.message);
+
+  const { data, error } = await supabase.rpc("submit_resume", {
+    p_name: input.name,
+    p_email: input.email,
+    p_phone: input.phone ?? null,
+    p_target_role: input.targetRole ?? null,
+    p_target_country: input.targetCountry ?? null,
+    p_note: input.note ?? null,
+    p_storage_path: path,
+    p_file_name: file.name,
+  });
+  if (error) throw new ApiError(error.message);
+  return mapResume(data as Record<string, unknown>);
+}
+
+export async function staffListResumes(): Promise<ResumeSubmission[]> {
+  const { data, error } = await supabase.rpc("staff_list_resumes");
+  if (error) throw new ApiError(error.message);
+  return ((data ?? []) as Record<string, unknown>[]).map(mapResume);
+}
+
+export async function staffReviewResume(id: number, status: ResumeSubmission["status"], note?: string): Promise<ResumeSubmission> {
+  const { data, error } = await supabase.rpc("staff_review_resume", { p_id: id, p_status: status, p_note: note ?? null });
+  if (error) throw new ApiError(error.message);
+  return mapResume(data as Record<string, unknown>);
+}
+
+export async function getResumeDownloadUrl(storagePath: string): Promise<string> {
+  const { data, error } = await supabase.storage.from(RESUME_BUCKET).createSignedUrl(storagePath, 300);
+  if (error) throw new ApiError(error.message);
+  return data.signedUrl;
 }
 
 export { ApiError };
