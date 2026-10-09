@@ -1,13 +1,15 @@
 import { useEffect, useRef, useState } from "react";
 import { Link, NavLink } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
-import { ChevronDown, Menu, X, UserCog } from "lucide-react";
+import { ChevronDown, Menu, X, UserCog, LogOut, LayoutDashboard } from "lucide-react";
 import LogoMark from "./ui/Logo";
 import LanguageToggle from "./ui/LanguageToggle";
 import { NAV_GROUPS } from "../lib/serviceNavGroups";
 import { useRequestHref } from "../lib/useRequestHref";
 import { useDict, useT } from "../lib/i18n";
 import { header, serviceNavGroups } from "../lib/translations";
+import { whoami, staffLogout } from "../lib/api";
+import type { WhoAmI } from "../types";
 
 export default function Header() {
   const requestHref = useRequestHref();
@@ -16,6 +18,8 @@ export default function Header() {
   const [mobileServicesOpen, setMobileServicesOpen] = useState(false);
   const [servicesOpen, setServicesOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const [me, setMe] = useState<WhoAmI | null>(null);
+  const [accountMenuOpen, setAccountMenuOpen] = useState(false);
   const closeTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   useEffect(() => {
@@ -24,6 +28,20 @@ export default function Header() {
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
+
+  useEffect(() => {
+    whoami()
+      .then(setMe)
+      .catch(() => setMe(null));
+  }, []);
+
+  const signOut = () => {
+    void staffLogout().then(() => {
+      setMe(null);
+      setAccountMenuOpen(false);
+      setMobileOpen(false);
+    });
+  };
 
   const openServices = () => {
     if (closeTimer.current) clearTimeout(closeTimer.current);
@@ -151,14 +169,53 @@ export default function Header() {
           <Link to="/#track" className="text-[13px] font-medium text-ink-faint hover:text-navy transition-colors">
             {T.trackRequest}
           </Link>
-          <Link
-            to="/staff"
-            title={T.staffLogin}
-            aria-label={T.staffLogin}
-            className="flex items-center justify-center w-8 h-8 rounded-full text-ink-faint hover:text-navy hover:bg-paper-soft transition-colors"
-          >
-            <UserCog size={17} />
-          </Link>
+          {me ? (
+            <div className="relative" onMouseEnter={() => setAccountMenuOpen(true)} onMouseLeave={() => setAccountMenuOpen(false)}>
+              <button
+                className="flex items-center gap-1.5 text-[12.5px] font-medium px-3 py-1.5 rounded-full border border-border-strong text-navy hover:bg-paper-soft transition-colors"
+                aria-expanded={accountMenuOpen}
+              >
+                <UserCog size={15} /> {me.staffId}
+                <ChevronDown size={12} className={`transition-transform ${accountMenuOpen ? "rotate-180" : ""}`} />
+              </button>
+              <AnimatePresence>
+                {accountMenuOpen && (
+                  <motion.div
+                    initial={{ opacity: 0, y: 8 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: 8 }}
+                    transition={{ duration: 0.15 }}
+                    className="absolute right-0 top-full pt-2 w-48"
+                  >
+                    <div className="rounded-xl border border-border bg-white shadow-card-hover p-1.5">
+                      <Link
+                        to="/staff"
+                        onClick={() => setAccountMenuOpen(false)}
+                        className="flex items-center gap-2 px-3 py-2 rounded-lg text-[13px] font-medium text-ink-soft hover:bg-paper-soft transition-colors"
+                      >
+                        <LayoutDashboard size={14} /> Dashboard
+                      </Link>
+                      <button
+                        onClick={signOut}
+                        className="w-full flex items-center gap-2 px-3 py-2 rounded-lg text-[13px] font-medium text-[#8A3B22] hover:bg-paper-soft transition-colors"
+                      >
+                        <LogOut size={14} /> Sign out
+                      </button>
+                    </div>
+                  </motion.div>
+                )}
+              </AnimatePresence>
+            </div>
+          ) : (
+            <Link
+              to="/staff"
+              title={T.staffLogin}
+              aria-label={T.staffLogin}
+              className="flex items-center justify-center w-8 h-8 rounded-full text-ink-faint hover:text-navy hover:bg-paper-soft transition-colors"
+            >
+              <UserCog size={17} />
+            </Link>
+          )}
           <Link
             to={requestHref}
             className="text-[13px] font-medium tracking-wide px-5 py-2.5 rounded-full bg-gold text-white hover:bg-gold-deep transition-colors"
@@ -247,13 +304,31 @@ export default function Header() {
               <Link to="/#track" onClick={() => setMobileOpen(false)} className="py-2.5 text-[15px] font-medium text-ink-soft">
                 {T.trackRequest}
               </Link>
-              <Link
-                to="/staff"
-                onClick={() => setMobileOpen(false)}
-                className="py-2.5 flex items-center gap-2 text-[15px] font-medium text-ink-soft"
-              >
-                <UserCog size={16} /> {T.staffLogin}
-              </Link>
+              {me ? (
+                <div className="py-2.5">
+                  <div className="text-[13px] text-ink-faint mb-2">Signed in as {me.staffId}</div>
+                  <div className="flex items-center gap-3">
+                    <Link
+                      to="/staff"
+                      onClick={() => setMobileOpen(false)}
+                      className="flex items-center gap-1.5 text-[14px] font-medium text-ink-soft"
+                    >
+                      <LayoutDashboard size={15} /> Dashboard
+                    </Link>
+                    <button onClick={signOut} className="flex items-center gap-1.5 text-[14px] font-medium text-[#8A3B22]">
+                      <LogOut size={15} /> Sign out
+                    </button>
+                  </div>
+                </div>
+              ) : (
+                <Link
+                  to="/staff"
+                  onClick={() => setMobileOpen(false)}
+                  className="py-2.5 flex items-center gap-2 text-[15px] font-medium text-ink-soft"
+                >
+                  <UserCog size={16} /> {T.staffLogin}
+                </Link>
+              )}
               <Link
                 to={requestHref}
                 onClick={() => setMobileOpen(false)}
