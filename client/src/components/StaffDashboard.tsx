@@ -324,7 +324,7 @@ export default function StaffDashboard({ onToast }: { onToast: (msg: string) => 
         </div>
       )}
 
-      {token && me && (me.isAdmin || me.role === "executive") && <AdminPanel me={me} onToast={onToast} />}
+      {token && me && <AdminPanel me={me} onToast={onToast} />}
 
       <AnimatePresence>
         {viewing && (
