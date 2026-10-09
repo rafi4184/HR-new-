@@ -27,42 +27,42 @@ export const HOME_FAQS: Faq[] = [
   {
     question: "What services does HR — The Mediator provide in Bangladesh?",
     answer:
-      "We provide five core services: airport VIP reception, hotel & car booking, government-request assistance, manpower & security staffing, and courses & careers support covering media training and Gulf study/work placement.",
+      "Five core services: airport VIP reception, hotel & car booking, government-request assistance, manpower & security staffing, and courses & careers support covering media training and Gulf study/work placement.",
   },
   {
     question: "Do you provide airport VIP assistance?",
     answer:
-      "Yes. Our airport VIP service covers meet & greet, arrival and departure assistance, fast-track support, and passenger coordination at Bangladesh airports including Hazrat Shahjalal International (Dhaka).",
+      "We do. Our airport VIP service covers meet & greet, arrival and departure assistance, fast-track support, and passenger coordination at Bangladesh airports including Hazrat Shahjalal International (Dhaka).",
   },
   {
     question: "Can you arrange hotel and car services?",
     answer:
-      "Yes. We arrange hotel bookings and vehicle transport — including airport transfers and chauffeur service — matched to your itinerary, budget and preferred city in Bangladesh.",
+      "We arrange hotel bookings and vehicle transport — including airport transfers and chauffeur service — matched to your itinerary, budget and preferred city in Bangladesh.",
   },
   {
     question: "Can you assist with government-related requests?",
     answer:
-      "Yes. Our desk reviews each government-related case individually and coordinates documentation and administrative processes such as passport, visa, NID, land registry, and attestation support.",
+      "Our desk reviews each government-related case individually and coordinates documentation and administrative processes such as passport, visa, NID, land registry, and attestation support.",
   },
   {
     question: "Do you provide manpower and security services?",
     answer:
-      "Yes. We supply licensed manpower and security personnel for businesses and organisations, drawing on our staffing and consultancy practice.",
+      "We supply licensed manpower and security personnel for businesses and organisations, drawing on our staffing and consultancy practice.",
   },
   {
     question: "Can you help with Gulf employment opportunities?",
     answer:
-      "Yes. Our International Careers track supports Gulf employment placement, including documentation and pre-departure assistance for candidates from Bangladesh.",
+      "Our International Careers track supports Gulf employment placement, including documentation and pre-departure assistance for candidates from Bangladesh.",
   },
   {
     question: "Do you help people in Dhaka find jobs in Saudi Arabia or the Middle East?",
     answer:
-      "Yes. Candidates based in Dhaka, Rajshahi or anywhere in Bangladesh can apply through our International Careers programme for employment in Saudi Arabia, the UAE, Qatar and the wider Middle East, with documentation and pre-departure support included.",
+      "Candidates based in Dhaka, Rajshahi or anywhere in Bangladesh can apply through our International Careers programme for employment in Saudi Arabia, the UAE, Qatar and the wider Middle East, with documentation and pre-departure support included.",
   },
   {
     question: "Do you offer premium or VIP service at Dhaka Airport Terminal 3?",
     answer:
-      "Yes. Our Airport VIP Reception is built around Hazrat Shahjalal International Airport's new Terminal 3 in Dhaka — meet & greet, fast-track immigration, baggage assistance and a car staged at the curb for arrivals and departures.",
+      "Our Airport VIP Reception is built around Hazrat Shahjalal International Airport's new Terminal 3 in Dhaka — meet & greet, fast-track immigration, baggage assistance and a car staged at the curb for arrivals and departures.",
   },
   {
     question: "Where can I get airport VIP service in Bangladesh?",
@@ -72,7 +72,7 @@ export const HOME_FAQS: Faq[] = [
   {
     question: "Can you help students study in the Gulf?",
     answer:
-      "Yes. We provide study-abroad guidance, university admission support, and visa/documentation assistance for students pursuing education opportunities in the Gulf and other regions.",
+      "We provide study-abroad guidance, university admission support, and visa/documentation assistance for students pursuing education opportunities in the Gulf and other regions.",
   },
   {
     question: "How can I request a service?",
@@ -109,10 +109,10 @@ export const SERVICE_PAGES: Record<string, ServicePageData> = {
       "Support for both arrivals and departures",
     ],
     process: [
-      { title: "Choose Airport VIP", body: "Select the airport VIP service on our request form." },
-      { title: "Share your flight details", body: "Tell us your flight number, arrival date and airport." },
-      { title: "We coordinate on the ground", body: "Our team arranges the meet & greet and transport in advance." },
-      { title: "Arrive with support", body: "You're met at the gate and assisted through to your car." },
+      { title: "Request your reception", body: "Select Airport VIP on our request form — takes under a minute." },
+      { title: "Send us your flight details", body: "Flight number, date, and which airport — Dhaka, Chattogram or Sylhet." },
+      { title: "We arrange it on the ground", body: "Meet & greet and transport are set up before you land." },
+      { title: "Walk straight to your car", body: "An officer meets you at the gate and walks you through to a car already waiting." },
     ],
     faqs: [
       {
@@ -122,11 +122,11 @@ export const SERVICE_PAGES: Record<string, ServicePageData> = {
       },
       {
         question: "Can you arrange airport assistance for elderly travellers?",
-        answer: "Yes — let us know in your request notes and we'll arrange extra support at the airport.",
+        answer: "Let us know in your request notes and we'll arrange extra support at the airport.",
       },
       {
         question: "Do you also handle departures?",
-        answer: "Yes. Airport VIP covers both arrival and departure assistance.",
+        answer: "Airport VIP covers both arrival and departure assistance.",
       },
       {
         question: "How much notice do you need?",
@@ -159,7 +159,7 @@ export const SERVICE_PAGES: Record<string, ServicePageData> = {
       "Hotel booking and chauffeur/car service across Bangladesh. Airport transfers, vetted hotels, and vehicles matched to your itinerary and budget.",
     h1: "Hotel & Car Booking Across Bangladesh",
     intro:
-      "We shortlist and reserve accommodation and transport against your schedule and budget — not a generic booking-site listing, but a fit checked by someone who knows the ground in Dhaka, Rajshahi and beyond.",
+      "We shortlist and personally check accommodation and transport against your schedule and budget, drawing on first-hand knowledge of hotels and drivers in Dhaka, Rajshahi and beyond.",
     whoFor: [
       "Business travellers who need a reliable hotel and vehicle on short notice",
       "Families visiting Bangladesh who want vetted, comfortable accommodation",
@@ -174,10 +174,10 @@ export const SERVICE_PAGES: Record<string, ServicePageData> = {
       "One invoice, one point of contact",
     ],
     process: [
-      { title: "Choose Hotel & Car", body: "Select the hotel & car service on our request form." },
-      { title: "Tell us your itinerary", body: "Share your city, dates and vehicle preference." },
-      { title: "We coordinate the booking", body: "Our team confirms hotel and transport arrangements." },
-      { title: "Travel with support", body: "Your car and accommodation are ready when you arrive." },
+      { title: "Tell us your trip", body: "City, dates, and the kind of vehicle you need." },
+      { title: "We shortlist and confirm", body: "Vetted hotel options and a matched vehicle, confirmed against your budget." },
+      { title: "One invoice, one contact", body: "Hotel and transport billed together, one point of contact throughout." },
+      { title: "Everything's ready on arrival", body: "Your room and driver are confirmed before you land." },
     ],
     faqs: [
       {
@@ -186,11 +186,11 @@ export const SERVICE_PAGES: Record<string, ServicePageData> = {
       },
       {
         question: "Can I request a chauffeur-driven car only, without a hotel?",
-        answer: "Yes — hotel and car can be booked separately or together, whichever you need.",
+        answer: "Hotel and car can be booked separately or together, whichever you need.",
       },
       {
         question: "Do you handle airport transfers?",
-        answer: "Yes, airport transfers are part of our standard hotel & car service.",
+        answer: "Airport transfers are part of our standard hotel & car service.",
       },
     ],
     cta: "Request Hotel & Car",
@@ -226,10 +226,10 @@ export const SERVICE_PAGES: Record<string, ServicePageData> = {
       "Direct phone briefing before any work begins",
     ],
     process: [
-      { title: "Choose Government Request", body: "Select the government-request service on our form." },
-      { title: "Describe your case", body: "Tell us which service you need and the details of your case." },
-      { title: "We review & confirm scope", body: "Our desk reviews your case and briefs you by phone before work begins." },
-      { title: "We coordinate the process", body: "Our team carries the case through the relevant government office." },
+      { title: "Tell us the case", body: "Passport, NID, land registry — whatever the matter, describe it on our form." },
+      { title: "We review it personally", body: "Our desk reviews your case and briefs you by phone before any work begins." },
+      { title: "We carry it through the office", body: "Our team handles the paperwork and the queue at the relevant government office." },
+      { title: "You get a direct update", body: "We confirm once it's done — no chasing required." },
     ],
     faqs: [
       {
@@ -240,11 +240,11 @@ export const SERVICE_PAGES: Record<string, ServicePageData> = {
       {
         question: "Will someone review my case before starting work?",
         answer:
-          "Yes — our desk reviews every government request individually and confirms scope with you by phone before any work begins.",
+          "Our desk reviews every government request individually and confirms scope with you by phone before any work begins.",
       },
       {
         question: "Can you help if I live outside Bangladesh?",
-        answer: "Yes, we regularly assist overseas Bangladeshis who cannot attend government offices in person.",
+        answer: "We regularly assist overseas Bangladeshis who cannot attend government offices in person.",
       },
     ],
     cta: "Request Government Assistance",
@@ -276,19 +276,19 @@ export const SERVICE_PAGES: Record<string, ServicePageData> = {
       "Gulf & overseas placement support for workforce needs",
     ],
     process: [
-      { title: "Choose Manpower & Security", body: "Tell us about your staffing or security requirement." },
-      { title: "Share your requirement", body: "Describe the roles, numbers and location needed." },
-      { title: "We coordinate placement", body: "Our team matches and coordinates suitable personnel." },
-      { title: "Ongoing support", body: "We remain your point of contact for the engagement." },
+      { title: "Describe the role", body: "Roles, headcount and location — tell us what needs staffing or securing." },
+      { title: "We match and vet", body: "Candidates are matched against your requirement and vetted before you see a name." },
+      { title: "Contract and deployment", body: "Documentation and compliance handled, personnel deployed on the agreed date." },
+      { title: "One contact, ongoing", body: "We stay your point of contact for the length of the engagement." },
     ],
     faqs: [
       {
         question: "Do you provide security personnel for events or offices?",
-        answer: "Yes, we supply trained security personnel for both short-term and ongoing engagements.",
+        answer: "We supply trained security personnel for both short-term and ongoing engagements.",
       },
       {
         question: "Can you supply outsourced staff for a business?",
-        answer: "Yes, we support corporate and institutional staffing contracts across Bangladesh.",
+        answer: "We support corporate and institutional staffing contracts across Bangladesh.",
       },
     ],
     cta: "Request Manpower & Security",
@@ -320,10 +320,10 @@ export const SERVICE_PAGES: Record<string, ServicePageData> = {
       "Pre-departure assistance for students and workers",
     ],
     process: [
-      { title: "Choose your track", body: "Media & Public Speaking, or International Careers." },
-      { title: "Submit your request", body: "Tell us your background and what you're aiming for." },
-      { title: "We coordinate the right support", body: "Our team matches you with the right programme or placement path." },
-      { title: "Get assistance start to finish", body: "From enrolment or placement through to documentation." },
+      { title: "Pick a track", body: "Media & Public Speaking, or International Careers — ask if you're not sure which fits." },
+      { title: "Tell us where you're starting from", body: "Your background, education or occupation, and what you're aiming for." },
+      { title: "We match you to a path", body: "The right programme or placement route, confirmed with you directly." },
+      { title: "Support through to the finish", body: "Enrolment or placement, then documentation — we stay involved throughout." },
     ],
     faqs: [
       {
@@ -367,10 +367,10 @@ export const SERVICE_PAGES: Record<string, ServicePageData> = {
       "Professional confidence and soft-skills development",
     ],
     process: [
-      { title: "Choose Media & Public Speaking", body: "Select this programme on our request form." },
-      { title: "Tell us your background", body: "Share your current education or occupation and goals." },
-      { title: "We confirm your batch", body: "Offline (Bangladesh campus) or online (Zoom) batches available." },
-      { title: "Begin training", body: "Start the academy with ongoing support from our team." },
+      { title: "Tell us your goals", body: "Current education or occupation, and what you want to get out of the academy." },
+      { title: "Pick your format", body: "An offline Bangladesh-campus batch, or an online Zoom batch — whichever fits." },
+      { title: "We confirm your batch", body: "Dates and format locked in, directly with our team." },
+      { title: "Train with a working presenter", body: "Sessions led by a working national news presenter, from day one." },
     ],
     faqs: [
       {
@@ -379,7 +379,7 @@ export const SERVICE_PAGES: Record<string, ServicePageData> = {
       },
       {
         question: "Is the course offered online?",
-        answer: "Yes, both an offline Bangladesh-campus batch and an online Zoom batch are available.",
+        answer: "Both an offline Bangladesh-campus batch and an online Zoom batch are available.",
       },
     ],
     cta: "Explore the Academy",
@@ -412,10 +412,10 @@ export const SERVICE_PAGES: Record<string, ServicePageData> = {
       "Pre-departure assistance",
     ],
     process: [
-      { title: "Choose International Careers", body: "Select this programme on our request form." },
-      { title: "Share your goals", body: "Study or work, target country, and your current background." },
-      { title: "We coordinate placement", body: "Our team matches you with a suitable university or employment path." },
-      { title: "Pre-departure support", body: "Documentation and visa assistance ahead of travel." },
+      { title: "Tell us study or work", body: "Target country and your current background — student or jobseeker." },
+      { title: "We verify the placement", body: "University admission or employer match, checked before anything is confirmed to you." },
+      { title: "Visa and documentation", body: "Paperwork handled ahead of travel, not left for the last week." },
+      { title: "Pre-departure briefing", body: "A final check-in before you fly, so nothing is a surprise on arrival." },
     ],
     faqs: [
       {
@@ -429,7 +429,7 @@ export const SERVICE_PAGES: Record<string, ServicePageData> = {
       },
       {
         question: "Do you help with visa and documentation?",
-        answer: "Yes, visa and documentation support plus pre-departure assistance are included.",
+        answer: "Visa and documentation support plus pre-departure assistance are included.",
       },
     ],
     cta: "Explore International Careers",

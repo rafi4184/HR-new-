@@ -379,43 +379,43 @@ export const homeFaqs = [
   {
     question: { en: "Do you provide airport VIP assistance?", bn: "আপনারা কি এয়ারপোর্ট ভিআইপি সহায়তা প্রদান করেন?" },
     answer: {
-      en: "Yes. Our airport VIP service covers meet & greet, arrival and departure assistance, fast-track support, and passenger coordination at Bangladesh airports including Hazrat Shahjalal International (Dhaka).",
-      bn: "হ্যাঁ। আমাদের এয়ারপোর্ট ভিআইপি সেবায় রয়েছে মিট অ্যান্ড গ্রিট, আগমন ও প্রস্থান সহায়তা, ফাস্ট-ট্র্যাক সহায়তা এবং হযরত শাহজালাল আন্তর্জাতিক (ঢাকা)সহ বাংলাদেশের বিমানবন্দরে যাত্রী সমন্বয়।",
+      en: "We do. Our airport VIP service covers meet & greet, arrival and departure assistance, fast-track support, and passenger coordination at Bangladesh airports including Hazrat Shahjalal International (Dhaka).",
+      bn: "আমাদের এয়ারপোর্ট ভিআইপি সেবায় রয়েছে মিট অ্যান্ড গ্রিট, আগমন ও প্রস্থান সহায়তা, ফাস্ট-ট্র্যাক সহায়তা এবং হযরত শাহজালাল আন্তর্জাতিক (ঢাকা)সহ বাংলাদেশের বিমানবন্দরে যাত্রী সমন্বয়।",
     },
   },
   {
     question: { en: "Can you arrange hotel and car services?", bn: "আপনারা কি হোটেল ও গাড়ির ব্যবস্থা করতে পারেন?" },
     answer: {
-      en: "Yes. We arrange hotel bookings and vehicle transport — including airport transfers and chauffeur service — matched to your itinerary, budget and preferred city in Bangladesh.",
-      bn: "হ্যাঁ। আমরা আপনার ভ্রমণসূচি, বাজেট ও পছন্দের শহর অনুযায়ী হোটেল বুকিং ও যানবাহন পরিবহন — এয়ারপোর্ট ট্রান্সফার ও চালকসহ গাড়ি সেবাসহ — ব্যবস্থা করি।",
+      en: "We arrange hotel bookings and vehicle transport — including airport transfers and chauffeur service — matched to your itinerary, budget and preferred city in Bangladesh.",
+      bn: "আমরা আপনার ভ্রমণসূচি, বাজেট ও পছন্দের শহর অনুযায়ী হোটেল বুকিং ও যানবাহন পরিবহন — এয়ারপোর্ট ট্রান্সফার ও চালকসহ গাড়ি সেবাসহ — ব্যবস্থা করি।",
     },
   },
   {
     question: { en: "Can you assist with government-related requests?", bn: "আপনারা কি সরকারি সংক্রান্ত কাজে সহায়তা করতে পারেন?" },
     answer: {
-      en: "Yes. Our desk reviews each government-related case individually and coordinates documentation and administrative processes such as passport, visa, NID, land registry, and attestation support.",
-      bn: "হ্যাঁ। আমাদের ডেস্ক প্রতিটি সরকারি সংক্রান্ত কেস আলাদাভাবে পর্যালোচনা করে এবং পাসপোর্ট, ভিসা, এনআইডি, ভূমি নিবন্ধন ও সত্যায়ন সহায়তার মতো কাগজপত্র ও প্রশাসনিক প্রক্রিয়া সমন্বয় করে।",
+      en: "Our desk reviews each government-related case individually and coordinates documentation and administrative processes such as passport, visa, NID, land registry, and attestation support.",
+      bn: "আমাদের ডেস্ক প্রতিটি সরকারি সংক্রান্ত কেস আলাদাভাবে পর্যালোচনা করে এবং পাসপোর্ট, ভিসা, এনআইডি, ভূমি নিবন্ধন ও সত্যায়ন সহায়তার মতো কাগজপত্র ও প্রশাসনিক প্রক্রিয়া সমন্বয় করে।",
     },
   },
   {
     question: { en: "Do you provide manpower and security services?", bn: "আপনারা কি জনবল ও নিরাপত্তা সেবা প্রদান করেন?" },
     answer: {
-      en: "Yes. We supply licensed manpower and security personnel for businesses and organisations, drawing on our staffing and consultancy practice.",
-      bn: "হ্যাঁ। আমরা আমাদের স্টাফিং ও পরামর্শ প্র্যাকটিসের অভিজ্ঞতায় ব্যবসা ও প্রতিষ্ঠানের জন্য লাইসেন্সপ্রাপ্ত জনবল ও নিরাপত্তা কর্মী সরবরাহ করি।",
+      en: "We supply licensed manpower and security personnel for businesses and organisations, drawing on our staffing and consultancy practice.",
+      bn: "আমরা আমাদের স্টাফিং ও পরামর্শ প্র্যাকটিসের অভিজ্ঞতায় ব্যবসা ও প্রতিষ্ঠানের জন্য লাইসেন্সপ্রাপ্ত জনবল ও নিরাপত্তা কর্মী সরবরাহ করি।",
     },
   },
   {
     question: { en: "Can you help with Gulf employment opportunities?", bn: "আপনারা কি গালফে কর্মসংস্থানের সুযোগে সহায়তা করতে পারেন?" },
     answer: {
-      en: "Yes. Our International Careers track supports Gulf employment placement, including documentation and pre-departure assistance for candidates from Bangladesh.",
-      bn: "হ্যাঁ। আমাদের আন্তর্জাতিক ক্যারিয়ার ট্র্যাক বাংলাদেশ থেকে প্রার্থীদের জন্য কাগজপত্র ও প্রস্থান-পূর্ব সহায়তাসহ গালফ কর্মসংস্থান প্লেসমেন্টে সহায়তা করে।",
+      en: "Our International Careers track supports Gulf employment placement, including documentation and pre-departure assistance for candidates from Bangladesh.",
+      bn: "আমাদের আন্তর্জাতিক ক্যারিয়ার ট্র্যাক বাংলাদেশ থেকে প্রার্থীদের জন্য কাগজপত্র ও প্রস্থান-পূর্ব সহায়তাসহ গালফ কর্মসংস্থান প্লেসমেন্টে সহায়তা করে।",
     },
   },
   {
     question: { en: "Can you help students study in the Gulf?", bn: "আপনারা কি শিক্ষার্থীদের গালফে পড়াশোনায় সহায়তা করতে পারেন?" },
     answer: {
-      en: "Yes. We provide study-abroad guidance, university admission support, and visa/documentation assistance for students pursuing education opportunities in the Gulf and other regions.",
-      bn: "হ্যাঁ। আমরা গালফ ও অন্যান্য অঞ্চলে শিক্ষার সুযোগ খুঁজছেন এমন শিক্ষার্থীদের জন্য বিদেশে পড়াশোনার দিকনির্দেশনা, বিশ্ববিদ্যালয় ভর্তি সহায়তা এবং ভিসা/কাগজপত্র সহায়তা প্রদান করি।",
+      en: "We provide study-abroad guidance, university admission support, and visa/documentation assistance for students pursuing education opportunities in the Gulf and other regions.",
+      bn: "আমরা গালফ ও অন্যান্য অঞ্চলে শিক্ষার সুযোগ খুঁজছেন এমন শিক্ষার্থীদের জন্য বিদেশে পড়াশোনার দিকনির্দেশনা, বিশ্ববিদ্যালয় ভর্তি সহায়তা এবং ভিসা/কাগজপত্র সহায়তা প্রদান করি।",
     },
   },
   {
@@ -597,6 +597,11 @@ export const aboutPageT = {
     en: "The company is a proud Rajshahi University Readers' Forum affiliate, drawing on a licensed staffing and consultancy practice built over years of government and corporate contracts.",
     bn: "প্রতিষ্ঠানটি গর্বের সাথে রাজশাহী বিশ্ববিদ্যালয় রিডার্স ফোরামের সাথে যুক্ত, এবং বছরের পর বছর সরকারি ও কর্পোরেট চুক্তির অভিজ্ঞতার ওপর গড়ে ওঠা একটি লাইসেন্সপ্রাপ্ত স্টাফিং ও পরামর্শ প্র্যাকটিসের ওপর নির্ভর করে।",
   },
+  meaningH2: { en: "What “The Mediator” Means", bn: "“দ্য মিডিয়েটর” বলতে কী বোঝায়" },
+  meaningBody: {
+    en: "The name is the role. Instead of you dealing with five different offices — the airport, the hotel, the government desk, the staffing agency, the training academy — you deal with one team, and we deal with the rest.",
+    bn: "নামটিই আমাদের ভূমিকা বহন করে। আপনাকে পাঁচটি আলাদা অফিসের সাথে — এয়ারপোর্ট, হোটেল, সরকারি ডেস্ক, স্টাফিং এজেন্সি, প্রশিক্ষণ একাডেমি — নিজে যোগাযোগ করতে হয় না; আপনি একটি দলের সাথে কথা বলেন, বাকিটা আমরা সামলাই।",
+  },
   exploreH2: { en: "Explore Our Services", bn: "আমাদের সেবাসমূহ দেখুন" },
   exploreBody: {
     en: "Airport VIP, hotel & car, government requests, manpower & security, and courses & careers.",
@@ -604,6 +609,37 @@ export const aboutPageT = {
   },
   viewAllServices: { en: "View All Services", bn: "সকল সেবা দেখুন" },
 };
+
+export const aboutCredibility = [
+  {
+    heading: { en: "Registered & licensed", bn: "নিবন্ধিত ও লাইসেন্সপ্রাপ্ত" },
+    body: {
+      en: "A registered manpower, security and consultancy company — not an informal network of agents.",
+      bn: "একটি নিবন্ধিত জনবল, নিরাপত্তা ও পরামর্শক প্রতিষ্ঠান — কোনো অনানুষ্ঠানিক এজেন্ট নেটওয়ার্ক নয়।",
+    },
+  },
+  {
+    heading: { en: "Five service lines, one desk", bn: "পাঁচটি সেবা, একটি ডেস্ক" },
+    body: {
+      en: "Airport VIP, hotel & car, government liaison, manpower & security, and courses & careers — coordinated by the same team.",
+      bn: "এয়ারপোর্ট ভিআইপি, হোটেল ও গাড়ি, সরকারি সমন্বয়, জনবল ও নিরাপত্তা এবং কোর্স ও ক্যারিয়ার — একই দলের মাধ্যমে সমন্বিত।",
+    },
+  },
+  {
+    heading: { en: "Two offices", bn: "দুটি অফিস" },
+    body: {
+      en: "A corporate head office in Dhaka, Bangladesh, and a second office in Bankstown, Australia.",
+      bn: "ঢাকা, বাংলাদেশে একটি প্রধান কার্যালয় এবং ব্যাংকসটাউন, অস্ট্রেলিয়ায় একটি দ্বিতীয় অফিস।",
+    },
+  },
+  {
+    heading: { en: "Trained by an on-air presenter", bn: "একজন সম্প্রচারকারীর তত্ত্বাবধানে প্রশিক্ষণ" },
+    body: {
+      en: "Our Media & Public Speaking Academy is led by a working BTV and Radio Today news presenter, not a freelance coach.",
+      bn: "আমাদের মিডিয়া ও পাবলিক স্পিকিং একাডেমি পরিচালনা করেন একজন কর্মরত বিটিভি ও রেডিও টুডে সংবাদ উপস্থাপক, কোনো ফ্রিল্যান্স কোচ নন।",
+    },
+  },
+];
 
 export const contactPageT = {
   eyebrow: { en: "Contact", bn: "যোগাযোগ" },
@@ -658,15 +694,15 @@ export const servicePagesT: Record<
       { en: "Support for both arrivals and departures", bn: "আগমন ও প্রস্থান উভয়ের জন্য সহায়তা" },
     ],
     process: [
-      { title: { en: "Choose Airport VIP", bn: "এয়ারপোর্ট ভিআইপি বেছে নিন" }, body: { en: "Select the airport VIP service on our request form.", bn: "আমাদের অনুরোধ ফর্মে এয়ারপোর্ট ভিআইপি সেবা নির্বাচন করুন।" } },
-      { title: { en: "Share your flight details", bn: "আপনার ফ্লাইটের তথ্য দিন" }, body: { en: "Tell us your flight number, arrival date and airport.", bn: "আমাদের আপনার ফ্লাইট নম্বর, আগমনের তারিখ ও বিমানবন্দর জানান।" } },
-      { title: { en: "We coordinate on the ground", bn: "আমরা মাঠপর্যায়ে সমন্বয় করি" }, body: { en: "Our team arranges the meet & greet and transport in advance.", bn: "আমাদের দল আগে থেকেই মিট অ্যান্ড গ্রিট এবং পরিবহন ব্যবস্থা করে।" } },
-      { title: { en: "Arrive with support", bn: "সহায়তাসহ পৌঁছান" }, body: { en: "You're met at the gate and assisted through to your car.", bn: "গেটেই আপনার সাথে দেখা হবে এবং আপনার গাড়ি পর্যন্ত সহায়তা করা হবে।" } },
+      { title: { en: "Request your reception", bn: "আপনার রিসেপশনের অনুরোধ করুন" }, body: { en: "Select Airport VIP on our request form — takes under a minute.", bn: "আমাদের অনুরোধ ফর্মে এয়ারপোর্ট ভিআইপি নির্বাচন করুন — এক মিনিটেরও কম সময় লাগে।" } },
+      { title: { en: "Send us your flight details", bn: "আপনার ফ্লাইটের তথ্য পাঠান" }, body: { en: "Flight number, date, and which airport — Dhaka, Chattogram or Sylhet.", bn: "ফ্লাইট নম্বর, তারিখ এবং কোন বিমানবন্দর — ঢাকা, চট্টগ্রাম বা সিলেট।" } },
+      { title: { en: "We arrange it on the ground", bn: "আমরা মাঠপর্যায়ে ব্যবস্থা করি" }, body: { en: "Meet & greet and transport are set up before you land.", bn: "আপনি অবতরণের আগেই মিট অ্যান্ড গ্রিট এবং পরিবহন প্রস্তুত থাকে।" } },
+      { title: { en: "Walk straight to your car", bn: "সরাসরি আপনার গাড়িতে যান" }, body: { en: "An officer meets you at the gate and walks you through to a car already waiting.", bn: "একজন কর্মকর্তা গেটেই আপনার সাথে দেখা করবেন এবং অপেক্ষারত গাড়ি পর্যন্ত সঙ্গ দেবেন।" } },
     ],
     faqs: [
       { question: { en: "Which airports do you cover?", bn: "আপনারা কোন কোন বিমানবন্দর কভার করেন?" }, answer: { en: "We cover Hazrat Shahjalal International (Dhaka), Shah Amanat International (Chattogram) and Osmani International (Sylhet).", bn: "আমরা হযরত শাহজালাল আন্তর্জাতিক (ঢাকা), শাহ আমানত আন্তর্জাতিক (চট্টগ্রাম) এবং ওসমানী আন্তর্জাতিক (সিলেট) কভার করি।" } },
-      { question: { en: "Can you arrange airport assistance for elderly travellers?", bn: "প্রবীণ ভ্রমণকারীদের জন্য কি এয়ারপোর্ট সহায়তার ব্যবস্থা করা যায়?" }, answer: { en: "Yes — let us know in your request notes and we'll arrange extra support at the airport.", bn: "হ্যাঁ — আপনার অনুরোধের নোটে জানালে আমরা বিমানবন্দরে অতিরিক্ত সহায়তার ব্যবস্থা করব।" } },
-      { question: { en: "Do you also handle departures?", bn: "আপনারা কি প্রস্থানের ক্ষেত্রেও সহায়তা করেন?" }, answer: { en: "Yes. Airport VIP covers both arrival and departure assistance.", bn: "হ্যাঁ। এয়ারপোর্ট ভিআইপি সেবায় আগমন ও প্রস্থান উভয়ের সহায়তা অন্তর্ভুক্ত।" } },
+      { question: { en: "Can you arrange airport assistance for elderly travellers?", bn: "প্রবীণ ভ্রমণকারীদের জন্য কি এয়ারপোর্ট সহায়তার ব্যবস্থা করা যায়?" }, answer: { en: "Let us know in your request notes and we'll arrange extra support at the airport.", bn: "আপনার অনুরোধের নোটে জানালে আমরা বিমানবন্দরে অতিরিক্ত সহায়তার ব্যবস্থা করব।" } },
+      { question: { en: "Do you also handle departures?", bn: "আপনারা কি প্রস্থানের ক্ষেত্রেও সহায়তা করেন?" }, answer: { en: "Airport VIP covers both arrival and departure assistance.", bn: "এয়ারপোর্ট ভিআইপি সেবায় আগমন ও প্রস্থান উভয়ের সহায়তা অন্তর্ভুক্ত।" } },
       { question: { en: "How much notice do you need?", bn: "কতদিন আগে জানাতে হবে?" }, answer: { en: "Submit your request as early as possible; for most flights we can confirm arrangements within 24–48 hours.", bn: "যত দ্রুত সম্ভব আপনার অনুরোধ জমা দিন; বেশিরভাগ ফ্লাইটের ক্ষেত্রে আমরা ২৪-৪৮ ঘণ্টার মধ্যে ব্যবস্থা নিশ্চিত করতে পারি।" } },
     ],
     cta: { en: "Request Airport VIP", bn: "এয়ারপোর্ট ভিআইপির জন্য অনুরোধ করুন" },
@@ -675,8 +711,8 @@ export const servicePagesT: Record<
   "hotel-car": {
     h1: { en: "Hotel & Car Booking Across Bangladesh", bn: "সমগ্র বাংলাদেশে হোটেল ও গাড়ি বুকিং" },
     intro: {
-      en: "We shortlist and reserve accommodation and transport against your schedule and budget — not a generic booking-site listing, but a fit checked by someone who knows the ground in Dhaka, Rajshahi and beyond.",
-      bn: "আমরা আপনার সময়সূচি ও বাজেট অনুযায়ী থাকার ব্যবস্থা ও পরিবহন বাছাই ও সংরক্ষণ করি — কোনো সাধারণ বুকিং-সাইট তালিকা নয়, বরং ঢাকা, রাজশাহী ও তার বাইরের মাঠ পরিস্থিতি জানা একজনের যাচাই করা উপযুক্ত ব্যবস্থা।",
+      en: "We shortlist and personally check accommodation and transport against your schedule and budget, drawing on first-hand knowledge of hotels and drivers in Dhaka, Rajshahi and beyond.",
+      bn: "আমরা আপনার সময়সূচি ও বাজেট অনুযায়ী থাকার ব্যবস্থা ও পরিবহন বাছাই করি এবং ব্যক্তিগতভাবে যাচাই করি, ঢাকা, রাজশাহী ও তার বাইরের হোটেল ও চালকদের সরাসরি অভিজ্ঞতার ভিত্তিতে।",
     },
     whoFor: [
       { en: "Business travellers who need a reliable hotel and vehicle on short notice", bn: "স্বল্প সময়ে নির্ভরযোগ্য হোটেল ও গাড়ি প্রয়োজন এমন ব্যবসায়িক ভ্রমণকারী" },
@@ -692,15 +728,15 @@ export const servicePagesT: Record<
       { en: "One invoice, one point of contact", bn: "একটি চালান, একটি যোগাযোগ কেন্দ্র" },
     ],
     process: [
-      { title: { en: "Choose Hotel & Car", bn: "হোটেল ও গাড়ি বেছে নিন" }, body: { en: "Select the hotel & car service on our request form.", bn: "আমাদের অনুরোধ ফর্মে হোটেল ও গাড়ি সেবা নির্বাচন করুন।" } },
-      { title: { en: "Tell us your itinerary", bn: "আপনার ভ্রমণসূচি জানান" }, body: { en: "Share your city, dates and vehicle preference.", bn: "আপনার শহর, তারিখ ও গাড়ির পছন্দ জানান।" } },
-      { title: { en: "We coordinate the booking", bn: "আমরা বুকিং সমন্বয় করি" }, body: { en: "Our team confirms hotel and transport arrangements.", bn: "আমাদের দল হোটেল ও পরিবহন ব্যবস্থা নিশ্চিত করে।" } },
-      { title: { en: "Travel with support", bn: "সহায়তাসহ ভ্রমণ করুন" }, body: { en: "Your car and accommodation are ready when you arrive.", bn: "আপনি পৌঁছানোর সময় আপনার গাড়ি ও থাকার ব্যবস্থা প্রস্তুত থাকবে।" } },
+      { title: { en: "Tell us your trip", bn: "আপনার ভ্রমণ জানান" }, body: { en: "City, dates, and the kind of vehicle you need.", bn: "শহর, তারিখ এবং আপনার প্রয়োজনীয় গাড়ির ধরন।" } },
+      { title: { en: "We shortlist and confirm", bn: "আমরা বাছাই করে নিশ্চিত করি" }, body: { en: "Vetted hotel options and a matched vehicle, confirmed against your budget.", bn: "যাচাইকৃত হোটেল বিকল্প ও উপযুক্ত গাড়ি, আপনার বাজেট অনুযায়ী নিশ্চিত করা হয়।" } },
+      { title: { en: "One invoice, one contact", bn: "একটি চালান, একটি যোগাযোগ" }, body: { en: "Hotel and transport billed together, one point of contact throughout.", bn: "হোটেল ও পরিবহন একসাথে বিল করা হয়, পুরো সময় একটি যোগাযোগ কেন্দ্র।" } },
+      { title: { en: "Everything's ready on arrival", bn: "পৌঁছানোর সময় সবকিছু প্রস্তুত" }, body: { en: "Your room and driver are confirmed before you land.", bn: "আপনি অবতরণের আগেই আপনার রুম ও চালক নিশ্চিত থাকবে।" } },
     ],
     faqs: [
       { question: { en: "Which cities do you cover for hotel and car bookings?", bn: "হোটেল ও গাড়ি বুকিংয়ের জন্য আপনারা কোন কোন শহর কভার করেন?" }, answer: { en: "Dhaka, Rajshahi and other major Bangladesh cities on request — tell us your destination.", bn: "ঢাকা, রাজশাহী ও অনুরোধ অনুযায়ী বাংলাদেশের অন্যান্য প্রধান শহর — আমাদের আপনার গন্তব্য জানান।" } },
-      { question: { en: "Can I request a chauffeur-driven car only, without a hotel?", bn: "আমি কি শুধু চালকসহ গাড়ি চাইতে পারি, হোটেল ছাড়া?" }, answer: { en: "Yes — hotel and car can be booked separately or together, whichever you need.", bn: "হ্যাঁ — হোটেল ও গাড়ি আলাদা বা একসাথে বুক করা যায়, যেভাবে আপনার প্রয়োজন।" } },
-      { question: { en: "Do you handle airport transfers?", bn: "আপনারা কি এয়ারপোর্ট ট্রান্সফার পরিচালনা করেন?" }, answer: { en: "Yes, airport transfers are part of our standard hotel & car service.", bn: "হ্যাঁ, এয়ারপোর্ট ট্রান্সফার আমাদের স্ট্যান্ডার্ড হোটেল ও গাড়ি সেবার অংশ।" } },
+      { question: { en: "Can I request a chauffeur-driven car only, without a hotel?", bn: "আমি কি শুধু চালকসহ গাড়ি চাইতে পারি, হোটেল ছাড়া?" }, answer: { en: "Hotel and car can be booked separately or together, whichever you need.", bn: "হোটেল ও গাড়ি আলাদা বা একসাথে বুক করা যায়, যেভাবে আপনার প্রয়োজন।" } },
+      { question: { en: "Do you handle airport transfers?", bn: "আপনারা কি এয়ারপোর্ট ট্রান্সফার পরিচালনা করেন?" }, answer: { en: "Airport transfers are part of our standard hotel & car service.", bn: "এয়ারপোর্ট ট্রান্সফার আমাদের স্ট্যান্ডার্ড হোটেল ও গাড়ি সেবার অংশ।" } },
     ],
     cta: { en: "Request Hotel & Car", bn: "হোটেল ও গাড়ির জন্য অনুরোধ করুন" },
   },
@@ -728,15 +764,15 @@ export const servicePagesT: Record<
       { en: "Direct phone briefing before any work begins", bn: "কাজ শুরুর আগে সরাসরি ফোনে ব্রিফিং" },
     ],
     process: [
-      { title: { en: "Choose Government Request", bn: "সরকারি কাজের সহায়তা বেছে নিন" }, body: { en: "Select the government-request service on our form.", bn: "আমাদের ফর্মে সরকারি কাজের সহায়তা সেবা নির্বাচন করুন।" } },
-      { title: { en: "Describe your case", bn: "আপনার বিষয়টি বর্ণনা করুন" }, body: { en: "Tell us which service you need and the details of your case.", bn: "আমাদের জানান কোন সেবা প্রয়োজন এবং আপনার বিষয়ের বিস্তারিত।" } },
-      { title: { en: "We review & confirm scope", bn: "আমরা পর্যালোচনা করে নিশ্চিত করি" }, body: { en: "Our desk reviews your case and briefs you by phone before work begins.", bn: "আমাদের ডেস্ক আপনার বিষয়টি পর্যালোচনা করে কাজ শুরুর আগে ফোনে আপনাকে জানায়।" } },
-      { title: { en: "We coordinate the process", bn: "আমরা প্রক্রিয়াটি সমন্বয় করি" }, body: { en: "Our team carries the case through the relevant government office.", bn: "আমাদের দল সংশ্লিষ্ট সরকারি অফিসের মাধ্যমে বিষয়টি সম্পন্ন করে।" } },
+      { title: { en: "Tell us the case", bn: "আপনার বিষয়টি জানান" }, body: { en: "Passport, NID, land registry — whatever the matter, describe it on our form.", bn: "পাসপোর্ট, এনআইডি, ভূমি নিবন্ধন — যে বিষয়ই হোক, আমাদের ফর্মে বর্ণনা করুন।" } },
+      { title: { en: "We review it personally", bn: "আমরা ব্যক্তিগতভাবে পর্যালোচনা করি" }, body: { en: "Our desk reviews your case and briefs you by phone before any work begins.", bn: "আমাদের ডেস্ক আপনার বিষয়টি পর্যালোচনা করে এবং কাজ শুরুর আগে ফোনে আপনাকে জানায়।" } },
+      { title: { en: "We carry it through the office", bn: "আমরা অফিসের মাধ্যমে সম্পন্ন করি" }, body: { en: "Our team handles the paperwork and the queue at the relevant government office.", bn: "আমাদের দল সংশ্লিষ্ট সরকারি অফিসে কাগজপত্র ও সারিবদ্ধ প্রক্রিয়া সামলায়।" } },
+      { title: { en: "You get a direct update", bn: "আপনি সরাসরি আপডেট পাবেন" }, body: { en: "We confirm once it's done — no chasing required.", bn: "কাজ শেষ হলে আমরা জানাই — আপনাকে পিছনে ছুটতে হয় না।" } },
     ],
     faqs: [
       { question: { en: "What government services can you help with?", bn: "আপনারা কোন কোন সরকারি সেবায় সহায়তা করতে পারেন?" }, answer: { en: "Passport applications, visa extensions/NOCs, NID and birth certificate corrections, land registry and mutation, document attestation, and trade licence or business registration.", bn: "পাসপোর্ট আবেদন, ভিসা মেয়াদ বৃদ্ধি/এনওসি, এনআইডি ও জন্ম সনদ সংশোধন, ভূমি নিবন্ধন ও মিউটেশন, কাগজপত্র সত্যায়ন এবং ট্রেড লাইসেন্স বা ব্যবসা নিবন্ধন।" } },
-      { question: { en: "Will someone review my case before starting work?", bn: "কাজ শুরুর আগে কি কেউ আমার বিষয়টি পর্যালোচনা করবে?" }, answer: { en: "Yes — our desk reviews every government request individually and confirms scope with you by phone before any work begins.", bn: "হ্যাঁ — আমাদের ডেস্ক প্রতিটি সরকারি অনুরোধ আলাদাভাবে পর্যালোচনা করে এবং কাজ শুরুর আগে ফোনে আপনার সাথে বিষয়টি নিশ্চিত করে।" } },
-      { question: { en: "Can you help if I live outside Bangladesh?", bn: "আমি বাংলাদেশের বাইরে থাকলে কি আপনারা সহায়তা করতে পারবেন?" }, answer: { en: "Yes, we regularly assist overseas Bangladeshis who cannot attend government offices in person.", bn: "হ্যাঁ, আমরা নিয়মিতভাবে প্রবাসী বাংলাদেশিদের সহায়তা করি যারা সরাসরি সরকারি অফিসে যেতে পারেন না।" } },
+      { question: { en: "Will someone review my case before starting work?", bn: "কাজ শুরুর আগে কি কেউ আমার বিষয়টি পর্যালোচনা করবে?" }, answer: { en: "Our desk reviews every government request individually and confirms scope with you by phone before any work begins.", bn: "আমাদের ডেস্ক প্রতিটি সরকারি অনুরোধ আলাদাভাবে পর্যালোচনা করে এবং কাজ শুরুর আগে ফোনে আপনার সাথে বিষয়টি নিশ্চিত করে।" } },
+      { question: { en: "Can you help if I live outside Bangladesh?", bn: "আমি বাংলাদেশের বাইরে থাকলে কি আপনারা সহায়তা করতে পারবেন?" }, answer: { en: "We regularly assist overseas Bangladeshis who cannot attend government offices in person.", bn: "আমরা নিয়মিতভাবে প্রবাসী বাংলাদেশিদের সহায়তা করি যারা সরাসরি সরকারি অফিসে যেতে পারেন না।" } },
     ],
     cta: { en: "Request Government Assistance", bn: "সরকারি সহায়তার জন্য অনুরোধ করুন" },
   },
@@ -760,14 +796,14 @@ export const servicePagesT: Record<
       { en: "Gulf & overseas placement support for workforce needs", bn: "কর্মীবাহিনীর প্রয়োজনে গালফ ও প্রবাসী প্লেসমেন্ট সহায়তা" },
     ],
     process: [
-      { title: { en: "Choose Manpower & Security", bn: "জনবল ও নিরাপত্তা বেছে নিন" }, body: { en: "Tell us about your staffing or security requirement.", bn: "আপনার স্টাফিং বা নিরাপত্তার প্রয়োজন আমাদের জানান।" } },
-      { title: { en: "Share your requirement", bn: "আপনার প্রয়োজন জানান" }, body: { en: "Describe the roles, numbers and location needed.", bn: "প্রয়োজনীয় পদ, সংখ্যা ও স্থান বর্ণনা করুন।" } },
-      { title: { en: "We coordinate placement", bn: "আমরা প্লেসমেন্ট সমন্বয় করি" }, body: { en: "Our team matches and coordinates suitable personnel.", bn: "আমাদের দল উপযুক্ত কর্মী মিলিয়ে সমন্বয় করে।" } },
-      { title: { en: "Ongoing support", bn: "চলমান সহায়তা" }, body: { en: "We remain your point of contact for the engagement.", bn: "সম্পূর্ণ সময়ে আমরা আপনার যোগাযোগ কেন্দ্র থাকি।" } },
+      { title: { en: "Describe the role", bn: "পদের বিবরণ দিন" }, body: { en: "Roles, headcount and location — tell us what needs staffing or securing.", bn: "পদ, জনসংখ্যা ও অবস্থান — কী স্টাফিং বা নিরাপত্তা প্রয়োজন তা জানান।" } },
+      { title: { en: "We match and vet", bn: "আমরা মিলিয়ে যাচাই করি" }, body: { en: "Candidates are matched against your requirement and vetted before you see a name.", bn: "প্রার্থীদের আপনার প্রয়োজন অনুযায়ী মিলিয়ে যাচাই করা হয়, নাম জানানোর আগেই।" } },
+      { title: { en: "Contract and deployment", bn: "চুক্তি ও নিয়োগ" }, body: { en: "Documentation and compliance handled, personnel deployed on the agreed date.", bn: "কাগজপত্র ও কমপ্লায়েন্স সম্পন্ন করে নির্ধারিত তারিখে কর্মী নিয়োগ করা হয়।" } },
+      { title: { en: "One contact, ongoing", bn: "একটি যোগাযোগ, চলমান" }, body: { en: "We stay your point of contact for the length of the engagement.", bn: "পুরো কাজের সময়কালে আমরা আপনার যোগাযোগ কেন্দ্র থাকি।" } },
     ],
     faqs: [
-      { question: { en: "Do you provide security personnel for events or offices?", bn: "আপনারা কি ইভেন্ট বা অফিসের জন্য নিরাপত্তা কর্মী প্রদান করেন?" }, answer: { en: "Yes, we supply trained security personnel for both short-term and ongoing engagements.", bn: "হ্যাঁ, আমরা স্বল্পমেয়াদি ও চলমান উভয় কাজের জন্য প্রশিক্ষিত নিরাপত্তা কর্মী সরবরাহ করি।" } },
-      { question: { en: "Can you supply outsourced staff for a business?", bn: "আপনারা কি একটি ব্যবসার জন্য আউটসোর্স করা কর্মী সরবরাহ করতে পারেন?" }, answer: { en: "Yes, we support corporate and institutional staffing contracts across Bangladesh.", bn: "হ্যাঁ, আমরা সারা বাংলাদেশে কর্পোরেট ও প্রাতিষ্ঠানিক স্টাফিং চুক্তিতে সহায়তা করি।" } },
+      { question: { en: "Do you provide security personnel for events or offices?", bn: "আপনারা কি ইভেন্ট বা অফিসের জন্য নিরাপত্তা কর্মী প্রদান করেন?" }, answer: { en: "We supply trained security personnel for both short-term and ongoing engagements.", bn: "আমরা স্বল্পমেয়াদি ও চলমান উভয় কাজের জন্য প্রশিক্ষিত নিরাপত্তা কর্মী সরবরাহ করি।" } },
+      { question: { en: "Can you supply outsourced staff for a business?", bn: "আপনারা কি একটি ব্যবসার জন্য আউটসোর্স করা কর্মী সরবরাহ করতে পারেন?" }, answer: { en: "We support corporate and institutional staffing contracts across Bangladesh.", bn: "আমরা সারা বাংলাদেশে কর্পোরেট ও প্রাতিষ্ঠানিক স্টাফিং চুক্তিতে সহায়তা করি।" } },
     ],
     cta: { en: "Request Manpower & Security", bn: "জনবল ও নিরাপত্তার জন্য অনুরোধ করুন" },
   },
@@ -791,10 +827,10 @@ export const servicePagesT: Record<
       { en: "Pre-departure assistance for students and workers", bn: "শিক্ষার্থী ও কর্মীদের জন্য প্রস্থান-পূর্ব সহায়তা" },
     ],
     process: [
-      { title: { en: "Choose your track", bn: "আপনার ট্র্যাক বেছে নিন" }, body: { en: "Media & Public Speaking, or International Careers.", bn: "মিডিয়া ও পাবলিক স্পিকিং, অথবা আন্তর্জাতিক ক্যারিয়ার।" } },
-      { title: { en: "Submit your request", bn: "আপনার অনুরোধ জমা দিন" }, body: { en: "Tell us your background and what you're aiming for.", bn: "আপনার পটভূমি ও লক্ষ্য আমাদের জানান।" } },
-      { title: { en: "We coordinate the right support", bn: "আমরা উপযুক্ত সহায়তা সমন্বয় করি" }, body: { en: "Our team matches you with the right programme or placement path.", bn: "আমাদের দল আপনাকে উপযুক্ত প্রোগ্রাম বা প্লেসমেন্ট পথের সাথে মিলিয়ে দেয়।" } },
-      { title: { en: "Get assistance start to finish", bn: "শুরু থেকে শেষ পর্যন্ত সহায়তা পান" }, body: { en: "From enrolment or placement through to documentation.", bn: "ভর্তি বা প্লেসমেন্ট থেকে শুরু করে কাগজপত্র পর্যন্ত।" } },
+      { title: { en: "Pick a track", bn: "একটি ট্র্যাক বেছে নিন" }, body: { en: "Media & Public Speaking, or International Careers — ask if you're not sure which fits.", bn: "মিডিয়া ও পাবলিক স্পিকিং, অথবা আন্তর্জাতিক ক্যারিয়ার — নিশ্চিত না হলে আমাদের জিজ্ঞাসা করুন।" } },
+      { title: { en: "Tell us where you're starting from", bn: "আপনার বর্তমান অবস্থান জানান" }, body: { en: "Your background, education or occupation, and what you're aiming for.", bn: "আপনার পটভূমি, শিক্ষা বা পেশা এবং লক্ষ্য জানান।" } },
+      { title: { en: "We match you to a path", bn: "আমরা উপযুক্ত পথ নির্ধারণ করি" }, body: { en: "The right programme or placement route, confirmed with you directly.", bn: "সঠিক প্রোগ্রাম বা প্লেসমেন্ট পথ, সরাসরি আপনার সাথে নিশ্চিত করে।" } },
+      { title: { en: "Support through to the finish", bn: "শেষ পর্যন্ত সহায়তা" }, body: { en: "Enrolment or placement, then documentation — we stay involved throughout.", bn: "ভর্তি বা প্লেসমেন্ট, এরপর কাগজপত্র — পুরো সময় আমরা সম্পৃক্ত থাকি।" } },
     ],
     faqs: [
       { question: { en: "What is the Media & Public Speaking Academy?", bn: "মিডিয়া ও পাবলিক স্পিকিং একাডেমি কী?" }, answer: { en: "Training designed to improve public speaking, communication, presentation skills, media skills and professional confidence.", bn: "পাবলিক স্পিকিং, যোগাযোগ, উপস্থাপনা দক্ষতা, মিডিয়া দক্ষতা ও পেশাদার আত্মবিশ্বাস উন্নত করতে ডিজাইন করা প্রশিক্ষণ।" } },
@@ -823,14 +859,14 @@ export const servicePagesT: Record<
       { en: "Professional confidence and soft-skills development", bn: "পেশাদার আত্মবিশ্বাস ও সফট-স্কিলস উন্নয়ন" },
     ],
     process: [
-      { title: { en: "Choose Media & Public Speaking", bn: "মিডিয়া ও পাবলিক স্পিকিং বেছে নিন" }, body: { en: "Select this programme on our request form.", bn: "আমাদের অনুরোধ ফর্মে এই প্রোগ্রামটি নির্বাচন করুন।" } },
-      { title: { en: "Tell us your background", bn: "আপনার পটভূমি জানান" }, body: { en: "Share your current education or occupation and goals.", bn: "আপনার বর্তমান শিক্ষা বা পেশা এবং লক্ষ্য জানান।" } },
-      { title: { en: "We confirm your batch", bn: "আমরা আপনার ব্যাচ নিশ্চিত করি" }, body: { en: "Offline (Bangladesh campus) or online (Zoom) batches available.", bn: "অফলাইন (বাংলাদেশ ক্যাম্পাস) বা অনলাইন (জুম) ব্যাচ উপলব্ধ।" } },
-      { title: { en: "Begin training", bn: "প্রশিক্ষণ শুরু করুন" }, body: { en: "Start the academy with ongoing support from our team.", bn: "আমাদের দলের চলমান সহায়তা নিয়ে একাডেমি শুরু করুন।" } },
+      { title: { en: "Tell us your goals", bn: "আপনার লক্ষ্য জানান" }, body: { en: "Current education or occupation, and what you want to get out of the academy.", bn: "বর্তমান শিক্ষা বা পেশা, এবং একাডেমি থেকে আপনি কী অর্জন করতে চান।" } },
+      { title: { en: "Pick your format", bn: "আপনার ফরম্যাট বেছে নিন" }, body: { en: "An offline Bangladesh-campus batch, or an online Zoom batch — whichever fits.", bn: "অফলাইন বাংলাদেশ-ক্যাম্পাস ব্যাচ, অথবা অনলাইন জুম ব্যাচ — যেটি উপযুক্ত।" } },
+      { title: { en: "We confirm your batch", bn: "আমরা আপনার ব্যাচ নিশ্চিত করি" }, body: { en: "Dates and format locked in, directly with our team.", bn: "তারিখ ও ফরম্যাট আমাদের দলের সাথে সরাসরি চূড়ান্ত করা হয়।" } },
+      { title: { en: "Train with a working presenter", bn: "একজন কর্মরত উপস্থাপকের সাথে প্রশিক্ষণ নিন" }, body: { en: "Sessions led by a working national news presenter, from day one.", bn: "প্রথম দিন থেকেই একজন কর্মরত জাতীয় সংবাদ উপস্থাপকের নেতৃত্বে সেশন।" } },
     ],
     faqs: [
       { question: { en: "Who teaches the Media & Public Speaking Academy?", bn: "মিডিয়া ও পাবলিক স্পিকিং একাডেমি কে পড়ান?" }, answer: { en: "Our lead trainer is a working national news presenter with on-air experience.", bn: "আমাদের প্রধান প্রশিক্ষক সরাসরি সম্প্রচারের অভিজ্ঞতাসম্পন্ন একজন কর্মরত জাতীয় সংবাদ উপস্থাপক।" } },
-      { question: { en: "Is the course offered online?", bn: "কোর্সটি কি অনলাইনে দেওয়া হয়?" }, answer: { en: "Yes, both an offline Bangladesh-campus batch and an online Zoom batch are available.", bn: "হ্যাঁ, অফলাইন বাংলাদেশ-ক্যাম্পাস ব্যাচ এবং অনলাইন জুম ব্যাচ উভয়ই উপলব্ধ।" } },
+      { question: { en: "Is the course offered online?", bn: "কোর্সটি কি অনলাইনে দেওয়া হয়?" }, answer: { en: "Both an offline Bangladesh-campus batch and an online Zoom batch are available.", bn: "অফলাইন বাংলাদেশ-ক্যাম্পাস ব্যাচ এবং অনলাইন জুম ব্যাচ উভয়ই উপলব্ধ।" } },
     ],
     cta: { en: "Explore the Academy", bn: "একাডেমি দেখুন" },
   },
@@ -858,14 +894,14 @@ export const servicePagesT: Record<
       { en: "Pre-departure assistance", bn: "প্রস্থান-পূর্ব সহায়তা" },
     ],
     process: [
-      { title: { en: "Choose International Careers", bn: "আন্তর্জাতিক ক্যারিয়ার বেছে নিন" }, body: { en: "Select this programme on our request form.", bn: "আমাদের অনুরোধ ফর্মে এই প্রোগ্রামটি নির্বাচন করুন।" } },
-      { title: { en: "Share your goals", bn: "আপনার লক্ষ্য জানান" }, body: { en: "Study or work, target country, and your current background.", bn: "পড়াশোনা বা কাজ, লক্ষ্য দেশ এবং আপনার বর্তমান পটভূমি।" } },
-      { title: { en: "We coordinate placement", bn: "আমরা প্লেসমেন্ট সমন্বয় করি" }, body: { en: "Our team matches you with a suitable university or employment path.", bn: "আমাদের দল আপনাকে উপযুক্ত বিশ্ববিদ্যালয় বা কর্মসংস্থানের পথের সাথে মিলিয়ে দেয়।" } },
-      { title: { en: "Pre-departure support", bn: "প্রস্থান-পূর্ব সহায়তা" }, body: { en: "Documentation and visa assistance ahead of travel.", bn: "ভ্রমণের আগে কাগজপত্র ও ভিসা সহায়তা।" } },
+      { title: { en: "Tell us study or work", bn: "পড়াশোনা নাকি কাজ জানান" }, body: { en: "Target country and your current background — student or jobseeker.", bn: "লক্ষ্য দেশ এবং আপনার বর্তমান পটভূমি — শিক্ষার্থী নাকি চাকরিপ্রার্থী।" } },
+      { title: { en: "We verify the placement", bn: "আমরা প্লেসমেন্ট যাচাই করি" }, body: { en: "University admission or employer match, checked before anything is confirmed to you.", bn: "বিশ্ববিদ্যালয় ভর্তি বা নিয়োগকর্তার মিল, আপনাকে নিশ্চিত করার আগেই যাচাই করা হয়।" } },
+      { title: { en: "Visa and documentation", bn: "ভিসা ও কাগজপত্র" }, body: { en: "Paperwork handled ahead of travel, not left for the last week.", bn: "ভ্রমণের আগেই কাগজপত্র সম্পন্ন করা হয়, শেষ সপ্তাহের জন্য ফেলে রাখা হয় না।" } },
+      { title: { en: "Pre-departure briefing", bn: "প্রস্থান-পূর্ব ব্রিফিং" }, body: { en: "A final check-in before you fly, so nothing is a surprise on arrival.", bn: "উড়ালের আগে একটি চূড়ান্ত পর্যালোচনা, যাতে পৌঁছানোর পর কিছু অপ্রত্যাশিত না হয়।" } },
     ],
     faqs: [
       { question: { en: "Which Gulf countries do you support placement for?", bn: "আপনারা কোন কোন গালফ দেশে প্লেসমেন্ট সহায়তা দেন?" }, answer: { en: "The UAE, Qatar, Saudi Arabia, and wider Gulf markets.", bn: "ইউএই, কাতার, সৌদি আরব এবং বিস্তৃত গালফ বাজার।" } },
-      { question: { en: "Do you help with visa and documentation?", bn: "আপনারা কি ভিসা ও কাগজপত্রে সহায়তা করেন?" }, answer: { en: "Yes, visa and documentation support plus pre-departure assistance are included.", bn: "হ্যাঁ, ভিসা ও কাগজপত্র সহায়তা এবং প্রস্থান-পূর্ব সহায়তা অন্তর্ভুক্ত।" } },
+      { question: { en: "Do you help with visa and documentation?", bn: "আপনারা কি ভিসা ও কাগজপত্রে সহায়তা করেন?" }, answer: { en: "Visa and documentation support plus pre-departure assistance are included.", bn: "ভিসা ও কাগজপত্র সহায়তা এবং প্রস্থান-পূর্ব সহায়তা অন্তর্ভুক্ত।" } },
     ],
     cta: { en: "Explore International Careers", bn: "আন্তর্জাতিক ক্যারিয়ার দেখুন" },
   },
