@@ -55,6 +55,7 @@ function mapRow(row: Record<string, unknown>): ServiceRequest {
     serviceLabel: (row.service_label as string | null) ?? null,
     paymentMethod: (row.payment_method as string | null) ?? null,
     decisionNote: (row.decision_note as string | null) ?? null,
+    internalNotes: (row.internal_notes as string | null) ?? null,
     notifiedAt: (row.notified_at as string | null) ?? null,
     completedAt: (row.completed_at as string | null) ?? null,
     details: (row.details as Record<string, unknown>) ?? {},
@@ -174,6 +175,14 @@ export async function staffReject(_token: string, id: number, note?: string): Pr
 
 export async function staffComplete(_token: string, id: number): Promise<ServiceRequest> {
   const { data, error } = await supabase.rpc("staff_complete_request", { p_id: id });
+  if (error) throw new ApiError(error.message);
+  return mapRow(data);
+}
+
+// Private staff-only note on a request — never shown to the customer,
+// unlike decisionNote which is included in their rejection message.
+export async function staffSetInternalNote(id: number, note: string): Promise<ServiceRequest> {
+  const { data, error } = await supabase.rpc("staff_set_internal_note", { p_id: id, p_note: note });
   if (error) throw new ApiError(error.message);
   return mapRow(data);
 }

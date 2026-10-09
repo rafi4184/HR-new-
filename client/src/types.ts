@@ -14,6 +14,7 @@ export interface ServiceRequest {
   serviceLabel: string | null;
   paymentMethod: string | null;
   decisionNote: string | null;
+  internalNotes: string | null;
   notifiedAt: string | null;
   completedAt: string | null;
   details: Record<string, unknown>;

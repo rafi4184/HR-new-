@@ -1,4 +1,4 @@
-import { useRef, useState } from "react";
+import { useRef, useState, Suspense, lazy } from "react";
 import { Routes, Route, useLocation } from "react-router-dom";
 import { AnimatePresence, motion } from "framer-motion";
 import { Phone, MessageCircle } from "lucide-react";
@@ -9,15 +9,19 @@ import Toast from "./components/Toast";
 import ScrollToHash from "./components/ScrollToHash";
 import ScrollProgress from "./components/ScrollProgress";
 import HomePage from "./pages/HomePage";
-import ServicePage from "./pages/ServicePage";
-import AboutPage from "./pages/AboutPage";
-import EventsPage from "./pages/EventsPage";
-import ContactPage from "./pages/ContactPage";
-import PrivacyPage from "./pages/PrivacyPage";
-import TermsPage from "./pages/TermsPage";
-import StaffPage from "./pages/StaffPage";
-import NotFoundPage from "./pages/NotFoundPage";
 import { SERVICE_PAGE_LIST } from "./data/servicePages";
+
+// Code-split every route except the homepage — most visitors land on "/" and
+// never touch, say, the staff dashboard, so there's no reason to ship that
+// code (or any other route's) in the bundle everyone downloads first.
+const ServicePage = lazy(() => import("./pages/ServicePage"));
+const AboutPage = lazy(() => import("./pages/AboutPage"));
+const EventsPage = lazy(() => import("./pages/EventsPage"));
+const ContactPage = lazy(() => import("./pages/ContactPage"));
+const PrivacyPage = lazy(() => import("./pages/PrivacyPage"));
+const TermsPage = lazy(() => import("./pages/TermsPage"));
+const StaffPage = lazy(() => import("./pages/StaffPage"));
+const NotFoundPage = lazy(() => import("./pages/NotFoundPage"));
 
 export default function App() {
   const [toast, setToast] = useState<string | null>(null);
@@ -44,19 +48,21 @@ export default function App() {
           exit={{ opacity: 0, y: -10 }}
           transition={{ duration: 0.25, ease: [0.2, 0.8, 0.2, 1] }}
         >
-          <Routes location={location}>
-            <Route path="/" element={<HomePage onToast={showToast} />} />
-            {SERVICE_PAGE_LIST.map((data) => (
-              <Route key={data.id} path={data.path} element={<ServicePage data={data} />} />
-            ))}
-            <Route path="/about-us" element={<AboutPage />} />
-            <Route path="/events" element={<EventsPage onToast={showToast} />} />
-            <Route path="/contact" element={<ContactPage />} />
-            <Route path="/privacy-policy" element={<PrivacyPage />} />
-            <Route path="/terms" element={<TermsPage />} />
-            <Route path="/staff" element={<StaffPage onToast={showToast} />} />
-            <Route path="*" element={<NotFoundPage />} />
-          </Routes>
+          <Suspense fallback={<div className="min-h-[60vh]" />}>
+            <Routes location={location}>
+              <Route path="/" element={<HomePage onToast={showToast} />} />
+              {SERVICE_PAGE_LIST.map((data) => (
+                <Route key={data.id} path={data.path} element={<ServicePage data={data} />} />
+              ))}
+              <Route path="/about-us" element={<AboutPage />} />
+              <Route path="/events" element={<EventsPage onToast={showToast} />} />
+              <Route path="/contact" element={<ContactPage />} />
+              <Route path="/privacy-policy" element={<PrivacyPage />} />
+              <Route path="/terms" element={<TermsPage />} />
+              <Route path="/staff" element={<StaffPage onToast={showToast} />} />
+              <Route path="*" element={<NotFoundPage />} />
+            </Routes>
+          </Suspense>
         </motion.div>
       </AnimatePresence>
 

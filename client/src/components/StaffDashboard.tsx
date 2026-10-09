@@ -1,6 +1,6 @@
 import { useMemo, useState, type FormEvent } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { ShieldAlert, CheckCircle2, XCircle, Clock3, Loader2, Phone, Mail, KeyRound, Eye, X, Trash2 } from "lucide-react";
+import { ShieldAlert, CheckCircle2, XCircle, Clock3, Loader2, Phone, Mail, KeyRound, Eye, X, Trash2, Download, StickyNote } from "lucide-react";
 import { inputClass } from "./ui/Field";
 import StatusPill from "./ui/StatusPill";
 import Reveal from "./ui/Reveal";
@@ -16,6 +16,7 @@ import {
   whoami,
   changePassword,
   adminDeleteRequest,
+  staffSetInternalNote,
   ApiError,
 } from "../lib/api";
 import type { ServiceRequest, WhoAmI } from "../types";
@@ -45,6 +46,8 @@ export default function StaffDashboard({ onToast }: { onToast: (msg: string) => 
   const [loading, setLoading] = useState(false);
   const [requests, setRequests] = useState<ServiceRequest[]>([]);
   const [viewing, setViewing] = useState<ServiceRequest | null>(null);
+  const [noteDraft, setNoteDraft] = useState("");
+  const [savingNote, setSavingNote] = useState(false);
   const stats = useMemo(() => countByStatus(requests), [requests]);
 
   const refresh = async (t: string) => {
@@ -150,12 +153,70 @@ export default function StaffDashboard({ onToast }: { onToast: (msg: string) => 
     }
   };
 
+  const openViewing = (r: ServiceRequest) => {
+    setViewing(r);
+    setNoteDraft(r.internalNotes ?? "");
+  };
+
+  const saveNote = async () => {
+    if (!viewing) return;
+    setSavingNote(true);
+    try {
+      const updated = await staffSetInternalNote(viewing.id, noteDraft);
+      setRequests((rs) => rs.map((r) => (r.id === updated.id ? updated : r)));
+      setViewing(updated);
+      onToast("Internal note saved.");
+    } catch (err) {
+      onToast(err instanceof ApiError ? err.message : "Couldn't save that note.");
+    } finally {
+      setSavingNote(false);
+    }
+  };
+
+  const exportCsv = () => {
+    if (requests.length === 0) return;
+    const columns: { key: keyof ServiceRequest; label: string }[] = [
+      { key: "ticket", label: "Ticket" },
+      { key: "type", label: "Service" },
+      { key: "status", label: "Status" },
+      { key: "name", label: "Name" },
+      { key: "dob", label: "DOB" },
+      { key: "phone", label: "Phone" },
+      { key: "email", label: "Email" },
+      { key: "fee", label: "Fee" },
+      { key: "createdAt", label: "Submitted" },
+      { key: "completedAt", label: "Completed" },
+      { key: "decisionNote", label: "Decision note" },
+    ];
+    const escape = (v: unknown) => `"${String(v ?? "").replace(/"/g, '""')}"`;
+    const lines = [
+      columns.map((c) => escape(c.label)).join(","),
+      ...requests.map((r) => columns.map((c) => escape(r[c.key])).join(",")),
+    ];
+    const blob = new Blob([lines.join("\n")], { type: "text/csv;charset=utf-8;" });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = `hr-the-mediator-requests-${new Date().toISOString().slice(0, 10)}.csv`;
+    a.click();
+    URL.revokeObjectURL(url);
+    onToast(`Exported ${requests.length} request${requests.length === 1 ? "" : "s"} to CSV.`);
+  };
+
   return (
     <section className="px-5 md:px-10 py-16 max-w-4xl mx-auto">
       <Reveal>
         <div className="flex items-start justify-between gap-4 flex-wrap mb-2">
           <h2 className="font-display text-3xl">Staff dashboard</h2>
           <div className="flex items-center gap-2">
+            {token && requests.length > 0 && (
+              <button
+                onClick={exportCsv}
+                className="flex items-center gap-1.5 text-[12px] font-medium px-3 py-1.5 rounded-full border shrink-0 border-border-strong text-ink-faint"
+              >
+                <Download size={12} /> Export CSV
+              </button>
+            )}
             {token && (
               <button
                 onClick={() => setAccountOpen(true)}
@@ -252,11 +313,16 @@ export default function StaffDashboard({ onToast }: { onToast: (msg: string) => 
                     </span>
                     <StatusPill status={r.status} fee={r.fee} />
                     <button
-                      onClick={() => setViewing(r)}
+                      onClick={() => openViewing(r)}
                       className="flex items-center gap-1 text-[11px] font-medium px-2 py-1 rounded-full border border-border-strong text-ink-faint hover:text-ink hover:border-ink-faint transition-colors"
                     >
                       <Eye size={11} /> View
                     </button>
+                    {r.internalNotes && (
+                      <span title="Has an internal note" className="text-gold-deep">
+                        <StickyNote size={13} />
+                      </span>
+                    )}
                     {me?.isAdmin && (
                       <button
                         onClick={() => remove(r)}
@@ -413,6 +479,27 @@ export default function StaffDashboard({ onToast }: { onToast: (msg: string) => 
                     </div>
                   )}
                 </div>
+              </div>
+
+              <div className="rounded-lg border border-border p-3.5 bg-white mt-4">
+                <div className="flex items-center gap-1.5 text-[11px] uppercase tracking-wide text-ink-faint mb-2">
+                  <StickyNote size={12} /> Internal note (staff only — never shown to the customer)
+                </div>
+                <textarea
+                  value={noteDraft}
+                  onChange={(e) => setNoteDraft(e.target.value)}
+                  rows={3}
+                  placeholder="e.g. called customer, awaiting NID copy by email…"
+                  className={`${inputClass} text-[13px]`}
+                />
+                <button
+                  onClick={saveNote}
+                  disabled={savingNote || noteDraft === (viewing.internalNotes ?? "")}
+                  className="mt-2 flex items-center gap-1.5 text-[12px] font-medium px-3 py-1.5 rounded-md bg-navy text-white disabled:opacity-50 active:scale-[0.97] transition-transform"
+                >
+                  {savingNote && <Loader2 size={12} className="animate-spin" />}
+                  Save note
+                </button>
               </div>
             </motion.div>
           </motion.div>
