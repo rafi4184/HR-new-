@@ -1,12 +1,12 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
-import { CalendarDays, MapPin, Mic, Landmark, ArrowRight, Sparkles, ShieldCheck } from "lucide-react";
+import { CalendarDays, MapPin, Mic, Landmark, ArrowRight, Sparkles, ShieldCheck, LogOut } from "lucide-react";
 import { useSeo } from "../lib/useSeo";
 import Reveal from "../components/ui/Reveal";
 import AmbientGlow from "../components/ui/AmbientGlow";
 import EventsManager from "../components/EventsManager";
-import { listEvents, whoami } from "../lib/api";
+import { listEvents, whoami, staffLogout } from "../lib/api";
 import type { EventItem, WhoAmI } from "../types";
 import { useDict } from "../lib/i18n";
 import { eventsPageT } from "../lib/translations";
@@ -52,9 +52,22 @@ export default function EventsPage({ onToast }: { onToast: (msg: string) => void
       {canManage && (
         <section className="px-5 md:px-10 pt-10 pb-2 max-w-6xl mx-auto">
           <div className="rounded-xl border border-border bg-paper-panel p-5">
-            <div className="flex items-center gap-2 mb-1">
-              <ShieldCheck size={16} className="text-navy" />
-              <h2 className="font-display text-lg text-navy">Staff: manage events</h2>
+            <div className="flex items-center justify-between gap-3 flex-wrap mb-1">
+              <div className="flex items-center gap-2">
+                <ShieldCheck size={16} className="text-navy" />
+                <h2 className="font-display text-lg text-navy">Staff: manage events</h2>
+              </div>
+              <button
+                onClick={() =>
+                  void staffLogout().then(() => {
+                    setMe(null);
+                    onToast("Signed out.");
+                  })
+                }
+                className="flex items-center gap-1.5 text-[12px] font-medium px-3 py-1.5 rounded-full border border-border-strong text-ink-faint hover:text-ink hover:border-ink-faint transition-colors"
+              >
+                <LogOut size={12} /> Sign out
+              </button>
             </div>
             <p className="text-[13px] mb-4 text-ink-faint">
               Signed in as {me?.staffId}. Add, edit, upload photos/video, or delete events below — changes go live on this page immediately.
