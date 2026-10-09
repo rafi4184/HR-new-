@@ -15,14 +15,22 @@ export const header = {
 };
 
 export const hero = {
-  eyebrow: { en: "Bangladesh · Trusted Service Partner", bn: "বাংলাদেশ · বিশ্বস্ত সেবা অংশীদার" },
-  h1: { en: "Your Gateway to Trusted Services in Bangladesh", bn: "বাংলাদেশে বিশ্বস্ত সেবার প্রবেশদ্বার" },
+  eyebrow: {
+    en: "Dhaka Airport Terminal 3 · Premium VIP Partner",
+    bn: "ঢাকা বিমানবন্দর টার্মিনাল ৩ · প্রিমিয়াম ভিআইপি পার্টনার",
+  },
+  h1: {
+    en: "Your Premium Welcome Through Dhaka Airport Terminal 3",
+    bn: "ঢাকা বিমানবন্দর টার্মিনাল ৩-এ আপনার প্রিমিয়াম স্বাগতম",
+  },
   paragraph: {
-    en: "From airport assistance and private transportation to government-request support, manpower, security, education and international careers — HR — The Mediator connects you with the services you need, coordinated by one trusted desk in Bangladesh.",
-    bn: "এয়ারপোর্ট সহায়তা ও ব্যক্তিগত পরিবহন থেকে শুরু করে সরকারি কাজে সহায়তা, জনবল, নিরাপত্তা, শিক্ষা ও আন্তর্জাতিক ক্যারিয়ার পর্যন্ত — এইচআর দ্য মিডিয়েটর আপনাকে প্রয়োজনীয় সেবার সাথে যুক্ত করে, বাংলাদেশে একটি বিশ্বস্ত ডেস্কের মাধ্যমে সমন্বিতভাবে।",
+    en: "From a VIP meet & greet at Hazrat Shahjalal International Airport's new Terminal 3 to hotel & car, government-request support, manpower, security, education and international careers — HR — The Mediator connects you with the services you need, coordinated by one trusted desk in Bangladesh.",
+    bn: "হযরত শাহজালাল আন্তর্জাতিক বিমানবন্দরের নতুন টার্মিনাল ৩-এ ভিআইপি মিট অ্যান্ড গ্রিট থেকে শুরু করে হোটেল ও গাড়ি, সরকারি কাজে সহায়তা, জনবল, নিরাপত্তা, শিক্ষা ও আন্তর্জাতিক ক্যারিয়ার পর্যন্ত — এইচআর দ্য মিডিয়েটর আপনাকে প্রয়োজনীয় সেবার সাথে যুক্ত করে, বাংলাদেশে একটি বিশ্বস্ত ডেস্কের মাধ্যমে সমন্বিতভাবে।",
   },
   exploreServices: { en: "Explore Services", bn: "সেবাসমূহ দেখুন" },
   requestService: { en: "Request a Service", bn: "সেবার জন্য অনুরোধ করুন" },
+  spotlightTag: { en: "Hazrat Shahjalal Int'l · Terminal 3", bn: "হযরত শাহজালাল আন্তর্জাতিক · টার্মিনাল ৩" },
+  spotlightTitle: { en: "Premium VIP Reception", bn: "প্রিমিয়াম ভিআইপি রিসেপশন" },
 };
 
 export const serviceNavGroups = {

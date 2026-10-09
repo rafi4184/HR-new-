@@ -72,12 +72,12 @@ export const SERVICE_PAGES: Record<string, ServicePageData> = {
     path: "/airport-vip",
     navLabel: "Airport VIP",
     title: "Airport VIP Reception",
-    metaTitle: "Dhaka Airport Pickup & VIP Service | Bangladesh | HR — The Mediator",
+    metaTitle: "Dhaka Airport Terminal 3 VIP Service & Pickup | Bangladesh | HR — The Mediator",
     metaDescription:
-      "Dhaka airport pickup and VIP meet & greet, arrival and departure assistance across Bangladesh. Fast-track support, baggage assistance and passenger coordination at Dhaka and other Bangladesh airports.",
-    h1: "Airport VIP Reception & Pickup in Dhaka, Bangladesh",
+      "Premium VIP meet & greet at Hazrat Shahjalal International Airport's new Terminal 3 in Dhaka. Fast-track immigration, baggage assistance and passenger coordination for arrivals and departures across Bangladesh airports.",
+    h1: "Dhaka Airport Terminal 3 VIP Reception & Pickup",
     intro:
-      "A meet-and-greet officer at the aircraft door, fast-track immigration support, baggage assistance, and a car already waiting at the curb for your Dhaka airport pickup. Our airport VIP service is built for travellers, families and business visitors who want a smooth, well-coordinated arrival or departure anywhere in Bangladesh.",
+      "A meet-and-greet officer waiting at Hazrat Shahjalal International Airport's new Terminal 3, fast-track immigration support, baggage assistance, and a car already staged at the curb for your Dhaka airport pickup. Our premium airport VIP service is built around Terminal 3's modern arrivals experience for travellers, families and business visitors who want a smooth, well-coordinated arrival or departure anywhere in Bangladesh.",
     whoFor: [
       "International visitors arriving in Dhaka, Chattogram or Sylhet",
       "Bangladeshi families welcoming relatives home",
@@ -103,7 +103,7 @@ export const SERVICE_PAGES: Record<string, ServicePageData> = {
       {
         question: "Which airports do you cover?",
         answer:
-          "We cover Hazrat Shahjalal International (Dhaka), Shah Amanat International (Chattogram) and Osmani International (Sylhet).",
+          "We cover Hazrat Shahjalal International (Dhaka) — including the new Terminal 3 — Shah Amanat International (Chattogram) and Osmani International (Sylhet).",
       },
       {
         question: "Can you arrange airport assistance for elderly travellers?",

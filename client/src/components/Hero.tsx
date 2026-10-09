@@ -1,7 +1,7 @@
 import { useRef } from "react";
 import { Link } from "react-router-dom";
 import { motion, useScroll, useTransform } from "framer-motion";
-import { ArrowRight, ChevronDown, PlaneTakeoff, Landmark, GraduationCap, ShieldCheck } from "lucide-react";
+import { ArrowRight, ChevronDown, PlaneTakeoff, Landmark, GraduationCap, ShieldCheck, Plane } from "lucide-react";
 import MagneticButton from "./ui/MagneticButton";
 import { IMG_HERO_BG } from "../lib/constants";
 import { useDict, useLanguage } from "../lib/i18n";
@@ -10,11 +10,16 @@ import { hero, heroOrbit } from "../lib/translations";
 const ease = [0.2, 0.8, 0.2, 1] as const;
 
 const ORBIT_ICONS = [
-  { Icon: PlaneTakeoff, style: { top: "-8%", left: "-6%" }, delay: 0, to: "/airport-vip", labelKey: "airport" as const },
-  { Icon: Landmark, style: { top: "8%", right: "-8%" }, delay: 0.9, to: "/government-request", labelKey: "government" as const },
-  { Icon: ShieldCheck, style: { bottom: "10%", left: "-9%" }, delay: 1.8, to: "/manpower-security", labelKey: "manpower" as const },
-  { Icon: GraduationCap, style: { bottom: "-7%", right: "-5%" }, delay: 2.7, to: "/courses-careers", labelKey: "courses" as const },
+  { Icon: PlaneTakeoff, style: { top: "-8%", left: "-6%" }, delay: 0, to: "/airport-vip", labelKey: "airport" as const, primary: true },
+  { Icon: Landmark, style: { top: "8%", right: "-8%" }, delay: 0.9, to: "/government-request", labelKey: "government" as const, primary: false },
+  { Icon: ShieldCheck, style: { bottom: "10%", left: "-9%" }, delay: 1.8, to: "/manpower-security", labelKey: "manpower" as const, primary: false },
+  { Icon: GraduationCap, style: { bottom: "-7%", right: "-5%" }, delay: 2.7, to: "/courses-careers", labelKey: "courses" as const, primary: false },
 ];
+
+// Flight path the plane icon travels along, from the curb (bottom-left)
+// up to the Terminal 3 spotlight badge (top-right) — drawn once, then the
+// plane loops along it continuously.
+const FLIGHT_PATH = "M14,86 C 30,70 40,55 58,42 C 72,32 82,24 90,14";
 
 export default function Hero() {
   const T = useDict(hero);
@@ -114,7 +119,7 @@ export default function Hero() {
           <div className="relative rounded-2xl overflow-hidden shadow-card-hover aspect-[4/3] border border-white/60">
             <motion.img
               src={IMG_HERO_BG}
-              alt="Bangladesh skyline"
+              alt="Hazrat Shahjalal International Airport, Dhaka — Terminal 3"
               style={{ y: imgY }}
               className="w-full h-[125%] object-cover"
             />
@@ -124,9 +129,63 @@ export default function Hero() {
               animate={{ opacity: [0.2, 0.45, 0.2] }}
               transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
             />
+            {/* Flight path: a plane glides from the curb up to the Terminal 3
+                spotlight badge, looping continuously — ties the visual to the
+                airport VIP flagship story without relying on a stock photo. */}
+            <svg
+              aria-hidden="true"
+              viewBox="0 0 100 100"
+              preserveAspectRatio="none"
+              className="absolute inset-0 w-full h-full pointer-events-none"
+            >
+              <motion.path
+                d={FLIGHT_PATH}
+                fill="none"
+                stroke="white"
+                strokeWidth="0.6"
+                strokeDasharray="2 2"
+                strokeLinecap="round"
+                vectorEffect="non-scaling-stroke"
+                initial={{ pathLength: 0, opacity: 0 }}
+                animate={{ pathLength: 1, opacity: 0.8 }}
+                transition={{ duration: 1.1, delay: 0.5, ease: [0.2, 0.8, 0.2, 1] }}
+              />
+            </svg>
+            <motion.div
+              aria-hidden="true"
+              className="absolute text-white drop-shadow-[0_2px_6px_rgba(0,0,0,0.35)] -translate-x-1/2 -translate-y-1/2"
+              initial={{ opacity: 0 }}
+              animate={{
+                left: ["14%", "30%", "40%", "58%", "72%", "82%", "90%"],
+                top: ["86%", "70%", "55%", "42%", "32%", "24%", "14%"],
+                rotate: -42,
+                opacity: [0, 1, 1, 1, 1, 1, 0],
+              }}
+              transition={{ duration: 3.4, repeat: Infinity, ease: "easeInOut", delay: 1.3 }}
+            >
+              <Plane size={16} />
+            </motion.div>
+
+            <motion.div
+              initial={{ opacity: 0, y: 10, scale: 0.9 }}
+              animate={{ opacity: 1, y: 0, scale: 1 }}
+              transition={{ duration: 0.6, delay: 1.0, ease: [0.2, 0.9, 0.3, 1.3] }}
+              className="absolute top-3 right-3 max-w-[180px] rounded-xl bg-white/90 backdrop-blur-sm border border-white/70 shadow-card px-3 py-2.5"
+            >
+              <div className="flex items-center gap-1.5 mb-1">
+                <span className="relative flex h-2 w-2">
+                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-gold opacity-75" />
+                  <span className="relative inline-flex rounded-full h-2 w-2 bg-gold-deep" />
+                </span>
+                <span className="text-[9.5px] font-medium tracking-[0.12em] uppercase text-gold-deep">
+                  {T.spotlightTag}
+                </span>
+              </div>
+              <div className="text-[13px] font-display text-navy leading-snug">{T.spotlightTitle}</div>
+            </motion.div>
           </div>
 
-          {ORBIT_ICONS.map(({ Icon, style, delay, to, labelKey }, i) => (
+          {ORBIT_ICONS.map(({ Icon, style, delay, to, labelKey, primary }, i) => (
             <motion.div
               key={i}
               className="hidden sm:block absolute"
@@ -134,13 +193,25 @@ export default function Hero() {
               animate={{ y: [0, -10, 0] }}
               transition={{ duration: 4.5, repeat: Infinity, ease: "easeInOut", delay }}
             >
+              {primary && (
+                <motion.span
+                  aria-hidden="true"
+                  className="absolute inset-0 rounded-xl bg-gold/40"
+                  animate={{ scale: [1, 1.5, 1], opacity: [0.6, 0, 0.6] }}
+                  transition={{ duration: 2.4, repeat: Infinity, ease: "easeInOut" }}
+                />
+              )}
               <Link
                 to={to}
                 aria-label={heroOrbit[labelKey][lang]}
                 title={heroOrbit[labelKey][lang]}
-                className="flex w-12 h-12 rounded-xl bg-white shadow-card-hover items-center justify-center text-gold-deep border border-border hover:bg-gold hover:text-navy hover:scale-110 transition-all cursor-pointer"
+                className={
+                  primary
+                    ? "relative flex w-14 h-14 rounded-xl bg-gradient-to-br from-gold to-navy text-white shadow-card-hover items-center justify-center hover:scale-110 transition-transform cursor-pointer"
+                    : "relative flex w-12 h-12 rounded-xl bg-white shadow-card-hover items-center justify-center text-gold-deep border border-border hover:bg-gold hover:text-navy hover:scale-110 transition-all cursor-pointer"
+                }
               >
-                <Icon size={20} />
+                <Icon size={primary ? 22 : 20} />
               </Link>
             </motion.div>
           ))}
