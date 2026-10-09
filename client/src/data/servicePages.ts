@@ -65,6 +65,11 @@ export const HOME_FAQS: Faq[] = [
       "Yes. Our Airport VIP Reception is built around Hazrat Shahjalal International Airport's new Terminal 3 in Dhaka — meet & greet, fast-track immigration, baggage assistance and a car staged at the curb for arrivals and departures.",
   },
   {
+    question: "Where can I get airport VIP service in Bangladesh?",
+    answer:
+      "HR — The Mediator provides airport VIP service at Hazrat Shahjalal International Airport in Dhaka, plus Shah Amanat International (Chattogram) and Osmani International (Sylhet) — meet & greet, fast-track immigration and baggage assistance for arrivals and departures anywhere in Bangladesh.",
+  },
+  {
     question: "Can you help students study in the Gulf?",
     answer:
       "Yes. We provide study-abroad guidance, university admission support, and visa/documentation assistance for students pursuing education opportunities in the Gulf and other regions.",
@@ -127,6 +132,16 @@ export const SERVICE_PAGES: Record<string, ServicePageData> = {
         question: "How much notice do you need?",
         answer:
           "Submit your request as early as possible; for most flights we can confirm arrangements within 24–48 hours.",
+      },
+      {
+        question: "What is Dhaka airport VIP service?",
+        answer:
+          "Dhaka airport VIP service is a meet & greet and passenger-assistance package at Hazrat Shahjalal International Airport — an officer meets you at the aircraft door or terminal entrance, coordinates fast-track immigration and customs, handles baggage, and has a car waiting at the curb, so you skip the usual arrival or departure queues and confusion.",
+      },
+      {
+        question: "How do I book VIP assistance at Dhaka international airport?",
+        answer:
+          "Submit a request through our Airport VIP request form with your flight number, arrival or departure date, and the airport. Our desk confirms the arrangement and coordinates the meet & greet in advance of your flight.",
       },
     ],
     cta: "Request Airport VIP",

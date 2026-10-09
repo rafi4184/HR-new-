@@ -20,12 +20,21 @@ const FALLBACK_CONTACTS: Contact[] = [
   },
   {
     id: -2,
-    label: "Find us",
+    label: "Find us — Bangladesh",
     phone: null,
     email: null,
-    address: "House 7A, Road 16, Block F, Aziz Mohallah, Mohammadpur, Dhaka",
+    address: "7A/16 Aziz Mohollah, Mohammadpur, Dhaka 1207, Bangladesh",
     whatsapp: null,
     sortOrder: 1,
+  },
+  {
+    id: -3,
+    label: "Find us — Australia",
+    phone: null,
+    email: null,
+    address: "6 Cross Street, Bankstown NSW 2200, Australia",
+    whatsapp: null,
+    sortOrder: 2,
   },
 ];
 

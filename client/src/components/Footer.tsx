@@ -23,12 +23,21 @@ const FALLBACK_CONTACTS: Contact[] = [
   },
   {
     id: -2,
-    label: "Find us",
+    label: "Find us — Bangladesh",
     phone: null,
     email: null,
-    address: "House 7A, Road 16, Block F, Aziz Mohallah, Mohammadpur, Dhaka",
+    address: "7A/16 Aziz Mohollah, Mohammadpur, Dhaka 1207, Bangladesh",
     whatsapp: null,
     sortOrder: 1,
+  },
+  {
+    id: -3,
+    label: "Find us — Australia",
+    phone: null,
+    email: null,
+    address: "6 Cross Street, Bankstown NSW 2200, Australia",
+    whatsapp: null,
+    sortOrder: 2,
   },
 ];
 
@@ -135,7 +144,13 @@ export default function Footer() {
                   )}
                   {c.address && (
                     <div className="flex items-start gap-2">
-                      <MapPin size={14} className="mt-0.5 shrink-0" /> {c.address}
+                      <MapPin size={14} className="mt-0.5 shrink-0" />
+                      <span>
+                        {c.label && c.label !== "Reach the desk" && (
+                          <span className="block text-[11px] text-mist-soft uppercase tracking-wide mb-0.5">{c.label}</span>
+                        )}
+                        {c.address}
+                      </span>
                     </div>
                   )}
                 </div>
