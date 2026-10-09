@@ -1,6 +1,6 @@
 import { useEffect, useState, type FormEvent } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Trash2, Pencil, Plus, Image as ImageIcon, Video, Loader2 } from "lucide-react";
+import { Trash2, Pencil, Plus, Image as ImageIcon, Video, Loader2, Pin, PinOff } from "lucide-react";
 import { inputClass } from "./ui/Field";
 import {
   listEvents,
@@ -8,6 +8,8 @@ import {
   adminDeleteEvent,
   adminUploadEventMedia,
   adminDeleteEventMedia,
+  adminListEventPins,
+  adminSetEventPinned,
   ApiError,
 } from "../lib/api";
 import type { EventItem } from "../types";
@@ -18,6 +20,7 @@ function panelError(err: unknown, fallback: string) {
 
 export default function EventsManager({ onToast }: { onToast: (msg: string) => void }) {
   const [events, setEvents] = useState<EventItem[]>([]);
+  const [pins, setPins] = useState<Record<number, boolean>>({});
   const [loading, setLoading] = useState(true);
   const [editing, setEditing] = useState<EventItem | "new" | null>(null);
   const [uploadingFor, setUploadingFor] = useState<number | null>(null);
@@ -27,9 +30,23 @@ export default function EventsManager({ onToast }: { onToast: (msg: string) => v
   const refresh = async () => {
     setLoading(true);
     try {
-      setEvents(await listEvents());
+      const [rows, pinMap] = await Promise.all([listEvents(), adminListEventPins().catch(() => ({}))]);
+      setEvents(rows);
+      setPins(pinMap);
     } finally {
       setLoading(false);
+    }
+  };
+
+  const togglePin = async (ev: EventItem) => {
+    const next = !pins[ev.id];
+    try {
+      await adminSetEventPinned(ev.id, next);
+      setPins((p) => ({ ...p, [ev.id]: next }));
+      onToast(next ? `"${ev.title}" pinned to the top.` : `"${ev.title}" unpinned.`);
+      void refresh();
+    } catch (err) {
+      onToast(panelError(err, "Couldn't change pin status."));
     }
   };
 
@@ -127,12 +144,28 @@ export default function EventsManager({ onToast }: { onToast: (msg: string) => v
             <div key={ev.id} className="rounded-lg border border-border p-3.5 bg-white">
               <div className="flex items-center justify-between gap-3 mb-2">
                 <div className="min-w-0">
-                  <div className="text-[14px] font-medium">{ev.title}</div>
+                  <div className="flex items-center gap-1.5">
+                    <div className="text-[14px] font-medium">{ev.title}</div>
+                    {pins[ev.id] && (
+                      <span className="flex items-center gap-1 text-[10px] font-medium px-1.5 py-0.5 rounded-full bg-gold-pale text-gold-deep shrink-0">
+                        <Pin size={9} /> Pinned
+                      </span>
+                    )}
+                  </div>
                   <div className="text-[12px] text-ink-faint">
                     {ev.eventDate ?? "No date"} {ev.location ? `· ${ev.location}` : ""}
                   </div>
                 </div>
                 <div className="flex gap-2 shrink-0">
+                  <button
+                    onClick={() => togglePin(ev)}
+                    title={pins[ev.id] ? "Unpin from top" : "Pin to top"}
+                    className={`p-2 rounded-md border transition-colors ${
+                      pins[ev.id] ? "border-gold-deep text-gold-deep bg-gold-pale" : "border-border-strong text-ink-soft"
+                    }`}
+                  >
+                    {pins[ev.id] ? <PinOff size={14} /> : <Pin size={14} />}
+                  </button>
                   <button onClick={() => openEditor(ev)} className="p-2 rounded-md border border-border-strong text-ink-soft">
                     <Pencil size={14} />
                   </button>

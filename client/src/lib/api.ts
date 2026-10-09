@@ -287,6 +287,24 @@ export async function adminDeleteEvent(id: number): Promise<void> {
   if (error) throw new ApiError(error.message);
 }
 
+// Pinning controls which event appears first/featured on the public page,
+// independent of its date — useful for an ongoing promotion that has no
+// single event date. list_events() itself doesn't expose the flag (so the
+// public page's shape stays untouched); staff read current pin state via
+// this separate lookup and merge it with listEvents() client-side.
+export async function adminListEventPins(): Promise<Record<number, boolean>> {
+  const { data, error } = await supabase.rpc("admin_list_event_pins");
+  if (error) throw new ApiError(error.message);
+  const map: Record<number, boolean> = {};
+  for (const row of (data ?? []) as { id: number; pinned: boolean }[]) map[row.id] = row.pinned;
+  return map;
+}
+
+export async function adminSetEventPinned(id: number, pinned: boolean): Promise<void> {
+  const { error } = await supabase.rpc("admin_set_event_pinned", { p_id: id, p_pinned: pinned });
+  if (error) throw new ApiError(error.message);
+}
+
 export async function adminUploadEventMedia(
   eventId: number,
   file: File,
