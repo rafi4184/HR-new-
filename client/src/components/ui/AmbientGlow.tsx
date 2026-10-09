@@ -4,14 +4,18 @@ const TONES = {
   gold: "rgba(47,191,143,0.22)",
   goldSoft: "rgba(47,191,143,0.14)",
   navy: "rgba(43,58,126,0.35)",
+  goldLight: "rgba(47,191,143,0.07)",
+  navyLight: "rgba(43,58,126,0.05)",
 } as const;
 
 // Slow-drifting blurred blobs used to keep sections feeling "alive" without
 // competing with foreground content — always continuous, never triggered by
 // scroll/hover, so it reads as ambient background motion on every page.
+// Kept very subtle on light sections so the page reads as clean and white,
+// not tinted; the dark footer variant can afford to be more visible.
 export default function AmbientGlow({ variant = "light" }: { variant?: "light" | "dark" }) {
-  const tone1 = variant === "dark" ? TONES.gold : TONES.gold;
-  const tone2 = variant === "dark" ? TONES.goldSoft : TONES.navy;
+  const tone1 = variant === "dark" ? TONES.gold : TONES.goldLight;
+  const tone2 = variant === "dark" ? TONES.goldSoft : TONES.navyLight;
 
   return (
     <div aria-hidden="true" className="absolute inset-0 overflow-hidden pointer-events-none">

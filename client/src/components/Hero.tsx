@@ -33,25 +33,25 @@ export default function Hero() {
   const imgY = useTransform(scrollYProgress, [0, 1], ["0%", "18%"]);
 
   return (
-    <section ref={ref} className="relative px-5 md:px-10 pt-14 pb-16 md:pt-20 md:pb-24 bg-paper-soft overflow-hidden">
+    <section ref={ref} className="relative px-5 md:px-10 pt-14 pb-16 md:pt-20 md:pb-24 bg-white overflow-hidden">
       <motion.div
         aria-hidden="true"
         className="absolute -top-24 -left-24 w-[420px] h-[420px] rounded-full blur-3xl pointer-events-none"
-        style={{ background: "radial-gradient(circle, rgba(47,191,143,0.28), transparent 70%)" }}
+        style={{ background: "radial-gradient(circle, rgba(47,191,143,0.10), transparent 70%)" }}
         animate={{ x: [0, 30, 0], y: [0, 20, 0] }}
         transition={{ duration: 14, repeat: Infinity, ease: "easeInOut" }}
       />
       <motion.div
         aria-hidden="true"
         className="absolute -bottom-32 -right-16 w-[480px] h-[480px] rounded-full blur-3xl pointer-events-none"
-        style={{ background: "radial-gradient(circle, rgba(43,58,126,0.12), transparent 70%)" }}
+        style={{ background: "radial-gradient(circle, rgba(43,58,126,0.06), transparent 70%)" }}
         animate={{ x: [0, -24, 0], y: [0, -16, 0] }}
         transition={{ duration: 16, repeat: Infinity, ease: "easeInOut" }}
       />
       <motion.div
         aria-hidden="true"
         className="absolute top-1/3 left-1/2 w-[300px] h-[300px] rounded-full blur-3xl pointer-events-none"
-        style={{ background: "radial-gradient(circle, rgba(47,191,143,0.14), transparent 70%)" }}
+        style={{ background: "radial-gradient(circle, rgba(47,191,143,0.06), transparent 70%)" }}
         animate={{ x: [0, 18, 0], y: [0, -22, 0] }}
         transition={{ duration: 12, repeat: Infinity, ease: "easeInOut" }}
       />

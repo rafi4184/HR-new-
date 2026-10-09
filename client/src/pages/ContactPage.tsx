@@ -23,7 +23,7 @@ const FALLBACK_CONTACTS: Contact[] = [
     label: "Find us",
     phone: null,
     email: null,
-    address: "The Meditor, 4th floor, Green Chayera Manzil, Greater Road Mosque, Kadirganj, Rajshahi",
+    address: "House 7A, Road 16, Block F, Aziz Mohallah, Mohammadpur, Dhaka",
     whatsapp: null,
     sortOrder: 1,
   },
@@ -33,7 +33,7 @@ export default function ContactPage() {
   useSeo({
     title: "Contact Us | HR — The Mediator",
     description:
-      "Contact HR — The Mediator in Rajshahi, Bangladesh. Call, WhatsApp or email our desk, or submit a service request directly.",
+      "Contact HR — The Mediator in Dhaka, Bangladesh. Call, WhatsApp or email our desk, or submit a service request directly.",
     path: "/contact",
   });
 
