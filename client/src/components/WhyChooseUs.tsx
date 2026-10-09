@@ -12,9 +12,9 @@ export default function WhyChooseUs() {
   const reasons = whyChooseUs.reasons.map((r, i) => ({ icon: ICONS[i], title: r.title, body: r.body }));
 
   return (
-    <section className="relative px-5 md:px-10 py-16 md:py-20 max-w-7xl mx-auto overflow-hidden">
+    <section className="relative bg-paper-soft overflow-hidden">
       <AmbientGlow variant="light" />
-      <div className="relative">
+      <div className="relative px-5 md:px-10 py-16 md:py-20 max-w-7xl mx-auto">
         <Reveal className="text-center max-w-2xl mx-auto mb-12">
           <div className="text-[12px] font-medium mb-3 tracking-[0.2em] uppercase text-gold-deep">{T.eyebrow}</div>
           <h2 className="font-display text-3xl md:text-4xl text-navy">{T.h2}</h2>
@@ -25,7 +25,7 @@ export default function WhyChooseUs() {
             <Reveal key={i} delay={i * 0.07}>
               <div className="text-center px-3">
                 <motion.div
-                  className="w-14 h-14 rounded-2xl bg-gold-pale text-gold-deep flex items-center justify-center mx-auto mb-4"
+                  className="w-14 h-14 rounded-2xl bg-white text-gold-deep flex items-center justify-center mx-auto mb-4 shadow-card"
                   animate={{ y: [0, -5, 0] }}
                   transition={{ duration: 3.5, repeat: Infinity, ease: "easeInOut", delay: i * 0.25 }}
                 >
