@@ -134,6 +134,15 @@ export const servicesList = [
       en: "Premium airport meet & greet, arrival assistance, departure assistance and passenger support.",
       bn: "প্রিমিয়াম এয়ারপোর্ট মিট অ্যান্ড গ্রিট, আগমন সহায়তা, প্রস্থান সহায়তা এবং যাত্রী সহায়তা।",
     },
+    story: {
+      en: "The moment your flight touches down at Terminal 3, someone is already waiting — reading your name, not a stranger's face in the crowd. From the aircraft door to the car at the curb, every step is coordinated in advance so Bangladesh's busiest airport feels effortless.",
+      bn: "আপনার ফ্লাইট টার্মিনাল ৩-এ অবতরণ করার মুহূর্তেই কেউ একজন আপনার জন্য অপেক্ষা করছেন — ভিড়ের মধ্যে অচেনা মুখ নয়, আপনার নাম হাতে। বিমানের দরজা থেকে গাড়ি পর্যন্ত প্রতিটি ধাপ আগে থেকেই সমন্বিত, যাতে বাংলাদেশের ব্যস্ততম বিমানবন্দরও সহজ মনে হয়।",
+    },
+    highlights: [
+      { en: "Meet & greet at the gate or terminal entrance", bn: "গেট বা টার্মিনাল প্রবেশপথে মিট অ্যান্ড গ্রিট" },
+      { en: "Fast-track immigration and customs", bn: "দ্রুত ইমিগ্রেশন ও কাস্টমস সহায়তা" },
+      { en: "Car staged at the curb, ready to go", bn: "কার্বে প্রস্তুত রাখা গাড়ি" },
+    ],
     cta: { en: "Explore Airport VIP", bn: "এয়ারপোর্ট ভিআইপি দেখুন" },
   },
   {
@@ -143,6 +152,15 @@ export const servicesList = [
       en: "Hotel arrangements, airport transfers, chauffeur and transportation support.",
       bn: "হোটেল ব্যবস্থাপনা, এয়ারপোর্ট ট্রান্সফার, চালকসহ গাড়ি ও পরিবহন সহায়তা।",
     },
+    story: {
+      en: "Once you're through the terminal, the story continues on the road. We match you with vetted hotels and a private car — airport transfers and point-to-point trips with a driver who already knows where you're headed.",
+      bn: "টার্মিনাল পেরিয়ে এলে গল্প চলতে থাকে রাস্তায়। আমরা আপনাকে যাচাইকৃত হোটেল ও ব্যক্তিগত গাড়ির সাথে মিলিয়ে দিই — এয়ারপোর্ট ট্রান্সফার ও পয়েন্ট-টু-পয়েন্ট ভ্রমণ, এমন একজন চালকসহ যিনি আগে থেকেই জানেন আপনি কোথায় যাচ্ছেন।",
+    },
+    highlights: [
+      { en: "Hotel bookings matched to your budget", bn: "আপনার বাজেট অনুযায়ী হোটেল বুকিং" },
+      { en: "Airport transfers and chauffeur service", bn: "এয়ারপোর্ট ট্রান্সফার ও চালকসহ গাড়ি সেবা" },
+      { en: "Point-to-point private transport", bn: "পয়েন্ট-টু-পয়েন্ট ব্যক্তিগত পরিবহন" },
+    ],
     cta: { en: "Explore Hotel & Car", bn: "হোটেল ও গাড়ি দেখুন" },
   },
   {
@@ -152,6 +170,15 @@ export const servicesList = [
       en: "Assistance with government-related requests, documentation and administrative processes.",
       bn: "সরকারি সংক্রান্ত অনুরোধ, প্রয়োজনীয় কাগজপত্র ও প্রশাসনিক প্রক্রিয়ায় সহায়তা।",
     },
+    story: {
+      en: "Bangladesh's paperwork doesn't have to be a maze. Passport renewals, NID corrections, land registry, attestation — our desk reviews each case and walks it through the process with you, instead of leaving you to chase it alone.",
+      bn: "বাংলাদেশের কাগজপত্রের ঝামেলা গোলকধাঁধা হতে হবে না। পাসপোর্ট নবায়ন, এনআইডি সংশোধন, জমি নিবন্ধন, সত্যায়ন — আমাদের ডেস্ক প্রতিটি কেস পর্যালোচনা করে এবং আপনাকে একা না রেখে পুরো প্রক্রিয়ায় সাথে থাকে।",
+    },
+    highlights: [
+      { en: "Passport, visa & NID support", bn: "পাসপোর্ট, ভিসা ও এনআইডি সহায়তা" },
+      { en: "Land registry & document attestation", bn: "জমি নিবন্ধন ও দলিল সত্যায়ন" },
+      { en: "One desk tracking your case end to end", bn: "শুরু থেকে শেষ পর্যন্ত একটি ডেস্ক আপনার কেস ট্র্যাক করে" },
+    ],
     cta: { en: "Explore Government Services", bn: "সরকারি সেবা দেখুন" },
   },
   {
@@ -161,6 +188,15 @@ export const servicesList = [
       en: "Professional manpower, staffing and security solutions for businesses and organisations.",
       bn: "প্রতিষ্ঠান ও ব্যবসার জন্য পেশাদার জনবল, স্টাফিং ও নিরাপত্তা সমাধান।",
     },
+    story: {
+      en: "Behind every smooth arrival is a team. Licensed manpower and professional security personnel, ready for businesses and organisations that need reliable, vetted people on the ground.",
+      bn: "প্রতিটি মসৃণ আগমনের পেছনে থাকে একটি দল। লাইসেন্সপ্রাপ্ত জনবল ও পেশাদার নিরাপত্তা কর্মী, ব্যবসা ও প্রতিষ্ঠানের জন্য প্রস্তুত, যারা নির্ভরযোগ্য ও যাচাইকৃত জনবল চান।",
+    },
+    highlights: [
+      { en: "Licensed manpower staffing", bn: "লাইসেন্সপ্রাপ্ত জনবল স্টাফিং" },
+      { en: "Professional security personnel", bn: "পেশাদার নিরাপত্তা কর্মী" },
+      { en: "Built for businesses & organisations", bn: "ব্যবসা ও প্রতিষ্ঠানের জন্য তৈরি" },
+    ],
     cta: { en: "Explore Manpower & Security", bn: "জনবল ও নিরাপত্তা দেখুন" },
   },
   {
@@ -170,9 +206,27 @@ export const servicesList = [
       en: "Professional training, media and public speaking, international education and Gulf career support.",
       bn: "পেশাদার প্রশিক্ষণ, মিডিয়া ও পাবলিক স্পিকিং, আন্তর্জাতিক শিক্ষা ও গালফ ক্যারিয়ার সহায়তা।",
     },
+    story: {
+      en: "For those looking further ahead — a media and public-speaking academy taught by a working national news presenter, study-abroad guidance, and a path to Gulf employment with documentation support from day one.",
+      bn: "যারা আরও এগিয়ে যেতে চান তাদের জন্য — একজন কর্মরত জাতীয় সংবাদ উপস্থাপকের পরিচালিত মিডিয়া ও পাবলিক স্পিকিং একাডেমি, বিদেশে পড়াশোনার দিকনির্দেশনা, এবং শুরু থেকেই ডকুমেন্টেশন সহায়তাসহ গালফ কর্মসংস্থানের পথ।",
+    },
+    highlights: [
+      { en: "Media & public-speaking training", bn: "মিডিয়া ও পাবলিক স্পিকিং প্রশিক্ষণ" },
+      { en: "Study abroad guidance & admissions", bn: "বিদেশে পড়াশোনার দিকনির্দেশনা ও ভর্তি সহায়তা" },
+      { en: "Gulf employment documentation support", bn: "গালফ কর্মসংস্থানের কাগজপত্র সহায়তা" },
+    ],
     cta: { en: "Explore Courses & Careers", bn: "কোর্স ও ক্যারিয়ার দেখুন" },
   },
 ];
+
+export const serviceStory = {
+  eyebrow: { en: "Your Journey With Us", bn: "আমাদের সাথে আপনার যাত্রা" },
+  h2: { en: "Five Services, One Story", bn: "পাঁচটি সেবা, একটি গল্প" },
+  intro: {
+    en: "Follow the journey from the moment you land to wherever you're headed next.",
+    bn: "অবতরণের মুহূর্ত থেকে আপনার পরবর্তী গন্তব্য পর্যন্ত যাত্রাটি অনুসরণ করুন।",
+  },
+};
 
 export const platformHub = {
   eyebrow: { en: "One Platform", bn: "এক প্ল্যাটফর্ম" },
