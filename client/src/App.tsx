@@ -72,7 +72,7 @@ export default function App() {
 
       <a
         href="tel:+8801717013150"
-        className="fixed bottom-5 right-5 z-40 w-14 h-14 rounded-full flex items-center justify-center shadow-card-hover bg-gradient-to-r from-gold to-[#E0B563] text-navy hover:from-gold-deep hover:to-gold-deep hover:text-white active:scale-[0.97] transition-colors"
+        className="fixed bottom-5 right-5 z-40 w-14 h-14 rounded-full flex items-center justify-center shadow-card-hover bg-gradient-to-r from-gold to-[#5AD1A8] text-navy hover:from-gold-deep hover:to-gold-deep hover:text-white active:scale-[0.97] transition-colors"
         aria-label="Call the desk"
       >
         <Phone size={20} />

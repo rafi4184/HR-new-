@@ -53,7 +53,7 @@ export default function PlatformHub({ onBranchClick }: { onBranchClick?: (tab: B
                 y1={50}
                 x2={b.line.x2}
                 y2={b.line.y2}
-                stroke="#D3DBE6"
+                stroke="#CDD3E8"
                 strokeWidth={0.5}
                 vectorEffect="non-scaling-stroke"
                 initial={{ pathLength: 0, opacity: 0 }}

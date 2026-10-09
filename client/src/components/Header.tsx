@@ -145,7 +145,7 @@ export default function Header() {
           </Link>
           <Link
             to={requestHref}
-            className="text-[13px] font-medium tracking-wide px-5 py-2.5 rounded-full bg-gradient-to-r from-gold to-[#E0B563] text-navy hover:from-gold-deep hover:to-gold-deep hover:text-white transition-colors"
+            className="text-[13px] font-medium tracking-wide px-5 py-2.5 rounded-full bg-gradient-to-r from-gold to-[#5AD1A8] text-navy hover:from-gold-deep hover:to-gold-deep hover:text-white transition-colors"
           >
             {T.requestService}
           </Link>
@@ -155,7 +155,7 @@ export default function Header() {
           <LanguageToggle className="mr-0.5" />
           <Link
             to={requestHref}
-            className="text-[12px] sm:text-[12.5px] font-medium px-2.5 sm:px-3.5 py-2 rounded-full bg-gradient-to-r from-gold to-[#E0B563] text-navy whitespace-nowrap"
+            className="text-[12px] sm:text-[12.5px] font-medium px-2.5 sm:px-3.5 py-2 rounded-full bg-gradient-to-r from-gold to-[#5AD1A8] text-navy whitespace-nowrap"
           >
             <span className="sm:hidden">{T.requestShort}</span>
             <span className="hidden sm:inline">{T.requestService}</span>
@@ -231,7 +231,7 @@ export default function Header() {
               <Link
                 to={requestHref}
                 onClick={() => setMobileOpen(false)}
-                className="mt-3 text-center text-[14px] font-medium px-5 py-3 rounded-full bg-gradient-to-r from-gold to-[#E0B563] text-navy"
+                className="mt-3 text-center text-[14px] font-medium px-5 py-3 rounded-full bg-gradient-to-r from-gold to-[#5AD1A8] text-navy"
               >
                 {T.requestService}
               </Link>

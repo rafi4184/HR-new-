@@ -28,21 +28,21 @@ export default function Hero() {
       <motion.div
         aria-hidden="true"
         className="absolute -top-24 -left-24 w-[420px] h-[420px] rounded-full blur-3xl pointer-events-none"
-        style={{ background: "radial-gradient(circle, rgba(201,151,59,0.28), transparent 70%)" }}
+        style={{ background: "radial-gradient(circle, rgba(47,191,143,0.28), transparent 70%)" }}
         animate={{ x: [0, 30, 0], y: [0, 20, 0] }}
         transition={{ duration: 14, repeat: Infinity, ease: "easeInOut" }}
       />
       <motion.div
         aria-hidden="true"
         className="absolute -bottom-32 -right-16 w-[480px] h-[480px] rounded-full blur-3xl pointer-events-none"
-        style={{ background: "radial-gradient(circle, rgba(15,37,64,0.12), transparent 70%)" }}
+        style={{ background: "radial-gradient(circle, rgba(43,58,126,0.12), transparent 70%)" }}
         animate={{ x: [0, -24, 0], y: [0, -16, 0] }}
         transition={{ duration: 16, repeat: Infinity, ease: "easeInOut" }}
       />
       <motion.div
         aria-hidden="true"
         className="absolute top-1/3 left-1/2 w-[300px] h-[300px] rounded-full blur-3xl pointer-events-none"
-        style={{ background: "radial-gradient(circle, rgba(201,151,59,0.14), transparent 70%)" }}
+        style={{ background: "radial-gradient(circle, rgba(47,191,143,0.14), transparent 70%)" }}
         animate={{ x: [0, 18, 0], y: [0, -22, 0] }}
         transition={{ duration: 12, repeat: Infinity, ease: "easeInOut" }}
       />
@@ -88,7 +88,7 @@ export default function Hero() {
               as="link"
               to="/#services"
               strength={0.3}
-              className="group inline-flex items-center gap-2 px-7 py-3.5 rounded-full font-medium text-[14px] tracking-wide uppercase bg-gradient-to-r from-gold to-[#E0B563] text-navy hover:from-gold-deep hover:to-gold-deep hover:text-white transition-colors"
+              className="group inline-flex items-center gap-2 px-7 py-3.5 rounded-full font-medium text-[14px] tracking-wide uppercase bg-gradient-to-r from-gold to-[#5AD1A8] text-navy hover:from-gold-deep hover:to-gold-deep hover:text-white transition-colors"
             >
               {T.exploreServices}
               <ArrowRight size={15} className="transition-transform group-hover:translate-x-1" />
