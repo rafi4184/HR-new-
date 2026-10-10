@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
-import { CalendarDays, MapPin, ArrowRight } from "lucide-react";
+import { CalendarDays, MapPin, ArrowRight, Sparkles } from "lucide-react";
 import Reveal from "./ui/Reveal";
 import EventMediaCarousel from "./EventMediaCarousel";
 import EventLightbox, { type LightboxState } from "./EventLightbox";
@@ -10,6 +10,7 @@ import { listEvents } from "../lib/api";
 import type { EventItem } from "../types";
 import { useDict } from "../lib/i18n";
 import { events } from "../lib/translations";
+import { isUpcoming } from "../lib/eventDate";
 
 function formatDate(iso: string | null) {
   if (!iso) return null;
@@ -57,7 +58,9 @@ export default function Events() {
         </div>
       ) : (
         <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
-          {items.map((ev, i) => (
+          {items.map((ev, i) => {
+            const promo = isUpcoming(ev.eventDate);
+            return (
             <motion.div
               key={ev.id}
               initial={{ opacity: 0, y: 16 }}
@@ -65,8 +68,15 @@ export default function Events() {
               viewport={{ once: true, amount: 0.2 }}
               transition={{ duration: 0.5, delay: Math.min(i, 6) * 0.06 }}
               whileHover={{ y: -3 }}
-              className="rounded-xl overflow-hidden border border-border bg-white shadow-card hover:shadow-card-hover transition-shadow"
+              className={`relative rounded-xl overflow-hidden bg-white shadow-card hover:shadow-card-hover transition-shadow ${
+                promo ? "border-2 border-gold ring-2 ring-gold/25" : "border border-border"
+              }`}
             >
+              {promo && (
+                <div className="absolute top-3 left-3 z-10 flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-gold text-white text-[11px] font-semibold uppercase tracking-wide shadow-card">
+                  <Sparkles size={11} /> Upcoming
+                </div>
+              )}
               <EventMediaCarousel
                 media={ev.media}
                 title={ev.title}
@@ -93,7 +103,8 @@ export default function Events() {
                 {ev.description && <p className="text-[13px] text-ink-soft leading-relaxed line-clamp-3">{ev.description}</p>}
               </button>
             </motion.div>
-          ))}
+            );
+          })}
         </div>
       )}
 

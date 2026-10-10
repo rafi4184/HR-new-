@@ -13,6 +13,7 @@ import { listEvents, whoami, staffLogout } from "../lib/api";
 import type { EventItem, WhoAmI } from "../types";
 import { useDict } from "../lib/i18n";
 import { eventsPageT } from "../lib/translations";
+import { isUpcoming } from "../lib/eventDate";
 
 function formatDate(iso: string | null) {
   if (!iso) return null;
@@ -118,7 +119,16 @@ export default function EventsPage({ onToast }: { onToast: (msg: string) => void
         ) : (
           <>
             <Reveal>
-              <div className="rounded-2xl overflow-hidden border border-border bg-white shadow-card-hover grid md:grid-cols-2 mb-12">
+              <div
+                className={`relative rounded-2xl overflow-hidden bg-white shadow-card-hover grid md:grid-cols-2 mb-12 ${
+                  isUpcoming(items[0].eventDate) ? "border-2 border-gold ring-4 ring-gold/20" : "border border-border"
+                }`}
+              >
+                {isUpcoming(items[0].eventDate) && (
+                  <div className="absolute top-4 left-4 z-10 flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-gold text-white text-[11.5px] font-semibold uppercase tracking-wide shadow-card">
+                    <Sparkles size={12} /> Upcoming
+                  </div>
+                )}
                 <div className="md:order-2">
                   <EventMediaCarousel
                     media={items[0].media}
@@ -132,7 +142,9 @@ export default function EventsPage({ onToast }: { onToast: (msg: string) => void
                   onClick={() => setDetail(items[0])}
                   className="p-7 md:p-9 flex flex-col justify-center text-left md:order-1 hover:bg-paper-soft transition-colors"
                 >
-                  <div className="text-[11px] font-semibold uppercase tracking-[0.2em] text-gold-deep mb-3">{T.latestLabel}</div>
+                  <div className="text-[11px] font-semibold uppercase tracking-[0.2em] text-gold-deep mb-3">
+                    {isUpcoming(items[0].eventDate) ? "Upcoming Event" : T.latestLabel}
+                  </div>
                   <h2 className="font-display text-2xl md:text-3xl text-navy mb-3" style={{ textWrap: "balance" }}>
                     {items[0].title}
                   </h2>
@@ -161,7 +173,9 @@ export default function EventsPage({ onToast }: { onToast: (msg: string) => void
                   <h3 className="font-display text-xl text-navy mb-6">{T.moreLabel}</h3>
                 </Reveal>
                 <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
-                  {items.slice(1).map((ev, i) => (
+                  {items.slice(1).map((ev, i) => {
+                    const promo = isUpcoming(ev.eventDate);
+                    return (
                     <motion.div
                       key={ev.id}
                       initial={{ opacity: 0, y: 18 }}
@@ -169,8 +183,15 @@ export default function EventsPage({ onToast }: { onToast: (msg: string) => void
                       viewport={{ once: true, amount: 0.2 }}
                       transition={{ duration: 0.55, delay: Math.min(i, 8) * 0.06 }}
                       whileHover={{ y: -4 }}
-                      className="rounded-2xl overflow-hidden border border-border bg-white shadow-card hover:shadow-card-hover transition-shadow"
+                      className={`relative rounded-2xl overflow-hidden bg-white shadow-card hover:shadow-card-hover transition-shadow ${
+                        promo ? "border-2 border-gold ring-2 ring-gold/20" : "border border-border"
+                      }`}
                     >
+                      {promo && (
+                        <div className="absolute top-3 left-3 z-10 flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-gold text-white text-[11px] font-semibold uppercase tracking-wide shadow-card">
+                          <Sparkles size={11} /> Upcoming
+                        </div>
+                      )}
                       <EventMediaCarousel
                         media={ev.media}
                         title={ev.title}
@@ -199,7 +220,8 @@ export default function EventsPage({ onToast }: { onToast: (msg: string) => void
                         )}
                       </button>
                     </motion.div>
-                  ))}
+                    );
+                  })}
                 </div>
               </>
             )}
