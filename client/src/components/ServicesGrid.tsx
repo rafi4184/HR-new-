@@ -71,8 +71,8 @@ export default function ServicesGrid() {
           )}
         </AnimatePresence>
 
-        {/* Storytelling spine: a vertical journey from Terminal 3 arrival
-            through every service, one chapter per scroll stop. */}
+        {/* Storytelling spine: a vertical journey from Dhaka International
+            Airport arrival through every service, one chapter per scroll stop. */}
         <Reveal className="text-center max-w-xl mx-auto mb-14">
           <div className="text-[11px] font-medium mb-2 tracking-[0.2em] uppercase text-gold-deep">
             {storyT.eyebrow}

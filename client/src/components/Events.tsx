@@ -3,6 +3,8 @@ import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import { CalendarDays, MapPin, ArrowRight } from "lucide-react";
 import Reveal from "./ui/Reveal";
+import EventMediaCarousel from "./EventMediaCarousel";
+import EventLightbox, { type LightboxState } from "./EventLightbox";
 import { listEvents } from "../lib/api";
 import type { EventItem } from "../types";
 import { useDict } from "../lib/i18n";
@@ -17,6 +19,7 @@ export default function Events() {
   const T = useDict({ eyebrow: events.eyebrow, h2: events.h2, viewAll: events.viewAll });
   const [items, setEvents] = useState<EventItem[]>([]);
   const [loaded, setLoaded] = useState(false);
+  const [lightbox, setLightbox] = useState<LightboxState | null>(null);
 
   useEffect(() => {
     listEvents()
@@ -52,58 +55,43 @@ export default function Events() {
         </div>
       ) : (
         <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
-          {items.map((ev, i) => {
-            const cover = ev.media[0];
-            return (
-              <motion.div
-                key={ev.id}
-                initial={{ opacity: 0, y: 16 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, amount: 0.2 }}
-                transition={{ duration: 0.5, delay: Math.min(i, 6) * 0.06 }}
-                whileHover={{ y: -3 }}
-                className="rounded-xl overflow-hidden border border-border bg-white shadow-card"
-              >
-                <div className="aspect-[16/10] bg-navy/10 overflow-hidden">
-                  {cover?.mediaType === "image" && <img src={cover.url} alt={ev.title} className="w-full h-full object-cover" />}
-                  {cover?.mediaType === "video" && (
-                    <video src={cover.url} className="w-full h-full object-cover" muted loop playsInline autoPlay />
+          {items.map((ev, i) => (
+            <motion.div
+              key={ev.id}
+              initial={{ opacity: 0, y: 16 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, amount: 0.2 }}
+              transition={{ duration: 0.5, delay: Math.min(i, 6) * 0.06 }}
+              whileHover={{ y: -3 }}
+              className="rounded-xl overflow-hidden border border-border bg-white shadow-card hover:shadow-card-hover transition-shadow"
+            >
+              <EventMediaCarousel
+                media={ev.media}
+                title={ev.title}
+                onExpand={(index) => setLightbox({ media: ev.media, title: ev.title, index })}
+              />
+              <Link to="/events" className="block p-4 hover:bg-paper-soft transition-colors">
+                <div className="font-display text-lg mb-1.5 text-navy">{ev.title}</div>
+                <div className="flex flex-wrap gap-x-3 gap-y-1 text-[12px] mb-2 text-ink-faint">
+                  {ev.eventDate && (
+                    <span className="flex items-center gap-1">
+                      <CalendarDays size={12} /> {formatDate(ev.eventDate)}
+                    </span>
+                  )}
+                  {ev.location && (
+                    <span className="flex items-center gap-1">
+                      <MapPin size={12} /> {ev.location}
+                    </span>
                   )}
                 </div>
-                <div className="p-4">
-                  <div className="font-display text-lg mb-1.5">{ev.title}</div>
-                  <div className="flex flex-wrap gap-x-3 gap-y-1 text-[12px] mb-2 text-ink-faint">
-                    {ev.eventDate && (
-                      <span className="flex items-center gap-1">
-                        <CalendarDays size={12} /> {formatDate(ev.eventDate)}
-                      </span>
-                    )}
-                    {ev.location && (
-                      <span className="flex items-center gap-1">
-                        <MapPin size={12} /> {ev.location}
-                      </span>
-                    )}
-                  </div>
-                  {ev.description && <p className="text-[13px] text-ink-soft leading-relaxed">{ev.description}</p>}
-                  {ev.media.length > 1 && (
-                    <div className="flex gap-1.5 mt-3">
-                      {ev.media.slice(1, 5).map((m) => (
-                        <div key={m.id} className="w-10 h-10 rounded-md overflow-hidden border border-border">
-                          {m.mediaType === "image" ? (
-                            <img src={m.url} alt="" className="w-full h-full object-cover" />
-                          ) : (
-                            <video src={m.url} className="w-full h-full object-cover" muted />
-                          )}
-                        </div>
-                      ))}
-                    </div>
-                  )}
-                </div>
-              </motion.div>
-            );
-          })}
+                {ev.description && <p className="text-[13px] text-ink-soft leading-relaxed line-clamp-3">{ev.description}</p>}
+              </Link>
+            </motion.div>
+          ))}
         </div>
       )}
+
+      <EventLightbox state={lightbox} onClose={() => setLightbox(null)} />
     </section>
   );
 }

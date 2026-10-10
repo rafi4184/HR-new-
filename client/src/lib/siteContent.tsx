@@ -21,15 +21,15 @@ export const SITE_CONTENT_KEYS: ContentKeyDef[] = [
     key: "hero.eyebrow",
     label: "Hero — eyebrow tag",
     group: "Homepage Hero",
-    defaultEn: "Dhaka Airport Terminal 3 · Premium VIP Partner",
-    defaultBn: "ঢাকা বিমানবন্দর টার্মিনাল ৩ · প্রিমিয়াম ভিআইপি পার্টনার",
+    defaultEn: "Dhaka International Airport · Premium VIP Partner",
+    defaultBn: "ঢাকা আন্তর্জাতিক বিমানবন্দর · প্রিমিয়াম ভিআইপি পার্টনার",
   },
   {
     key: "hero.h1",
     label: "Hero — headline",
     group: "Homepage Hero",
-    defaultEn: "Your Premium Welcome Through Dhaka Airport Terminal 3",
-    defaultBn: "ঢাকা বিমানবন্দর টার্মিনাল ৩-এ আপনার প্রিমিয়াম স্বাগতম",
+    defaultEn: "Your Premium Welcome Through Dhaka International Airport",
+    defaultBn: "ঢাকা আন্তর্জাতিক বিমানবন্দরে আপনার প্রিমিয়াম স্বাগতম",
   },
   {
     key: "hero.paragraph",
@@ -37,9 +37,9 @@ export const SITE_CONTENT_KEYS: ContentKeyDef[] = [
     group: "Homepage Hero",
     multiline: true,
     defaultEn:
-      "From a VIP meet & greet at Hazrat Shahjalal International Airport's new Terminal 3 to hotel & car, government-request support, manpower, security, education and international careers — HR — The Mediator connects you with the services you need, coordinated by one trusted desk in Bangladesh.",
+      "From a VIP meet & greet at Dhaka International Airport (Hazrat Shahjalal International) to hotel & car, government-request support, manpower, security, education and international careers — HR — The Mediator connects you with the services you need, coordinated by one trusted desk in Bangladesh.",
     defaultBn:
-      "হযরত শাহজালাল আন্তর্জাতিক বিমানবন্দরের নতুন টার্মিনাল ৩-এ ভিআইপি মিট অ্যান্ড গ্রিট থেকে শুরু করে হোটেল ও গাড়ি, সরকারি কাজে সহায়তা, জনবল, নিরাপত্তা, শিক্ষা ও আন্তর্জাতিক ক্যারিয়ার পর্যন্ত — এইচআর দ্য মিডিয়েটর আপনাকে প্রয়োজনীয় সেবার সাথে যুক্ত করে, বাংলাদেশে একটি বিশ্বস্ত ডেস্কের মাধ্যমে সমন্বিতভাবে।",
+      "ঢাকা আন্তর্জাতিক বিমানবন্দরে (হযরত শাহজালাল আন্তর্জাতিক) ভিআইপি মিট অ্যান্ড গ্রিট থেকে শুরু করে হোটেল ও গাড়ি, সরকারি কাজে সহায়তা, জনবল, নিরাপত্তা, শিক্ষা ও আন্তর্জাতিক ক্যারিয়ার পর্যন্ত — এইচআর দ্য মিডিয়েটর আপনাকে প্রয়োজনীয় সেবার সাথে যুক্ত করে, বাংলাদেশে একটি বিশ্বস্ত ডেস্কের মাধ্যমে সমন্বিতভাবে।",
   },
   {
     key: "about.para1",

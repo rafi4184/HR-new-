@@ -7,6 +7,7 @@ import Reveal from "../components/ui/Reveal";
 import AmbientGlow from "../components/ui/AmbientGlow";
 import EventsManager from "../components/EventsManager";
 import EventMediaCarousel from "../components/EventMediaCarousel";
+import EventLightbox, { type LightboxState } from "../components/EventLightbox";
 import { listEvents, whoami, staffLogout } from "../lib/api";
 import type { EventItem, WhoAmI } from "../types";
 import { useDict } from "../lib/i18n";
@@ -29,6 +30,7 @@ export default function EventsPage({ onToast }: { onToast: (msg: string) => void
   const [items, setEvents] = useState<EventItem[]>([]);
   const [loaded, setLoaded] = useState(false);
   const [me, setMe] = useState<WhoAmI | null>(null);
+  const [lightbox, setLightbox] = useState<LightboxState | null>(null);
 
   useEffect(() => {
     listEvents()
@@ -116,7 +118,12 @@ export default function EventsPage({ onToast }: { onToast: (msg: string) => void
             <Reveal>
               <div className="rounded-2xl overflow-hidden border border-border bg-white shadow-card-hover grid md:grid-cols-2 mb-12">
                 <div className="md:order-2">
-                  <EventMediaCarousel media={items[0].media} title={items[0].title} className="md:h-full" />
+                  <EventMediaCarousel
+                    media={items[0].media}
+                    title={items[0].title}
+                    className="md:h-full"
+                    onExpand={(index) => setLightbox({ media: items[0].media, title: items[0].title, index })}
+                  />
                 </div>
                 <div className="p-7 md:p-9 flex flex-col justify-center md:order-1">
                   <div className="text-[11px] font-semibold uppercase tracking-[0.2em] text-gold-deep mb-3">{T.latestLabel}</div>
@@ -158,7 +165,11 @@ export default function EventsPage({ onToast }: { onToast: (msg: string) => void
                       whileHover={{ y: -4 }}
                       className="rounded-2xl overflow-hidden border border-border bg-white shadow-card hover:shadow-card-hover transition-shadow"
                     >
-                      <EventMediaCarousel media={ev.media} title={ev.title} />
+                      <EventMediaCarousel
+                        media={ev.media}
+                        title={ev.title}
+                        onExpand={(index) => setLightbox({ media: ev.media, title: ev.title, index })}
+                      />
                       <div className="p-5">
                         <div className="font-display text-lg mb-1.5 text-navy">{ev.title}</div>
                         <div className="flex flex-wrap gap-x-3 gap-y-1 text-[12px] mb-2.5 text-ink-faint">
@@ -214,6 +225,8 @@ export default function EventsPage({ onToast }: { onToast: (msg: string) => void
           </Reveal>
         </div>
       </section>
+
+      <EventLightbox state={lightbox} onClose={() => setLightbox(null)} />
     </div>
   );
 }

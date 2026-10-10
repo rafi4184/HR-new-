@@ -18,20 +18,20 @@ export const header = {
 
 export const hero = {
   eyebrow: {
-    en: "Dhaka Airport Terminal 3 · Premium VIP Partner",
-    bn: "ঢাকা বিমানবন্দর টার্মিনাল ৩ · প্রিমিয়াম ভিআইপি পার্টনার",
+    en: "Dhaka International Airport · Premium VIP Partner",
+    bn: "ঢাকা আন্তর্জাতিক বিমানবন্দর · প্রিমিয়াম ভিআইপি পার্টনার",
   },
   h1: {
-    en: "Your Premium Welcome Through Dhaka Airport Terminal 3",
-    bn: "ঢাকা বিমানবন্দর টার্মিনাল ৩-এ আপনার প্রিমিয়াম স্বাগতম",
+    en: "Your Premium Welcome Through Dhaka International Airport",
+    bn: "ঢাকা আন্তর্জাতিক বিমানবন্দরে আপনার প্রিমিয়াম স্বাগতম",
   },
   paragraph: {
-    en: "From a VIP meet & greet at Hazrat Shahjalal International Airport's new Terminal 3 to hotel & car, government-request support, manpower, security, education and international careers — HR — The Mediator connects you with the services you need, coordinated by one trusted desk in Bangladesh.",
-    bn: "হযরত শাহজালাল আন্তর্জাতিক বিমানবন্দরের নতুন টার্মিনাল ৩-এ ভিআইপি মিট অ্যান্ড গ্রিট থেকে শুরু করে হোটেল ও গাড়ি, সরকারি কাজে সহায়তা, জনবল, নিরাপত্তা, শিক্ষা ও আন্তর্জাতিক ক্যারিয়ার পর্যন্ত — এইচআর দ্য মিডিয়েটর আপনাকে প্রয়োজনীয় সেবার সাথে যুক্ত করে, বাংলাদেশে একটি বিশ্বস্ত ডেস্কের মাধ্যমে সমন্বিতভাবে।",
+    en: "From a VIP meet & greet at Dhaka International Airport (Hazrat Shahjalal International) to hotel & car, government-request support, manpower, security, education and international careers — HR — The Mediator connects you with the services you need, coordinated by one trusted desk in Bangladesh.",
+    bn: "ঢাকা আন্তর্জাতিক বিমানবন্দরে (হযরত শাহজালাল আন্তর্জাতিক) ভিআইপি মিট অ্যান্ড গ্রিট থেকে শুরু করে হোটেল ও গাড়ি, সরকারি কাজে সহায়তা, জনবল, নিরাপত্তা, শিক্ষা ও আন্তর্জাতিক ক্যারিয়ার পর্যন্ত — এইচআর দ্য মিডিয়েটর আপনাকে প্রয়োজনীয় সেবার সাথে যুক্ত করে, বাংলাদেশে একটি বিশ্বস্ত ডেস্কের মাধ্যমে সমন্বিতভাবে।",
   },
   exploreServices: { en: "Explore Services", bn: "সেবাসমূহ দেখুন" },
   requestService: { en: "Request a Service", bn: "সেবার জন্য অনুরোধ করুন" },
-  spotlightTag: { en: "Hazrat Shahjalal Int'l · Terminal 3", bn: "হযরত শাহজালাল আন্তর্জাতিক · টার্মিনাল ৩" },
+  spotlightTag: { en: "Hazrat Shahjalal Int'l · Dhaka", bn: "হযরত শাহজালাল আন্তর্জাতিক · ঢাকা" },
   spotlightTitle: { en: "Premium VIP Reception", bn: "প্রিমিয়াম ভিআইপি রিসেপশন" },
 };
 
@@ -130,8 +130,8 @@ export const servicesList = [
       bn: "প্রিমিয়াম এয়ারপোর্ট মিট অ্যান্ড গ্রিট, আগমন সহায়তা, প্রস্থান সহায়তা এবং যাত্রী সহায়তা।",
     },
     story: {
-      en: "The moment your flight touches down at Terminal 3, someone is already waiting — reading your name, not a stranger's face in the crowd. From the aircraft door to the car at the curb, every step is coordinated in advance so Bangladesh's busiest airport feels effortless.",
-      bn: "আপনার ফ্লাইট টার্মিনাল ৩-এ অবতরণ করার মুহূর্তেই কেউ একজন আপনার জন্য অপেক্ষা করছেন — ভিড়ের মধ্যে অচেনা মুখ নয়, আপনার নাম হাতে। বিমানের দরজা থেকে গাড়ি পর্যন্ত প্রতিটি ধাপ আগে থেকেই সমন্বিত, যাতে বাংলাদেশের ব্যস্ততম বিমানবন্দরও সহজ মনে হয়।",
+      en: "The moment your flight touches down at Dhaka International Airport, someone is already waiting — reading your name, not a stranger's face in the crowd. From the aircraft door to the car at the curb, every step is coordinated in advance so Bangladesh's busiest airport feels effortless.",
+      bn: "আপনার ফ্লাইট ঢাকা আন্তর্জাতিক বিমানবন্দরে অবতরণ করার মুহূর্তেই কেউ একজন আপনার জন্য অপেক্ষা করছেন — ভিড়ের মধ্যে অচেনা মুখ নয়, আপনার নাম হাতে। বিমানের দরজা থেকে গাড়ি পর্যন্ত প্রতিটি ধাপ আগে থেকেই সমন্বিত, যাতে বাংলাদেশের ব্যস্ততম বিমানবন্দরও সহজ মনে হয়।",
     },
     highlights: [
       { en: "Meet & greet at the gate or terminal entrance", bn: "গেট বা টার্মিনাল প্রবেশপথে মিট অ্যান্ড গ্রিট" },

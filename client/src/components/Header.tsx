@@ -10,6 +10,7 @@ import { useDict, useT } from "../lib/i18n";
 import { header, serviceNavGroups } from "../lib/translations";
 import { whoami, staffLogout } from "../lib/api";
 import type { WhoAmI } from "../types";
+import StaffLoginModal from "./StaffLoginModal";
 
 export default function Header() {
   const requestHref = useRequestHref();
@@ -20,6 +21,7 @@ export default function Header() {
   const [scrolled, setScrolled] = useState(false);
   const [me, setMe] = useState<WhoAmI | null>(null);
   const [accountMenuOpen, setAccountMenuOpen] = useState(false);
+  const [loginOpen, setLoginOpen] = useState(false);
   const closeTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   useEffect(() => {
@@ -34,6 +36,14 @@ export default function Header() {
       .then(setMe)
       .catch(() => setMe(null));
   }, []);
+
+  const handleLoginSuccess = () => {
+    setLoginOpen(false);
+    setMobileOpen(false);
+    void whoami()
+      .then(setMe)
+      .catch(() => setMe(null));
+  };
 
   const signOut = () => {
     void staffLogout().then(() => {
@@ -207,14 +217,15 @@ export default function Header() {
               </AnimatePresence>
             </div>
           ) : (
-            <Link
-              to="/staff"
+            <button
+              type="button"
+              onClick={() => setLoginOpen(true)}
               title={T.staffLogin}
               aria-label={T.staffLogin}
               className="flex items-center justify-center w-8 h-8 rounded-full text-ink-faint hover:text-navy hover:bg-paper-soft transition-colors"
             >
               <UserCog size={17} />
-            </Link>
+            </button>
           )}
           <Link
             to={requestHref}
@@ -321,13 +332,16 @@ export default function Header() {
                   </div>
                 </div>
               ) : (
-                <Link
-                  to="/staff"
-                  onClick={() => setMobileOpen(false)}
+                <button
+                  type="button"
+                  onClick={() => {
+                    setMobileOpen(false);
+                    setLoginOpen(true);
+                  }}
                   className="py-2.5 flex items-center gap-2 text-[15px] font-medium text-ink-soft"
                 >
                   <UserCog size={16} /> {T.staffLogin}
-                </Link>
+                </button>
               )}
               <Link
                 to={requestHref}
@@ -340,6 +354,8 @@ export default function Header() {
           </motion.nav>
         )}
       </AnimatePresence>
+
+      <StaffLoginModal open={loginOpen} onClose={() => setLoginOpen(false)} onSuccess={handleLoginSuccess} />
     </header>
   );
 }

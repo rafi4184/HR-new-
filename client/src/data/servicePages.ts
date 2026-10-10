@@ -60,9 +60,9 @@ export const HOME_FAQS: Faq[] = [
       "Candidates based in Dhaka, Rajshahi or anywhere in Bangladesh can apply through our International Careers programme for employment in Saudi Arabia, the UAE, Qatar and the wider Middle East, with documentation and pre-departure support included.",
   },
   {
-    question: "Do you offer premium or VIP service at Dhaka Airport Terminal 3?",
+    question: "Do you offer premium or VIP service at Dhaka International Airport?",
     answer:
-      "Our Airport VIP Reception is built around Hazrat Shahjalal International Airport's new Terminal 3 in Dhaka — meet & greet, fast-track immigration, baggage assistance and a car staged at the curb for arrivals and departures.",
+      "Yes. Our Airport VIP Reception covers all of Dhaka International Airport (Hazrat Shahjalal International), including the modern Terminal 3 — meet & greet, fast-track immigration, baggage assistance and a car staged at the curb for arrivals and departures.",
   },
   {
     question: "Where can I get airport VIP service in Bangladesh?",
@@ -87,12 +87,12 @@ export const SERVICE_PAGES: Record<string, ServicePageData> = {
     path: "/airport-vip",
     navLabel: "Airport VIP",
     title: "Airport VIP Reception",
-    metaTitle: "Dhaka Airport Terminal 3 VIP Service & Pickup | Bangladesh | HR — The Mediator",
+    metaTitle: "Dhaka International Airport VIP Service & Pickup | Bangladesh | HR — The Mediator",
     metaDescription:
-      "Premium VIP meet & greet at Hazrat Shahjalal International Airport's new Terminal 3 in Dhaka. Fast-track immigration, baggage assistance and passenger coordination for arrivals and departures across Bangladesh airports.",
-    h1: "Dhaka Airport Terminal 3 VIP Reception & Pickup",
+      "Premium VIP meet & greet at Dhaka International Airport (Hazrat Shahjalal International). Fast-track immigration, baggage assistance and passenger coordination for arrivals and departures across Bangladesh airports.",
+    h1: "Dhaka International Airport VIP Reception & Pickup",
     intro:
-      "A meet-and-greet officer waiting at Hazrat Shahjalal International Airport's new Terminal 3, fast-track immigration support, baggage assistance, and a car already staged at the curb for your Dhaka airport pickup. Our premium airport VIP service is built around Terminal 3's modern arrivals experience for travellers, families and business visitors who want a smooth, well-coordinated arrival or departure anywhere in Bangladesh.",
+      "A meet-and-greet officer waiting at Dhaka International Airport (Hazrat Shahjalal International), fast-track immigration support, baggage assistance, and a car already staged at the curb for your Dhaka airport pickup. Our premium airport VIP service covers every terminal — including the modern Terminal 3 — for travellers, families and business visitors who want a smooth, well-coordinated arrival or departure anywhere in Bangladesh.",
     whoFor: [
       "International visitors arriving in Dhaka, Chattogram or Sylhet",
       "Bangladeshi families welcoming relatives home",
@@ -118,7 +118,7 @@ export const SERVICE_PAGES: Record<string, ServicePageData> = {
       {
         question: "Which airports do you cover?",
         answer:
-          "We cover Hazrat Shahjalal International (Dhaka) — including the new Terminal 3 — Shah Amanat International (Chattogram) and Osmani International (Sylhet).",
+          "We cover Dhaka International Airport (Hazrat Shahjalal International, including Terminal 3), Shah Amanat International (Chattogram) and Osmani International (Sylhet).",
       },
       {
         question: "Can you arrange airport assistance for elderly travellers?",
@@ -136,7 +136,7 @@ export const SERVICE_PAGES: Record<string, ServicePageData> = {
       {
         question: "What is Dhaka airport VIP service?",
         answer:
-          "Dhaka airport VIP service is a meet & greet and passenger-assistance package at Hazrat Shahjalal International Airport — an officer meets you at the aircraft door or terminal entrance, coordinates fast-track immigration and customs, handles baggage, and has a car waiting at the curb, so you skip the usual arrival or departure queues and confusion.",
+          "Dhaka airport VIP service is a meet & greet and passenger-assistance package at Dhaka International Airport (Hazrat Shahjalal International Airport) — an officer meets you at the aircraft door or terminal entrance, coordinates fast-track immigration and customs, handles baggage, and has a car waiting at the curb, so you skip the usual arrival or departure queues and confusion.",
       },
       {
         question: "How do I book VIP assistance at Dhaka international airport?",

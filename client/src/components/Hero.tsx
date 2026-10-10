@@ -18,7 +18,7 @@ const ORBIT_ICONS = [
 ];
 
 // Flight path the plane icon travels along, from the curb (bottom-left)
-// up to the Terminal 3 spotlight badge (top-right) — drawn once, then the
+// up to the airport spotlight badge (top-right) — drawn once, then the
 // plane loops along it continuously.
 const FLIGHT_PATH = "M14,86 C 30,70 40,55 58,42 C 72,32 82,24 90,14";
 
@@ -123,7 +123,7 @@ export default function Hero() {
           <div className="relative rounded-2xl overflow-hidden shadow-card-hover aspect-[4/3] border border-white/60">
             <motion.img
               src={IMG_HERO_BG}
-              alt="Hazrat Shahjalal International Airport, Dhaka — Terminal 3"
+              alt="Dhaka International Airport — Hazrat Shahjalal International"
               style={{ y: imgY }}
               className="w-full h-[125%] object-cover"
             />
@@ -133,7 +133,7 @@ export default function Hero() {
               animate={{ opacity: [0.2, 0.45, 0.2] }}
               transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
             />
-            {/* Flight path: a plane glides from the curb up to the Terminal 3
+            {/* Flight path: a plane glides from the curb up to the airport
                 spotlight badge, looping continuously — ties the visual to the
                 airport VIP flagship story without relying on a stock photo. */}
             <svg
