@@ -52,10 +52,10 @@ export const serviceNavGroups = {
       summary: { en: "Hotel booking and private car service.", bn: "হোটেল বুকিং ও ব্যক্তিগত গাড়ি সেবা।" },
     },
     studyAbroad: {
-      title: { en: "Study & Work in the Gulf", bn: "গালফে পড়াশোনা ও কর্মসংস্থান" },
+      title: { en: "Study Abroad & International Careers", bn: "বিদেশে পড়াশোনা ও আন্তর্জাতিক ক্যারিয়ার" },
       summary: {
-        en: "University admission, Gulf/Middle East jobs & visa guidance.",
-        bn: "বিশ্ববিদ্যালয় ভর্তি, গালফ/মধ্যপ্রাচ্যে চাকরি ও ভিসা নির্দেশনা।",
+        en: "University admission, jobs & visa guidance across the Gulf, Europe & beyond.",
+        bn: "গালফ, ইউরোপ ও আরও অনেক দেশে বিশ্ববিদ্যালয় ভর্তি, চাকরি ও ভিসা নির্দেশনা।",
       },
     },
     coursesCareers: {
@@ -81,19 +81,45 @@ export const countriesWeServe = {
   eyebrow: { en: "Where we help you go", bn: "যেখানে আমরা আপনাকে যেতে সাহায্য করি" },
   h2: { en: "Countries We Serve", bn: "আমরা যেসব দেশে সেবা দিই" },
   intro: {
-    en: "Study-abroad guidance and Gulf/Middle East job placement, coordinated from our desk in Bangladesh.",
-    bn: "বাংলাদেশে আমাদের ডেস্ক থেকে সমন্বিত বিদেশে পড়াশোনার নির্দেশনা এবং গালফ/মধ্যপ্রাচ্যে চাকরি প্রাপ্তি।",
+    en: "Study-abroad guidance and international career placement — across the Gulf, Europe, North America, Oceania and beyond — coordinated from our desk in Bangladesh.",
+    bn: "গালফ, ইউরোপ, উত্তর আমেরিকা, ওশেনিয়া ও আরও অনেক দেশে বিদেশে পড়াশোনার নির্দেশনা এবং আন্তর্জাতিক কর্মসংস্থান — বাংলাদেশে আমাদের ডেস্ক থেকে সমন্বিত।",
+  },
+  regionLabels: {
+    gulf: { en: "Gulf & Middle East", bn: "গালফ ও মধ্যপ্রাচ্য" },
+    europe: { en: "Europe", bn: "ইউরোপ" },
+    americasOceania: { en: "Americas & Oceania", bn: "আমেরিকা ও ওশেনিয়া" },
+    asiaPacific: { en: "Asia Pacific", bn: "এশিয়া প্যাসিফিক" },
   },
   countries: [
-    { flag: "🇦🇪", name: { en: "UAE", bn: "সংযুক্ত আরব আমিরাত" } },
-    { flag: "🇸🇦", name: { en: "Saudi Arabia", bn: "সৌদি আরব" } },
-    { flag: "🇶🇦", name: { en: "Qatar", bn: "কাতার" } },
-    { flag: "🇰🇼", name: { en: "Kuwait", bn: "কুয়েত" } },
-    { flag: "🇴🇲", name: { en: "Oman", bn: "ওমান" } },
-    { flag: "🇧🇭", name: { en: "Bahrain", bn: "বাহরাইন" } },
-    { flag: "🇬🇧", name: { en: "United Kingdom", bn: "যুক্তরাজ্য" } },
-    { flag: "🇦🇺", name: { en: "Australia", bn: "অস্ট্রেলিয়া" } },
-    { flag: "🇨🇦", name: { en: "Canada", bn: "কানাডা" } },
+    { flag: "🇦🇪", region: "gulf", name: { en: "UAE", bn: "সংযুক্ত আরব আমিরাত" } },
+    { flag: "🇸🇦", region: "gulf", name: { en: "Saudi Arabia", bn: "সৌদি আরব" } },
+    { flag: "🇶🇦", region: "gulf", name: { en: "Qatar", bn: "কাতার" } },
+    { flag: "🇰🇼", region: "gulf", name: { en: "Kuwait", bn: "কুয়েত" } },
+    { flag: "🇴🇲", region: "gulf", name: { en: "Oman", bn: "ওমান" } },
+    { flag: "🇧🇭", region: "gulf", name: { en: "Bahrain", bn: "বাহরাইন" } },
+    { flag: "🇬🇧", region: "europe", name: { en: "United Kingdom", bn: "যুক্তরাজ্য" } },
+    { flag: "🇮🇪", region: "europe", name: { en: "Ireland", bn: "আয়ারল্যান্ড" } },
+    { flag: "🇩🇪", region: "europe", name: { en: "Germany", bn: "জার্মানি" } },
+    { flag: "🇫🇷", region: "europe", name: { en: "France", bn: "ফ্রান্স" } },
+    { flag: "🇮🇹", region: "europe", name: { en: "Italy", bn: "ইতালি" } },
+    { flag: "🇪🇸", region: "europe", name: { en: "Spain", bn: "স্পেন" } },
+    { flag: "🇵🇹", region: "europe", name: { en: "Portugal", bn: "পর্তুগাল" } },
+    { flag: "🇳🇱", region: "europe", name: { en: "Netherlands", bn: "নেদারল্যান্ডস" } },
+    { flag: "🇵🇱", region: "europe", name: { en: "Poland", bn: "পোল্যান্ড" } },
+    { flag: "🇷🇴", region: "europe", name: { en: "Romania", bn: "রোমানিয়া" } },
+    { flag: "🇲🇹", region: "europe", name: { en: "Malta", bn: "মাল্টা" } },
+    { flag: "🇨🇾", region: "europe", name: { en: "Cyprus", bn: "সাইপ্রাস" } },
+    { flag: "🇸🇪", region: "europe", name: { en: "Sweden", bn: "সুইডেন" } },
+    { flag: "🇩🇰", region: "europe", name: { en: "Denmark", bn: "ডেনমার্ক" } },
+    { flag: "🇫🇮", region: "europe", name: { en: "Finland", bn: "ফিনল্যান্ড" } },
+    { flag: "🇺🇸", region: "americasOceania", name: { en: "United States", bn: "যুক্তরাষ্ট্র" } },
+    { flag: "🇨🇦", region: "americasOceania", name: { en: "Canada", bn: "কানাডা" } },
+    { flag: "🇦🇺", region: "americasOceania", name: { en: "Australia", bn: "অস্ট্রেলিয়া" } },
+    { flag: "🇳🇿", region: "americasOceania", name: { en: "New Zealand", bn: "নিউজিল্যান্ড" } },
+    { flag: "🇲🇾", region: "asiaPacific", name: { en: "Malaysia", bn: "মালয়েশিয়া" } },
+    { flag: "🇸🇬", region: "asiaPacific", name: { en: "Singapore", bn: "সিঙ্গাপুর" } },
+    { flag: "🇯🇵", region: "asiaPacific", name: { en: "Japan", bn: "জাপান" } },
+    { flag: "🇰🇷", region: "asiaPacific", name: { en: "South Korea", bn: "দক্ষিণ কোরিয়া" } },
   ],
 };
 
@@ -291,12 +317,12 @@ export const coursesCareersTeaser = {
   },
   trackTwoCta: { en: "Explore Study Abroad", bn: "বিদেশে পড়াশোনা দেখুন" },
   trackThreeLabel: { en: "Track Three", bn: "ট্র্যাক ৩" },
-  trackThreeTitle: { en: "Jobs in Gulf & Middle East", bn: "গালফ ও মধ্যপ্রাচ্যে চাকরি" },
+  trackThreeTitle: { en: "International Jobs & Careers", bn: "আন্তর্জাতিক চাকরি ও ক্যারিয়ার" },
   trackThreeBody: {
-    en: "Gulf and Middle East employment opportunities, documentation support, and pre-departure assistance for jobseekers from Bangladesh.",
-    bn: "গালফ ও মধ্যপ্রাচ্যে কর্মসংস্থানের সুযোগ, কাগজপত্র সহায়তা এবং বাংলাদেশ থেকে চাকরিপ্রার্থীদের জন্য প্রস্থান-পূর্ব সহায়তা।",
+    en: "Employment opportunities across the Gulf, Europe and beyond, with documentation support and pre-departure assistance for jobseekers from Bangladesh.",
+    bn: "গালফ, ইউরোপ ও আরও অনেক দেশে কর্মসংস্থানের সুযোগ, কাগজপত্র সহায়তা এবং বাংলাদেশ থেকে চাকরিপ্রার্থীদের জন্য প্রস্থান-পূর্ব সহায়তা।",
   },
-  trackThreeCta: { en: "Explore Gulf & Middle East Jobs", bn: "গালফ ও মধ্যপ্রাচ্যের চাকরি দেখুন" },
+  trackThreeCta: { en: "Explore International Jobs", bn: "আন্তর্জাতিক চাকরি দেখুন" },
 };
 
 export const statsRow = {
@@ -523,6 +549,10 @@ export const bookingT = {
   govNotice: {
     en: "Our desk reviews every case individually and confirms scope directly with you by phone before any work begins.",
     bn: "আমাদের ডেস্ক প্রতিটি কেস আলাদাভাবে পর্যালোচনা করে এবং কাজ শুরুর আগে ফোনে সরাসরি আপনার সাথে বিষয়টি নিশ্চিত করে।",
+  },
+  programNotice: {
+    en: "Opening a student or career file costs ৳5,000 — this covers our desk's assessment of your background and documents, and starts your case work. Our team will confirm this with you directly after you submit.",
+    bn: "একটি শিক্ষার্থী বা ক্যারিয়ার ফাইল খুলতে ৳৫,০০০ খরচ হয় — এতে আপনার পটভূমি ও কাগজপত্র পর্যালোচনা এবং কেস শুরু করার কাজ অন্তর্ভুক্ত। জমা দেওয়ার পর আমাদের দল সরাসরি আপনার সাথে এটি নিশ্চিত করবে।",
   },
   placeholders: {
     flightExample: { en: "e.g. BG 147", bn: "যেমন BG 147" },
@@ -876,34 +906,67 @@ export const servicePagesT: Record<
 
   "study-work-gulf": {
     h1: {
-      en: "Gulf & Middle East Jobs and Study Abroad — International Careers",
-      bn: "গালফ ও মধ্যপ্রাচ্যে চাকরি এবং বিদেশে পড়াশোনা — আন্তর্জাতিক ক্যারিয়ার",
+      en: "Study Abroad & International Careers — Gulf, Europe & Beyond",
+      bn: "বিদেশে পড়াশোনা ও আন্তর্জাতিক ক্যারিয়ার — গালফ, ইউরোপ ও আরও অনেক দেশ",
     },
     intro: {
-      en: "Verified placement, not a broker's promise. Manpower export and recruitment support for jobs in the UAE, Qatar, Saudi Arabia and the wider Gulf and Middle East, plus study-abroad guidance for students from Dhaka, Rajshahi and across Bangladesh, drawing on our licensed staffing and outsourcing practice.",
-      bn: "যাচাইকৃত প্লেসমেন্ট, কোনো দালালের প্রতিশ্রুতি নয়। ইউএই, কাতার, সৌদি আরব ও বিস্তৃত গালফ এবং মধ্যপ্রাচ্যে চাকরির জন্য জনশক্তি রপ্তানি ও নিয়োগ সহায়তা, পাশাপাশি ঢাকা, রাজশাহী ও সমগ্র বাংলাদেশের শিক্ষার্থীদের জন্য বিদেশে পড়াশোনার দিকনির্দেশনা, আমাদের লাইসেন্সপ্রাপ্ত স্টাফিং ও আউটসোর্সিং প্র্যাকটিসের অভিজ্ঞতায়।",
+      en: "Two clear pathways, one desk: university admission and study-abroad guidance for students, and verified employment placement for jobseekers — across the Gulf, Europe, North America, Oceania and Asia Pacific. Applied for from Dhaka, Rajshahi or anywhere in Bangladesh, drawing on our licensed staffing and outsourcing practice.",
+      bn: "দুটি স্পষ্ট পথ, একটি ডেস্ক: শিক্ষার্থীদের জন্য বিশ্ববিদ্যালয় ভর্তি ও বিদেশে পড়াশোনার দিকনির্দেশনা, এবং চাকরিপ্রার্থীদের জন্য যাচাইকৃত কর্মসংস্থান প্লেসমেন্ট — গালফ, ইউরোপ, উত্তর আমেরিকা, ওশেনিয়া ও এশিয়া প্যাসিফিক জুড়ে। ঢাকা, রাজশাহী বা সমগ্র বাংলাদেশ থেকে আবেদন করা যায়, আমাদের লাইসেন্সপ্রাপ্ত স্টাফিং ও আউটসোর্সিং প্র্যাকটিসের অভিজ্ঞতায়।",
     },
     whoFor: [
-      { en: "Students seeking university admission or study-abroad guidance", bn: "বিশ্ববিদ্যালয় ভর্তি বা বিদেশে পড়াশোনার দিকনির্দেশনা খুঁজছেন এমন শিক্ষার্থী" },
-      { en: "Jobseekers pursuing Gulf employment opportunities", bn: "গালফ কর্মসংস্থানের সুযোগ খুঁজছেন এমন চাকরিপ্রার্থী" },
-      { en: "Overseas Bangladeshis planning a move to the Gulf", bn: "গালফে যাওয়ার পরিকল্পনা করছেন এমন প্রবাসী বাংলাদেশি" },
+      {
+        en: "Students seeking university admission or study-abroad guidance in Europe, the Gulf or beyond",
+        bn: "ইউরোপ, গালফ বা অন্যান্য দেশে বিশ্ববিদ্যালয় ভর্তি বা বিদেশে পড়াশোনার দিকনির্দেশনা খুঁজছেন এমন শিক্ষার্থী",
+      },
+      { en: "Jobseekers pursuing international employment opportunities", bn: "আন্তর্জাতিক কর্মসংস্থানের সুযোগ খুঁজছেন এমন চাকরিপ্রার্থী" },
+      { en: "Overseas Bangladeshis planning a move abroad", bn: "বিদেশে যাওয়ার পরিকল্পনা করছেন এমন প্রবাসী বাংলাদেশি" },
       { en: "Families needing pre-departure and documentation support", bn: "প্রস্থান-পূর্ব ও কাগজপত্র সহায়তা প্রয়োজন এমন পরিবার" },
     ],
     included: [
       { en: "Overseas university admission support", bn: "বিদেশে বিশ্ববিদ্যালয় ভর্তি সহায়তা" },
-      { en: "Study-abroad guidance", bn: "বিদেশে পড়াশোনার দিকনির্দেশনা" },
-      { en: "Gulf employment opportunities and career placement", bn: "গালফ কর্মসংস্থানের সুযোগ ও ক্যারিয়ার প্লেসমেন্ট" },
+      {
+        en: "Study-abroad guidance for Europe, the Gulf and other destinations",
+        bn: "ইউরোপ, গালফ ও অন্যান্য গন্তব্যের জন্য বিদেশে পড়াশোনার দিকনির্দেশনা",
+      },
+      { en: "International employment opportunities and career placement", bn: "আন্তর্জাতিক কর্মসংস্থানের সুযোগ ও ক্যারিয়ার প্লেসমেন্ট" },
       { en: "Visa and documentation support", bn: "ভিসা ও কাগজপত্র সহায়তা" },
       { en: "Pre-departure assistance", bn: "প্রস্থান-পূর্ব সহায়তা" },
     ],
     process: [
+      {
+        title: { en: "Open your file — ৳5,000", bn: "আপনার ফাইল খুলুন — ৳৫,০০০" },
+        body: {
+          en: "A one-time fee to open your student or career file. It covers our desk's assessment of your background and documents, and starts your case work.",
+          bn: "আপনার শিক্ষার্থী বা ক্যারিয়ার ফাইল খোলার জন্য একটি একবারের ফি। এতে আপনার পটভূমি ও কাগজপত্র সম্পর্কে আমাদের ডেস্কের মূল্যায়ন অন্তর্ভুক্ত, এবং আপনার কেসের কাজ শুরু হয়।",
+        },
+      },
       { title: { en: "Tell us study or work", bn: "পড়াশোনা নাকি কাজ জানান" }, body: { en: "Target country and your current background — student or jobseeker.", bn: "লক্ষ্য দেশ এবং আপনার বর্তমান পটভূমি — শিক্ষার্থী নাকি চাকরিপ্রার্থী।" } },
       { title: { en: "We verify the placement", bn: "আমরা প্লেসমেন্ট যাচাই করি" }, body: { en: "University admission or employer match, checked before anything is confirmed to you.", bn: "বিশ্ববিদ্যালয় ভর্তি বা নিয়োগকর্তার মিল, আপনাকে নিশ্চিত করার আগেই যাচাই করা হয়।" } },
       { title: { en: "Visa and documentation", bn: "ভিসা ও কাগজপত্র" }, body: { en: "Paperwork handled ahead of travel, not left for the last week.", bn: "ভ্রমণের আগেই কাগজপত্র সম্পন্ন করা হয়, শেষ সপ্তাহের জন্য ফেলে রাখা হয় না।" } },
       { title: { en: "Pre-departure briefing", bn: "প্রস্থান-পূর্ব ব্রিফিং" }, body: { en: "A final check-in before you fly, so nothing is a surprise on arrival.", bn: "উড়ালের আগে একটি চূড়ান্ত পর্যালোচনা, যাতে পৌঁছানোর পর কিছু অপ্রত্যাশিত না হয়।" } },
     ],
     faqs: [
-      { question: { en: "Which Gulf countries do you support placement for?", bn: "আপনারা কোন কোন গালফ দেশে প্লেসমেন্ট সহায়তা দেন?" }, answer: { en: "The UAE, Qatar, Saudi Arabia, and wider Gulf markets.", bn: "ইউএই, কাতার, সৌদি আরব এবং বিস্তৃত গালফ বাজার।" } },
+      {
+        question: { en: "Is there a fee to start my file?", bn: "আমার ফাইল শুরু করতে কি কোনো ফি আছে?" },
+        answer: {
+          en: "Yes — opening a student or career file costs ৳5,000. This covers our desk's assessment of your background and documents, and starts your case work. Our team will confirm this with you directly after you submit your request.",
+          bn: "হ্যাঁ — একটি শিক্ষার্থী বা ক্যারিয়ার ফাইল খুলতে ৳৫,০০০ খরচ হয়। এতে আপনার পটভূমি ও কাগজপত্রের মূল্যায়ন এবং কেসের কাজ শুরু করা অন্তর্ভুক্ত। আপনার অনুরোধ জমা দেওয়ার পর আমাদের দল সরাসরি আপনার সাথে এটি নিশ্চিত করবে।",
+        },
+      },
+      {
+        question: { en: "Which countries do you support placement for?", bn: "আপনারা কোন কোন দেশে প্লেসমেন্ট সহায়তা দেন?" },
+        answer: {
+          en: "The Gulf (Saudi Arabia, UAE, Qatar, Kuwait, Oman, Bahrain), Europe (UK, Ireland, Germany, France, Italy, Spain, Portugal, Netherlands, Poland, Romania, Malta, Cyprus, Sweden, Denmark, Finland), North America (US, Canada), Oceania (Australia, New Zealand) and Asia Pacific (Malaysia, Singapore, Japan, South Korea).",
+          bn: "গালফ (সৌদি আরব, ইউএই, কাতার, কুয়েত, ওমান, বাহরাইন), ইউরোপ (যুক্তরাজ্য, আয়ারল্যান্ড, জার্মানি, ফ্রান্স, ইতালি, স্পেন, পর্তুগাল, নেদারল্যান্ডস, পোল্যান্ড, রোমানিয়া, মাল্টা, সাইপ্রাস, সুইডেন, ডেনমার্ক, ফিনল্যান্ড), উত্তর আমেরিকা (যুক্তরাষ্ট্র, কানাডা), ওশেনিয়া (অস্ট্রেলিয়া, নিউজিল্যান্ড) এবং এশিয়া প্যাসিফিক (মালয়েশিয়া, সিঙ্গাপুর, জাপান, দক্ষিণ কোরিয়া)।",
+        },
+      },
+      {
+        question: { en: "How can I apply for study abroad or a job overseas from Dhaka?", bn: "ঢাকা থেকে কীভাবে বিদেশে পড়াশোনা বা চাকরির জন্য আবেদন করতে পারি?" },
+        answer: {
+          en: "Submit a request through our International Careers programme with your background and target country. Our Dhaka-based desk reviews your case, matches you with a suitable study or employment path, and handles documentation and pre-departure support.",
+          bn: "আপনার পটভূমি ও লক্ষ্য দেশসহ আমাদের আন্তর্জাতিক ক্যারিয়ার প্রোগ্রামের মাধ্যমে একটি অনুরোধ জমা দিন। আমাদের ঢাকা-ভিত্তিক ডেস্ক আপনার কেস পর্যালোচনা করে, উপযুক্ত পড়াশোনা বা কর্মসংস্থানের পথের সাথে আপনাকে মিলিয়ে দেয়, এবং কাগজপত্র ও প্রস্থান-পূর্ব সহায়তা পরিচালনা করে।",
+        },
+      },
       { question: { en: "Do you help with visa and documentation?", bn: "আপনারা কি ভিসা ও কাগজপত্রে সহায়তা করেন?" }, answer: { en: "Visa and documentation support plus pre-departure assistance are included.", bn: "ভিসা ও কাগজপত্র সহায়তা এবং প্রস্থান-পূর্ব সহায়তা অন্তর্ভুক্ত।" } },
     ],
     cta: { en: "Explore International Careers", bn: "আন্তর্জাতিক ক্যারিয়ার দেখুন" },
@@ -920,8 +983,8 @@ export const serviceNavLabelsT: Record<string, { en: string; bn: string }> = {
   "courses-careers": { en: "Courses & Careers", bn: "কোর্স ও ক্যারিয়ার" },
   "media-public-speaking": { en: "Media & Public Speaking Academy", bn: "মিডিয়া ও পাবলিক স্পিকিং একাডেমি" },
   "study-work-gulf": {
-    en: "International Careers — Study & Work in the Gulf",
-    bn: "আন্তর্জাতিক ক্যারিয়ার — গালফে পড়াশোনা ও কাজ",
+    en: "International Careers — Study & Work Abroad",
+    bn: "আন্তর্জাতিক ক্যারিয়ার — বিদেশে পড়াশোনা ও কাজ",
   },
 };
 

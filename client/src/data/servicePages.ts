@@ -390,28 +390,32 @@ export const SERVICE_PAGES: Record<string, ServicePageData> = {
   "study-work-gulf": {
     id: "study-work-gulf",
     path: "/study-work-gulf",
-    navLabel: "International Careers — Study & Work in the Gulf",
-    title: "International Careers — Study & Work in the Gulf",
-    metaTitle: "Jobs in Saudi Arabia & Middle East from Dhaka + Study Abroad | HR — The Mediator",
+    navLabel: "International Careers — Study & Work Abroad",
+    title: "International Careers — Study & Work Abroad",
+    metaTitle: "Study Abroad & International Careers — Gulf, Europe & Beyond | HR — The Mediator",
     metaDescription:
-      "Employment in Saudi Arabia, the UAE, Qatar and the wider Middle East, and study abroad guidance, for candidates from Dhaka, Rajshahi and across Bangladesh — university admission, career placement, visa and pre-departure assistance.",
-    h1: "Dhaka to Saudi Arabia & Middle East Jobs — Study & Work Abroad",
+      "Study-abroad guidance and international career placement across the Gulf, Europe, North America, Oceania and Asia Pacific, for candidates from Dhaka, Rajshahi and across Bangladesh — university admission, career placement, visa and pre-departure assistance.",
+    h1: "Study Abroad & International Careers — Gulf, Europe & Beyond",
     intro:
-      "Verified placement, not a broker's promise. Manpower export and recruitment support for jobs in Saudi Arabia, the UAE, Qatar and the wider Gulf and Middle East — applied for from Dhaka, Rajshahi or anywhere in Bangladesh — plus study-abroad guidance for students, drawing on our licensed staffing and outsourcing practice.",
+      "Two clear pathways, one desk: university admission and study-abroad guidance for students, and verified employment placement for jobseekers — across the Gulf, Europe, North America, Oceania and Asia Pacific. Applied for from Dhaka, Rajshahi or anywhere in Bangladesh, drawing on our licensed staffing and outsourcing practice.",
     whoFor: [
-      "Students seeking university admission or study-abroad guidance",
-      "Jobseekers pursuing Gulf employment opportunities",
-      "Overseas Bangladeshis planning a move to the Gulf",
+      "Students seeking university admission or study-abroad guidance in Europe, the Gulf or beyond",
+      "Jobseekers pursuing international employment opportunities",
+      "Overseas Bangladeshis planning a move abroad",
       "Families needing pre-departure and documentation support",
     ],
     included: [
       "Overseas university admission support",
-      "Study-abroad guidance",
-      "Gulf employment opportunities and career placement",
+      "Study-abroad guidance for Europe, the Gulf and other destinations",
+      "International employment opportunities and career placement",
       "Visa and documentation support",
       "Pre-departure assistance",
     ],
     process: [
+      {
+        title: "Open your file — ৳5,000",
+        body: "A one-time fee to open your student or career file. It covers our desk's assessment of your background and documents, and starts your case work.",
+      },
       { title: "Tell us study or work", body: "Target country and your current background — student or jobseeker." },
       { title: "We verify the placement", body: "University admission or employer match, checked before anything is confirmed to you." },
       { title: "Visa and documentation", body: "Paperwork handled ahead of travel, not left for the last week." },
@@ -419,13 +423,19 @@ export const SERVICE_PAGES: Record<string, ServicePageData> = {
     ],
     faqs: [
       {
-        question: "Which Gulf countries do you support placement for?",
-        answer: "Saudi Arabia, the UAE, Qatar, and wider Gulf and Middle East markets.",
+        question: "Is there a fee to start my file?",
+        answer:
+          "Yes — opening a student or career file costs ৳5,000. This covers our desk's assessment of your background and documents, and starts your case work. Our team will confirm this with you directly after you submit your request.",
       },
       {
-        question: "How can I apply for a job in Saudi Arabia or the Middle East from Dhaka?",
+        question: "Which countries do you support placement for?",
         answer:
-          "Submit a request through our International Careers programme with your background and target country. Our Dhaka-based desk reviews your case, matches you with a suitable employment path, and handles documentation and pre-departure support.",
+          "The Gulf (Saudi Arabia, UAE, Qatar, Kuwait, Oman, Bahrain), Europe (UK, Ireland, Germany, France, Italy, Spain, Portugal, Netherlands, Poland, Romania, Malta, Cyprus, Sweden, Denmark, Finland), North America (US, Canada), Oceania (Australia, New Zealand) and Asia Pacific (Malaysia, Singapore, Japan, South Korea).",
+      },
+      {
+        question: "How can I apply for study abroad or a job overseas from Dhaka?",
+        answer:
+          "Submit a request through our International Careers programme with your background and target country. Our Dhaka-based desk reviews your case, matches you with a suitable study or employment path, and handles documentation and pre-departure support.",
       },
       {
         question: "Do you help with visa and documentation?",

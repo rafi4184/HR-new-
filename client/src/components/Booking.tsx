@@ -65,6 +65,7 @@ const Booking = forwardRef<
     submitProgram: bookingT.submitProgram,
     errorFallback: bookingT.errorFallback,
     govNotice: bookingT.govNotice,
+    programNotice: bookingT.programNotice,
     ticketSaved: bookingT.ticketSaved,
     defaultHeading: bookingT.defaultHeading,
     defaultSubheading: bookingT.defaultSubheading,
@@ -324,6 +325,10 @@ const Booking = forwardRef<
 
             {tab === "programs" && (
               <form onSubmit={(e) => handleSubmit("program", e)}>
+                <div className="mb-5 text-[13px] rounded-lg px-4 py-3 flex gap-2 bg-gold-pale text-[#7A5E13]">
+                  <Clock size={16} className="shrink-0 mt-0.5" />
+                  {T.programNotice}
+                </div>
                 <div className="grid sm:grid-cols-2 gap-x-5">
                   <IdentityFields />
                   <Field label={fields.program} required>
