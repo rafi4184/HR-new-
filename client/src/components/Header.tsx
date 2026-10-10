@@ -229,8 +229,9 @@ export default function Header() {
           )}
           <Link
             to={requestHref}
-            className="text-[13px] font-medium tracking-wide px-5 py-2.5 rounded-full bg-gold text-white hover:bg-gold-deep transition-colors"
+            className="relative text-[13px] font-medium tracking-wide px-5 py-2.5 rounded-full bg-gold text-white hover:bg-gold-deep hover:scale-105 active:scale-95 transition-all"
           >
+            <span aria-hidden="true" className="absolute inset-0 rounded-full bg-gold-deep/70 animate-ping-slow" />
             {T.requestService}
           </Link>
         </div>
@@ -239,7 +240,7 @@ export default function Header() {
           <LanguageToggle className="mr-0.5" />
           <Link
             to={requestHref}
-            className="text-[12px] sm:text-[12.5px] font-medium px-2.5 sm:px-3.5 py-2 rounded-full bg-gold text-white whitespace-nowrap"
+            className="text-[12px] sm:text-[12.5px] font-medium px-2.5 sm:px-3.5 py-2 rounded-full bg-gold text-white hover:scale-105 active:scale-95 transition-transform whitespace-nowrap"
           >
             <span className="sm:hidden">{T.requestShort}</span>
             <span className="hidden sm:inline">{T.requestService}</span>
@@ -346,7 +347,7 @@ export default function Header() {
               <Link
                 to={requestHref}
                 onClick={() => setMobileOpen(false)}
-                className="mt-3 text-center text-[14px] font-medium px-5 py-3 rounded-full bg-gold text-white"
+                className="mt-3 text-center text-[14px] font-medium px-5 py-3 rounded-full bg-gold text-white hover:bg-gold-deep active:scale-95 transition-all"
               >
                 {T.requestService}
               </Link>

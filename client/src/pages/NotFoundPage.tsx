@@ -26,13 +26,13 @@ export default function NotFoundPage() {
       <div className="flex flex-wrap items-center justify-center gap-3 mb-12">
         <Link
           to="/"
-          className="inline-flex items-center gap-2 px-6 py-3 rounded-full font-medium text-[14px] bg-navy text-white hover:bg-navy-deep transition-colors"
+          className="inline-flex items-center gap-2 px-6 py-3 rounded-full font-medium text-[14px] bg-navy text-white hover:bg-navy-deep hover:scale-105 active:scale-95 transition-all"
         >
           <Home size={15} /> Back to Homepage
         </Link>
         <Link
           to={requestHref}
-          className="inline-flex items-center gap-2 px-6 py-3 rounded-full font-medium text-[14px] bg-gold text-white hover:bg-gold-deep transition-colors"
+          className="inline-flex items-center gap-2 px-6 py-3 rounded-full font-medium text-[14px] bg-gold text-white hover:bg-gold-deep hover:scale-105 active:scale-95 transition-all"
         >
           Request a Service <ArrowRight size={15} />
         </Link>

@@ -86,6 +86,10 @@ export default {
           "0%": { backgroundPosition: "-300px 0" },
           "100%": { backgroundPosition: "300px 0" },
         },
+        pingSlow: {
+          "0%": { transform: "scale(1)", opacity: "0.55" },
+          "100%": { transform: "scale(1.35)", opacity: "0" },
+        },
       },
       animation: {
         heroUp: "heroUp 0.7s cubic-bezier(.2,.8,.2,1) forwards",
@@ -93,6 +97,7 @@ export default {
         drawCheck: "drawCheck 0.5s ease forwards 0.15s",
         popIn: "popIn 0.45s cubic-bezier(.2,.9,.3,1.3) forwards",
         shimmer: "shimmer 1.4s infinite",
+        "ping-slow": "pingSlow 2.4s cubic-bezier(.2,.8,.2,1) infinite",
       },
     },
   },

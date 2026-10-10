@@ -64,7 +64,7 @@ export default function AboutPage() {
           <p className="text-ink-muted mb-8">{T.exploreBody}</p>
           <Link
             to="/#services"
-            className="group inline-flex items-center gap-2 px-7 py-3.5 rounded-full font-medium text-[14px] tracking-wide uppercase bg-gold text-white hover:bg-gold-deep transition-colors"
+            className="group inline-flex items-center gap-2 px-7 py-3.5 rounded-full font-medium text-[14px] tracking-wide uppercase bg-gold text-white hover:bg-gold-deep hover:scale-105 active:scale-95 transition-all"
           >
             {T.viewAllServices}
             <ArrowRight size={15} className="transition-transform group-hover:translate-x-1" />

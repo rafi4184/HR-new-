@@ -132,7 +132,7 @@ export default function PaymentModal({
                 <button
                   onClick={confirm}
                   disabled={stage === "processing"}
-                  className="w-full py-3 rounded-md font-medium text-[15px] flex items-center justify-center gap-2 bg-gold text-white hover:bg-gold-deep active:scale-[0.97] transition-colors disabled:opacity-85"
+                  className="w-full py-3 rounded-md font-medium text-[15px] flex items-center justify-center gap-2 bg-gold text-white hover:bg-gold-deep hover:scale-[1.02] active:scale-95 transition-all disabled:opacity-85 disabled:hover:scale-100"
                 >
                   {stage === "processing" ? (
                     <>

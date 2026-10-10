@@ -36,9 +36,11 @@ export default function MagneticButton({
   const shared = {
     onMouseMove: handleMove,
     onMouseLeave: () => setPos({ x: 0, y: 0 }),
-    animate: { x: pos.x, y: pos.y },
+    animate: { x: pos.x, y: pos.y, scale: 1 },
+    whileHover: { scale: 1.055 },
+    whileTap: { scale: 0.94 },
     transition: { type: "spring" as const, stiffness: 150, damping: 12, mass: 0.4 },
-    className,
+    className: `relative ${className}`,
   };
 
   if (as === "link") {

@@ -74,7 +74,7 @@ export default function App() {
         href="https://wa.me/8801717013150?text=Hi%2C%20I%27d%20like%20to%20request%20a%20service%20from%20HR%20%E2%80%94%20The%20Mediator."
         target="_blank"
         rel="noopener noreferrer"
-        className="fixed bottom-24 right-5 z-40 w-14 h-14 rounded-full flex items-center justify-center shadow-card-hover bg-[#25D366] text-white hover:brightness-95 active:scale-[0.97] transition-all"
+        className="fixed bottom-24 right-5 z-40 w-14 h-14 rounded-full flex items-center justify-center shadow-card-hover bg-[#25D366] text-white hover:brightness-95 hover:scale-110 active:scale-95 transition-all"
         aria-label="Chat on WhatsApp"
       >
         <MessageCircle size={22} />
@@ -82,7 +82,7 @@ export default function App() {
 
       <a
         href="tel:+8801717013150"
-        className="fixed bottom-5 right-5 z-40 w-14 h-14 rounded-full flex items-center justify-center shadow-card-hover bg-gold text-white hover:bg-gold-deep active:scale-[0.97] transition-colors"
+        className="fixed bottom-5 right-5 z-40 w-14 h-14 rounded-full flex items-center justify-center shadow-card-hover bg-gold text-white hover:bg-gold-deep hover:scale-110 active:scale-95 transition-all"
         aria-label="Call the desk"
       >
         <Phone size={20} />
