@@ -19,21 +19,23 @@ function mapContact(row: Record<string, unknown>): Contact {
 }
 
 function mapEvent(row: Record<string, unknown>): EventItem {
-  const media = ((row.media as Record<string, unknown>[] | null) ?? []).map((m) => {
-    const storagePath = m.storagePath as string;
-    // A path starting with "/" is a static file shipped with the site itself
-    // (e.g. public/images/events/...) rather than a Supabase Storage object —
-    // used for media staff couldn't upload through the dashboard directly.
-    const url = storagePath.startsWith("/")
-      ? storagePath
-      : supabase.storage.from(EVENT_MEDIA_BUCKET).getPublicUrl(storagePath).data.publicUrl;
-    return {
-      id: m.id as number,
-      mediaType: m.mediaType as "image" | "video",
-      storagePath,
-      url,
-    };
-  });
+  const media = ((row.media as Record<string, unknown>[] | null) ?? [])
+    .filter((m) => typeof m.storagePath === "string" && m.storagePath.length > 0)
+    .map((m) => {
+      const storagePath = m.storagePath as string;
+      // A path starting with "/" is a static file shipped with the site itself
+      // (e.g. public/images/events/...) rather than a Supabase Storage object —
+      // used for media staff couldn't upload through the dashboard directly.
+      const url = storagePath.startsWith("/")
+        ? storagePath
+        : supabase.storage.from(EVENT_MEDIA_BUCKET).getPublicUrl(storagePath).data.publicUrl;
+      return {
+        id: m.id as number,
+        mediaType: m.mediaType as "image" | "video",
+        storagePath,
+        url,
+      };
+    });
   return {
     id: row.id as number,
     title: row.title as string,

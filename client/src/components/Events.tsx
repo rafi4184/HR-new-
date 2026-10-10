@@ -5,6 +5,7 @@ import { CalendarDays, MapPin, ArrowRight } from "lucide-react";
 import Reveal from "./ui/Reveal";
 import EventMediaCarousel from "./EventMediaCarousel";
 import EventLightbox, { type LightboxState } from "./EventLightbox";
+import EventDetailModal from "./EventDetailModal";
 import { listEvents } from "../lib/api";
 import type { EventItem } from "../types";
 import { useDict } from "../lib/i18n";
@@ -20,6 +21,7 @@ export default function Events() {
   const [items, setEvents] = useState<EventItem[]>([]);
   const [loaded, setLoaded] = useState(false);
   const [lightbox, setLightbox] = useState<LightboxState | null>(null);
+  const [detail, setDetail] = useState<EventItem | null>(null);
 
   useEffect(() => {
     listEvents()
@@ -70,7 +72,11 @@ export default function Events() {
                 title={ev.title}
                 onExpand={(index) => setLightbox({ media: ev.media, title: ev.title, index })}
               />
-              <Link to="/events" className="block p-4 hover:bg-paper-soft transition-colors">
+              <button
+                type="button"
+                onClick={() => setDetail(ev)}
+                className="block w-full text-left p-4 hover:bg-paper-soft transition-colors"
+              >
                 <div className="font-display text-lg mb-1.5 text-navy">{ev.title}</div>
                 <div className="flex flex-wrap gap-x-3 gap-y-1 text-[12px] mb-2 text-ink-faint">
                   {ev.eventDate && (
@@ -85,12 +91,17 @@ export default function Events() {
                   )}
                 </div>
                 {ev.description && <p className="text-[13px] text-ink-soft leading-relaxed line-clamp-3">{ev.description}</p>}
-              </Link>
+              </button>
             </motion.div>
           ))}
         </div>
       )}
 
+      <EventDetailModal
+        event={detail}
+        onClose={() => setDetail(null)}
+        onExpandPhoto={(index) => detail && setLightbox({ media: detail.media, title: detail.title, index })}
+      />
       <EventLightbox state={lightbox} onClose={() => setLightbox(null)} />
     </section>
   );

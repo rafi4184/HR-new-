@@ -8,6 +8,7 @@ import AmbientGlow from "../components/ui/AmbientGlow";
 import EventsManager from "../components/EventsManager";
 import EventMediaCarousel from "../components/EventMediaCarousel";
 import EventLightbox, { type LightboxState } from "../components/EventLightbox";
+import EventDetailModal from "../components/EventDetailModal";
 import { listEvents, whoami, staffLogout } from "../lib/api";
 import type { EventItem, WhoAmI } from "../types";
 import { useDict } from "../lib/i18n";
@@ -31,6 +32,7 @@ export default function EventsPage({ onToast }: { onToast: (msg: string) => void
   const [loaded, setLoaded] = useState(false);
   const [me, setMe] = useState<WhoAmI | null>(null);
   const [lightbox, setLightbox] = useState<LightboxState | null>(null);
+  const [detail, setDetail] = useState<EventItem | null>(null);
 
   useEffect(() => {
     listEvents()
@@ -125,7 +127,11 @@ export default function EventsPage({ onToast }: { onToast: (msg: string) => void
                     onExpand={(index) => setLightbox({ media: items[0].media, title: items[0].title, index })}
                   />
                 </div>
-                <div className="p-7 md:p-9 flex flex-col justify-center md:order-1">
+                <button
+                  type="button"
+                  onClick={() => setDetail(items[0])}
+                  className="p-7 md:p-9 flex flex-col justify-center text-left md:order-1 hover:bg-paper-soft transition-colors"
+                >
                   <div className="text-[11px] font-semibold uppercase tracking-[0.2em] text-gold-deep mb-3">{T.latestLabel}</div>
                   <h2 className="font-display text-2xl md:text-3xl text-navy mb-3" style={{ textWrap: "balance" }}>
                     {items[0].title}
@@ -143,9 +149,9 @@ export default function EventsPage({ onToast }: { onToast: (msg: string) => void
                     )}
                   </div>
                   {items[0].description && (
-                    <p className="text-[14.5px] text-ink-soft leading-relaxed">{items[0].description}</p>
+                    <p className="text-[14.5px] text-ink-soft leading-relaxed line-clamp-4">{items[0].description}</p>
                   )}
-                </div>
+                </button>
               </div>
             </Reveal>
 
@@ -170,7 +176,11 @@ export default function EventsPage({ onToast }: { onToast: (msg: string) => void
                         title={ev.title}
                         onExpand={(index) => setLightbox({ media: ev.media, title: ev.title, index })}
                       />
-                      <div className="p-5">
+                      <button
+                        type="button"
+                        onClick={() => setDetail(ev)}
+                        className="block w-full text-left p-5 hover:bg-paper-soft transition-colors"
+                      >
                         <div className="font-display text-lg mb-1.5 text-navy">{ev.title}</div>
                         <div className="flex flex-wrap gap-x-3 gap-y-1 text-[12px] mb-2.5 text-ink-faint">
                           {ev.eventDate && (
@@ -184,8 +194,10 @@ export default function EventsPage({ onToast }: { onToast: (msg: string) => void
                             </span>
                           )}
                         </div>
-                        {ev.description && <p className="text-[13.5px] text-ink-soft leading-relaxed">{ev.description}</p>}
-                      </div>
+                        {ev.description && (
+                          <p className="text-[13.5px] text-ink-soft leading-relaxed line-clamp-4">{ev.description}</p>
+                        )}
+                      </button>
                     </motion.div>
                   ))}
                 </div>
@@ -226,6 +238,11 @@ export default function EventsPage({ onToast }: { onToast: (msg: string) => void
         </div>
       </section>
 
+      <EventDetailModal
+        event={detail}
+        onClose={() => setDetail(null)}
+        onExpandPhoto={(index) => detail && setLightbox({ media: detail.media, title: detail.title, index })}
+      />
       <EventLightbox state={lightbox} onClose={() => setLightbox(null)} />
     </div>
   );
