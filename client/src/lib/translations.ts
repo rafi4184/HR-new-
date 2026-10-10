@@ -460,6 +460,7 @@ export const bookingT = {
     hotel: { en: "Hotel & car", bn: "হোটেল ও গাড়ি" },
     government: { en: "Government request", bn: "সরকারি অনুরোধ" },
     programs: { en: "Courses & careers", bn: "কোর্স ও ক্যারিয়ার" },
+    resume: { en: "Resume Review", bn: "জীবনবৃত্তান্ত পর্যালোচনা" },
   },
   defaultHeading: { en: "Request a Service", bn: "সেবার জন্য অনুরোধ করুন" },
   defaultSubheading: {

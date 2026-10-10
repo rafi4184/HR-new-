@@ -1,6 +1,6 @@
 import { useEffect, useState, type FormEvent } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Trash2, Pencil, Plus, ShieldCheck, Shield, Users, KeyRound, ScrollText, CalendarDays, FileText, Download } from "lucide-react";
+import { Trash2, Pencil, Plus, ShieldCheck, Shield, Users, KeyRound, ScrollText, CalendarDays, FileText, Download, UserCheck, UserX, MailCheck } from "lucide-react";
 import { inputClass } from "../ui/Field";
 import EventsManager from "../EventsManager";
 import {
@@ -855,12 +855,16 @@ const RESUME_STATUS_LABEL: Record<ResumeSubmission["status"], string> = {
   new: "New",
   reviewed: "Reviewed",
   contacted: "Contacted",
+  shortlisted: "Shortlisted",
+  not_suitable: "Not suitable",
 };
 
 const RESUME_STATUS_TONE: Record<ResumeSubmission["status"], string> = {
   new: "bg-gold-pale text-gold-deep",
   reviewed: "bg-paper-panel text-ink-soft",
   contacted: "bg-[#DCEEDC] text-[#2A6B2F]",
+  shortlisted: "bg-[#DCEEDC] text-[#2A6B2F]",
+  not_suitable: "bg-[#F7E3DD] text-[#8A3B22]",
 };
 
 function ResumesPanel({ onToast }: { onToast: (msg: string) => void }) {
@@ -895,7 +899,10 @@ function ResumesPanel({ onToast }: { onToast: (msg: string) => void }) {
     setBusyId(r.id);
     try {
       await staffReviewResume(r.id, status);
-      onToast(`Marked as ${RESUME_STATUS_LABEL[status].toLowerCase()}.`);
+      const emailsCustomer = status === "shortlisted" || status === "not_suitable";
+      onToast(
+        `Marked as ${RESUME_STATUS_LABEL[status].toLowerCase()}.${emailsCustomer ? " Customer notified by email." : ""}`
+      );
       void refresh();
     } catch (err) {
       onToast(panelError(err, "Couldn't update that resume."));
@@ -907,12 +914,19 @@ function ResumesPanel({ onToast }: { onToast: (msg: string) => void }) {
   if (loading) return <div className="shimmer rounded-lg h-16 animate-shimmer" />;
 
   const filtered = statusFilter === "all" ? resumes : resumes.filter((r) => r.status === statusFilter);
+  const newCount = resumes.filter((r) => r.status === "new").length;
 
   return (
     <div>
+      {newCount > 0 && (
+        <div className="flex items-center gap-2 mb-4 text-[13px] font-medium px-4 py-2.5 rounded-lg bg-gold-pale text-gold-deep">
+          <FileText size={14} />
+          {newCount === 1 ? "1 new resume awaiting review" : `${newCount} new resumes awaiting review`}
+        </div>
+      )}
       <div className="flex items-center gap-1.5 mb-4 flex-wrap">
         <span className="text-[11px] font-medium uppercase tracking-wide text-ink-faint mr-1">Filter</span>
-        {(["all", "new", "reviewed", "contacted"] as const).map((s) => (
+        {(["all", "new", "reviewed", "contacted", "shortlisted", "not_suitable"] as const).map((s) => (
           <button
             key={s}
             onClick={() => setStatusFilter(s)}
@@ -940,6 +954,11 @@ function ResumesPanel({ onToast }: { onToast: (msg: string) => void }) {
                     <span className={`text-[11px] font-medium px-2 py-0.5 rounded-full ${RESUME_STATUS_TONE[r.status]}`}>
                       {RESUME_STATUS_LABEL[r.status]}
                     </span>
+                    {r.notifiedAt && (
+                      <span className="inline-flex items-center gap-1 text-[11px] font-medium text-ink-faint">
+                        <MailCheck size={11} /> Notified {new Date(r.notifiedAt).toLocaleDateString()}
+                      </span>
+                    )}
                   </div>
                   <div className="text-[12.5px] text-ink-faint">
                     {r.email}
@@ -977,6 +996,26 @@ function ResumesPanel({ onToast }: { onToast: (msg: string) => void }) {
                     className="text-[12.5px] font-medium px-3 py-1.5 rounded-full border border-border-strong text-ink-soft hover:border-navy hover:text-navy transition-colors disabled:opacity-50"
                   >
                     Mark contacted
+                  </button>
+                )}
+                {r.status !== "shortlisted" && (
+                  <button
+                    disabled={busyId === r.id}
+                    onClick={() => setStatus(r, "shortlisted")}
+                    title="Approves this resume and emails the candidate automatically."
+                    className="inline-flex items-center gap-1.5 text-[12.5px] font-medium px-3 py-1.5 rounded-full border border-[#2A6B2F]/30 text-[#2A6B2F] hover:bg-[#DCEEDC] transition-colors disabled:opacity-50"
+                  >
+                    <UserCheck size={13} /> Shortlist
+                  </button>
+                )}
+                {r.status !== "not_suitable" && (
+                  <button
+                    disabled={busyId === r.id}
+                    onClick={() => setStatus(r, "not_suitable")}
+                    title="Declines this resume and emails the candidate automatically."
+                    className="inline-flex items-center gap-1.5 text-[12.5px] font-medium px-3 py-1.5 rounded-full border border-[#8A3B22]/30 text-[#8A3B22] hover:bg-[#F7E3DD] transition-colors disabled:opacity-50"
+                  >
+                    <UserX size={13} /> Not suitable
                   </button>
                 )}
               </div>

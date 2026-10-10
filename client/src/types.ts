@@ -29,7 +29,7 @@ export interface IdentityFields {
   email: string;
 }
 
-export type BookingTab = "airport" | "hotel" | "government" | "programs";
+export type BookingTab = "airport" | "hotel" | "government" | "programs" | "resume";
 
 export interface Contact {
   id: number;
@@ -94,7 +94,7 @@ export interface AuditLogEntry {
   createdAt: string;
 }
 
-export type ResumeStatus = "new" | "reviewed" | "contacted";
+export type ResumeStatus = "new" | "reviewed" | "contacted" | "shortlisted" | "not_suitable";
 
 export interface ResumeSubmission {
   id: number;
@@ -109,5 +109,6 @@ export interface ResumeSubmission {
   status: ResumeStatus;
   reviewerNote: string | null;
   reviewedAt: string | null;
+  notifiedAt: string | null;
   createdAt: string;
 }

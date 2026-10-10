@@ -476,6 +476,7 @@ function mapResume(row: Record<string, unknown>): ResumeSubmission {
     status: row.status as ResumeSubmission["status"],
     reviewerNote: (row.reviewer_note as string | null) ?? null,
     reviewedAt: (row.reviewed_at as string | null) ?? null,
+    notifiedAt: (row.notified_at as string | null) ?? null,
     createdAt: row.created_at as string,
   };
 }

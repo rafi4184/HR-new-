@@ -1,12 +1,15 @@
 import { forwardRef, useState, type FormEvent } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { PlaneTakeoff, CarFront, Landmark, GraduationCap, Clock, Ticket } from "lucide-react";
+import { PlaneTakeoff, CarFront, Landmark, GraduationCap, FileText, UploadCloud, CheckCircle2, Clock, Ticket } from "lucide-react";
 import { Field, IdentityFields, inputClass } from "./ui/Field";
 import { PROGRAMS } from "../lib/constants";
-import { submitRequest, ApiError } from "../lib/api";
+import { submitRequest, submitResume, ApiError } from "../lib/api";
 import type { BookingTab } from "../types";
 import { useDict, useLanguage } from "../lib/i18n";
-import { bookingT, govServicesT, purposesT, programsT } from "../lib/translations";
+import { bookingT, govServicesT, purposesT, programsT, resumeUploadT } from "../lib/translations";
+
+const RESUME_MAX_SIZE = 10 * 1024 * 1024;
+const RESUME_ACCEPTED = ".pdf,.doc,.docx";
 
 export interface AirportPrefill {
   name: string;
@@ -19,6 +22,7 @@ const TAB_META: { id: BookingTab; icon: typeof PlaneTakeoff }[] = [
   { id: "hotel", icon: CarFront },
   { id: "government", icon: Landmark },
   { id: "programs", icon: GraduationCap },
+  { id: "resume", icon: FileText },
 ];
 
 const Booking = forwardRef<
@@ -73,9 +77,12 @@ const Booking = forwardRef<
   const urgencyT = useDict(bookingT.urgencyOptions);
   const batchT = useDict(bookingT.batchOptions);
   const placeholders = useDict(bookingT.placeholders);
+  const resumeT = useDict(resumeUploadT);
 
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [resumeFile, setResumeFile] = useState<File | null>(null);
+  const [resumeDone, setResumeDone] = useState(false);
   const tab = lockedTab ?? activeTab;
 
   const handleSubmit = async (type: string, e: FormEvent<HTMLFormElement>) => {
@@ -90,6 +97,44 @@ const Booking = forwardRef<
       form.reset();
     } catch (err) {
       setError(err instanceof ApiError ? err.message : T.errorFallback);
+    } finally {
+      setSubmitting(false);
+    }
+  };
+
+  const handleResumeSubmit = async (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    setError(null);
+
+    if (!resumeFile) {
+      setError(resumeT.errorGeneric);
+      return;
+    }
+    if (resumeFile.size > RESUME_MAX_SIZE) {
+      setError(resumeT.errorGeneric);
+      return;
+    }
+
+    const form = e.currentTarget;
+    const data = new FormData(form);
+    setSubmitting(true);
+    try {
+      await submitResume(
+        {
+          name: String(data.get("name") ?? ""),
+          email: String(data.get("email") ?? ""),
+          phone: String(data.get("phone") ?? "") || undefined,
+          targetRole: String(data.get("targetRole") ?? "") || undefined,
+          targetCountry: String(data.get("targetCountry") ?? "") || undefined,
+          note: String(data.get("note") ?? "") || undefined,
+        },
+        resumeFile
+      );
+      setResumeDone(true);
+      form.reset();
+      setResumeFile(null);
+    } catch (err) {
+      setError(err instanceof ApiError ? err.message : resumeT.errorGeneric);
     } finally {
       setSubmitting(false);
     }
@@ -309,6 +354,68 @@ const Booking = forwardRef<
                 </Field>
                 {submitBtn(T.submitProgram)}
               </form>
+            )}
+
+            {tab === "resume" && (
+              <>
+                {resumeDone ? (
+                  <motion.div
+                    initial={{ opacity: 0, scale: 0.96 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    className="text-center py-6"
+                  >
+                    <CheckCircle2 size={32} className="text-gold-deep mx-auto mb-3" />
+                    <p className="text-[14.5px] text-ink-soft">{resumeT.success}</p>
+                  </motion.div>
+                ) : (
+                  <form onSubmit={handleResumeSubmit}>
+                    <div className="grid sm:grid-cols-2 gap-x-5">
+                      <Field label={resumeT.nameLabel} required>
+                        <input name="name" required className={inputClass} />
+                      </Field>
+                      <Field label={resumeT.emailLabel} required>
+                        <input name="email" type="email" required className={inputClass} />
+                      </Field>
+                      <Field label={resumeT.phoneLabel}>
+                        <input name="phone" className={inputClass} />
+                      </Field>
+                      <Field label={resumeT.roleLabel}>
+                        <input name="targetRole" className={inputClass} placeholder="e.g. Driver, Technician" />
+                      </Field>
+                      <Field label={resumeT.countryLabel}>
+                        <input name="targetCountry" className={inputClass} placeholder="e.g. Saudi Arabia" />
+                      </Field>
+                      <Field label={resumeT.noteLabel}>
+                        <input name="note" className={inputClass} />
+                      </Field>
+                    </div>
+                    <Field label={resumeT.fileLabel} required>
+                      <label
+                        className={`flex items-center gap-3 rounded-lg border border-dashed px-3.5 py-3 cursor-pointer transition-colors ${
+                          resumeFile ? "border-gold bg-gold-pale" : "border-border hover:border-gold"
+                        }`}
+                      >
+                        {resumeFile ? (
+                          <FileText size={18} className="text-gold-deep shrink-0" />
+                        ) : (
+                          <UploadCloud size={18} className="text-ink-faint shrink-0" />
+                        )}
+                        <span className="text-[13.5px] text-ink-soft truncate">
+                          {resumeFile ? resumeFile.name : resumeT.fileLabel}
+                        </span>
+                        <input
+                          type="file"
+                          accept={RESUME_ACCEPTED}
+                          required
+                          className="hidden"
+                          onChange={(e) => setResumeFile(e.target.files?.[0] ?? null)}
+                        />
+                      </label>
+                    </Field>
+                    {submitBtn(resumeT.submit)}
+                  </form>
+                )}
+              </>
             )}
           </motion.div>
         </AnimatePresence>
