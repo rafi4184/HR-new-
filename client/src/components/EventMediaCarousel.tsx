@@ -57,9 +57,9 @@ export default function EventMediaCarousel({
           className="absolute inset-0"
         >
           {current.mediaType === "image" ? (
-            <img src={current.url} alt={title} className="w-full h-full object-cover" />
+            <img src={current.url} alt={title} className="w-full h-full object-contain" />
           ) : (
-            <video src={current.url} className="w-full h-full object-cover" muted loop playsInline autoPlay />
+            <video src={current.url} className="w-full h-full object-contain" muted loop playsInline autoPlay />
           )}
         </motion.div>
       </AnimatePresence>
