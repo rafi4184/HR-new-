@@ -56,15 +56,21 @@ function RegionGroup({ region, lang }: { region: keyof typeof countriesWeServe.r
             viewport={{ once: true, amount: 0.3 }}
             transition={{ duration: 0.4, delay: i * 0.025, ease: [0.2, 0.9, 0.3, 1.3] }}
             whileHover={{ y: -3, scale: 1.05 }}
-            className="flex items-center gap-2 px-4 py-2.5 rounded-full border border-border bg-paper-soft hover:border-gold hover:bg-gold-pale transition-colors cursor-default"
+            className="flex items-center gap-2.5 px-4 py-2.5 rounded-full border border-border bg-paper-soft hover:border-gold hover:bg-gold-pale transition-colors cursor-default"
           >
-            <motion.span
-              className="text-[18px] leading-none"
-              animate={{ rotate: [0, -8, 8, 0] }}
-              transition={{ duration: 2.5, repeat: Infinity, repeatDelay: 4 + i * 0.3, ease: "easeInOut" }}
-            >
-              {c.flag}
-            </motion.span>
+            <img
+              src={`https://flagcdn.com/24x18/${c.code}.png`}
+              srcSet={`https://flagcdn.com/48x36/${c.code}.png 2x`}
+              width={20}
+              height={15}
+              alt=""
+              loading="lazy"
+              className="rounded-[2px] border border-black/10 shrink-0 object-cover"
+              style={{ width: 20, height: 15 }}
+              onError={(e) => {
+                (e.currentTarget as HTMLImageElement).style.display = "none";
+              }}
+            />
             <span className="text-[13px] font-medium text-navy whitespace-nowrap">{c.name[lang]}</span>
           </motion.div>
         ))}
