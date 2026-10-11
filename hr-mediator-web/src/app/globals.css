@@ -1,0 +1,43 @@
+@import "tailwindcss";
+
+@theme {
+  --color-navy: #102a43;
+  --color-navy-deep: #0b1e30;
+  --color-gold: #c6a15b;
+  --color-gold-deep: #a9843d;
+  --color-gold-pale: #f7f1e3;
+  --color-ink: #1f2937;
+  --color-muted: #64748b;
+  --color-line: #e5e7eb;
+  --color-paper: #fafaf8;
+  --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+  --font-display: var(--font-fraunces), ui-serif, Georgia, serif;
+}
+
+body {
+  @apply bg-paper text-ink antialiased;
+}
+
+@utility container-page {
+  @apply mx-auto w-full max-w-6xl px-5 sm:px-8;
+}
+
+@utility btn {
+  @apply inline-flex items-center justify-center gap-2 rounded-full px-5 py-2.5 text-sm font-medium transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gold disabled:opacity-60;
+}
+@utility btn-primary {
+  @apply btn bg-navy text-white hover:bg-navy-deep;
+}
+@utility btn-ghost {
+  @apply btn border border-line bg-white text-ink hover:border-navy;
+}
+
+@utility input {
+  @apply w-full rounded-lg border border-line bg-white px-3.5 py-2.5 text-sm text-ink placeholder:text-muted/70 focus:border-navy focus:outline-none focus:ring-2 focus:ring-navy/10;
+}
+@utility label {
+  @apply mb-1.5 block text-sm font-medium text-ink;
+}
+@utility eyebrow {
+  @apply text-xs font-semibold uppercase tracking-[0.18em] text-gold-deep;
+}
