@@ -1,6 +1,7 @@
 import { useRef, useState } from "react";
 import { useSeo } from "../lib/useSeo";
 import Hero from "../components/Hero";
+import ServiceVideoHero from "../components/ServiceVideoHero";
 import ServicesGrid from "../components/ServicesGrid";
 import PlatformHub from "../components/PlatformHub";
 import CoursesCareersTeaser from "../components/CoursesCareersTeaser";
@@ -75,6 +76,7 @@ export default function HomePage({ onToast }: { onToast: (msg: string) => void }
   return (
     <div>
       <Hero />
+      <ServiceVideoHero onRequest={goToBooking} />
       <Booking
         ref={bookingRef}
         activeTab={activeTab}

@@ -240,6 +240,14 @@ export const servicesList = [
   },
 ];
 
+export const serviceReel = {
+  eyebrow: { en: "All Services, In Motion", bn: "সব সেবা, একসাথে" },
+  h2: { en: "Every Way We Can Help — In One Fast Reel", bn: "আমরা যেভাবে সাহায্য করি — এক দ্রুত রিলে" },
+  requestCta: { en: "Request This Service", bn: "এই সেবার জন্য অনুরোধ করুন" },
+  play: { en: "Play", bn: "চালু করুন" },
+  pause: { en: "Pause", bn: "বিরতি দিন" },
+};
+
 export const serviceStory = {
   eyebrow: { en: "Your Journey With Us", bn: "আমাদের সাথে আপনার যাত্রা" },
   h2: { en: "Five Services, One Story", bn: "পাঁচটি সেবা, একটি গল্প" },
