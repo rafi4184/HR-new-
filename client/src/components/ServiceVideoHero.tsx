@@ -52,16 +52,16 @@ export default function ServiceVideoHero({ onRequest }: { onRequest?: (tab: Book
         >
           <video
             className="w-full h-auto block aspect-video"
-            poster="/videos/services-hero-poster.jpg"
+            poster="/videos/story-hero-poster.jpg"
             autoPlay
             muted
             loop
             playsInline
             preload="auto"
-            aria-label="HR — The Mediator services reel: Airport VIP Reception, Hotel & Car Booking, Government Request, Manpower & Security, Courses & Careers"
+            aria-label="HR — The Mediator story reel: an arriving traveller met at the gate, fast-tracked through immigration, baggage assistance, a private car to the hotel and the same care on departure; a student and jobseeker guided through admission and placement abroad; a trainee coached into confident on-air delivery; and a resident's government paperwork resolved end to end."
           >
-            <source src="/videos/services-hero.webm" type="video/webm" />
-            <source src="/videos/services-hero.mp4" type="video/mp4" />
+            <source src="/videos/story-hero.webm" type="video/webm" />
+            <source src="/videos/story-hero.mp4" type="video/mp4" />
           </video>
         </motion.div>
 
