@@ -241,8 +241,8 @@ export const servicesList = [
 ];
 
 export const serviceReel = {
-  eyebrow: { en: "Real Journeys, One Trusted Partner", bn: "বাস্তব যাত্রা, একটি বিশ্বস্ত পার্টনার" },
-  h2: { en: "From Arrival To Opportunity — We Handle It All", bn: "আগমন থেকে সুযোগ — সবকিছুর দায়িত্ব আমাদের" },
+  eyebrow: { en: "Four Services, Clearly Explained", bn: "চারটি সেবা, স্পষ্টভাবে ব্যাখ্যা করা" },
+  h2: { en: "See Exactly How We Help, Service By Service", bn: "আমরা কীভাবে সাহায্য করি, সেবা অনুযায়ী দেখুন" },
   requestCta: { en: "Request This Service", bn: "এই সেবার জন্য অনুরোধ করুন" },
   play: { en: "Play", bn: "চালু করুন" },
   pause: { en: "Pause", bn: "বিরতি দিন" },
