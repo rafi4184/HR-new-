@@ -2,6 +2,7 @@ import { Link } from "react-router-dom";
 import { ArrowRight, ShieldCheck, Layers, MapPin, Mic } from "lucide-react";
 import { useSeo } from "../lib/useSeo";
 import Reveal from "../components/ui/Reveal";
+import WhoWeHelp from "../components/WhoWeHelp";
 import { HASANUR_PHOTO } from "../lib/constants";
 import { useDict, useT } from "../lib/i18n";
 import { aboutPageT, aboutCredibility } from "../lib/translations";
@@ -57,6 +58,8 @@ export default function AboutPage() {
           })}
         </div>
       </section>
+
+      <WhoWeHelp />
 
       <section className="px-5 md:px-10 py-14 bg-paper-panel text-center">
         <div className="max-w-2xl mx-auto">

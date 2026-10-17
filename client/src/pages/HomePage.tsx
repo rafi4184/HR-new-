@@ -2,16 +2,10 @@ import { useRef, useState } from "react";
 import { useSeo } from "../lib/useSeo";
 import Hero from "../components/Hero";
 import ServiceVideoHero from "../components/ServiceVideoHero";
-import ServicesGrid from "../components/ServicesGrid";
-import PlatformHub from "../components/PlatformHub";
-import CoursesCareersTeaser from "../components/CoursesCareersTeaser";
-import CountriesWeServe from "../components/CountriesWeServe";
+import ServicesOverview from "../components/ServicesOverview";
 import HowItWorks from "../components/HowItWorks";
-import WhoWeHelp from "../components/WhoWeHelp";
 import WhyChooseUs from "../components/WhyChooseUs";
 import StatsRow from "../components/StatsRow";
-import MediaPartners from "../components/MediaPartners";
-import Events from "../components/Events";
 import Booking, { type AirportPrefill } from "../components/Booking";
 import TrackRequest from "../components/TrackRequest";
 import PaymentModal from "../components/PaymentModal";
@@ -88,16 +82,10 @@ export default function HomePage({ onToast }: { onToast: (msg: string) => void }
         onSubmitted={handleSubmitted}
       />
       <TrackRequest ref={trackRef} loading={trackLoading} result={trackResult} onSubmit={runTrack} onPay={setPayModal} />
-      <ServicesGrid />
-      <PlatformHub onBranchClick={goToBooking} />
-      <HowItWorks />
+      <ServicesOverview />
       <WhyChooseUs />
-      <WhoWeHelp />
-      <CoursesCareersTeaser />
-      <CountriesWeServe />
       <StatsRow />
-      <MediaPartners />
-      <Events />
+      <HowItWorks />
       <Faq items={translatedFaqs} />
 
       <PaymentModal request={payModal} onClose={() => setPayModal(null)} onPaid={handlePaid} />

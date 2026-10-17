@@ -6,6 +6,8 @@ import Reveal from "../components/ui/Reveal";
 import Faq from "../components/Faq";
 import Booking, { type AirportPrefill } from "../components/Booking";
 import ResumeUpload from "../components/ResumeUpload";
+import MediaPartners from "../components/MediaPartners";
+import CountriesWeServe from "../components/CountriesWeServe";
 import type { ServicePageData } from "../data/servicePages";
 import { SERVICE_PAGES } from "../data/servicePages";
 import type { BookingTab } from "../types";
@@ -56,6 +58,8 @@ export default function ServicePage({ data }: { data: ServicePageData }) {
         </div>
       </section>
 
+      {data.id === "media-public-speaking" && <MediaPartners />}
+
       <section className="px-5 md:px-10 py-14 max-w-5xl mx-auto grid md:grid-cols-2 gap-10">
         <Reveal>
           <h2 className="font-display text-2xl text-navy mb-4">{ui.whoThisIsFor}</h2>
@@ -99,6 +103,8 @@ export default function ServicePage({ data }: { data: ServicePageData }) {
           </div>
         </div>
       </section>
+
+      {data.id === "study-work-gulf" && <CountriesWeServe />}
 
       <Faq items={faqs} title={`${navLabel} ${ui.faqsSuffix}`} />
 
