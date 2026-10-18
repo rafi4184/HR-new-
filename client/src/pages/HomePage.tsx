@@ -71,7 +71,9 @@ export default function HomePage({ onToast }: { onToast: (msg: string) => void }
   return (
     <div>
       <Hero />
+      <NewsTeaser />
       <ServiceVideoHero onRequest={goToBooking} />
+      <ServicesOverview />
       <Booking
         ref={bookingRef}
         activeTab={activeTab}
@@ -83,8 +85,6 @@ export default function HomePage({ onToast }: { onToast: (msg: string) => void }
         onSubmitted={handleSubmitted}
       />
       <TrackRequest ref={trackRef} loading={trackLoading} result={trackResult} onSubmit={runTrack} onPay={setPayModal} />
-      <ServicesOverview />
-      <NewsTeaser />
       <WhyChooseUs />
       <StatsRow />
       <HowItWorks />

@@ -422,8 +422,14 @@ export const newsPageT = {
 };
 
 export const newsTeaserT = {
+  liveBadge: { en: "Live", bn: "লাইভ" },
   eyebrow: { en: "Bangladesh News", bn: "বাংলাদেশের খবর" },
-  h2: { en: "Also Your Daily Bangladesh News Source", bn: "আপনার প্রতিদিনের বাংলাদেশ সংবাদের উৎসও" },
+  h2: { en: "Bangladesh News — Live Right Now", bn: "বাংলাদেশের খবর — এখনই লাইভ" },
+  intro: {
+    en: "Real headlines from Bangladesh's most-read outlets, refreshed automatically every 20 minutes — national, political, crime, jobs, business and international news, all in one place.",
+    bn: "বাংলাদেশের সবচেয়ে বেশি পঠিত সংবাদমাধ্যমের সত্যিকারের শিরোনাম, প্রতি ২০ মিনিটে স্বয়ংক্রিয়ভাবে হালনাগাদ — জাতীয়, রাজনৈতিক, অপরাধ, চাকরি, ব্যবসা ও আন্তর্জাতিক খবর, সব এক জায়গায়।",
+  },
+  ctaBig: { en: "Click Here — See Live Bangladesh News", bn: "এখানে ক্লিক করুন — লাইভ বাংলাদেশ খবর দেখুন" },
   viewAll: { en: "View All Bangladesh News", bn: "সব বাংলাদেশ খবর দেখুন" },
 };
 
