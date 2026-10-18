@@ -15,6 +15,10 @@ interface SeoOptions {
     name: string;
     description: string;
   };
+  newsListSchema?: {
+    name: string;
+    items: { url: string; headline: string }[];
+  };
   noindex?: boolean;
 }
 
@@ -104,6 +108,26 @@ export function useSeo(opts: SeoOptions) {
       setJsonLd("service-schema", null);
     }
 
+    if (opts.newsListSchema && opts.newsListSchema.items.length > 0) {
+      setJsonLd("news-list-schema", {
+        "@context": "https://schema.org",
+        "@type": "CollectionPage",
+        name: opts.newsListSchema.name,
+        url,
+        mainEntity: {
+          "@type": "ItemList",
+          itemListElement: opts.newsListSchema.items.map((it, i) => ({
+            "@type": "ListItem",
+            position: i + 1,
+            url: it.url,
+            name: it.headline,
+          })),
+        },
+      });
+    } else {
+      setJsonLd("news-list-schema", null);
+    }
+
     if (opts.faq && opts.faq.length > 0) {
       setJsonLd("faq-schema", {
         "@context": "https://schema.org",
@@ -117,5 +141,5 @@ export function useSeo(opts: SeoOptions) {
     } else {
       setJsonLd("faq-schema", null);
     }
-  }, [opts.title, opts.description, opts.path, opts.image, opts.faq, opts.serviceSchema, opts.noindex]);
+  }, [opts.title, opts.description, opts.path, opts.image, opts.faq, opts.serviceSchema, opts.newsListSchema, opts.noindex]);
 }

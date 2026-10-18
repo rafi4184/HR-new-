@@ -23,7 +23,7 @@ export default function HomePage({ onToast }: { onToast: (msg: string) => void }
   useSeo({
     title: "HR — The Mediator | Dhaka International Airport VIP Service & Jobs in Saudi Arabia",
     description:
-      "HR — The Mediator connects individuals, families, businesses and international clients with premium VIP service at Dhaka International Airport (Hazrat Shahjalal International), plus trusted transport, government assistance, manpower, security, education and career services — including jobs in Saudi Arabia and the Middle East — across Bangladesh.",
+      "HR — The Mediator connects individuals, families, businesses and international clients with premium VIP service at Dhaka International Airport (Hazrat Shahjalal International), plus trusted transport, government assistance, manpower, security, education and career services — including jobs in Saudi Arabia and the Middle East — across Bangladesh. Also home to live Bangladesh news, updated every 20 minutes.",
     path: "/",
     faq: HOME_FAQS,
   });

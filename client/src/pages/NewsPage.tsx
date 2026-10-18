@@ -35,18 +35,23 @@ function timeAgo(iso: string | null, lang: "en" | "bn"): string {
 }
 
 export default function NewsPage() {
-  useSeo({
-    title: "Bangladesh News — Daily Updates | HR — The Mediator",
-    description:
-      "The latest Bangladesh news, updated automatically throughout the day — national, politics, crime, jobs, business, education, sports and international headlines in one place.",
-    path: "/news",
-  });
-
   const T = useDict(newsPageT);
   const { lang } = useLanguage();
   const [items, setItems] = useState<NewsItem[]>([]);
   const [category, setCategory] = useState<NewsCategory | "all">("all");
   const [loaded, setLoaded] = useState(false);
+
+  useSeo({
+    title: "Bangladesh News Today — Live Headlines & Updates | HR — The Mediator",
+    description:
+      "Bangladesh news today — national, politics, crime, jobs, business, education, sports and international headlines, refreshed live every 20 minutes. Read the latest Bangladesh news now.",
+    path: "/news",
+    image: items.find((it) => it.imageUrl)?.imageUrl ?? undefined,
+    newsListSchema: {
+      name: "Bangladesh News — Live Headlines",
+      items: items.slice(0, 30).map((it) => ({ url: it.link, headline: it.headline })),
+    },
+  });
 
   const load = () => {
     listNews(category === "all" ? null : category, 90)
