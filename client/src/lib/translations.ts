@@ -405,6 +405,7 @@ export const newsAnnouncementT = {
     en: "Live Bangladesh News — Updated Every 20 Minutes",
     bn: "সরাসরি বাংলাদেশের খবর — প্রতি ২০ মিনিটে হালনাগাদ",
   },
+  messageShort: { en: "Live Bangladesh News", bn: "সরাসরি বাংলাদেশের খবর" },
   cta: { en: "Read Now", bn: "এখনই পড়ুন" },
 };
 

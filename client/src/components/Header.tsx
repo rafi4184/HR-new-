@@ -91,9 +91,9 @@ export default function Header() {
         <Link to="/" className="flex items-center gap-2 sm:gap-2.5 min-w-0 shrink" onClick={() => setMobileOpen(false)}>
           <LogoMark size={30} className="text-navy shrink-0 sm:hidden" animated />
           <LogoMark size={34} className="text-navy shrink-0 hidden sm:block" animated />
-          <div className="min-w-0">
-            <div className="text-navy font-display text-[15px] sm:text-[17px] leading-none truncate">HR — The Mediator</div>
-            <div className="hidden sm:block text-[10px] leading-none mt-1 tracking-wide text-ink-faint">{T.tagline}</div>
+          <div className="hidden sm:block min-w-0">
+            <div className="text-navy font-display text-[17px] leading-none truncate">HR — The Mediator</div>
+            <div className="text-[10px] leading-none mt-1 tracking-wide text-ink-faint">{T.tagline}</div>
           </div>
         </Link>
 

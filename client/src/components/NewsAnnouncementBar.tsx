@@ -16,7 +16,8 @@ export default function NewsAnnouncementBar() {
         <span className="relative inline-flex rounded-full h-2 w-2 bg-gold" />
       </span>
       <Newspaper size={15} className="shrink-0 text-gold" />
-      <span className="truncate">{T.message}</span>
+      <span className="truncate sm:hidden">{T.messageShort}</span>
+      <span className="truncate hidden sm:inline">{T.message}</span>
       <span className="inline-flex items-center gap-1 font-semibold text-gold shrink-0 group-hover:gap-1.5 transition-all">
         {T.cta}
         <ArrowRight size={13} />
