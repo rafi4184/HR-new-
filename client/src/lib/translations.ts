@@ -13,6 +13,7 @@ export const header = {
   requestShort: { en: "Request", bn: "অনুরোধ" },
   menu: { en: "Menu", bn: "মেনু" },
   events: { en: "Events", bn: "ইভেন্ট" },
+  news: { en: "Bangladesh News", bn: "বাংলাদেশের খবর" },
   staffLogin: { en: "Staff Login", bn: "স্টাফ লগইন" },
 };
 
@@ -397,6 +398,30 @@ export const eventsPageT = {
     bn: "আমাদের ডেস্ক পাসপোর্ট, ভিসা, এনআইডি, জমি নিবন্ধন ও সত্যায়ন সংক্রান্ত কেস শুরু থেকে শেষ পর্যন্ত সমন্বয় করে।",
   },
   ctaGovButton: { en: "Explore Government Services", bn: "সরকারি সেবা দেখুন" },
+};
+
+export const newsPageT = {
+  eyebrow: { en: "Bangladesh News", bn: "বাংলাদেশের খবর" },
+  h1: { en: "Daily Bangladesh News Update", bn: "প্রতিদিনের বাংলাদেশ সংবাদ হালনাগাদ" },
+  intro: {
+    en: "The latest headlines from across Bangladesh, refreshed automatically throughout the day — national, political, crime, jobs, business, education, sports and international news in one place.",
+    bn: "বাংলাদেশ জুড়ে সর্বশেষ শিরোনাম, সারাদিন স্বয়ংক্রিয়ভাবে হালনাগাদ হয় — জাতীয়, রাজনৈতিক, অপরাধ, চাকরি, ব্যবসা, শিক্ষা, খেলা ও আন্তর্জাতিক সংবাদ এক জায়গায়।",
+  },
+  lastUpdated: { en: "Updated", bn: "হালনাগাদ" },
+  allCategories: { en: "All", bn: "সব" },
+  loading: { en: "Loading the latest news…", bn: "সর্বশেষ খবর লোড হচ্ছে…" },
+  empty: { en: "No news in this category right now — check back soon.", bn: "এই বিভাগে এখন কোনো খবর নেই — শীঘ্রই আবার দেখুন।" },
+};
+
+export const newsCategoryLabels: Record<string, { en: string; bn: string }> = {
+  national: { en: "National", bn: "জাতীয়" },
+  politics: { en: "Politics", bn: "রাজনীতি" },
+  crime: { en: "Crime", bn: "অপরাধ" },
+  jobs: { en: "Jobs", bn: "চাকরি" },
+  business: { en: "Business", bn: "ব্যবসা" },
+  education: { en: "Education", bn: "শিক্ষা" },
+  sports: { en: "Sports", bn: "খেলা" },
+  international: { en: "International", bn: "আন্তর্জাতিক" },
 };
 
 export const faqDefault = {

@@ -57,6 +57,29 @@ export interface EventItem {
   media: EventMedia[];
 }
 
+export type NewsCategory =
+  | "national"
+  | "politics"
+  | "crime"
+  | "jobs"
+  | "business"
+  | "sports"
+  | "education"
+  | "international";
+
+export interface NewsItem {
+  id: string;
+  source: string;
+  sourceDomain: string;
+  category: NewsCategory;
+  headline: string;
+  excerpt: string | null;
+  link: string;
+  imageUrl: string | null;
+  publishedAt: string | null;
+  fetchedAt: string;
+}
+
 export type StaffRole = "admin" | "executive" | "staff";
 
 export interface StaffMember {

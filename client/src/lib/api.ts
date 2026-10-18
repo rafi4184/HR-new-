@@ -1,5 +1,5 @@
 import { supabase } from "./supabaseClient";
-import type { AuditLogEntry, Contact, EventItem, ResumeSubmission, ServiceRequest, StaffMember, TeamMember, WhoAmI } from "../types";
+import type { AuditLogEntry, Contact, EventItem, NewsItem, ResumeSubmission, ServiceRequest, StaffMember, TeamMember, WhoAmI } from "../types";
 
 class ApiError extends Error {}
 
@@ -256,6 +256,29 @@ export async function adminUpsertContact(contact: {
 export async function adminDeleteContact(id: number): Promise<void> {
   const { error } = await supabase.rpc("admin_delete_contact", { p_id: id });
   if (error) throw new ApiError(error.message);
+}
+
+// --- Bangladesh News --------------------------------------------------------
+
+function mapNewsItem(row: Record<string, unknown>): NewsItem {
+  return {
+    id: row.id as string,
+    source: row.source as string,
+    sourceDomain: row.source_domain as string,
+    category: row.category as NewsItem["category"],
+    headline: row.headline as string,
+    excerpt: (row.excerpt as string | null) ?? null,
+    link: row.link as string,
+    imageUrl: (row.image_url as string | null) ?? null,
+    publishedAt: (row.published_at as string | null) ?? null,
+    fetchedAt: row.fetched_at as string,
+  };
+}
+
+export async function listNews(category?: string | null, limit = 60): Promise<NewsItem[]> {
+  const { data, error } = await supabase.rpc("list_news", { p_category: category ?? null, p_limit: limit });
+  if (error) throw new ApiError(error.message);
+  return ((data ?? []) as Record<string, unknown>[]).map(mapNewsItem);
 }
 
 // --- Events ---------------------------------------------------------------

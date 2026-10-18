@@ -17,6 +17,7 @@ import { SERVICE_PAGE_LIST } from "./data/servicePages";
 const ServicePage = lazy(() => import("./pages/ServicePage"));
 const AboutPage = lazy(() => import("./pages/AboutPage"));
 const EventsPage = lazy(() => import("./pages/EventsPage"));
+const NewsPage = lazy(() => import("./pages/NewsPage"));
 const ContactPage = lazy(() => import("./pages/ContactPage"));
 const PrivacyPage = lazy(() => import("./pages/PrivacyPage"));
 const TermsPage = lazy(() => import("./pages/TermsPage"));
@@ -56,6 +57,7 @@ export default function App() {
               ))}
               <Route path="/about-us" element={<AboutPage />} />
               <Route path="/events" element={<EventsPage onToast={showToast} />} />
+              <Route path="/news" element={<NewsPage />} />
               <Route path="/contact" element={<ContactPage />} />
               <Route path="/privacy-policy" element={<PrivacyPage />} />
               <Route path="/terms" element={<TermsPage />} />

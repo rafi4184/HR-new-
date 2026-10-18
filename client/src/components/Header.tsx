@@ -156,6 +156,14 @@ export default function Header() {
               </>
             )}
           </NavLink>
+          <NavLink to="/news" className={linkClass}>
+            {({ isActive }) => (
+              <>
+                {T.news}
+                <NavUnderline isActive={isActive} />
+              </>
+            )}
+          </NavLink>
           <NavLink to="/about-us" className={linkClass}>
             {({ isActive }) => (
               <>
@@ -306,6 +314,9 @@ export default function Header() {
               </AnimatePresence>
               <Link to="/events" onClick={() => setMobileOpen(false)} className="py-2.5 text-[15px] font-medium text-navy">
                 {T.events}
+              </Link>
+              <Link to="/news" onClick={() => setMobileOpen(false)} className="py-2.5 text-[15px] font-medium text-navy">
+                {T.news}
               </Link>
               <Link to="/about-us" onClick={() => setMobileOpen(false)} className="py-2.5 text-[15px] font-medium text-navy">
                 {T.aboutUs}
