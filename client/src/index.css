@@ -26,6 +26,13 @@ body {
   font-family: "IBM Plex Sans", system-ui, sans-serif;
 }
 
+/* The floating WhatsApp/call buttons otherwise sit on top of the open
+   mobile nav panel, covering its last couple of links. */
+body.mobile-nav-open .fab-whatsapp,
+body.mobile-nav-open .fab-call {
+  display: none;
+}
+
 ::selection {
   background: #c6a15b;
   color: #102a43;

@@ -2,8 +2,11 @@ import type { ReactNode } from "react";
 import { useDict } from "../../lib/i18n";
 import { identityFields } from "../../lib/translations";
 
+// text-[16px]: iOS Safari zooms the whole page in on focus for any input
+// with a smaller font size, so this isn't just a style choice — anything
+// below 16px makes every form on the site feel broken on an iPhone.
 export const inputClass =
-  "w-full rounded-lg px-3.5 py-2.5 text-[15px] outline-none transition-colors border border-border bg-white text-ink placeholder:text-ink-faint";
+  "w-full rounded-lg px-3.5 py-2.5 text-[16px] outline-none transition-colors border border-border bg-white text-ink placeholder:text-ink-faint";
 
 export function Field({
   label,

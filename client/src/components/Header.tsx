@@ -31,6 +31,14 @@ export default function Header() {
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
+  // The floating WhatsApp/call buttons are fixed to the viewport outside
+  // this component, so a body class is the simplest way to hide them while
+  // the mobile nav panel (which they'd otherwise cover) is open.
+  useEffect(() => {
+    document.body.classList.toggle("mobile-nav-open", mobileOpen);
+    return () => document.body.classList.remove("mobile-nav-open");
+  }, [mobileOpen]);
+
   useEffect(() => {
     whoami()
       .then(setMe)
