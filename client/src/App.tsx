@@ -3,6 +3,7 @@ import { Routes, Route, useLocation } from "react-router-dom";
 import { AnimatePresence, motion } from "framer-motion";
 import { Phone, MessageCircle } from "lucide-react";
 import Header from "./components/Header";
+import NewsAnnouncementBar from "./components/NewsAnnouncementBar";
 import Footer from "./components/Footer";
 import FinalCta from "./components/FinalCta";
 import Toast from "./components/Toast";
@@ -39,6 +40,7 @@ export default function App() {
     <div className="font-sans text-ink bg-white">
       <ScrollProgress />
       <ScrollToHash />
+      {!location.pathname.startsWith("/news") && !location.pathname.startsWith("/staff") && <NewsAnnouncementBar />}
       <Header />
 
       <AnimatePresence mode="wait">

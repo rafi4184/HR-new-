@@ -400,6 +400,14 @@ export const eventsPageT = {
   ctaGovButton: { en: "Explore Government Services", bn: "সরকারি সেবা দেখুন" },
 };
 
+export const newsAnnouncementT = {
+  message: {
+    en: "Live Bangladesh News — Updated Every 20 Minutes",
+    bn: "সরাসরি বাংলাদেশের খবর — প্রতি ২০ মিনিটে হালনাগাদ",
+  },
+  cta: { en: "Read Now", bn: "এখনই পড়ুন" },
+};
+
 export const newsPageT = {
   eyebrow: { en: "Bangladesh News", bn: "বাংলাদেশের খবর" },
   h1: { en: "Daily Bangladesh News Update", bn: "প্রতিদিনের বাংলাদেশ সংবাদ হালনাগাদ" },
