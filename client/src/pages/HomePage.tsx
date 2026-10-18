@@ -3,6 +3,7 @@ import { useSeo } from "../lib/useSeo";
 import Hero from "../components/Hero";
 import ServiceVideoHero from "../components/ServiceVideoHero";
 import ServicesOverview from "../components/ServicesOverview";
+import NewsTeaser from "../components/NewsTeaser";
 import HowItWorks from "../components/HowItWorks";
 import WhyChooseUs from "../components/WhyChooseUs";
 import StatsRow from "../components/StatsRow";
@@ -83,6 +84,7 @@ export default function HomePage({ onToast }: { onToast: (msg: string) => void }
       />
       <TrackRequest ref={trackRef} loading={trackLoading} result={trackResult} onSubmit={runTrack} onPay={setPayModal} />
       <ServicesOverview />
+      <NewsTeaser />
       <WhyChooseUs />
       <StatsRow />
       <HowItWorks />

@@ -413,6 +413,12 @@ export const newsPageT = {
   empty: { en: "No news in this category right now — check back soon.", bn: "এই বিভাগে এখন কোনো খবর নেই — শীঘ্রই আবার দেখুন।" },
 };
 
+export const newsTeaserT = {
+  eyebrow: { en: "Bangladesh News", bn: "বাংলাদেশের খবর" },
+  h2: { en: "Also Your Daily Bangladesh News Source", bn: "আপনার প্রতিদিনের বাংলাদেশ সংবাদের উৎসও" },
+  viewAll: { en: "View All Bangladesh News", bn: "সব বাংলাদেশ খবর দেখুন" },
+};
+
 export const newsCategoryLabels: Record<string, { en: string; bn: string }> = {
   national: { en: "National", bn: "জাতীয়" },
   politics: { en: "Politics", bn: "রাজনীতি" },
