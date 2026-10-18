@@ -43,9 +43,9 @@ export default function NewsPage() {
   const [loaded, setLoaded] = useState(false);
 
   useSeo({
-    title: "Bangladesh News Today — Live Headlines & Updates | HR — The Mediator",
+    title: "Bangladesh News Today — Live Headlines, Job Circulars & All Newspapers | HR — The Mediator",
     description:
-      "Bangladesh news today — national, politics, crime, jobs, business, education, sports and international headlines, refreshed live every 20 minutes. Read the latest Bangladesh news now.",
+      "Bangladesh news today from Prothom Alo, Kaler Kantho, Samakal, Jugantor, The Daily Star, Dhaka Tribune and more — live headlines refreshed every 20 minutes, government and bank job circulars, and direct links to every major Bangladesh newspaper and news channel in one place.",
     path: "/news",
     image: items.find((it) => it.imageUrl)?.imageUrl ?? undefined,
     newsListSchema: {
@@ -81,6 +81,13 @@ export default function NewsPage() {
       <section className="relative px-5 md:px-10 pt-14 pb-10 md:pt-20 md:pb-12 bg-paper-soft overflow-hidden">
         <AmbientGlow variant="light" />
         <div className="relative max-w-4xl mx-auto text-center">
+          <div className="inline-flex items-center gap-2 mb-4 px-3.5 py-1.5 rounded-full bg-navy">
+            <span className="relative flex h-2 w-2">
+              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75" />
+              <span className="relative inline-flex rounded-full h-2 w-2 bg-red-500" />
+            </span>
+            <span className="text-[11px] font-bold tracking-[0.2em] uppercase text-white">{T.liveNow}</span>
+          </div>
           <div className="flex items-center justify-center gap-2 mb-3 text-[12px] font-medium tracking-[0.2em] uppercase text-gold-deep">
             <Newspaper size={14} />
             {T.eyebrow}

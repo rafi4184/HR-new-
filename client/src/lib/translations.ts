@@ -409,6 +409,7 @@ export const newsAnnouncementT = {
 };
 
 export const newsPageT = {
+  liveNow: { en: "Live Now", bn: "এখন লাইভ" },
   eyebrow: { en: "Bangladesh News", bn: "বাংলাদেশের খবর" },
   h1: { en: "Daily Bangladesh News Update", bn: "প্রতিদিনের বাংলাদেশ সংবাদ হালনাগাদ" },
   intro: {
@@ -452,7 +453,7 @@ export const newsCategoryLabels: Record<string, { en: string; bn: string }> = {
   national: { en: "National", bn: "জাতীয়" },
   politics: { en: "Politics", bn: "রাজনীতি" },
   crime: { en: "Crime", bn: "অপরাধ" },
-  jobs: { en: "Jobs", bn: "চাকরি" },
+  jobs: { en: "Jobs & Circulars", bn: "চাকরি ও বিজ্ঞপ্তি" },
   business: { en: "Business", bn: "ব্যবসা" },
   education: { en: "Education", bn: "শিক্ষা" },
   sports: { en: "Sports", bn: "খেলা" },
