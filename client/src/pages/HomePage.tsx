@@ -70,8 +70,8 @@ export default function HomePage({ onToast }: { onToast: (msg: string) => void }
 
   return (
     <div>
-      <Hero />
       <NewsTeaser />
+      <Hero />
       <ServiceVideoHero onRequest={goToBooking} />
       <ServicesOverview />
       <Booking
