@@ -433,6 +433,21 @@ export const newsTeaserT = {
   viewAll: { en: "View All Bangladesh News", bn: "সব বাংলাদেশ খবর দেখুন" },
 };
 
+export const newsDirectoryT = {
+  heading: { en: "Every Major Bangladesh Newspaper & News Channel", bn: "বাংলাদেশের প্রতিটি প্রধান সংবাদপত্র ও নিউজ চ্যানেল" },
+  intro: {
+    en: "This page is a hub for Bangladesh news — live headlines above, and direct links to every major newspaper and news channel below, so you can go straight to the source any time.",
+    bn: "এই পৃষ্ঠাটি বাংলাদেশের খবরের একটি হাব — উপরে সরাসরি শিরোনাম, এবং নিচে প্রতিটি প্রধান সংবাদপত্র ও নিউজ চ্যানেলের সরাসরি লিংক, যাতে আপনি যেকোনো সময় সরাসরি উৎসে যেতে পারেন।",
+  },
+};
+
+export const newsDirectoryGroupLabels: Record<string, { en: string; bn: string }> = {
+  banglaDailies: { en: "Bangla Dailies", bn: "বাংলা দৈনিক" },
+  englishDailies: { en: "English Dailies", bn: "ইংরেজি দৈনিক" },
+  newsPortals: { en: "News Agencies & Portals", bn: "সংবাদ সংস্থা ও পোর্টাল" },
+  tvChannels: { en: "TV News Channels", bn: "টিভি নিউজ চ্যানেল" },
+};
+
 export const newsCategoryLabels: Record<string, { en: string; bn: string }> = {
   national: { en: "National", bn: "জাতীয়" },
   politics: { en: "Politics", bn: "রাজনীতি" },

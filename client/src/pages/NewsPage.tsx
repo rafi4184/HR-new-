@@ -4,6 +4,7 @@ import { Newspaper, RefreshCw } from "lucide-react";
 import { useSeo } from "../lib/useSeo";
 import Reveal from "../components/ui/Reveal";
 import AmbientGlow from "../components/ui/AmbientGlow";
+import NewsOutletsDirectory from "../components/NewsOutletsDirectory";
 import { listNews } from "../lib/api";
 import type { NewsCategory, NewsItem } from "../types";
 import { useDict, useLanguage } from "../lib/i18n";
@@ -136,6 +137,8 @@ export default function NewsPage() {
           </div>
         )}
       </section>
+
+      <NewsOutletsDirectory />
     </div>
   );
 }
