@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
-import { Newspaper, RefreshCw } from "lucide-react";
+import { Newspaper, RefreshCw, Zap } from "lucide-react";
 import { useSeo } from "../lib/useSeo";
 import Reveal from "../components/ui/Reveal";
 import AmbientGlow from "../components/ui/AmbientGlow";
@@ -9,6 +9,7 @@ import { listNews } from "../lib/api";
 import type { NewsCategory, NewsItem } from "../types";
 import { useDict, useLanguage } from "../lib/i18n";
 import { newsPageT, newsCategoryLabels } from "../lib/translations";
+import { CATEGORY_TAG_STYLE, JUST_IN_WINDOW_MS } from "../lib/newsCategoryStyle";
 
 const CATEGORIES: (NewsCategory | "all")[] = [
   "all",
@@ -137,11 +138,22 @@ export default function NewsPage() {
         )}
 
         {loaded && items.length > 0 && (
-          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            {items.map((item, i) => (
-              <NewsCard key={item.id} item={item} delay={Math.min(i, 8) * 0.04} lang={lang} />
-            ))}
-          </div>
+          <>
+            <FeaturedStory item={items[0]} lang={lang} topStoryLabel={T.topStory} justInLabel={T.justIn} />
+
+            {items.length > 1 && (
+              <Reveal delay={0.1} className="mt-10 md:mt-14">
+                <h2 className="text-[12px] font-semibold uppercase tracking-[0.18em] text-ink-faint mb-5 pb-3 border-b border-border">
+                  {T.moreHeadlines}
+                </h2>
+                <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5 sm:gap-6">
+                  {items.slice(1).map((item, i) => (
+                    <NewsCard key={item.id} item={item} delay={Math.min(i, 8) * 0.04} lang={lang} justInLabel={T.justIn} />
+                  ))}
+                </div>
+              </Reveal>
+            )}
+          </>
         )}
       </section>
 
@@ -150,7 +162,104 @@ export default function NewsPage() {
   );
 }
 
-function NewsCard({ item, delay, lang }: { item: NewsItem; delay: number; lang: "en" | "bn" }) {
+function isJustIn(item: NewsItem): boolean {
+  const t = item.publishedAt ?? item.fetchedAt;
+  if (!t) return false;
+  return Date.now() - new Date(t).getTime() < JUST_IN_WINDOW_MS;
+}
+
+function CategoryTag({ category, lang }: { category: NewsCategory; lang: "en" | "bn" }) {
+  return (
+    <span
+      className={`inline-flex items-center px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wide ${CATEGORY_TAG_STYLE[category]}`}
+    >
+      {newsCategoryLabels[category][lang]}
+    </span>
+  );
+}
+
+function JustInBadge({ label }: { label: string }) {
+  return (
+    <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wide bg-red-600 text-white">
+      <Zap size={9} className="fill-white" />
+      {label}
+    </span>
+  );
+}
+
+function FeaturedStory({
+  item,
+  lang,
+  topStoryLabel,
+  justInLabel,
+}: {
+  item: NewsItem;
+  lang: "en" | "bn";
+  topStoryLabel: string;
+  justInLabel: string;
+}) {
+  const [imgFailed, setImgFailed] = useState(false);
+  const showImage = item.imageUrl && !imgFailed;
+  return (
+    <Reveal>
+      <motion.a
+        href={item.link}
+        target="_blank"
+        rel="noopener noreferrer"
+        whileHover={{ y: -3 }}
+        className="group grid md:grid-cols-5 gap-0 rounded-2xl bg-white border border-border overflow-hidden shadow-card hover:border-gold hover:shadow-card-hover transition-all"
+      >
+        <div className="relative md:col-span-3 aspect-[16/10] md:aspect-auto bg-paper-panel overflow-hidden">
+          {showImage ? (
+            <img
+              src={item.imageUrl!}
+              alt=""
+              loading="lazy"
+              className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+              onError={() => setImgFailed(true)}
+            />
+          ) : (
+            <div className="w-full h-full flex items-center justify-center text-gold-deep/40">
+              <Newspaper size={40} />
+            </div>
+          )}
+        </div>
+        <div className="md:col-span-2 p-5 sm:p-7 flex flex-col justify-center">
+          <div className="flex flex-wrap items-center gap-2 mb-3">
+            <span className="inline-flex items-center px-2.5 py-1 rounded text-[10.5px] font-bold uppercase tracking-wide bg-navy text-white">
+              {topStoryLabel}
+            </span>
+            <CategoryTag category={item.category} lang={lang} />
+            {isJustIn(item) && <JustInBadge label={justInLabel} />}
+          </div>
+          <h2 className="font-display text-[20px] sm:text-[26px] text-navy leading-snug mb-2.5 group-hover:text-gold-deep transition-colors">
+            {item.headline}
+          </h2>
+          {item.excerpt && (
+            <p className="text-[13.5px] sm:text-[14.5px] text-ink-muted leading-relaxed line-clamp-3 mb-4">{item.excerpt}</p>
+          )}
+          <div className="flex items-center gap-2 text-[12px] text-ink-faint">
+            <span className="font-semibold text-ink-soft">{item.source}</span>
+            <span>·</span>
+            <span>{timeAgo(item.publishedAt ?? item.fetchedAt, lang)}</span>
+          </div>
+        </div>
+      </motion.a>
+    </Reveal>
+  );
+}
+
+function NewsCard({
+  item,
+  delay,
+  lang,
+  justInLabel,
+}: {
+  item: NewsItem;
+  delay: number;
+  lang: "en" | "bn";
+  justInLabel: string;
+}) {
   const [imgFailed, setImgFailed] = useState(false);
   const showImage = item.imageUrl && !imgFailed;
   return (
@@ -186,7 +295,11 @@ function NewsCard({ item, delay, lang }: { item: NewsItem; delay: number; lang: 
           </span>
         </div>
         <div className="p-3 sm:p-4 flex flex-col flex-1 min-w-0">
-          <div className="sm:hidden text-[10.5px] font-semibold uppercase tracking-wide text-gold-deep mb-1">{item.source}</div>
+          <div className="flex items-center gap-1.5 flex-wrap mb-1 sm:mb-2">
+            <span className="sm:hidden text-[10.5px] font-semibold uppercase tracking-wide text-gold-deep">{item.source}</span>
+            <CategoryTag category={item.category} lang={lang} />
+            {isJustIn(item) && <JustInBadge label={justInLabel} />}
+          </div>
           <h3 className="font-display text-[14px] sm:text-[15.5px] text-navy leading-snug mb-1 sm:mb-2 line-clamp-3 group-hover:text-gold-deep transition-colors">
             {item.headline}
           </h3>

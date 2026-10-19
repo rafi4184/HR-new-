@@ -421,6 +421,9 @@ export const newsPageT = {
   allCategories: { en: "All", bn: "সব" },
   loading: { en: "Loading the latest news…", bn: "সর্বশেষ খবর লোড হচ্ছে…" },
   empty: { en: "No news in this category right now — check back soon.", bn: "এই বিভাগে এখন কোনো খবর নেই — শীঘ্রই আবার দেখুন।" },
+  justIn: { en: "Just In", bn: "এই মাত্র" },
+  topStory: { en: "Top Story", bn: "প্রধান খবর" },
+  moreHeadlines: { en: "More Headlines", bn: "আরও শিরোনাম" },
 };
 
 export const newsTeaserT = {

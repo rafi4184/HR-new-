@@ -1,12 +1,19 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
-import { ArrowRight, Newspaper } from "lucide-react";
+import { ArrowRight, Newspaper, Zap } from "lucide-react";
 import Reveal from "./ui/Reveal";
 import { listNews } from "../lib/api";
 import type { NewsItem } from "../types";
 import { useDict, useLanguage } from "../lib/i18n";
-import { newsTeaserT } from "../lib/translations";
+import { newsTeaserT, newsCategoryLabels, newsPageT } from "../lib/translations";
+import { CATEGORY_TAG_STYLE, JUST_IN_WINDOW_MS } from "../lib/newsCategoryStyle";
+
+function isJustIn(item: NewsItem): boolean {
+  const t = item.publishedAt ?? item.fetchedAt;
+  if (!t) return false;
+  return Date.now() - new Date(t).getTime() < JUST_IN_WINDOW_MS;
+}
 
 function timeAgo(iso: string | null, lang: "en" | "bn"): string {
   if (!iso) return "";
@@ -21,6 +28,7 @@ function timeAgo(iso: string | null, lang: "en" | "bn"): string {
 
 export default function NewsTeaser() {
   const T = useDict(newsTeaserT);
+  const TJustIn = useDict({ justIn: newsPageT.justIn }).justIn;
   const { lang } = useLanguage();
   const [items, setItems] = useState<NewsItem[]>([]);
 
@@ -97,6 +105,19 @@ export default function NewsTeaser() {
                       )}
                     </div>
                     <div className="p-3 sm:p-4 flex flex-col flex-1 min-w-0">
+                      <div className="flex items-center gap-1.5 flex-wrap mb-1 sm:mb-2">
+                        <span
+                          className={`inline-flex items-center px-2 py-0.5 rounded text-[9.5px] font-bold uppercase tracking-wide ${CATEGORY_TAG_STYLE[item.category]}`}
+                        >
+                          {newsCategoryLabels[item.category][lang]}
+                        </span>
+                        {isJustIn(item) && (
+                          <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded text-[9.5px] font-bold uppercase tracking-wide bg-red-600 text-white">
+                            <Zap size={8} className="fill-white" />
+                            {TJustIn}
+                          </span>
+                        )}
+                      </div>
                       <h3 className="font-display text-[13.5px] sm:text-[14.5px] text-navy leading-snug mb-1 sm:mb-2 line-clamp-2 group-hover:text-gold-deep transition-colors">
                         {item.headline}
                       </h3>
