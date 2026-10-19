@@ -160,9 +160,13 @@ function NewsCard({ item, delay, lang }: { item: NewsItem; delay: number; lang: 
         target="_blank"
         rel="noopener noreferrer"
         whileHover={{ y: -3 }}
-        className="group flex flex-col h-full rounded-2xl bg-white border border-border overflow-hidden shadow-card hover:border-gold hover:shadow-card-hover transition-all"
+        className="group flex flex-row sm:flex-col h-full rounded-2xl bg-white border border-border overflow-hidden shadow-card hover:border-gold hover:shadow-card-hover transition-all"
       >
-        <div className="relative aspect-[16/10] bg-paper-panel overflow-hidden">
+        {/* A full-width photo stacked above the text looks fine once the grid
+            gives a card real width (sm:+), but on a single-column phone
+            layout it dominates the screen — so mobile gets a compact list
+            row with a small thumbnail instead. */}
+        <div className="relative w-24 sm:w-full aspect-square sm:aspect-[16/10] shrink-0 bg-paper-panel overflow-hidden">
           {showImage ? (
             <img
               src={item.imageUrl!}
@@ -173,19 +177,23 @@ function NewsCard({ item, delay, lang }: { item: NewsItem; delay: number; lang: 
             />
           ) : (
             <div className="w-full h-full flex items-center justify-center text-gold-deep/40">
-              <Newspaper size={34} />
+              <Newspaper size={22} className="sm:hidden" />
+              <Newspaper size={34} className="hidden sm:block" />
             </div>
           )}
-          <span className="absolute top-2.5 left-2.5 px-2.5 py-1 rounded-full text-[10.5px] font-semibold uppercase tracking-wide bg-white/90 text-navy backdrop-blur-sm">
+          <span className="hidden sm:block absolute top-2.5 left-2.5 px-2.5 py-1 rounded-full text-[10.5px] font-semibold uppercase tracking-wide bg-white/90 text-navy backdrop-blur-sm">
             {item.source}
           </span>
         </div>
-        <div className="p-4 flex flex-col flex-1">
-          <h3 className="font-display text-[15.5px] text-navy leading-snug mb-2 line-clamp-3 group-hover:text-gold-deep transition-colors">
+        <div className="p-3 sm:p-4 flex flex-col flex-1 min-w-0">
+          <div className="sm:hidden text-[10.5px] font-semibold uppercase tracking-wide text-gold-deep mb-1">{item.source}</div>
+          <h3 className="font-display text-[14px] sm:text-[15.5px] text-navy leading-snug mb-1 sm:mb-2 line-clamp-3 group-hover:text-gold-deep transition-colors">
             {item.headline}
           </h3>
-          {item.excerpt && <p className="text-[12.5px] text-ink-muted leading-relaxed line-clamp-3 mb-3">{item.excerpt}</p>}
-          <div className="mt-auto text-[11.5px] text-ink-faint">{timeAgo(item.publishedAt ?? item.fetchedAt, lang)}</div>
+          {item.excerpt && (
+            <p className="hidden sm:block text-[12.5px] text-ink-muted leading-relaxed line-clamp-3 mb-3">{item.excerpt}</p>
+          )}
+          <div className="mt-auto text-[11px] sm:text-[11.5px] text-ink-faint">{timeAgo(item.publishedAt ?? item.fetchedAt, lang)}</div>
         </div>
       </motion.a>
     </Reveal>

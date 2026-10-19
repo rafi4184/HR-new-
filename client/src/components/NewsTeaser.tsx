@@ -73,9 +73,12 @@ export default function NewsTeaser() {
                     target="_blank"
                     rel="noopener noreferrer"
                     whileHover={{ y: -3 }}
-                    className="group flex flex-col h-full rounded-xl bg-white border border-border overflow-hidden shadow-card hover:border-gold hover:shadow-card-hover transition-all"
+                    className="group flex flex-row sm:flex-col h-full rounded-xl bg-white border border-border overflow-hidden shadow-card hover:border-gold hover:shadow-card-hover transition-all"
                   >
-                    <div className="relative aspect-[16/10] bg-paper-panel overflow-hidden">
+                    {/* Small thumbnail on phones (single-column) so a photo
+                        doesn't dominate the screen; full-width image once
+                        the grid gives a card real width (sm:+). */}
+                    <div className="relative w-20 sm:w-full aspect-square sm:aspect-[16/10] shrink-0 bg-paper-panel overflow-hidden">
                       {item.imageUrl ? (
                         <img
                           src={item.imageUrl}
@@ -88,12 +91,13 @@ export default function NewsTeaser() {
                         />
                       ) : (
                         <div className="w-full h-full flex items-center justify-center text-gold-deep/40">
-                          <Newspaper size={28} />
+                          <Newspaper size={20} className="sm:hidden" />
+                          <Newspaper size={28} className="hidden sm:block" />
                         </div>
                       )}
                     </div>
-                    <div className="p-4 flex flex-col flex-1">
-                      <h3 className="font-display text-[14.5px] text-navy leading-snug mb-2 line-clamp-2 group-hover:text-gold-deep transition-colors">
+                    <div className="p-3 sm:p-4 flex flex-col flex-1 min-w-0">
+                      <h3 className="font-display text-[13.5px] sm:text-[14.5px] text-navy leading-snug mb-1 sm:mb-2 line-clamp-2 group-hover:text-gold-deep transition-colors">
                         {item.headline}
                       </h3>
                       <div className="mt-auto text-[11px] text-ink-faint">{timeAgo(item.publishedAt ?? item.fetchedAt, lang)}</div>
