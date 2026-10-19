@@ -33,8 +33,16 @@ export default function NewsTeaser() {
   const [items, setItems] = useState<NewsItem[]>([]);
 
   useEffect(() => {
-    listNews(null, 6)
-      .then(setItems)
+    // Most sources' feeds don't carry a photo (see NewsPage), so picking
+    // the first 6 chronologically would often show mostly empty icon
+    // placeholders here. Pull a wider pool and prefer the ones with a real
+    // photo, filling any remaining slots with the rest.
+    listNews(null, 24)
+      .then((rows) => {
+        const withImages = rows.filter((r) => r.imageUrl);
+        const withoutImages = rows.filter((r) => !r.imageUrl);
+        setItems([...withImages, ...withoutImages].slice(0, 6));
+      })
       .catch(() => {});
   }, []);
 

@@ -77,6 +77,12 @@ export default function NewsPage() {
     return !acc || t > acc ? t : acc;
   }, null);
 
+  // The lead slot is the biggest, most visible element on the page — an
+  // item with no photo there reads as broken, not just plain. Pick the
+  // most recent item that actually has one; only fall back to items[0] on
+  // the rare run where nothing does.
+  const featured = items.find((it) => it.imageUrl) ?? items[0];
+
   return (
     <div>
       <section className="relative px-5 md:px-10 pt-14 pb-10 md:pt-20 md:pb-12 bg-paper-soft overflow-hidden">
@@ -139,7 +145,7 @@ export default function NewsPage() {
 
         {loaded && items.length > 0 && (
           <>
-            <FeaturedStory item={items[0]} lang={lang} topStoryLabel={T.topStory} justInLabel={T.justIn} />
+            <FeaturedStory item={featured} lang={lang} topStoryLabel={T.topStory} justInLabel={T.justIn} />
 
             {items.length > 1 && (
               <Reveal delay={0.1} className="mt-10 md:mt-14">
@@ -147,9 +153,11 @@ export default function NewsPage() {
                   {T.moreHeadlines}
                 </h2>
                 <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5 sm:gap-6">
-                  {items.slice(1).map((item, i) => (
-                    <NewsCard key={item.id} item={item} delay={Math.min(i, 8) * 0.04} lang={lang} justInLabel={T.justIn} />
-                  ))}
+                  {items
+                    .filter((it) => it.id !== featured.id)
+                    .map((item, i) => (
+                      <NewsCard key={item.id} item={item} delay={Math.min(i, 8) * 0.04} lang={lang} justInLabel={T.justIn} />
+                    ))}
                 </div>
               </Reveal>
             )}
