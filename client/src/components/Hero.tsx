@@ -37,21 +37,21 @@ export default function Hero() {
       <motion.div
         aria-hidden="true"
         className="absolute -top-24 -left-24 w-[420px] h-[420px] rounded-full blur-3xl pointer-events-none"
-        style={{ background: "radial-gradient(circle, rgba(198,161,91,0.10), transparent 70%)" }}
+        style={{ background: "radial-gradient(circle, rgba(169,121,45,0.10), transparent 70%)" }}
         animate={{ x: [0, 30, 0], y: [0, 20, 0] }}
         transition={{ duration: 14, repeat: Infinity, ease: "easeInOut" }}
       />
       <motion.div
         aria-hidden="true"
         className="absolute -bottom-32 -right-16 w-[480px] h-[480px] rounded-full blur-3xl pointer-events-none"
-        style={{ background: "radial-gradient(circle, rgba(16,42,67,0.06), transparent 70%)" }}
+        style={{ background: "radial-gradient(circle, rgba(12,35,64,0.06), transparent 70%)" }}
         animate={{ x: [0, -24, 0], y: [0, -16, 0] }}
         transition={{ duration: 16, repeat: Infinity, ease: "easeInOut" }}
       />
       <motion.div
         aria-hidden="true"
         className="absolute top-1/3 left-1/2 w-[300px] h-[300px] rounded-full blur-3xl pointer-events-none"
-        style={{ background: "radial-gradient(circle, rgba(198,161,91,0.06), transparent 70%)" }}
+        style={{ background: "radial-gradient(circle, rgba(169,121,45,0.06), transparent 70%)" }}
         animate={{ x: [0, 18, 0], y: [0, -22, 0] }}
         transition={{ duration: 12, repeat: Infinity, ease: "easeInOut" }}
       />

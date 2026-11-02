@@ -9,23 +9,37 @@ export default {
         mono: ["'IBM Plex Mono'", "ui-monospace", "monospace"],
       },
       colors: {
-        // primary navy — headings, primary text, dark footer band
+        // primary navy — deepened for a more authoritative, "immigration
+        // consultancy" register (headings, primary text, dark footer band)
         navy: {
-          DEFAULT: "#102A43",
-          deep: "#0B1E30",
-          soft: "#2864A6",
+          DEFAULT: "#0C2340",
+          deep: "#081526",
+          soft: "#2E5C8A",
         },
-        // premium gold accent — used sparingly: primary CTA, highlights
+        // primary accent — shifted from a soft "boutique concierge" honey
+        // gold to a richer, more saturated bronze-gold that reads closer
+        // to an official seal/stamp. Used sparingly: primary CTA, highlights.
+        // NOTE: the token is still named `gold` (avoids touching every
+        // `bg-gold`/`text-gold-deep` usage across the app) but its value is
+        // this deeper bronze tone, not a literal gold/yellow.
         gold: {
-          DEFAULT: "#C6A15B",
-          deep: "#A9843D",
-          pale: "#F5EEDF",
-          tint: "#EDE0C4",
+          DEFAULT: "#A9792D",
+          deep: "#7C591E",
+          pale: "#F3E9D6",
+          tint: "#E6D2A8",
+        },
+        // Spain flag red — a new, deliberately sparing accent for
+        // Spain-specific nods (flag stripes, badges, "live" tags) now that
+        // the site is a Spain visa consultancy. Not used as a general CTA
+        // color — red reads as "urgent/stop," not "trustworthy."
+        spainRed: {
+          DEFAULT: "#AA151B",
+          deep: "#7E0F14",
         },
         // secondary blue — interactive elements, links, secondary accents
         brand: {
-          blue: "#2864A6",
-          navy: "#102A43",
+          blue: "#2E5C8A",
+          navy: "#0C2340",
         },
         // bright, clean paper ground
         paper: {
@@ -51,13 +65,13 @@ export default {
         },
       },
       backgroundImage: {
-        "brand-gradient": "linear-gradient(135deg, #102A43 0%, #2864A6 100%)",
-        "brand-gradient-soft": "linear-gradient(135deg, rgba(16,42,67,0.06) 0%, rgba(40,100,166,0.06) 100%)",
+        "brand-gradient": "linear-gradient(135deg, #0C2340 0%, #2E5C8A 100%)",
+        "brand-gradient-soft": "linear-gradient(135deg, rgba(12,35,64,0.06) 0%, rgba(46,92,138,0.06) 100%)",
       },
       boxShadow: {
-        card: "0 2px 10px rgba(16,42,67,0.06)",
-        "card-hover": "0 18px 40px rgba(16,42,67,0.12)",
-        soft: "0 1px 3px rgba(16,42,67,0.08)",
+        card: "0 2px 10px rgba(12,35,64,0.06)",
+        "card-hover": "0 18px 40px rgba(12,35,64,0.12)",
+        soft: "0 1px 3px rgba(12,35,64,0.08)",
       },
       borderRadius: {
         lg: "0.5rem",

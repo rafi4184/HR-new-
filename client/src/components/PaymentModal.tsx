@@ -138,7 +138,7 @@ export default function PaymentModal({
                     <>
                       <motion.span
                         className="inline-block w-4 h-4 rounded-full border-2"
-                        style={{ borderColor: "#102A43 transparent #102A43 #102A43" }}
+                        style={{ borderColor: "#0C2340 transparent #0C2340 #0C2340" }}
                         animate={{ rotate: 360 }}
                         transition={{ duration: 0.8, repeat: Infinity, ease: "linear" }}
                       />

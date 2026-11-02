@@ -34,15 +34,15 @@ body.mobile-nav-open .fab-call {
 }
 
 ::selection {
-  background: #c6a15b;
-  color: #102a43;
+  background: #a9792d;
+  color: #0c2340;
 }
 
 input:focus,
 select:focus,
 textarea:focus {
-  border-color: #2864a6 !important;
-  box-shadow: 0 0 0 3px rgba(40, 100, 166, 0.16);
+  border-color: #2e5c8a !important;
+  box-shadow: 0 0 0 3px rgba(46, 92, 138, 0.16);
 }
 
 .shimmer {
@@ -67,7 +67,7 @@ textarea:focus {
   border-bottom-color: #cbd5e1;
 }
 .ticket-field:focus {
-  border-bottom-color: #2864a6;
+  border-bottom-color: #2e5c8a;
 }
 select.ticket-field {
   cursor: pointer;

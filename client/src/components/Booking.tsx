@@ -461,7 +461,7 @@ const Booking = forwardRef<
               transition={{ duration: 0.45, ease: [0.2, 0.9, 0.3, 1.3] }}
               className="mt-5 rounded-lg px-4 py-3 flex items-center gap-3 bg-gold-pale"
             >
-              <Ticket size={18} color="#A9843D" className="shrink-0" />
+              <Ticket size={18} color="#7C591E" className="shrink-0" />
               <div className="text-[13px] text-navy">
                 {T.ticketSaved.split("{ticket}").map((part, i, arr) => (
                   <span key={i}>

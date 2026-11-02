@@ -20,14 +20,14 @@ export default function SpainHero() {
       <motion.div
         aria-hidden="true"
         className="absolute -top-24 -right-24 w-[460px] h-[460px] rounded-full blur-3xl pointer-events-none"
-        style={{ background: "radial-gradient(circle, rgba(198,161,91,0.12), transparent 70%)" }}
+        style={{ background: "radial-gradient(circle, rgba(169,121,45,0.12), transparent 70%)" }}
         animate={{ x: [0, -24, 0], y: [0, 18, 0] }}
         transition={{ duration: 14, repeat: Infinity, ease: "easeInOut" }}
       />
       <motion.div
         aria-hidden="true"
         className="absolute -bottom-28 -left-16 w-[420px] h-[420px] rounded-full blur-3xl pointer-events-none"
-        style={{ background: "radial-gradient(circle, rgba(16,42,67,0.07), transparent 70%)" }}
+        style={{ background: "radial-gradient(circle, rgba(12,35,64,0.07), transparent 70%)" }}
         animate={{ x: [0, 20, 0], y: [0, -16, 0] }}
         transition={{ duration: 16, repeat: Infinity, ease: "easeInOut" }}
       />
@@ -109,9 +109,9 @@ export default function SpainHero() {
             {/* Spain flag-colour accent stripe — a restrained nod to the
                 country focus without relying on a sourced stock photo. */}
             <div className="h-2 w-full flex">
-              <div className="flex-1 bg-[#AA151B]" />
+              <div className="flex-1 bg-spainRed" />
               <div className="flex-[2] bg-[#F1BF00]" />
-              <div className="flex-1 bg-[#AA151B]" />
+              <div className="flex-1 bg-spainRed" />
             </div>
 
             <div className="p-7 sm:p-9">
