@@ -106,15 +106,21 @@ export default function SpainHero() {
         >
           <div className="absolute -inset-3 rounded-[28px] bg-gradient-to-br from-gold/40 via-transparent to-navy/20 blur-md pointer-events-none" />
           <div className="relative rounded-2xl overflow-hidden shadow-card-hover border border-white/60 bg-navy">
-            {/* Spain flag-colour accent stripe — a restrained nod to the
-                country focus without relying on a sourced stock photo. */}
+            {/* Spain flag-colour accent stripe */}
             <div className="h-2 w-full flex">
               <div className="flex-1 bg-spainRed" />
               <div className="flex-[2] bg-[#F1BF00]" />
               <div className="flex-1 bg-spainRed" />
             </div>
 
-            <div className="p-7 sm:p-9">
+            <img
+              src="/images/spain/barcelona-cityscape.jpg"
+              alt="Barcelona skyline with Sagrada Familia, Spain"
+              className="absolute inset-0 w-full h-full object-cover"
+            />
+            <div className="absolute inset-0 bg-gradient-to-b from-navy/80 via-navy/88 to-navy/95" />
+
+            <div className="relative p-7 sm:p-9">
               <div className="flex items-center gap-1.5 mb-4">
                 <span className="relative flex h-2 w-2">
                   <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-gold opacity-75" />

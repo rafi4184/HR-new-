@@ -110,26 +110,46 @@ export default function SpainVisaPage() {
             {T.ctaButton} <ArrowRight size={15} />
           </button>
         </div>
+        <Reveal delay={0.1} className="relative max-w-5xl mx-auto mt-10">
+          <div className="rounded-2xl overflow-hidden shadow-card-hover border border-white/60 aspect-[21/9]">
+            <img
+              src="/images/spain/barcelona-sagrada-familia-skyline.jpg"
+              alt="Sagrada Familia and the Barcelona skyline, Spain"
+              className="w-full h-full object-cover"
+            />
+          </div>
+        </Reveal>
       </section>
 
       {/* Who can apply */}
-      <section className="px-5 md:px-10 py-14 max-w-4xl mx-auto">
-        <Reveal>
-          <div className="flex items-center gap-2.5 mb-6">
-            <div className="w-9 h-9 rounded-lg bg-gold-pale flex items-center justify-center text-gold-deep shrink-0">
-              <FileCheck2 size={18} />
+      <section className="px-5 md:px-10 py-14 max-w-6xl mx-auto">
+        <div className="grid lg:grid-cols-5 gap-10 items-center">
+          <Reveal className="lg:col-span-3">
+            <div className="flex items-center gap-2.5 mb-6">
+              <div className="w-9 h-9 rounded-lg bg-gold-pale flex items-center justify-center text-gold-deep shrink-0">
+                <FileCheck2 size={18} />
+              </div>
+              <h2 className="font-display text-2xl text-navy">{T.whoHeading}</h2>
             </div>
-            <h2 className="font-display text-2xl text-navy">{T.whoHeading}</h2>
-          </div>
-          <ul className="space-y-3">
-            {spainVisaPageT.whoItems.map((item, i) => (
-              <li key={i} className="flex items-start gap-2.5 text-[14.5px] text-ink-soft leading-relaxed">
-                <Check size={16} className="text-gold-deep shrink-0 mt-0.5" />
-                {item[lang]}
-              </li>
-            ))}
-          </ul>
-        </Reveal>
+            <ul className="space-y-3">
+              {spainVisaPageT.whoItems.map((item, i) => (
+                <li key={i} className="flex items-start gap-2.5 text-[14.5px] text-ink-soft leading-relaxed">
+                  <Check size={16} className="text-gold-deep shrink-0 mt-0.5" />
+                  {item[lang]}
+                </li>
+              ))}
+            </ul>
+          </Reveal>
+          <Reveal delay={0.1} className="lg:col-span-2">
+            <div className="rounded-2xl overflow-hidden shadow-card border border-border aspect-[4/5]">
+              <img
+                src="/images/spain/digital-nomad-remote-worker.jpg"
+                alt="Remote professional working on a laptop — digital nomad lifestyle"
+                className="w-full h-full object-cover"
+              />
+            </div>
+          </Reveal>
+        </div>
       </section>
 
       {/* Income requirements */}
