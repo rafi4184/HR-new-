@@ -16,6 +16,7 @@ import { SERVICE_PAGE_LIST } from "./data/servicePages";
 // never touch, say, the staff dashboard, so there's no reason to ship that
 // code (or any other route's) in the bundle everyone downloads first.
 const ServicePage = lazy(() => import("./pages/ServicePage"));
+const SpainVisaPage = lazy(() => import("./pages/SpainVisaPage"));
 const AboutPage = lazy(() => import("./pages/AboutPage"));
 const EventsPage = lazy(() => import("./pages/EventsPage"));
 const NewsPage = lazy(() => import("./pages/NewsPage"));
@@ -54,6 +55,7 @@ export default function App() {
           <Suspense fallback={<div className="min-h-[60vh]" />}>
             <Routes location={location}>
               <Route path="/" element={<HomePage onToast={showToast} />} />
+              <Route path="/spain-visa" element={<SpainVisaPage />} />
               {SERVICE_PAGE_LIST.map((data) => (
                 <Route key={data.id} path={data.path} element={<ServicePage data={data} />} />
               ))}

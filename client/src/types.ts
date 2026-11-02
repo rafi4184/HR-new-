@@ -29,7 +29,7 @@ export interface IdentityFields {
   email: string;
 }
 
-export type BookingTab = "airport" | "hotel" | "government" | "programs" | "resume";
+export type BookingTab = "spain" | "airport" | "hotel" | "government" | "programs" | "resume";
 
 export interface Contact {
   id: number;

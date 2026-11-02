@@ -3,9 +3,10 @@
 // ../lib/i18n. Internal staff/admin screens stay English-only for now.
 
 export const header = {
-  tagline: { en: "Trusted Service & Support Partner", bn: "বিশ্বস্ত সেবা ও সহায়তা অংশীদার" },
+  tagline: { en: "Spain Visa Consultants", bn: "স্পেন ভিসা পরামর্শদাতা" },
   home: { en: "Home", bn: "হোম" },
-  services: { en: "Services", bn: "সেবাসমূহ" },
+  spainVisa: { en: "Spain Visa", bn: "স্পেন ভিসা" },
+  services: { en: "Other Services", bn: "অন্যান্য সেবা" },
   aboutUs: { en: "About Us", bn: "আমাদের সম্পর্কে" },
   contact: { en: "Contact", bn: "যোগাযোগ" },
   trackRequest: { en: "Track Request", bn: "অনুরোধ ট্র্যাক করুন" },
@@ -471,10 +472,31 @@ export const faqDefault = {
 
 export const homeFaqs = [
   {
-    question: { en: "What services does HR — The Mediator provide in Bangladesh?", bn: "এইচআর দ্য মিডিয়েটর বাংলাদেশে কী কী সেবা প্রদান করে?" },
+    question: { en: "What is Spain's Digital Nomad Visa?", bn: "স্পেনের ডিজিটাল নোম্যাড ভিসা কী?" },
     answer: {
-      en: "We provide five core services: airport VIP reception, hotel & car booking, government-request assistance, manpower & security staffing, and courses & careers support covering media training and Gulf study/work placement.",
-      bn: "আমরা পাঁচটি মূল সেবা প্রদান করি: এয়ারপোর্ট ভিআইপি রিসেপশন, হোটেল ও গাড়ি বুকিং, সরকারি কাজে সহায়তা, জনবল ও নিরাপত্তা স্টাফিং এবং মিডিয়া প্রশিক্ষণ ও গালফ পড়াশোনা/কাজের প্লেসমেন্টসহ কোর্স ও ক্যারিয়ার সহায়তা।",
+      en: "Officially the International Teleworking Residence Authorisation (ARTIN), introduced under Spain's 2023 Startup Law. It lets you live in Spain while working remotely for a company or clients based outside Spain — no Spanish employer or local job offer required.",
+      bn: "এর সরকারি নাম \"ইন্টারন্যাশনাল টেলিওয়ার্ক রেসিডেন্স অথরাইজেশন\" (ARTIN), যা স্পেনের ২০২৩ সালের স্টার্টআপ আইনের অধীনে চালু হয়েছে। এই ভিসায় স্পেনে থেকে স্পেনের বাইরের কোম্পানি বা ক্লায়েন্টের হয়ে রিমোট কাজ করা যায় — স্প্যানিশ নিয়োগকর্তা বা স্থানীয় চাকরির অফার লাগে না।",
+    },
+  },
+  {
+    question: { en: "What is the minimum income for Spain's Digital Nomad Visa in 2026?", bn: "২০২৬ সালে স্পেনের ডিজিটাল নোম্যাড ভিসার জন্য ন্যূনতম আয় কত?" },
+    answer: {
+      en: "A single applicant needs at least €2,849 per month (about €34,200 per year), up from €2,763 in 2025. Add roughly €1,068/month for a spouse or partner and €356/month per child. Rates change yearly, so confirm the current figure with us before applying.",
+      bn: "একক আবেদনকারীর জন্য মাসে কমপক্ষে €২,৮৪৯ প্রয়োজন (বছরে প্রায় €৩৪,২০০), যা ২০২৫ সালে ছিল €২,৭৬৩। স্বামী/স্ত্রীর জন্য প্রায় +€১,০৬৮/মাস এবং প্রতিটি সন্তানের জন্য প্রায় +€৩৫৬/মাস যোগ হবে। হার প্রতি বছর পরিবর্তিত হয়, তাই আবেদনের আগে আমাদের সাথে বর্তমান অঙ্ক যাচাই করে নিন।",
+    },
+  },
+  {
+    question: { en: "Does HR — The Mediator help with other Spain visas too?", bn: "এইচআর দ্য মিডিয়েটর কি স্পেনের অন্যান্য ভিসাতেও সহায়তা করে?" },
+    answer: {
+      en: "Consultation is available now for Spain Student, Permanent Residency and Work visas as we expand our Spain practice, alongside our full Digital Nomad Visa service.",
+      bn: "আমাদের স্পেন প্র্যাকটিস সম্প্রসারিত হওয়ার সাথে সাথে স্টুডেন্ট, পার্মানেন্ট রেসিডেন্সি ও ওয়ার্ক ভিসার জন্যও এখন পরামর্শ পাওয়া যায়, সাথে আমাদের সম্পূর্ণ ডিজিটাল নোম্যাড ভিসা সেবা তো আছেই।",
+    },
+  },
+  {
+    question: { en: "What other services does HR — The Mediator provide in Bangladesh?", bn: "এইচআর দ্য মিডিয়েটর বাংলাদেশে আর কী কী সেবা প্রদান করে?" },
+    answer: {
+      en: "Alongside our Spain visa consultancy, we provide five original services: airport VIP reception, hotel & car booking, government-request assistance, manpower & security staffing, and courses & careers support covering media training and Gulf/Australia study or work placement.",
+      bn: "আমাদের স্পেন ভিসা কনসালটেন্সির পাশাপাশি, আমরা পাঁচটি মূল সেবা প্রদান করি: এয়ারপোর্ট ভিআইপি রিসেপশন, হোটেল ও গাড়ি বুকিং, সরকারি কাজে সহায়তা, জনবল ও নিরাপত্তা স্টাফিং এবং মিডিয়া প্রশিক্ষণ ও গালফ/অস্ট্রেলিয়া পড়াশোনা বা কাজের প্লেসমেন্টসহ কোর্স ও ক্যারিয়ার সহায়তা।",
     },
   },
   {
@@ -530,8 +552,8 @@ export const homeFaqs = [
 
 export const footer = {
   description: {
-    en: "Your trusted service & support partner in Bangladesh — concierge, transport, government assistance, manpower, security, education and career services for individuals, families, businesses and international clients.",
-    bn: "বাংলাদেশে আপনার বিশ্বস্ত সেবা ও সহায়তা অংশীদার — কনসিয়ার্জ, পরিবহন, সরকারি সহায়তা, জনবল, নিরাপত্তা, শিক্ষা ও ক্যারিয়ার সেবা ব্যক্তি, পরিবার, ব্যবসা ও আন্তর্জাতিক গ্রাহকদের জন্য।",
+    en: "Spain visa consultants based in Bangladesh — specialists in the Digital Nomad Visa, with Student, Permanent Residency and Work visa guidance underway. We also continue our original concierge, transport, government-request, manpower, security and overseas-career services.",
+    bn: "বাংলাদেশভিত্তিক স্পেন ভিসা পরামর্শদাতা — ডিজিটাল নোম্যাড ভিসায় বিশেষজ্ঞ, সাথে স্টুডেন্ট, পার্মানেন্ট রেসিডেন্সি ও ওয়ার্ক ভিসার পরামর্শও যুক্ত হচ্ছে। আমরা আমাদের পূর্বের কনসিয়ার্জ, পরিবহন, সরকারি সহায়তা, জনবল, নিরাপত্তা ও প্রবাসী ক্যারিয়ার সেবাও চালিয়ে যাচ্ছি।",
   },
   servicesHeading: { en: "Services", bn: "সেবাসমূহ" },
   quickLinksHeading: { en: "Quick Links", bn: "দ্রুত লিংক" },
@@ -555,6 +577,7 @@ export const finalCta = {
 
 export const bookingT = {
   tabs: {
+    spain: { en: "Spain Visa", bn: "স্পেন ভিসা" },
     airport: { en: "Airport VIP", bn: "এয়ারপোর্ট ভিআইপি" },
     hotel: { en: "Hotel & car", bn: "হোটেল ও গাড়ি" },
     government: { en: "Government request", bn: "সরকারি অনুরোধ" },
@@ -567,6 +590,7 @@ export const bookingT = {
     bn: "আপনার প্রয়োজনীয় সেবাটি বেছে নিন। প্রতিটি অনুরোধে একটি টিকিট নম্বর দেওয়া হয় যা আপনি ট্র্যাক করতে পারবেন।",
   },
   submitting: { en: "Submitting…", bn: "জমা দেওয়া হচ্ছে…" },
+  submitSpain: { en: "Submit Spain visa consultation request", bn: "স্পেন ভিসা পরামর্শের অনুরোধ জমা দিন" },
   submitAirport: { en: "Submit airport request", bn: "এয়ারপোর্ট অনুরোধ জমা দিন" },
   submitHotel: { en: "Submit hotel & car request", bn: "হোটেল ও গাড়ির অনুরোধ জমা দিন" },
   submitGovernment: { en: "Submit government request", bn: "সরকারি অনুরোধ জমা দিন" },
@@ -592,6 +616,9 @@ export const bookingT = {
     preferredBatch: { en: "Preferred batch", bn: "পছন্দের ব্যাচ" },
     currentEducation: { en: "Current education / occupation", bn: "বর্তমান শিক্ষা / পেশা" },
     selectAService: { en: "Select a service", bn: "একটি সেবা নির্বাচন করুন" },
+    visaType: { en: "Visa type", bn: "ভিসার ধরন" },
+    selectVisaType: { en: "Select a visa type", bn: "একটি ভিসার ধরন নির্বাচন করুন" },
+    currentOccupation: { en: "Current occupation / remote employer", bn: "বর্তমান পেশা / রিমোট নিয়োগকর্তা" },
   },
   airports: {
     dhaka: { en: "Hazrat Shahjalal Int'l, Dhaka", bn: "হযরত শাহজালাল আন্তর্জাতিক বিমানবন্দর, ঢাকা" },
@@ -619,6 +646,10 @@ export const bookingT = {
     online: { en: "Online, Zoom", bn: "অনলাইন, জুম" },
     notApplicable: { en: "Not applicable", bn: "প্রযোজ্য নয়" },
   },
+  spainNotice: {
+    en: "Our desk reviews your eligibility and confirms the right visa route and current income requirement with you directly before any application work begins.",
+    bn: "আবেদনের কাজ শুরুর আগে আমাদের ডেস্ক আপনার যোগ্যতা পর্যালোচনা করে এবং সঠিক ভিসার পথ ও বর্তমান আয়ের শর্ত সরাসরি আপনার সাথে নিশ্চিত করে।",
+  },
   govNotice: {
     en: "Our desk reviews every case individually and confirms scope directly with you by phone before any work begins.",
     bn: "আমাদের ডেস্ক প্রতিটি কেস আলাদাভাবে পর্যালোচনা করে এবং কাজ শুরুর আগে ফোনে সরাসরি আপনার সাথে বিষয়টি নিশ্চিত করে।",
@@ -632,6 +663,8 @@ export const bookingT = {
     airportNotes: { en: "Anything else we should know", bn: "অন্য কিছু জানানোর থাকলে লিখুন" },
     cityExample: { en: "Dhaka, Rajshahi...", bn: "ঢাকা, রাজশাহী..." },
     programGoal: { en: "What are you hoping to get out of it?", bn: "আপনি এখান থেকে কী পেতে চান?" },
+    spainOccupation: { en: "e.g. Software Developer, remote for a UK company", bn: "যেমন সফটওয়্যার ডেভেলপার, যুক্তরাজ্যের কোম্পানির জন্য রিমোট" },
+    spainNotes: { en: "Anything else we should know about your situation", bn: "আপনার পরিস্থিতি সম্পর্কে আর কিছু জানানোর থাকলে লিখুন" },
   },
   ticketSaved: {
     en: "Your ticket number is {ticket}. Save it — you'll need it with your name and date of birth to track this request.",
@@ -1088,3 +1121,184 @@ export const programsT = [
   { id: "media", en: "Media & Public Speaking Academy", bn: "মিডিয়া ও পাবলিক স্পিকিং একাডেমি" },
   { id: "gulf", en: "Gulf & Overseas Employment", bn: "গালফ ও প্রবাসী কর্মসংস্থান" },
 ];
+
+// ---------------------------------------------------------------------
+// Spain Visa Consultancy — the site's primary identity. Everything below
+// is new content for the Spain-focused hero, homepage overview section,
+// the dedicated /spain-visa page, and the matching Booking tab.
+// ---------------------------------------------------------------------
+
+export const spainHero = {
+  eyebrow: { en: "Spain Visa Consultants · Based in Bangladesh", bn: "স্পেন ভিসা পরামর্শদাতা · বাংলাদেশ থেকে পরিচালিত" },
+  h1: { en: "Your Path to Spain, Handled Start to Finish", bn: "স্পেনে যাওয়ার পথ, শুরু থেকে শেষ পর্যন্ত আমরাই সামলাই" },
+  paragraph: {
+    en: "We are HR — The Mediator's Spain Visa Consultancy — specialists in Spain's Digital Nomad Visa (ARTIN), with guidance on Student, Permanent Residency and Work visas as we expand. Eligibility, documents, the right application route, and your consultation — coordinated from one trusted desk in Bangladesh.",
+    bn: "আমরা এইচআর দ্য মিডিয়েটরের স্পেন ভিসা কনসালটেন্সি — স্পেনের ডিজিটাল নোম্যাড ভিসা (ARTIN)-এ বিশেষজ্ঞ, সাথে স্টুডেন্ট, পার্মানেন্ট রেসিডেন্সি ও ওয়ার্ক ভিসার পরামর্শও যুক্ত হচ্ছে। যোগ্যতা যাচাই, কাগজপত্র, সঠিক আবেদনের পথ এবং পরামর্শ — সবকিছু বাংলাদেশের একটি বিশ্বস্ত ডেস্ক থেকে সমন্বিত।",
+  },
+  ctaExplore: { en: "Explore Spain Visas", bn: "স্পেন ভিসা দেখুন" },
+  ctaConsult: { en: "Request a Consultation", bn: "পরামর্শের জন্য অনুরোধ করুন" },
+  badgeTag: { en: "Updated November 2026", bn: "নভেম্বর ২০২৬ অনুযায়ী হালনাগাদ" },
+  badgeTitle: { en: "Digital Nomad Visa (ARTIN)", bn: "ডিজিটাল নোম্যাড ভিসা (ARTIN)" },
+  otherServicesNote: {
+    en: "We also continue our original services — Dhaka Airport VIP, government-request assistance, manpower & security staffing, and placement across the Gulf & Australia.",
+    bn: "আমরা আমাদের পূর্বের সেবাগুলোও চালিয়ে যাচ্ছি — ঢাকা এয়ারপোর্ট ভিআইপি, সরকারি কাজে সহায়তা, জনবল ও নিরাপত্তা স্টাফিং, এবং গালফ ও অস্ট্রেলিয়ায় কর্মসংস্থান।",
+  },
+};
+
+export const otherServicesSection = {
+  eyebrow: { en: "Also From Our Desk", bn: "আমাদের ডেস্ক থেকে আরও" },
+  h2: { en: "Our Other Services", bn: "আমাদের অন্যান্য সেবা" },
+  intro: {
+    en: "Before we became a Spain visa consultancy, we built a track record on these — and we still run them every day for clients across Bangladesh.",
+    bn: "স্পেন ভিসা কনসালটেন্সি হওয়ার আগে আমরা এই সেবাগুলোতে আস্থা অর্জন করেছি — এবং আমরা এখনও প্রতিদিন বাংলাদেশজুড়ে গ্রাহকদের জন্য এগুলো পরিচালনা করি।",
+  },
+};
+
+export type SpainVisaKey = "digital-nomad" | "student" | "permanent-residency" | "work";
+
+export const spainVisaTypesT: { key: SpainVisaKey; title: { en: string; bn: string }; summary: { en: string; bn: string }; available: boolean }[] = [
+  {
+    key: "digital-nomad",
+    title: { en: "Digital Nomad Visa", bn: "ডিজিটাল নোম্যাড ভিসা" },
+    summary: {
+      en: "Live in Spain while working remotely for a non-Spanish employer or clients — no local job offer needed.",
+      bn: "বিদেশি নিয়োগকর্তা বা ক্লায়েন্টদের জন্য রিমোট কাজ করে স্পেনে বসবাস করুন — স্থানীয় চাকরির অফার লাগে না।",
+    },
+    available: true,
+  },
+  {
+    key: "student",
+    title: { en: "Student Visa", bn: "স্টুডেন্ট ভিসা" },
+    summary: {
+      en: "Study at a Spanish university or language school. Consultation available — contact us for details.",
+      bn: "স্প্যানিশ বিশ্ববিদ্যালয় বা ভাষা স্কুলে পড়াশোনা করুন। পরামর্শ উপলব্ধ — বিস্তারিত জানতে যোগাযোগ করুন।",
+    },
+    available: false,
+  },
+  {
+    key: "permanent-residency",
+    title: { en: "Permanent Residency", bn: "পার্মানেন্ট রেসিডেন্সি" },
+    summary: {
+      en: "Long-term and permanent residency pathways in Spain. Consultation available — contact us for details.",
+      bn: "স্পেনে দীর্ঘমেয়াদী ও স্থায়ী বসবাসের পথ। পরামর্শ উপলব্ধ — বিস্তারিত জানতে যোগাযোগ করুন।",
+    },
+    available: false,
+  },
+  {
+    key: "work",
+    title: { en: "Work Visa", bn: "ওয়ার্ক ভিসা" },
+    summary: {
+      en: "Employment-based visas for working in Spain with a local employer. Consultation available — contact us for details.",
+      bn: "স্থানীয় নিয়োগকর্তার অধীনে স্পেনে কাজ করার জন্য কর্মসংস্থান-ভিত্তিক ভিসা। পরামর্শ উপলব্ধ — বিস্তারিত জানতে যোগাযোগ করুন।",
+    },
+    available: false,
+  },
+];
+
+export const spainVisaPageT = {
+  eyebrow: { en: "Spain Visa Consultancy", bn: "স্পেন ভিসা কনসালটেন্সি" },
+  h1: { en: "Spain Digital Nomad Visa (ARTIN)", bn: "স্পেন ডিজিটাল নোম্যাড ভিসা (ARTIN)" },
+  intro: {
+    en: "Officially the International Teleworking Residence Authorisation (ARTIN), introduced under Spain's 2023 Startup Law. It lets you live in Spain while working remotely for a company or clients based outside Spain — no Spanish employer or local job offer required.",
+    bn: "এর সরকারি নাম \"ইন্টারন্যাশনাল টেলিওয়ার্ক রেসিডেন্স অথরাইজেশন\" (ARTIN), যা স্পেনের ২০২৩ সালের স্টার্টআপ আইনের অধীনে চালু হয়েছে। এই ভিসায় স্পেনে থেকে স্পেনের বাইরের কোম্পানি বা ক্লায়েন্টের হয়ে রিমোট কাজ করা যায় — স্প্যানিশ নিয়োগকর্তা বা স্থানীয় চাকরির অফার লাগে না।",
+  },
+  updatedNote: { en: "Information current as of November 2026.", bn: "তথ্য নভেম্বর ২০২৬ অনুযায়ী হালনাগাদ।" },
+
+  whoHeading: { en: "Who Can Apply", bn: "কারা আবেদন করতে পারবেন" },
+  whoItems: [
+    {
+      en: "Remote employees of a foreign company, or freelancers working mainly with foreign clients.",
+      bn: "বিদেশি কোম্পানির রিমোট কর্মচারী, অথবা বিদেশি ক্লায়েন্টদের সাথে কাজ করা ফ্রিল্যান্সার।",
+    },
+    {
+      en: "Income from Spanish companies or clients cannot exceed 20% of your total professional income.",
+      bn: "স্প্যানিশ কোম্পানি বা ক্লায়েন্ট থেকে আয় মোট পেশাগত আয়ের ২০% এর বেশি হতে পারবে না।",
+    },
+    {
+      en: "Usually requires a university degree, or at least 3 years of relevant professional experience.",
+      bn: "সাধারণত বিশ্ববিদ্যালয়ের ডিগ্রি থাকতে হয়, অথবা কমপক্ষে ৩ বছরের প্রাসঙ্গিক পেশাগত অভিজ্ঞতা।",
+    },
+    {
+      en: "At least 3 months' existing relationship with the foreign company or clients; that company must have been operating for at least 1 year.",
+      bn: "বিদেশি কোম্পানির সাথে কমপক্ষে ৩ মাসের সম্পর্ক থাকতে হবে। কোম্পানিটি কমপক্ষে ১ বছর ধরে চালু থাকতে হবে।",
+    },
+  ],
+
+  incomeHeading: { en: "Income Requirements (2026)", bn: "আয়ের শর্ত (২০২৬)" },
+  incomeIntro: {
+    en: "New applications and renewals both use the current rate.",
+    bn: "নতুন আবেদন ও নবায়ন — দুটোতেই বর্তমান হার প্রযোজ্য।",
+  },
+  incomeRows: [
+    {
+      label: { en: "Single applicant", bn: "একক আবেদনকারী" },
+      value: { en: "€2,849 / month (~€34,200 / year)", bn: "€২,৮৪৯ / মাস (~€৩৪,২০০ / বছর)" },
+    },
+    {
+      label: { en: "+ Spouse / partner", bn: "+ স্বামী/স্ত্রী বা সঙ্গী" },
+      value: { en: "approx. +€1,068 / month", bn: "আনুমানিক +€১,০৬৮ / মাস" },
+    },
+    {
+      label: { en: "+ Each child", bn: "+ প্রতিটি সন্তান" },
+      value: { en: "approx. +€356 / month", bn: "আনুমানিক +€৩৫৬ / মাস" },
+    },
+  ],
+  incomeDisclaimer: {
+    en: "€2,849/month was up from €2,763 in 2025. One source cites €2,762 — rates track Spain's minimum wage (IPREM) and change yearly, so always verify the current figure with us before applying.",
+    bn: "২০২৫ সালে এই অঙ্ক ছিল €২,৭৬৩; ২০২৬-এ তা €২,৮৪৯। একটি সূত্রে €২,৭৬২ লেখা আছে — এই হার স্পেনের ন্যূনতম মজুরির (IPREM) সাথে সম্পর্কিত এবং প্রতি বছর পরিবর্তিত হয়, তাই আবেদনের আগে আমাদের সাথে সর্বশেষ অঙ্ক যাচাই করে নিন।",
+  },
+
+  documentsHeading: { en: "Required Documents", bn: "প্রয়োজনীয় কাগজপত্র" },
+  documents: [
+    { en: "Valid passport", bn: "বৈধ পাসপোর্ট" },
+    { en: "Police clearance certificates from every country lived in over the last 5 years", bn: "বিগত ৫ বছরে যেসব দেশে ছিলেন, সেসব দেশের পুলিশ ক্লিয়ারেন্স সনদ" },
+    { en: "Full private Spanish health insurance, with no co-payments", bn: "স্পেনে বৈধ, পূর্ণাঙ্গ প্রাইভেট হেলথ ইন্স্যুরেন্স (কো-পেমেন্ট ছাড়া)" },
+    { en: "Employment or client contract, remote-work authorisation letter, and company registration certificate", bn: "চাকরির চুক্তি বা ক্লায়েন্ট কন্ট্রাক্ট, রিমোট কাজের অনুমতিপত্র, কোম্পানির রেজিস্ট্রেশন সার্টিফিকেট" },
+    { en: "Proof of income: payslips, bank statements or tax returns from the last 3–6 months", bn: "আয়ের প্রমাণ: গত ৩–৬ মাসের পে-স্লিপ, ব্যাংক স্টেটমেন্ট বা ট্যাক্স রিটার্ন" },
+    { en: "Degree certificate, or proof of 3+ years' experience", bn: "ডিগ্রি সনদ, অথবা ৩+ বছরের অভিজ্ঞতার সনদ" },
+    { en: "Proof of social security coverage", bn: "সোশ্যাল সিকিউরিটি কভারেজের প্রমাণ" },
+    { en: "Foreign documents legalised or apostilled, with official Spanish translation", bn: "বিদেশি কাগজপত্র লিগালাইজড বা অ্যাপোস্টিল করা এবং স্প্যানিশ ভাষায় সরকারি অনুবাদকৃত" },
+  ],
+
+  pathsHeading: { en: "Two Ways to Apply", bn: "আবেদনের দুই পথ" },
+  paths: [
+    {
+      title: { en: "Consulate route", bn: "কনস্যুলেট পথ" },
+      body: {
+        en: "Apply from outside Spain — e.g. the Spanish Embassy in Dhaka. Grants an initial 1-year visa. Processing takes about 45 days.",
+        bn: "দেশের বাইরে থেকে, যেমন ঢাকার স্প্যানিশ দূতাবাস থেকে আবেদন করলে প্রথমে ১ বছরের ভিসা পাওয়া যায়। প্রক্রিয়াকরণে প্রায় ৪৫ দিন লাগে।",
+      },
+    },
+    {
+      title: { en: "Inside Spain (UGE)", bn: "স্পেনের ভেতর থেকে (UGE)" },
+      body: {
+        en: "Apply online while legally resident in Spain, via the Unidad de Grandes Empresas. Grants an initial 3-year permit. Processing takes about 20 days.",
+        bn: "বৈধভাবে স্পেনে থাকা অবস্থায় Unidad de Grandes Empresas-এর মাধ্যমে অনলাইনে আবেদন করা যায়। প্রথমেই ৩ বছরের অনুমতি মেলে। প্রক্রিয়াকরণে প্রায় ২০ দিন লাগে।",
+      },
+    },
+  ],
+  pathsNote: {
+    en: "After approval, you'll give fingerprints at a police station to collect your TIE residence card.",
+    bn: "অনুমোদনের পর পুলিশ স্টেশনে আঙুলের ছাপ দিয়ে আপনার TIE কার্ড সংগ্রহ করতে হবে।",
+  },
+
+  futureHeading: { en: "Duration & What Comes Next", bn: "মেয়াদ ও পরবর্তী ধাপ" },
+  futureItems: [
+    { en: "Renewable up to a total of 5 years, after which permanent residency becomes available.", bn: "নবায়ন করে সর্বোচ্চ ৫ বছর থাকা যায়, এরপর স্থায়ী বসবাসের (Permanent Residence) সুযোগ তৈরি হয়।" },
+    { en: "Visa-free travel across 29 Schengen countries while holding this visa.", bn: "এই ভিসা থাকাকালীন ২৯টি শেনজেন দেশে ভিসামুক্ত ভ্রমণ করা যায়।" },
+    { en: "Spanish citizenship generally requires 10 years of legal residence.", bn: "স্প্যানিশ নাগরিকত্বের জন্য সাধারণত ১০ বছরের বৈধ বসবাস প্রয়োজন।" },
+  ],
+
+  otherVisasHeading: { en: "Other Spain Visas", bn: "স্পেনের অন্যান্য ভিসা" },
+  otherVisasIntro: {
+    en: "We're expanding our Spain consultancy to cover more visa types. Consultation is available now for all of them — reach out and our desk will guide you through what's currently required.",
+    bn: "আমরা আমাদের স্পেন কনসালটেন্সি আরও ভিসার ধরনে সম্প্রসারিত করছি। এই মুহূর্তেও এগুলোর জন্য পরামর্শ পাওয়া যায় — যোগাযোগ করুন, আমাদের ডেস্ক বর্তমান প্রয়োজনীয়তা নিয়ে আপনাকে গাইড করবে।",
+  },
+
+  ctaHeading: { en: "Ready to Start Your Spain Application?", bn: "স্পেনের আবেদন শুরু করতে প্রস্তুত?" },
+  ctaBody: {
+    en: "Submit a consultation request and our desk will review your background and confirm the right visa route for you.",
+    bn: "একটি পরামর্শের অনুরোধ জমা দিন, আমাদের ডেস্ক আপনার পটভূমি পর্যালোচনা করে সঠিক ভিসার পথ নিশ্চিত করবে।",
+  },
+  ctaButton: { en: "Request Spain Visa Consultation", bn: "স্পেন ভিসা পরামর্শের অনুরোধ করুন" },
+};

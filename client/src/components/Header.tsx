@@ -107,6 +107,20 @@ export default function Header() {
             )}
           </NavLink>
 
+          <NavLink
+            to="/spain-visa"
+            className={({ isActive }) =>
+              `relative group py-1 text-[14px] font-semibold transition-colors ${isActive ? "text-gold-deep" : "text-navy hover:text-gold-deep"}`
+            }
+          >
+            {({ isActive }) => (
+              <>
+                {T.spainVisa}
+                <NavUnderline isActive={isActive} />
+              </>
+            )}
+          </NavLink>
+
           <div className="relative" onMouseEnter={openServices} onMouseLeave={scheduleCloseServices}>
             <button
               className="flex items-center gap-1 text-[14px] font-medium text-ink-soft hover:text-navy transition-colors"
@@ -283,6 +297,9 @@ export default function Header() {
             <div className="px-5 py-4 flex flex-col gap-1">
               <Link to="/" onClick={() => setMobileOpen(false)} className="py-2.5 text-[15px] font-medium text-navy">
                 {T.home}
+              </Link>
+              <Link to="/spain-visa" onClick={() => setMobileOpen(false)} className="py-2.5 text-[15px] font-semibold text-gold-deep">
+                {T.spainVisa}
               </Link>
               <button
                 onClick={() => setMobileServicesOpen((v) => !v)}

@@ -1,12 +1,12 @@
 import { forwardRef, useState, type FormEvent } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { PlaneTakeoff, CarFront, Landmark, GraduationCap, FileText, UploadCloud, CheckCircle2, Clock, Ticket } from "lucide-react";
+import { Laptop2, PlaneTakeoff, CarFront, Landmark, GraduationCap, FileText, UploadCloud, CheckCircle2, Clock, Ticket } from "lucide-react";
 import { Field, IdentityFields, inputClass } from "./ui/Field";
 import { PROGRAMS } from "../lib/constants";
 import { submitRequest, submitResume, ApiError } from "../lib/api";
 import type { BookingTab } from "../types";
 import { useDict, useLanguage } from "../lib/i18n";
-import { bookingT, govServicesT, purposesT, programsT, resumeUploadT } from "../lib/translations";
+import { bookingT, govServicesT, purposesT, programsT, resumeUploadT, spainVisaTypesT } from "../lib/translations";
 
 const RESUME_MAX_SIZE = 10 * 1024 * 1024;
 const RESUME_ACCEPTED = ".pdf,.doc,.docx";
@@ -18,6 +18,7 @@ export interface AirportPrefill {
 }
 
 const TAB_META: { id: BookingTab; icon: typeof PlaneTakeoff }[] = [
+  { id: "spain", icon: Laptop2 },
   { id: "airport", icon: PlaneTakeoff },
   { id: "hotel", icon: CarFront },
   { id: "government", icon: Landmark },
@@ -59,11 +60,13 @@ const Booking = forwardRef<
   const { lang } = useLanguage();
   const T = useDict({
     submitting: bookingT.submitting,
+    submitSpain: bookingT.submitSpain,
     submitAirport: bookingT.submitAirport,
     submitHotel: bookingT.submitHotel,
     submitGovernment: bookingT.submitGovernment,
     submitProgram: bookingT.submitProgram,
     errorFallback: bookingT.errorFallback,
+    spainNotice: bookingT.spainNotice,
     govNotice: bookingT.govNotice,
     programNotice: bookingT.programNotice,
     ticketSaved: bookingT.ticketSaved,
@@ -199,6 +202,35 @@ const Booking = forwardRef<
             className="rounded-2xl border border-border bg-white shadow-card p-6 md:p-8"
           >
             {error && <div className="mb-5 text-[13px] rounded-lg px-4 py-3 bg-[#FBEAE5] text-[#9A3412]">{error}</div>}
+
+            {tab === "spain" && (
+              <form onSubmit={(e) => handleSubmit("spain-visa", e)}>
+                <div className="mb-5 text-[13px] rounded-lg px-4 py-3 flex gap-2 bg-gold-pale text-[#7A5E13]">
+                  <Clock size={16} className="shrink-0 mt-0.5" />
+                  {T.spainNotice}
+                </div>
+                <div className="grid sm:grid-cols-2 gap-x-5">
+                  <IdentityFields />
+                  <Field label={fields.visaType} required>
+                    <select name="visaType" required className={inputClass} defaultValue="">
+                      <option value="" disabled>
+                        {fields.selectVisaType}
+                      </option>
+                      {spainVisaTypesT.map((v) => (
+                        <option key={v.key}>{v.title[lang]}</option>
+                      ))}
+                    </select>
+                  </Field>
+                  <Field label={fields.currentOccupation}>
+                    <input name="occupation" placeholder={placeholders.spainOccupation} className={inputClass} />
+                  </Field>
+                </div>
+                <Field label={fields.description}>
+                  <textarea name="notes" rows={3} placeholder={placeholders.spainNotes} className={inputClass} />
+                </Field>
+                {submitBtn(T.submitSpain)}
+              </form>
+            )}
 
             {tab === "airport" && (
               <form onSubmit={(e) => handleSubmit("airport", e)}>

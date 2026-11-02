@@ -25,9 +25,24 @@ export interface ServicePageData {
 
 export const HOME_FAQS: Faq[] = [
   {
+    question: "What is Spain's Digital Nomad Visa?",
+    answer:
+      "Officially the International Teleworking Residence Authorisation (ARTIN), introduced under Spain's 2023 Startup Law. It lets you live in Spain while working remotely for a company or clients based outside Spain, with no Spanish employer or local job offer required.",
+  },
+  {
+    question: "What is the minimum income for Spain's Digital Nomad Visa in 2026?",
+    answer:
+      "As of 2026, a single applicant needs at least €2,849 per month (about €34,200 per year), up from €2,763 in 2025. Add roughly €1,068/month for a spouse or partner and €356/month per child. Rates track Spain's minimum wage and change yearly, so confirm the current figure with us before applying.",
+  },
+  {
+    question: "Does HR — The Mediator help with Spain visas other than the Digital Nomad Visa?",
+    answer:
+      "Yes — consultation is available now for Spain Student Visas, Permanent Residency and Work Visas as we expand our Spain practice, alongside our full Digital Nomad Visa service.",
+  },
+  {
     question: "What services does HR — The Mediator provide in Bangladesh?",
     answer:
-      "Five core services: airport VIP reception, hotel & car booking, government-request assistance, manpower & security staffing, and courses & careers support covering media training and Gulf study/work placement.",
+      "We're a Spain visa consultancy — specialists in the Digital Nomad Visa, with Student, Permanent Residency and Work visa guidance underway — plus our original services: airport VIP reception, hotel & car booking, government-request assistance, manpower & security staffing, and courses & careers support covering media training and Gulf/Australia study or work placement.",
   },
   {
     question: "Do you provide airport VIP assistance?",

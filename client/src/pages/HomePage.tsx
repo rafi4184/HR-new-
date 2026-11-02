@@ -1,5 +1,7 @@
 import { useRef, useState } from "react";
 import { useSeo } from "../lib/useSeo";
+import SpainHero from "../components/SpainHero";
+import SpainVisaOverview from "../components/SpainVisaOverview";
 import Hero from "../components/Hero";
 import ServiceVideoHero from "../components/ServiceVideoHero";
 import ServicesOverview from "../components/ServicesOverview";
@@ -11,24 +13,26 @@ import Booking, { type AirportPrefill } from "../components/Booking";
 import TrackRequest from "../components/TrackRequest";
 import PaymentModal from "../components/PaymentModal";
 import Faq from "../components/Faq";
+import Reveal from "../components/ui/Reveal";
 import { HOME_FAQS } from "../data/servicePages";
 import { trackRequest, ApiError } from "../lib/api";
 import type { BookingTab, ServiceRequest } from "../types";
-import { useLanguage } from "../lib/i18n";
-import { homeFaqs } from "../lib/translations";
+import { useDict, useLanguage } from "../lib/i18n";
+import { homeFaqs, otherServicesSection } from "../lib/translations";
 
 export default function HomePage({ onToast }: { onToast: (msg: string) => void }) {
   const { lang } = useLanguage();
   const translatedFaqs = homeFaqs.map((f) => ({ question: f.question[lang], answer: f.answer[lang] }));
+  const otherServicesT = useDict(otherServicesSection);
   useSeo({
-    title: "HR — The Mediator | Dhaka International Airport VIP Service & Jobs in Saudi Arabia",
+    title: "Spain Digital Nomad Visa Consultants | Student, PR & Work Visas | HR — The Mediator",
     description:
-      "HR — The Mediator connects individuals, families, businesses and international clients with premium VIP service at Dhaka International Airport (Hazrat Shahjalal International), plus trusted transport, government assistance, manpower, security, education and career services — including jobs in Saudi Arabia and the Middle East — across Bangladesh. Also home to live Bangladesh news, updated every 20 minutes.",
+      "HR — The Mediator is a Spain visa consultancy based in Bangladesh — specialists in the Digital Nomad Visa (ARTIN), with Student, Permanent Residency and Work visa guidance underway. We also continue our original services: Dhaka Airport VIP, government-request assistance, manpower & security staffing, and overseas careers across the Gulf and Australia.",
     path: "/",
     faq: HOME_FAQS,
   });
 
-  const [activeTab, setActiveTab] = useState<BookingTab>("airport");
+  const [activeTab, setActiveTab] = useState<BookingTab>("spain");
   const [presetProgram] = useState("study");
   const [airportPrefill] = useState<AirportPrefill>({ name: "", flight: "", purpose: "Business" });
   const [lastTicket, setLastTicket] = useState<string | null>(null);
@@ -70,6 +74,17 @@ export default function HomePage({ onToast }: { onToast: (msg: string) => void }
 
   return (
     <div>
+      <SpainHero />
+      <SpainVisaOverview />
+
+      <section className="px-5 md:px-10 pt-4 pb-2 max-w-6xl mx-auto">
+        <Reveal className="text-center max-w-2xl mx-auto">
+          <div className="text-[12px] font-medium mb-3 tracking-[0.2em] uppercase text-gold-deep">{otherServicesT.eyebrow}</div>
+          <h2 className="font-display text-2xl md:text-3xl text-navy mb-3">{otherServicesT.h2}</h2>
+          <p className="text-[14px] text-ink-muted leading-relaxed">{otherServicesT.intro}</p>
+        </Reveal>
+      </section>
+
       <NewsTeaser />
       <Hero />
       <ServiceVideoHero onRequest={goToBooking} />
