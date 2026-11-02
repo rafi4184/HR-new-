@@ -1264,23 +1264,48 @@ export const spainVisaPageT = {
     en: "New applications and renewals both use the current rate.",
     bn: "নতুন আবেদন ও নবায়ন — দুটোতেই বর্তমান হার প্রযোজ্য।",
   },
+  incomeColumns: {
+    applicant: { en: "Applicant", bn: "আবেদনকারী" },
+    eur: { en: "Required (EUR)", bn: "প্রয়োজনীয় আয় (ইউরো)" },
+    bdt: { en: "Equivalent (BDT)", bn: "সমপরিমাণ (টাকা)" },
+  },
   incomeRows: [
     {
-      label: { en: "Single applicant", bn: "একক আবেদনকারী" },
-      value: { en: "€2,849 / month (~€34,200 / year)", bn: "€২,৮৪৯ / মাস (~€৩৪,২০০ / বছর)" },
+      label: { en: "Main applicant", bn: "মূল আবেদনকারী" },
+      sub: { en: "Monthly gross income", bn: "মাসিক মোট আয়" },
+      value: { en: "€2,849 / month", bn: "€২,৮৪৯ / মাস" },
+      bdt: { en: "≈ Tk 4,04,600 / month", bn: "≈ ৪,০৪,৬০০ টাকা / মাস" },
     },
     {
-      label: { en: "+ Spouse / partner", bn: "+ স্বামী/স্ত্রী বা সঙ্গী" },
-      value: { en: "approx. +€1,068 / month", bn: "আনুমানিক +€১,০৬৮ / মাস" },
+      label: { en: "Main applicant", bn: "মূল আবেদনকারী" },
+      sub: { en: "Annual gross income", bn: "বার্ষিক মোট আয়" },
+      value: { en: "€34,188 / year", bn: "€৩৪,১৮৮ / বছর" },
+      bdt: { en: "≈ Tk 48.5 lakh / year", bn: "≈ ৪৮.৫ লাখ টাকা / বছর" },
     },
     {
-      label: { en: "+ Each child", bn: "+ প্রতিটি সন্তান" },
-      value: { en: "approx. +€356 / month", bn: "আনুমানিক +€৩৫৬ / মাস" },
+      label: { en: "Spouse / partner", bn: "স্বামী / স্ত্রী" },
+      sub: { en: "Additional, per month", bn: "অতিরিক্ত, প্রতি মাসে" },
+      value: { en: "+ €1,068 / month", bn: "+ €১,০৬৮ / মাস" },
+      bdt: { en: "≈ + Tk 1,51,700 / month", bn: "≈ + ১,৫১,৭০০ টাকা / মাস" },
+    },
+    {
+      label: { en: "Each child / dependant", bn: "প্রতিটি সন্তান / নির্ভরশীল" },
+      sub: { en: "Additional, per month", bn: "অতিরিক্ত, প্রতি মাসে" },
+      value: { en: "+ €356 / month", bn: "+ €৩৫৬ / মাস" },
+      bdt: { en: "≈ + Tk 50,600 / month", bn: "≈ + ৫০,৬০০ টাকা / মাস" },
     },
   ],
+  incomeExample: {
+    en: "Example: a couple with one child needs about €4,273 / month (≈ Tk 6,06,800).",
+    bn: "উদাহরণ: স্বামী-স্ত্রী ও এক সন্তানের পরিবারের জন্য মাসে প্রায় €৪,২৭৩ (≈ ৬,০৬,৮০০ টাকা) আয় দেখাতে হবে।",
+  },
+  incomeRateNote: {
+    en: "Taka figures are indicative, converted at €1 ≈ Tk 142 (mid-market rate, November 2026) and rounded. Income must be shown in your payslips, contracts and bank statements; the official threshold is set in euros.",
+    bn: "টাকার অঙ্কগুলো আনুমানিক — €১ ≈ ১৪২ টাকা হারে (মিড-মার্কেট রেট, নভেম্বর ২০২৬) রূপান্তর ও রাউন্ড করা। আয়ের প্রমাণ পে-স্লিপ, চুক্তিপত্র ও ব্যাংক স্টেটমেন্টে দেখাতে হবে; সরকারি সীমা ইউরোতে নির্ধারিত।",
+  },
   incomeDisclaimer: {
-    en: "€2,849/month was up from €2,763 in 2025. One source cites €2,762 — rates track Spain's minimum wage (IPREM) and change yearly, so always verify the current figure with us before applying.",
-    bn: "২০২৫ সালে এই অঙ্ক ছিল €২,৭৬৩; ২০২৬-এ তা €২,৮৪৯। একটি সূত্রে €২,৭৬২ লেখা আছে — এই হার স্পেনের ন্যূনতম মজুরির (IPREM) সাথে সম্পর্কিত এবং প্রতি বছর পরিবর্তিত হয়, তাই আবেদনের আগে আমাদের সাথে সর্বশেষ অঙ্ক যাচাই করে নিন।",
+    en: "The threshold is 200% of Spain's national minimum wage (SMI) and is revised each year — it rose from €2,763 / month in 2025 to €2,849 / month in 2026. Please confirm the current figure with our team before you apply.",
+    bn: "এই সীমা স্পেনের জাতীয় ন্যূনতম মজুরির (SMI) ২০০% এবং প্রতি বছর হালনাগাদ হয় — ২০২৫ সালে মাসে €২,৭৬৩ থেকে ২০২৬ সালে বেড়ে €২,৮৪৯ হয়েছে। আবেদনের আগে আমাদের টিমের সাথে সর্বশেষ অঙ্ক নিশ্চিত করে নিন।",
   },
 
   documentsHeading: { en: "Required Documents", bn: "প্রয়োজনীয় কাগজপত্র" },
