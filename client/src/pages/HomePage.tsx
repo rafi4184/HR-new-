@@ -2,6 +2,7 @@ import { useRef, useState } from "react";
 import { useSeo } from "../lib/useSeo";
 import SpainHero from "../components/SpainHero";
 import SpainVisaOverview from "../components/SpainVisaOverview";
+import SpainVisaHighlights from "../components/SpainVisaHighlights";
 import Hero from "../components/Hero";
 import ServiceVideoHero from "../components/ServiceVideoHero";
 import ServicesOverview from "../components/ServicesOverview";
@@ -99,6 +100,7 @@ export default function HomePage({ onToast }: { onToast: (msg: string) => void }
       />
 
       <SpainHero />
+      <SpainVisaHighlights />
       <SpainVisaOverview />
 
       <section className="px-5 md:px-10 pt-4 pb-2 max-w-6xl mx-auto">
