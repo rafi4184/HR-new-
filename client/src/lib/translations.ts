@@ -488,8 +488,8 @@ export const homeFaqs = [
   {
     question: { en: "Does HR — The Mediator help with other Spain visas too?", bn: "এইচআর দ্য মিডিয়েটর কি স্পেনের অন্যান্য ভিসাতেও সহায়তা করে?" },
     answer: {
-      en: "Consultation is available now for Spain Student, Permanent Residency and Work visas as we expand our Spain practice, alongside our full Digital Nomad Visa service.",
-      bn: "আমাদের স্পেন প্র্যাকটিস সম্প্রসারিত হওয়ার সাথে সাথে স্টুডেন্ট, পার্মানেন্ট রেসিডেন্সি ও ওয়ার্ক ভিসার জন্যও এখন পরামর্শ পাওয়া যায়, সাথে আমাদের সম্পূর্ণ ডিজিটাল নোম্যাড ভিসা সেবা তো আছেই।",
+      en: "Yes — alongside our full Digital Nomad Visa service, we directly handle Spain Study, Work and Visitor visa applications from Bangladesh, with Permanent Residency guidance as we expand.",
+      bn: "হ্যাঁ — আমাদের সম্পূর্ণ ডিজিটাল নোম্যাড ভিসা সেবার পাশাপাশি, আমরা বাংলাদেশ থেকে সরাসরি স্পেনের স্টাডি, ওয়ার্ক ও ভিজিটর ভিসার আবেদন পরিচালনা করি, সাথে পার্মানেন্ট রেসিডেন্সির পরামর্শও সম্প্রসারিত হচ্ছে।",
     },
   },
   {
@@ -552,8 +552,8 @@ export const homeFaqs = [
 
 export const footer = {
   description: {
-    en: "Spain visa consultants based in Bangladesh — specialists in the Digital Nomad Visa, with Student, Permanent Residency and Work visa guidance underway. We also continue our original concierge, transport, government-request, manpower, security and overseas-career services.",
-    bn: "বাংলাদেশভিত্তিক স্পেন ভিসা পরামর্শদাতা — ডিজিটাল নোম্যাড ভিসায় বিশেষজ্ঞ, সাথে স্টুডেন্ট, পার্মানেন্ট রেসিডেন্সি ও ওয়ার্ক ভিসার পরামর্শও যুক্ত হচ্ছে। আমরা আমাদের পূর্বের কনসিয়ার্জ, পরিবহন, সরকারি সহায়তা, জনবল, নিরাপত্তা ও প্রবাসী ক্যারিয়ার সেবাও চালিয়ে যাচ্ছি।",
+    en: "Spain visa consultants based in Bangladesh — specialists in the Digital Nomad Visa, and we directly handle Spain Study, Work and Visitor visas too, with Permanent Residency guidance underway. We also continue our original concierge, transport, government-request, manpower, security and overseas-career services.",
+    bn: "বাংলাদেশভিত্তিক স্পেন ভিসা পরামর্শদাতা — ডিজিটাল নোম্যাড ভিসায় বিশেষজ্ঞ, এবং আমরা সরাসরি স্পেনের স্টাডি, ওয়ার্ক ও ভিজিটর ভিসাও পরিচালনা করি, সাথে পার্মানেন্ট রেসিডেন্সির পরামর্শও যুক্ত হচ্ছে। আমরা আমাদের পূর্বের কনসিয়ার্জ, পরিবহন, সরকারি সহায়তা, জনবল, নিরাপত্তা ও প্রবাসী ক্যারিয়ার সেবাও চালিয়ে যাচ্ছি।",
   },
   servicesHeading: { en: "Services", bn: "সেবাসমূহ" },
   quickLinksHeading: { en: "Quick Links", bn: "দ্রুত লিংক" },
@@ -1132,8 +1132,8 @@ export const spainHero = {
   eyebrow: { en: "Spain Visa Consultants · Based in Bangladesh", bn: "স্পেন ভিসা পরামর্শদাতা · বাংলাদেশ থেকে পরিচালিত" },
   h1: { en: "Your Path to Spain, Handled Start to Finish", bn: "স্পেনে যাওয়ার পথ, শুরু থেকে শেষ পর্যন্ত আমরাই সামলাই" },
   paragraph: {
-    en: "We are HR — The Mediator's Spain Visa Consultancy — specialists in Spain's Digital Nomad Visa (ARTIN), with guidance on Student, Permanent Residency and Work visas as we expand. Eligibility, documents, the right application route, and your consultation — coordinated from one trusted desk in Bangladesh.",
-    bn: "আমরা এইচআর দ্য মিডিয়েটরের স্পেন ভিসা কনসালটেন্সি — স্পেনের ডিজিটাল নোম্যাড ভিসা (ARTIN)-এ বিশেষজ্ঞ, সাথে স্টুডেন্ট, পার্মানেন্ট রেসিডেন্সি ও ওয়ার্ক ভিসার পরামর্শও যুক্ত হচ্ছে। যোগ্যতা যাচাই, কাগজপত্র, সঠিক আবেদনের পথ এবং পরামর্শ — সবকিছু বাংলাদেশের একটি বিশ্বস্ত ডেস্ক থেকে সমন্বিত।",
+    en: "We are HR — The Mediator's Spain Visa Consultancy, based in Bangladesh — specialists in Spain's Digital Nomad Visa (ARTIN), and we also handle Spain Study, Work and Visitor visas directly, with Permanent Residency guidance as we expand. Eligibility, documents, the right application route, and your consultation — coordinated from one trusted desk.",
+    bn: "আমরা এইচআর দ্য মিডিয়েটরের স্পেন ভিসা কনসালটেন্সি, বাংলাদেশ থেকে পরিচালিত — স্পেনের ডিজিটাল নোম্যাড ভিসা (ARTIN)-এ বিশেষজ্ঞ, এবং আমরা সরাসরি স্পেনের স্টাডি, ওয়ার্ক ও ভিজিটর ভিসাও পরিচালনা করি, সাথে পার্মানেন্ট রেসিডেন্সির পরামর্শও সম্প্রসারিত হচ্ছে। যোগ্যতা যাচাই, কাগজপত্র, সঠিক আবেদনের পথ এবং পরামর্শ — সবকিছু একটি বিশ্বস্ত ডেস্ক থেকে সমন্বিত।",
   },
   ctaExplore: { en: "Explore Spain Visas", bn: "স্পেন ভিসা দেখুন" },
   ctaConsult: { en: "Request a Consultation", bn: "পরামর্শের জন্য অনুরোধ করুন" },
@@ -1154,7 +1154,7 @@ export const otherServicesSection = {
   },
 };
 
-export type SpainVisaKey = "digital-nomad" | "student" | "permanent-residency" | "work";
+export type SpainVisaKey = "digital-nomad" | "study" | "work" | "visitor" | "permanent-residency";
 
 export const spainVisaTypesT: { key: SpainVisaKey; title: { en: string; bn: string }; summary: { en: string; bn: string }; available: boolean }[] = [
   {
@@ -1167,20 +1167,11 @@ export const spainVisaTypesT: { key: SpainVisaKey; title: { en: string; bn: stri
     available: true,
   },
   {
-    key: "student",
-    title: { en: "Student Visa", bn: "স্টুডেন্ট ভিসা" },
+    key: "study",
+    title: { en: "Study Visa", bn: "স্টাডি ভিসা" },
     summary: {
-      en: "Study at a Spanish university or language school. Consultation available — contact us for details.",
-      bn: "স্প্যানিশ বিশ্ববিদ্যালয় বা ভাষা স্কুলে পড়াশোনা করুন। পরামর্শ উপলব্ধ — বিস্তারিত জানতে যোগাযোগ করুন।",
-    },
-    available: false,
-  },
-  {
-    key: "permanent-residency",
-    title: { en: "Permanent Residency", bn: "পার্মানেন্ট রেসিডেন্সি" },
-    summary: {
-      en: "Long-term and permanent residency pathways in Spain. Consultation available — contact us for details.",
-      bn: "স্পেনে দীর্ঘমেয়াদী ও স্থায়ী বসবাসের পথ। পরামর্শ উপলব্ধ — বিস্তারিত জানতে যোগাযোগ করুন।",
+      en: "We handle Spain study-visa applications for university and language-school admission — talk to our desk about your eligibility and documents.",
+      bn: "আমরা সরাসরি স্পেনের বিশ্ববিদ্যালয় ও ভাষা স্কুলে ভর্তির জন্য স্টাডি ভিসার আবেদন পরিচালনা করি — আপনার যোগ্যতা ও কাগজপত্র নিয়ে আমাদের ডেস্কের সাথে কথা বলুন।",
     },
     available: false,
   },
@@ -1188,8 +1179,26 @@ export const spainVisaTypesT: { key: SpainVisaKey; title: { en: string; bn: stri
     key: "work",
     title: { en: "Work Visa", bn: "ওয়ার্ক ভিসা" },
     summary: {
-      en: "Employment-based visas for working in Spain with a local employer. Consultation available — contact us for details.",
-      bn: "স্থানীয় নিয়োগকর্তার অধীনে স্পেনে কাজ করার জন্য কর্মসংস্থান-ভিত্তিক ভিসা। পরামর্শ উপলব্ধ — বিস্তারিত জানতে যোগাযোগ করুন।",
+      en: "We handle Spain employment-visa applications for jobs with a Spanish employer — talk to our desk about your specific case.",
+      bn: "আমরা সরাসরি স্প্যানিশ নিয়োগকর্তার অধীনে কাজের জন্য ওয়ার্ক ভিসার আবেদন পরিচালনা করি — আপনার নির্দিষ্ট পরিস্থিতি নিয়ে আমাদের ডেস্কের সাথে কথা বলুন।",
+    },
+    available: false,
+  },
+  {
+    key: "visitor",
+    title: { en: "Visitor Visa", bn: "ভিজিটর ভিসা" },
+    summary: {
+      en: "We handle Spain short-stay visitor visas for tourism, business and family visits — talk to our desk about your travel purpose and documents.",
+      bn: "আমরা সরাসরি পর্যটন, ব্যবসা ও পারিবারিক সফরের জন্য স্পেনের স্বল্পমেয়াদী ভিজিটর ভিসা পরিচালনা করি — আপনার ভ্রমণের উদ্দেশ্য ও কাগজপত্র নিয়ে আমাদের ডেস্কের সাথে কথা বলুন।",
+    },
+    available: false,
+  },
+  {
+    key: "permanent-residency",
+    title: { en: "Permanent Residency", bn: "পার্মানেন্ট রেসিডেন্সি" },
+    summary: {
+      en: "Long-term and permanent residency pathways in Spain — ask us as we expand this part of our practice.",
+      bn: "স্পেনে দীর্ঘমেয়াদী ও স্থায়ী বসবাসের পথ — আমাদের এই প্র্যাকটিস সম্প্রসারিত হওয়ার সাথে সাথে জিজ্ঞাসা করুন।",
     },
     available: false,
   },
@@ -1289,10 +1298,10 @@ export const spainVisaPageT = {
     { en: "Spanish citizenship generally requires 10 years of legal residence.", bn: "স্প্যানিশ নাগরিকত্বের জন্য সাধারণত ১০ বছরের বৈধ বসবাস প্রয়োজন।" },
   ],
 
-  otherVisasHeading: { en: "Other Spain Visas", bn: "স্পেনের অন্যান্য ভিসা" },
+  otherVisasHeading: { en: "Other Spain Visas We Handle", bn: "আমরা পরিচালনা করি স্পেনের আরও যেসব ভিসা" },
   otherVisasIntro: {
-    en: "We're expanding our Spain consultancy to cover more visa types. Consultation is available now for all of them — reach out and our desk will guide you through what's currently required.",
-    bn: "আমরা আমাদের স্পেন কনসালটেন্সি আরও ভিসার ধরনে সম্প্রসারিত করছি। এই মুহূর্তেও এগুলোর জন্য পরামর্শ পাওয়া যায় — যোগাযোগ করুন, আমাদের ডেস্ক বর্তমান প্রয়োজনীয়তা নিয়ে আপনাকে গাইড করবে।",
+    en: "Alongside the Digital Nomad Visa, we directly handle Spain Study, Work and Visitor visa applications from Bangladesh, with Permanent Residency guidance as we expand. Reach out and our desk will guide you through what's currently required for your case.",
+    bn: "ডিজিটাল নোম্যাড ভিসার পাশাপাশি, আমরা বাংলাদেশ থেকে সরাসরি স্পেনের স্টাডি, ওয়ার্ক ও ভিজিটর ভিসার আবেদন পরিচালনা করি, সাথে পার্মানেন্ট রেসিডেন্সির পরামর্শও সম্প্রসারিত হচ্ছে। যোগাযোগ করুন, আমাদের ডেস্ক আপনার ক্ষেত্রে বর্তমান প্রয়োজনীয়তা নিয়ে গাইড করবে।",
   },
 
   ctaHeading: { en: "Ready to Start Your Spain Application?", bn: "স্পেনের আবেদন শুরু করতে প্রস্তুত?" },

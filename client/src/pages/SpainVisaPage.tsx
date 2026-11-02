@@ -1,6 +1,6 @@
 import { useRef, useState } from "react";
 import { Link } from "react-router-dom";
-import { ArrowRight, Check, Euro, FileCheck2, Route, CalendarClock, Laptop2, GraduationCap, Landmark, Briefcase, AlertTriangle } from "lucide-react";
+import { ArrowRight, Check, Euro, FileCheck2, Route, CalendarClock, Laptop2, GraduationCap, Landmark, Briefcase, Plane, AlertTriangle } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
 import { useSeo } from "../lib/useSeo";
 import Reveal from "../components/ui/Reveal";
@@ -12,9 +12,10 @@ import type { BookingTab } from "../types";
 
 const ICONS: Record<SpainVisaKey, LucideIcon> = {
   "digital-nomad": Laptop2,
-  student: GraduationCap,
-  "permanent-residency": Landmark,
+  study: GraduationCap,
   work: Briefcase,
+  visitor: Plane,
+  "permanent-residency": Landmark,
 };
 
 export default function SpainVisaPage() {
@@ -202,7 +203,7 @@ export default function SpainVisaPage() {
             <h2 className="font-display text-2xl md:text-3xl text-navy mb-3">{T.otherVisasHeading}</h2>
             <p className="text-[14px] text-ink-muted leading-relaxed">{T.otherVisasIntro}</p>
           </Reveal>
-          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-5">
+          <div className="grid sm:grid-cols-2 lg:grid-cols-5 gap-5">
             {spainVisaTypesT.map((visa, i) => {
               const Icon = ICONS[visa.key];
               return (

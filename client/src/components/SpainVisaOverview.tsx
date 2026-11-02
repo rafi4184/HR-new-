@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { ArrowRight, Laptop2, GraduationCap, Landmark, Briefcase, CheckCircle2 } from "lucide-react";
+import { ArrowRight, Laptop2, GraduationCap, Landmark, Briefcase, Plane, CheckCircle2 } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
 import Reveal from "./ui/Reveal";
 import { useDict, useLanguage } from "../lib/i18n";
@@ -7,9 +7,10 @@ import { spainVisaTypesT, type SpainVisaKey } from "../lib/translations";
 
 const ICONS: Record<SpainVisaKey, LucideIcon> = {
   "digital-nomad": Laptop2,
-  student: GraduationCap,
-  "permanent-residency": Landmark,
+  study: GraduationCap,
   work: Briefcase,
+  visitor: Plane,
+  "permanent-residency": Landmark,
 };
 
 export default function SpainVisaOverview() {
@@ -18,11 +19,11 @@ export default function SpainVisaOverview() {
     eyebrow: { en: "Spain Visa Consultancy", bn: "স্পেন ভিসা কনসালটেন্সি" },
     h2: { en: "Which Spain Visa Is Right for You?", bn: "আপনার জন্য কোন স্পেন ভিসা উপযুক্ত?" },
     intro: {
-      en: "We currently handle the Digital Nomad Visa in full detail, with consultation available now for the other routes below as we expand our Spain practice.",
-      bn: "বর্তমানে আমরা ডিজিটাল নোম্যাড ভিসা নিয়ে সম্পূর্ণ বিস্তারিতভাবে কাজ করি, সাথে নিচের অন্যান্য পথের জন্যও এখন পরামর্শ পাওয়া যায় — আমাদের স্পেন প্র্যাকটিস ক্রমশ সম্প্রসারিত হচ্ছে।",
+      en: "The Digital Nomad Visa is covered in full detail below. We also directly handle Study, Work and Visitor visas for Spain, with Permanent Residency guidance as we expand.",
+      bn: "নিচে ডিজিটাল নোম্যাড ভিসা নিয়ে সম্পূর্ণ বিস্তারিত দেওয়া আছে। আমরা সরাসরি স্পেনের স্টাডি, ওয়ার্ক ও ভিজিটর ভিসাও পরিচালনা করি, সাথে পার্মানেন্ট রেসিডেন্সির পরামর্শও সম্প্রসারিত হচ্ছে।",
     },
     availableTag: { en: "Full details available", bn: "সম্পূর্ণ বিস্তারিত উপলব্ধ" },
-    comingTag: { en: "Consultation available", bn: "পরামর্শ উপলব্ধ" },
+    comingTag: { en: "Active service — ask us", bn: "সক্রিয় সেবা — জিজ্ঞাসা করুন" },
     learnMore: { en: "View details", bn: "বিস্তারিত দেখুন" },
     askUs: { en: "Contact us for details", bn: "বিস্তারিত জানতে যোগাযোগ করুন" },
   });
@@ -37,7 +38,7 @@ export default function SpainVisaOverview() {
         <p className="text-[14.5px] text-ink-muted leading-relaxed">{T.intro}</p>
       </Reveal>
 
-      <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-5">
+      <div className="grid sm:grid-cols-2 lg:grid-cols-5 gap-5">
         {spainVisaTypesT.map((visa, i) => {
           const Icon = ICONS[visa.key];
           return (
