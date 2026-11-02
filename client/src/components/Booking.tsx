@@ -1,6 +1,7 @@
 import { forwardRef, useState, type FormEvent } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Laptop2, PlaneTakeoff, CarFront, Landmark, GraduationCap, FileText, UploadCloud, CheckCircle2, Clock, Ticket } from "lucide-react";
+import Reveal from "./ui/Reveal";
 import { Field, IdentityFields, inputClass } from "./ui/Field";
 import { PROGRAMS } from "../lib/constants";
 import { submitRequest, submitResume, ApiError } from "../lib/api";
@@ -157,15 +158,10 @@ const Booking = forwardRef<
   return (
     <section id={id} ref={ref} className="px-5 md:px-10 py-16 md:py-20 bg-paper-soft">
       <div className="max-w-3xl mx-auto">
-        <motion.div
-          initial={{ opacity: 0, y: 18 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, amount: 0.2 }}
-          transition={{ duration: 0.6 }}
-        >
+        <Reveal>
           <h2 className="font-display text-3xl md:text-4xl mb-2 text-navy">{heading ?? T.defaultHeading}</h2>
           <p className="mb-8 text-ink-muted">{subheading ?? T.defaultSubheading}</p>
-        </motion.div>
+        </Reveal>
 
         {!lockedTab && (
           <div className="flex gap-2 mb-8 flex-wrap">

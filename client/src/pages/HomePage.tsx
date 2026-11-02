@@ -74,6 +74,17 @@ export default function HomePage({ onToast }: { onToast: (msg: string) => void }
 
   return (
     <div>
+      <Booking
+        ref={bookingRef}
+        activeTab={activeTab}
+        setActiveTab={setActiveTab}
+        presetProgram={presetProgram}
+        airportPrefill={airportPrefill}
+        airportPrefillKey={0}
+        lastTicket={lastTicket}
+        onSubmitted={handleSubmitted}
+      />
+
       <SpainHero />
       <SpainVisaOverview />
 
@@ -89,16 +100,6 @@ export default function HomePage({ onToast }: { onToast: (msg: string) => void }
       <Hero />
       <ServiceVideoHero onRequest={goToBooking} />
       <ServicesOverview />
-      <Booking
-        ref={bookingRef}
-        activeTab={activeTab}
-        setActiveTab={setActiveTab}
-        presetProgram={presetProgram}
-        airportPrefill={airportPrefill}
-        airportPrefillKey={0}
-        lastTicket={lastTicket}
-        onSubmitted={handleSubmitted}
-      />
       <TrackRequest ref={trackRef} loading={trackLoading} result={trackResult} onSubmit={runTrack} onPay={setPayModal} />
       <WhyChooseUs />
       <StatsRow />
