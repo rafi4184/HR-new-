@@ -19,14 +19,24 @@ import AmbientGlow from "../components/ui/AmbientGlow";
 import { HOME_FAQS } from "../data/servicePages";
 import { trackRequest, ApiError } from "../lib/api";
 import type { BookingTab, ServiceRequest } from "../types";
-import { useDict, useLanguage } from "../lib/i18n";
-import { homeFaqs, otherServicesSection, homeTopIntro } from "../lib/translations";
+import { useDict, useLanguage, useT } from "../lib/i18n";
+import { Link } from "react-router-dom";
+import { ArrowRight } from "lucide-react";
+import { homeFaqs, otherServicesSection, homeTopIntro, spainVisaPageT } from "../lib/translations";
 
 export default function HomePage({ onToast }: { onToast: (msg: string) => void }) {
   const { lang } = useLanguage();
   const translatedFaqs = homeFaqs.map((f) => ({ question: f.question[lang], answer: f.answer[lang] }));
   const otherServicesT = useDict(otherServicesSection);
   const topIntroT = useDict(homeTopIntro);
+  const dnvT = useDict({
+    eyebrow: spainVisaPageT.eyebrow,
+    h1: spainVisaPageT.h1,
+    intro: spainVisaPageT.intro,
+    updatedNote: spainVisaPageT.updatedNote,
+    ctaButton: spainVisaPageT.ctaButton,
+  });
+  const dnvMore = useT({ en: "View full details", bn: "সম্পূর্ণ বিস্তারিত দেখুন" });
   useSeo({
     title: "Spain Visa Consultation Firm in Dhaka, Bangladesh | Digital Nomad, Study, Work & Tourist Visa | HR — The Mediator",
     description:
@@ -77,7 +87,43 @@ export default function HomePage({ onToast }: { onToast: (msg: string) => void }
 
   return (
     <div>
-      <section className="relative px-5 md:px-10 pt-14 pb-8 md:pt-20 md:pb-10 bg-paper-soft overflow-hidden">
+      {/* Spain Digital Nomad Visa — top of homepage */}
+      <section className="relative px-5 md:px-10 pt-14 pb-12 md:pt-20 md:pb-14 bg-paper-soft overflow-hidden">
+        <AmbientGlow variant="light" />
+        <div className="relative max-w-4xl mx-auto text-center">
+          <div className="text-[12px] font-medium mb-3 tracking-[0.2em] uppercase text-gold-deep">{dnvT.eyebrow}</div>
+          <h2 className="font-display text-3xl md:text-5xl text-navy mb-5" style={{ textWrap: "balance" }}>
+            {dnvT.h1}
+          </h2>
+          <p className="text-[16px] text-ink-muted leading-relaxed max-w-2xl mx-auto mb-3">{dnvT.intro}</p>
+          <p className="text-[12px] text-ink-faint mb-8">{dnvT.updatedNote}</p>
+          <div className="flex flex-wrap items-center justify-center gap-3">
+            <button
+              onClick={() => goToBooking("spain")}
+              className="inline-flex items-center gap-2 px-7 py-3.5 rounded-full font-medium text-[14px] tracking-wide uppercase bg-gold text-white hover:bg-gold-deep hover:scale-105 active:scale-95 transition-all"
+            >
+              {dnvT.ctaButton} <ArrowRight size={15} />
+            </button>
+            <Link
+              to="/spain-visa"
+              className="inline-flex items-center gap-2 px-7 py-3.5 rounded-full font-medium text-[14px] tracking-wide uppercase border border-navy/20 text-navy hover:border-gold hover:text-gold-deep transition-all"
+            >
+              {dnvMore}
+            </Link>
+          </div>
+        </div>
+        <Reveal delay={0.1} className="relative max-w-5xl mx-auto mt-10">
+          <div className="rounded-2xl overflow-hidden shadow-card-hover border border-white/60 aspect-[21/9]">
+            <img
+              src="/images/spain/barcelona-sagrada-familia-skyline.jpg"
+              alt="Sagrada Familia and the Barcelona skyline, Spain"
+              className="w-full h-full object-cover"
+            />
+          </div>
+        </Reveal>
+      </section>
+
+      <section className="relative px-5 md:px-10 pt-14 pb-8 md:pt-20 md:pb-10 overflow-hidden">
         <AmbientGlow variant="light" />
         <Reveal className="relative max-w-3xl mx-auto text-center">
           <div className="text-[12px] font-medium mb-4 tracking-[0.2em] uppercase text-gold-deep">{topIntroT.eyebrow}</div>
