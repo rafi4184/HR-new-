@@ -168,19 +168,31 @@ export default function SpainVisaPage() {
             </div>
             <p className="text-[13.5px] text-ink-muted mb-6 ml-[46px]">{T.incomeIntro}</p>
 
-            <div className="rounded-2xl bg-white border border-border shadow-card overflow-hidden mb-5">
+            <div className="rounded-2xl bg-white border border-border shadow-card overflow-hidden mb-4">
+              <div className="hidden sm:grid grid-cols-[1.2fr_1fr_1fr] gap-4 px-5 py-3 bg-navy text-white text-[12px] font-semibold uppercase tracking-[0.08em]">
+                <span>{spainVisaPageT.incomeColumns.applicant[lang]}</span>
+                <span className="text-right">{spainVisaPageT.incomeColumns.eur[lang]}</span>
+                <span className="text-right">{spainVisaPageT.incomeColumns.bdt[lang]}</span>
+              </div>
               {spainVisaPageT.incomeRows.map((row, i) => (
                 <div
                   key={i}
-                  className={`flex items-center justify-between gap-4 px-5 py-4 ${
+                  className={`grid grid-cols-2 sm:grid-cols-[1.2fr_1fr_1fr] items-center gap-x-4 gap-y-1.5 px-5 py-4 ${
                     i > 0 ? "border-t border-border" : ""
-                  }`}
+                  } ${i === 0 ? "bg-gold-pale/40" : ""}`}
                 >
-                  <span className="text-[14px] text-ink-soft">{row.label[lang]}</span>
-                  <span className="text-[15px] font-semibold text-navy text-right">{row.value[lang]}</span>
+                  <div className="col-span-2 sm:col-span-1">
+                    <div className="text-[14.5px] font-medium text-navy">{row.label[lang]}</div>
+                    <div className="text-[12.5px] text-ink-faint">{row.sub[lang]}</div>
+                  </div>
+                  <div className="text-[15px] font-semibold text-navy sm:text-right">{row.value[lang]}</div>
+                  <div className="text-[15px] font-semibold text-gold-deep text-right">{row.bdt[lang]}</div>
                 </div>
               ))}
             </div>
+
+            <p className="text-[13.5px] text-ink-soft mb-2">{spainVisaPageT.incomeExample[lang]}</p>
+            <p className="text-[12.5px] text-ink-faint leading-relaxed mb-5">{spainVisaPageT.incomeRateNote[lang]}</p>
 
             <div className="flex items-start gap-2.5 text-[13px] rounded-lg px-4 py-3.5 bg-gold-pale text-[#7A5E13]">
               <AlertTriangle size={16} className="shrink-0 mt-0.5" />
