@@ -472,6 +472,20 @@ export const faqDefault = {
 
 export const homeFaqs = [
   {
+    question: { en: "Which is the best Spain visa consultation firm in Dhaka, Bangladesh?", bn: "ঢাকা, বাংলাদেশে সেরা স্পেন ভিসা কনসালটেশন ফার্ম কোনটি?" },
+    answer: {
+      en: "HR — The Mediator is a Dhaka-based Spain visa consultation firm guiding clients from Bangladesh to Spain — specialists in the Digital Nomad Visa (ARTIN), and we directly handle Spain Study Visa, Work Visa and Tourist/Visitor Visa applications, with Permanent Residency guidance underway.",
+      bn: "এইচআর দ্য মিডিয়েটর হলো ঢাকাভিত্তিক একটি স্পেন ভিসা কনসালটেশন ফার্ম, যা বাংলাদেশ থেকে স্পেন পর্যন্ত ক্লায়েন্টদের গাইড করে — ডিজিটাল নোম্যাড ভিসা (ARTIN)-এ বিশেষজ্ঞ, এবং আমরা সরাসরি স্পেনের স্টাডি ভিসা, ওয়ার্ক ভিসা ও ট্যুরিস্ট/ভিজিটর ভিসার আবেদন পরিচালনা করি, সাথে পার্মানেন্ট রেসিডেন্সির পরামর্শও সম্প্রসারিত হচ্ছে।",
+    },
+  },
+  {
+    question: { en: "How do I go from Bangladesh to Spain?", bn: "বাংলাদেশ থেকে স্পেনে কীভাবে যাব?" },
+    answer: {
+      en: "It depends on your purpose: the Digital Nomad Visa (ARTIN) for remote work, a Study Visa for university or language school, a Work Visa for employment with a Spanish company, or a Tourist/Visitor Visa for short stays. Our Spain Visa Consultancy in Dhaka assesses your eligibility and guides you through documents and the right application route for your case.",
+      bn: "এটি আপনার উদ্দেশ্যের উপর নির্ভর করে: রিমোট কাজের জন্য ডিজিটাল নোম্যাড ভিসা (ARTIN), বিশ্ববিদ্যালয় বা ভাষা স্কুলের জন্য স্টাডি ভিসা, স্প্যানিশ কোম্পানির অধীনে কাজের জন্য ওয়ার্ক ভিসা, অথবা স্বল্পমেয়াদী সফরের জন্য ট্যুরিস্ট/ভিজিটর ভিসা। ঢাকায় আমাদের স্পেন ভিসা কনসালটেন্সি আপনার যোগ্যতা যাচাই করে এবং কাগজপত্র ও সঠিক আবেদনের পথ নিয়ে আপনাকে গাইড করে।",
+    },
+  },
+  {
     question: { en: "What is Spain's Digital Nomad Visa?", bn: "স্পেনের ডিজিটাল নোম্যাড ভিসা কী?" },
     answer: {
       en: "Officially the International Teleworking Residence Authorisation (ARTIN), introduced under Spain's 2023 Startup Law. It lets you live in Spain while working remotely for a company or clients based outside Spain — no Spanish employer or local job offer required.",
@@ -1127,6 +1141,18 @@ export const programsT = [
 // is new content for the Spain-focused hero, homepage overview section,
 // the dedicated /spain-visa page, and the matching Booking tab.
 // ---------------------------------------------------------------------
+
+export const homeTopIntro = {
+  eyebrow: { en: "Spain Visa Consultancy · Based in Dhaka, Bangladesh", bn: "স্পেন ভিসা কনসালটেন্সি · ঢাকা, বাংলাদেশ থেকে পরিচালিত" },
+  h1: {
+    en: "Spain Visa Consultants in Bangladesh — Digital Nomad, Study, Work & Tourist Visa",
+    bn: "বাংলাদেশে স্পেন ভিসা পরামর্শদাতা — ডিজিটাল নোম্যাড, স্টাডি, ওয়ার্ক ও ট্যুরিস্ট ভিসা",
+  },
+  summary: {
+    en: "HR — The Mediator is the Dhaka-based Spain visa consultation firm guiding clients from Bangladesh to Spain, start to finish. We cover the Digital Nomad Visa (ARTIN) in full detail, and we directly handle Spain Study Visa, Work Visa and Tourist/Visitor Visa applications for clients across Dhaka and the rest of Bangladesh, with Permanent Residency guidance as we expand — alongside visa and placement consultation for other countries, including the Gulf and Australia. Tell us which visa you need below, and our desk will guide you from eligibility and documents to the right application route and submission.",
+    bn: "এইচআর দ্য মিডিয়েটর হলো ঢাকাভিত্তিক স্পেন ভিসা কনসালটেশন ফার্ম, যা বাংলাদেশ থেকে স্পেন পর্যন্ত ক্লায়েন্টদের শুরু থেকে শেষ পর্যন্ত গাইড করে। আমরা ডিজিটাল নোম্যাড ভিসা (ARTIN) নিয়ে সম্পূর্ণ বিস্তারিতভাবে কাজ করি, এবং সরাসরি ঢাকাসহ বাংলাদেশজুড়ে ক্লায়েন্টদের জন্য স্পেনের স্টাডি ভিসা, ওয়ার্ক ভিসা ও ট্যুরিস্ট/ভিজিটর ভিসার আবেদন পরিচালনা করি, সাথে পার্মানেন্ট রেসিডেন্সির পরামর্শও সম্প্রসারিত হচ্ছে — পাশাপাশি গালফ ও অস্ট্রেলিয়াসহ অন্যান্য দেশের ভিসা ও কর্মসংস্থান পরামর্শও দিই। নিচে আপনার প্রয়োজনীয় ভিসা জানান, আমাদের ডেস্ক যোগ্যতা যাচাই ও কাগজপত্র থেকে শুরু করে সঠিক আবেদনের পথ ও জমা পর্যন্ত আপনাকে গাইড করবে।",
+  },
+};
 
 export const spainHero = {
   eyebrow: { en: "Spain Visa Consultants · Based in Bangladesh", bn: "স্পেন ভিসা পরামর্শদাতা · বাংলাদেশ থেকে পরিচালিত" },

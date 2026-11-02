@@ -25,6 +25,16 @@ export interface ServicePageData {
 
 export const HOME_FAQS: Faq[] = [
   {
+    question: "Which is the best Spain visa consultation firm in Dhaka, Bangladesh?",
+    answer:
+      "HR — The Mediator is a Dhaka-based Spain visa consultation firm guiding clients from Bangladesh to Spain — specialists in the Digital Nomad Visa (ARTIN), and we directly handle Spain Study Visa, Work Visa and Tourist/Visitor Visa applications, with Permanent Residency guidance underway.",
+  },
+  {
+    question: "How do I go from Bangladesh to Spain?",
+    answer:
+      "It depends on your purpose: the Digital Nomad Visa (ARTIN) for remote work, a Study Visa for university or language school, a Work Visa for employment with a Spanish company, or a Tourist/Visitor Visa for short stays. HR — The Mediator's Spain Visa Consultancy in Dhaka assesses your eligibility and guides you through documents and the right application route for your case.",
+  },
+  {
     question: "What is Spain's Digital Nomad Visa?",
     answer:
       "Officially the International Teleworking Residence Authorisation (ARTIN), introduced under Spain's 2023 Startup Law. It lets you live in Spain while working remotely for a company or clients based outside Spain, with no Spanish employer or local job offer required.",

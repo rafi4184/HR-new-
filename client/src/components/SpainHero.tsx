@@ -44,7 +44,7 @@ export default function SpainHero() {
             {T.eyebrow}
           </motion.div>
 
-          <motion.h1
+          <motion.h2
             initial={{ opacity: 0, y: 16 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.7, delay: 0.1, ease }}
@@ -52,7 +52,7 @@ export default function SpainHero() {
             style={{ textWrap: "balance" }}
           >
             {T.h1}
-          </motion.h1>
+          </motion.h2>
 
           <motion.p
             initial={{ opacity: 0, y: 16 }}

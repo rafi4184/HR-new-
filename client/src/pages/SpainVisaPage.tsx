@@ -42,10 +42,47 @@ export default function SpainVisaPage() {
   const backHome = useT({ en: "← Back to homepage", bn: "← হোমপেজে ফিরে যান" });
 
   useSeo({
-    title: "Spain Digital Nomad Visa (ARTIN) — Eligibility, Income Requirements & Documents | HR — The Mediator",
+    title: "Spain Visa Consultation Firm, Dhaka — Bangladesh to Spain | Digital Nomad, Study, Work & Tourist Visa",
     description:
-      "Everything you need for Spain's Digital Nomad Visa (ARTIN): who can apply, 2026 income requirements, required documents, the Consulate vs UGE application routes, and the path to permanent residency — consultation from HR — The Mediator's Spain Visa Consultancy, Bangladesh.",
+      "HR — The Mediator is the Dhaka-based Spain visa consultation firm guiding clients from Bangladesh to Spain. Everything you need for Spain's Digital Nomad Visa (ARTIN): who can apply, 2026 income requirements, required documents, the Consulate vs UGE application routes, and the path to permanent residency. We also handle Spain Study Visa, Work Visa and Tourist/Visitor Visa applications directly for clients across Bangladesh.",
     path: "/spain-visa",
+    serviceSchema: {
+      name: "Spain Visa Consultancy — Digital Nomad, Study, Work & Tourist Visa",
+      description:
+        "Eligibility assessment, documentation and application guidance for Spain's Digital Nomad Visa (ARTIN), plus Spain Study Visa, Work Visa and Tourist/Visitor Visa applications handled directly for clients across Bangladesh, with Permanent Residency guidance underway.",
+    },
+    faq: [
+      {
+        question: "What is Spain's Digital Nomad Visa?",
+        answer:
+          "Officially the International Teleworking Residence Authorisation (ARTIN), introduced under Spain's 2023 Startup Law. It lets you live in Spain while working remotely for a company or clients based outside Spain — no Spanish employer or local job offer required.",
+      },
+      {
+        question: "What is the minimum income for Spain's Digital Nomad Visa in 2026?",
+        answer:
+          "A single applicant needs at least €2,849 per month (about €34,200 per year), up from €2,763 in 2025. Add roughly €1,068/month for a spouse or partner and €356/month per child. Rates change yearly, so confirm the current figure with HR — The Mediator before applying.",
+      },
+      {
+        question: "What documents do I need for Spain's Digital Nomad Visa?",
+        answer:
+          "A valid passport, police clearance from every country lived in over the last 5 years, full private Spanish health insurance, an employment or client contract with remote-work authorisation, proof of income (3–6 months of payslips, bank statements or tax returns), a degree or 3+ years' experience, proof of social security coverage, and foreign documents legalised/apostilled with official Spanish translation.",
+      },
+      {
+        question: "How do I apply for Spain's Digital Nomad Visa from Bangladesh?",
+        answer:
+          "Either through the Spanish Embassy consulate route from outside Spain (an initial 1-year visa, about 45 days processing), or from inside Spain via the UGE if legally resident (an initial 3-year permit, about 20 days processing). HR — The Mediator's Spain Visa Consultancy in Dhaka guides you through eligibility, documents and the right route.",
+      },
+      {
+        question: "Does HR — The Mediator handle Spain Study, Work and Tourist visas too?",
+        answer:
+          "Yes — alongside the Digital Nomad Visa, we directly handle Spain Study Visa, Work Visa and Tourist/Visitor Visa applications for clients across Bangladesh, with Permanent Residency guidance as we expand our practice.",
+      },
+      {
+        question: "Can I get permanent residency in Spain after the Digital Nomad Visa?",
+        answer:
+          "Yes — the Digital Nomad Visa is renewable up to a total of 5 years, after which permanent residency becomes available. Spanish citizenship generally requires 10 years of legal residence.",
+      },
+    ],
   });
 
   const [activeTab, setActiveTab] = useState<BookingTab>("spain");

@@ -70,6 +70,13 @@ export function useSeo(opts: SeoOptions) {
     setLink("canonical", url);
     setMeta("name", "robots", opts.noindex ? "noindex, nofollow" : "index, follow");
 
+    // Geo-targeting signals — reinforces Bangladesh/Dhaka local-search intent
+    // (e.g. "Spain visa Bangladesh") on every page, not just the homepage.
+    setMeta("name", "geo.region", "BD-13");
+    setMeta("name", "geo.placename", "Dhaka, Bangladesh");
+    setMeta("name", "geo.position", "23.8103;90.4125");
+    setMeta("name", "ICBM", "23.8103, 90.4125");
+
     setMeta("property", "og:type", "website");
     setMeta("property", "og:site_name", "HR — The Mediator");
     setMeta("property", "og:title", opts.title);

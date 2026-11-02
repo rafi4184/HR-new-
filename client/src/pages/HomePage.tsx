@@ -14,20 +14,22 @@ import TrackRequest from "../components/TrackRequest";
 import PaymentModal from "../components/PaymentModal";
 import Faq from "../components/Faq";
 import Reveal from "../components/ui/Reveal";
+import AmbientGlow from "../components/ui/AmbientGlow";
 import { HOME_FAQS } from "../data/servicePages";
 import { trackRequest, ApiError } from "../lib/api";
 import type { BookingTab, ServiceRequest } from "../types";
 import { useDict, useLanguage } from "../lib/i18n";
-import { homeFaqs, otherServicesSection } from "../lib/translations";
+import { homeFaqs, otherServicesSection, homeTopIntro } from "../lib/translations";
 
 export default function HomePage({ onToast }: { onToast: (msg: string) => void }) {
   const { lang } = useLanguage();
   const translatedFaqs = homeFaqs.map((f) => ({ question: f.question[lang], answer: f.answer[lang] }));
   const otherServicesT = useDict(otherServicesSection);
+  const topIntroT = useDict(homeTopIntro);
   useSeo({
-    title: "Spain Digital Nomad Visa Consultants | Student, PR & Work Visas | HR — The Mediator",
+    title: "Spain Visa Consultation Firm in Dhaka, Bangladesh | Digital Nomad, Study, Work & Tourist Visa | HR — The Mediator",
     description:
-      "HR — The Mediator is a Spain visa consultancy based in Bangladesh — specialists in the Digital Nomad Visa (ARTIN), with Student, Permanent Residency and Work visa guidance underway. We also continue our original services: Dhaka Airport VIP, government-request assistance, manpower & security staffing, and overseas careers across the Gulf and Australia.",
+      "HR — The Mediator is the Dhaka-based Spain visa consultation firm guiding clients from Bangladesh to Spain — Digital Nomad Visa (ARTIN) specialists, plus Spain Study Visa, Work Visa and Tourist/Visitor Visa handled directly, with Permanent Residency guidance underway. Also: visa and placement consultation for the Gulf and Australia, Dhaka Airport VIP, and government-request assistance.",
     path: "/",
     faq: HOME_FAQS,
   });
@@ -74,6 +76,17 @@ export default function HomePage({ onToast }: { onToast: (msg: string) => void }
 
   return (
     <div>
+      <section className="relative px-5 md:px-10 pt-14 pb-8 md:pt-20 md:pb-10 bg-paper-soft overflow-hidden">
+        <AmbientGlow variant="light" />
+        <Reveal className="relative max-w-3xl mx-auto text-center">
+          <div className="text-[12px] font-medium mb-4 tracking-[0.2em] uppercase text-gold-deep">{topIntroT.eyebrow}</div>
+          <h1 className="font-display text-navy text-3xl md:text-5xl leading-[1.1] mb-6" style={{ textWrap: "balance" }}>
+            {topIntroT.h1}
+          </h1>
+          <p className="text-[15.5px] md:text-[17px] text-ink-muted leading-relaxed">{topIntroT.summary}</p>
+        </Reveal>
+      </section>
+
       <Booking
         ref={bookingRef}
         activeTab={activeTab}
