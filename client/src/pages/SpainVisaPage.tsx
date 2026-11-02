@@ -110,6 +110,19 @@ export default function SpainVisaPage() {
             {T.ctaButton} <ArrowRight size={15} />
           </button>
         </div>
+
+        {lang === "bn" && (
+          <Reveal delay={0.08} className="relative max-w-5xl mx-auto mt-10">
+            <div className="rounded-2xl overflow-hidden shadow-card-hover border border-white/60">
+              <img
+                src="/images/spain/spain-visa-3-paths-guide-2026-bn.jpg"
+                alt="স্পেনে যাওয়ার ৩টি সেরা পথ — ডিজিটাল নোম্যাড, ভিজিট, হাইলি স্কিলড ভিসা গাইড"
+                className="w-full h-auto"
+              />
+            </div>
+          </Reveal>
+        )}
+
         <Reveal delay={0.1} className="relative max-w-5xl mx-auto mt-10">
           <div className="rounded-2xl overflow-hidden shadow-card-hover border border-white/60 aspect-[21/9]">
             <img
