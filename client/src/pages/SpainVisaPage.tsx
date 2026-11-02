@@ -40,6 +40,10 @@ export default function SpainVisaPage() {
     ctaButton: spainVisaPageT.ctaButton,
   });
   const backHome = useT({ en: "← Back to homepage", bn: "← হোমপেজে ফিরে যান" });
+  const bannerAlt = useT({
+    en: "Spain Visa Guide 2026 — Digital Nomad Visa (€2,849+/month), Schengen Visit Visa (up to 90 days in 180) and Highly Qualified / EU Blue Card (€41,356+/year)",
+    bn: "স্পেন ভিসা গাইড ২০২৬ — ডিজিটাল নোম্যাড ভিসা (মাসে €২,৮৪৯+), শেনজেন ভিজিট ভিসা (১৮০ দিনে সর্বোচ্চ ৯০ দিন) ও হাইলি স্কিলড / EU ব্লু কার্ড (বছরে €৪১,৩৫৬+)",
+  });
 
   useSeo({
     title: "Spain Visa Consultation Firm, Dhaka — Bangladesh to Spain | Digital Nomad, Study, Work & Tourist Visa",
@@ -250,6 +254,30 @@ export default function SpainVisaPage() {
               </li>
             ))}
           </ul>
+        </Reveal>
+      </section>
+
+      {/* Spain visa guide 2026 banner (Bengali) */}
+      <section className="px-5 md:px-10 py-14 max-w-6xl mx-auto">
+        <Reveal>
+          <button
+            type="button"
+            onClick={scrollToBooking}
+            aria-label={bannerAlt}
+            className="block w-full rounded-2xl overflow-hidden shadow-card-hover border border-border hover:scale-[1.01] transition-transform"
+          >
+            <picture>
+              <source srcSet="/images/spain/spain-visa-guide-2026-banner-bn.webp" type="image/webp" />
+              <img
+                src="/images/spain/spain-visa-guide-2026-banner-bn.jpg"
+                alt={bannerAlt}
+                width={1920}
+                height={1080}
+                loading="lazy"
+                className="w-full h-auto block"
+              />
+            </picture>
+          </button>
         </Reveal>
       </section>
 
