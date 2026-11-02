@@ -117,13 +117,23 @@ export default function SpainVisaPage() {
 
         {lang === "bn" && (
           <Reveal delay={0.08} className="relative max-w-5xl mx-auto mt-10">
-            <div className="rounded-2xl overflow-hidden shadow-card-hover border border-white/60">
-              <img
-                src="/images/spain/spain-visa-3-paths-guide-2026-bn.jpg"
-                alt="স্পেনে যাওয়ার ৩টি সেরা পথ — ডিজিটাল নোম্যাড, ভিজিট, হাইলি স্কিলড ভিসা গাইড"
-                className="w-full h-auto"
-              />
-            </div>
+            <button
+              type="button"
+              onClick={scrollToBooking}
+              aria-label={bannerAlt}
+              className="block w-full rounded-2xl overflow-hidden shadow-card-hover border border-white/60 hover:scale-[1.01] transition-transform"
+            >
+              <picture>
+                <source srcSet="/images/spain/spain-visa-guide-2026-banner-bn.webp" type="image/webp" />
+                <img
+                  src="/images/spain/spain-visa-guide-2026-banner-bn.jpg"
+                  alt={bannerAlt}
+                  width={1920}
+                  height={1080}
+                  className="w-full h-auto block"
+                />
+              </picture>
+            </button>
           </Reveal>
         )}
 
@@ -279,30 +289,6 @@ export default function SpainVisaPage() {
               </li>
             ))}
           </ul>
-        </Reveal>
-      </section>
-
-      {/* Spain visa guide 2026 banner (Bengali) */}
-      <section className="px-5 md:px-10 py-14 max-w-6xl mx-auto">
-        <Reveal>
-          <button
-            type="button"
-            onClick={scrollToBooking}
-            aria-label={bannerAlt}
-            className="block w-full rounded-2xl overflow-hidden shadow-card-hover border border-border hover:scale-[1.01] transition-transform"
-          >
-            <picture>
-              <source srcSet="/images/spain/spain-visa-guide-2026-banner-bn.webp" type="image/webp" />
-              <img
-                src="/images/spain/spain-visa-guide-2026-banner-bn.jpg"
-                alt={bannerAlt}
-                width={1920}
-                height={1080}
-                loading="lazy"
-                className="w-full h-auto block"
-              />
-            </picture>
-          </button>
         </Reveal>
       </section>
 
