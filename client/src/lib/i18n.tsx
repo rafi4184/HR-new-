@@ -4,10 +4,13 @@ export type Lang = "en" | "bn";
 
 const STORAGE_KEY = "hr_lang";
 
-// ARK Property Solution is English-only — always resolve to "en" regardless
-// of any language preference stored by a previous visit.
 function readStored(): Lang {
-  return "en";
+  try {
+    const v = localStorage.getItem(STORAGE_KEY);
+    return v === "bn" ? "bn" : "en";
+  } catch {
+    return "en";
+  }
 }
 
 const LanguageContext = createContext<{ lang: Lang; setLang: (l: Lang) => void }>({

@@ -1,7 +1,8 @@
 import { useEffect, useState, type FormEvent } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Trash2, Pencil, Plus, ShieldCheck, Shield, Users, KeyRound, ScrollText, FileText, Download, UserCheck, UserX, MailCheck } from "lucide-react";
+import { Trash2, Pencil, Plus, ShieldCheck, Shield, Users, KeyRound, ScrollText, CalendarDays, FileText, Download, UserCheck, UserX, MailCheck } from "lucide-react";
 import { inputClass } from "../ui/Field";
+import EventsManager from "../EventsManager";
 import {
   listContacts,
   adminUpsertContact,
@@ -23,10 +24,11 @@ import {
 import { SITE_CONTENT_KEYS, useSiteContentRaw, useReloadSiteContent } from "../../lib/siteContent";
 import type { AuditLogEntry, Contact, ResumeSubmission, StaffMember, StaffRole, TeamMember, WhoAmI } from "../../types";
 
-type Tab = "contacts" | "resumes" | "content" | "staff" | "audit";
+type Tab = "contacts" | "events" | "resumes" | "content" | "staff" | "audit";
 
 const TABS: { key: Tab; label: string }[] = [
   { key: "contacts", label: "Contacts" },
+  { key: "events", label: "Events" },
   { key: "resumes", label: "Resumes" },
   { key: "content", label: "Site Content" },
   { key: "staff", label: "Staff" },
@@ -72,6 +74,15 @@ export default function AdminPanel({
     return (
       <div className="mt-10 pt-10 border-t border-dashed border-border-strong">
         <div className="flex items-center gap-2 mb-1">
+          <CalendarDays size={17} className="text-navy" />
+          <h3 className="font-display text-xl">Events</h3>
+        </div>
+        <p className="text-[13px] mb-5 text-ink-faint">
+          Post recent success stories and seminars — everyone visiting the site will see them.
+        </p>
+        <EventsManager onToast={onToast} />
+
+        <div className="flex items-center gap-2 mb-1 mt-10 pt-10 border-t border-dashed border-border-strong">
           <FileText size={17} className="text-navy" />
           <h3 className="font-display text-xl">Resumes</h3>
         </div>
@@ -127,6 +138,7 @@ export default function AdminPanel({
       <AnimatePresence mode="wait">
         <motion.div key={tab} initial={{ opacity: 0, y: 6 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }} transition={{ duration: 0.2 }}>
           {tab === "contacts" && <ContactsPanel onToast={onToast} />}
+          {tab === "events" && <EventsManager onToast={onToast} />}
           {tab === "resumes" && <ResumesPanel onToast={onToast} />}
           {tab === "content" && <ContentPanel onToast={onToast} />}
           {tab === "staff" && <StaffPanel currentUserId={me.userId} onToast={onToast} />}

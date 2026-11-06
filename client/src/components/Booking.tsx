@@ -1,32 +1,40 @@
 import { forwardRef, useState, type FormEvent } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Home, KeyRound, Search, MessageSquare, Ticket } from "lucide-react";
+import { Laptop2, PlaneTakeoff, CarFront, Landmark, GraduationCap, FileText, UploadCloud, CheckCircle2, Clock, Ticket } from "lucide-react";
 import Reveal from "./ui/Reveal";
 import { Field, IdentityFields, inputClass } from "./ui/Field";
-import { submitRequest, ApiError } from "../lib/api";
+import { PROGRAMS } from "../lib/constants";
+import { submitRequest, submitResume, ApiError } from "../lib/api";
 import type { BookingTab } from "../types";
-import { useDict } from "../lib/i18n";
-import { bookingT } from "../lib/translations";
+import { useDict, useLanguage } from "../lib/i18n";
+import { bookingT, govServicesT, purposesT, programsT, resumeUploadT, spainVisaTypesT } from "../lib/translations";
 
-const TAB_META: { id: BookingTab; icon: typeof Home }[] = [
-  { id: "sales", icon: Home },
-  { id: "management", icon: KeyRound },
-  { id: "buyers", icon: Search },
-  { id: "general", icon: MessageSquare },
+const RESUME_MAX_SIZE = 10 * 1024 * 1024;
+const RESUME_ACCEPTED = ".pdf,.doc,.docx";
+
+export interface AirportPrefill {
+  name: string;
+  flight: string;
+  purpose: string;
+}
+
+const TAB_META: { id: BookingTab; icon: typeof PlaneTakeoff }[] = [
+  { id: "spain", icon: Laptop2 },
+  { id: "airport", icon: PlaneTakeoff },
+  { id: "hotel", icon: CarFront },
+  { id: "government", icon: Landmark },
+  { id: "programs", icon: GraduationCap },
+  { id: "resume", icon: FileText },
 ];
-
-const TYPE_BY_TAB: Record<BookingTab, string> = {
-  sales: "property-sales",
-  management: "property-management",
-  buyers: "buyers-agency",
-  general: "general-enquiry",
-};
 
 const Booking = forwardRef<
   HTMLElement,
   {
     activeTab: BookingTab;
     setActiveTab: (tab: BookingTab) => void;
+    presetProgram: string;
+    airportPrefill: AirportPrefill;
+    airportPrefillKey: number;
     lastTicket: string | null;
     onSubmitted: (ticket: string) => void;
     lockedTab?: BookingTab;
@@ -34,42 +42,104 @@ const Booking = forwardRef<
     heading?: string;
     subheading?: string;
   }
->(function Booking({ activeTab, setActiveTab, lastTicket, onSubmitted, lockedTab, id = "request-service", heading, subheading }, ref) {
+>(function Booking(
+  {
+    activeTab,
+    setActiveTab,
+    presetProgram,
+    airportPrefill,
+    airportPrefillKey,
+    lastTicket,
+    onSubmitted,
+    lockedTab,
+    id = "request-service",
+    heading,
+    subheading,
+  },
+  ref
+) {
+  const { lang } = useLanguage();
   const T = useDict({
     submitting: bookingT.submitting,
-    submitSales: bookingT.submitSales,
-    submitManagement: bookingT.submitManagement,
-    submitBuyers: bookingT.submitBuyers,
-    submitGeneral: bookingT.submitGeneral,
+    submitSpain: bookingT.submitSpain,
+    submitAirport: bookingT.submitAirport,
+    submitHotel: bookingT.submitHotel,
+    submitGovernment: bookingT.submitGovernment,
+    submitProgram: bookingT.submitProgram,
     errorFallback: bookingT.errorFallback,
+    spainNotice: bookingT.spainNotice,
+    govNotice: bookingT.govNotice,
+    programNotice: bookingT.programNotice,
     ticketSaved: bookingT.ticketSaved,
     defaultHeading: bookingT.defaultHeading,
     defaultSubheading: bookingT.defaultSubheading,
   });
   const fields = useDict(bookingT.fields);
   const tabsT = useDict(bookingT.tabs);
+  const airportsT = useDict(bookingT.airports);
+  const hotelTiersT = useDict(bookingT.hotelTiers);
+  const carOptionsT = useDict(bookingT.carOptions);
+  const urgencyT = useDict(bookingT.urgencyOptions);
+  const batchT = useDict(bookingT.batchOptions);
   const placeholders = useDict(bookingT.placeholders);
-  const propertyTypes = bookingT.propertyTypes.map((p) => p.en);
-  const timeframes = bookingT.timeframes.map((t) => t.en);
-  const statusOptions = bookingT.statusOptions.map((s) => s.en);
-  const budgetRanges = bookingT.budgetRanges.map((b) => b.en);
+  const resumeT = useDict(resumeUploadT);
 
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [resumeFile, setResumeFile] = useState<File | null>(null);
+  const [resumeDone, setResumeDone] = useState(false);
   const tab = lockedTab ?? activeTab;
 
-  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (type: string, e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setError(null);
     setSubmitting(true);
     const form = e.currentTarget;
     const data = Object.fromEntries(new FormData(form).entries());
     try {
-      const created = await submitRequest(TYPE_BY_TAB[tab], data);
+      const created = await submitRequest(type, data);
       onSubmitted(created.ticket);
       form.reset();
     } catch (err) {
       setError(err instanceof ApiError ? err.message : T.errorFallback);
+    } finally {
+      setSubmitting(false);
+    }
+  };
+
+  const handleResumeSubmit = async (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    setError(null);
+
+    if (!resumeFile) {
+      setError(resumeT.errorGeneric);
+      return;
+    }
+    if (resumeFile.size > RESUME_MAX_SIZE) {
+      setError(resumeT.errorGeneric);
+      return;
+    }
+
+    const form = e.currentTarget;
+    const data = new FormData(form);
+    setSubmitting(true);
+    try {
+      await submitResume(
+        {
+          name: String(data.get("name") ?? ""),
+          email: String(data.get("email") ?? ""),
+          phone: String(data.get("phone") ?? "") || undefined,
+          targetRole: String(data.get("targetRole") ?? "") || undefined,
+          targetCountry: String(data.get("targetCountry") ?? "") || undefined,
+          note: String(data.get("note") ?? "") || undefined,
+        },
+        resumeFile
+      );
+      setResumeDone(true);
+      form.reset();
+      setResumeFile(null);
+    } catch (err) {
+      setError(err instanceof ApiError ? err.message : resumeT.errorGeneric);
     } finally {
       setSubmitting(false);
     }
@@ -120,7 +190,7 @@ const Booking = forwardRef<
 
         <AnimatePresence mode="wait">
           <motion.div
-            key={tab}
+            key={`${tab}-${airportPrefillKey}`}
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0 }}
@@ -129,106 +199,256 @@ const Booking = forwardRef<
           >
             {error && <div className="mb-5 text-[13px] rounded-lg px-4 py-3 bg-[#FBEAE5] text-[#9A3412]">{error}</div>}
 
-            {tab === "sales" && (
-              <form onSubmit={handleSubmit}>
+            {tab === "spain" && (
+              <form onSubmit={(e) => handleSubmit("spain-visa", e)}>
+                <div className="mb-5 text-[13px] rounded-lg px-4 py-3 flex gap-2 bg-gold-pale text-[#7A5E13]">
+                  <Clock size={16} className="shrink-0 mt-0.5" />
+                  {T.spainNotice}
+                </div>
                 <div className="grid sm:grid-cols-2 gap-x-5">
                   <IdentityFields />
-                  <Field label={fields.propertyAddress} required>
-                    <input name="propertyAddress" required placeholder={placeholders.propertyAddressExample} className={inputClass} />
-                  </Field>
-                  <Field label={fields.propertyType}>
-                    <select name="propertyType" className={inputClass} defaultValue={propertyTypes[0]}>
-                      {propertyTypes.map((p) => (
-                        <option key={p}>{p}</option>
+                  <Field label={fields.visaType} required>
+                    <select name="visaType" required className={inputClass} defaultValue="">
+                      <option value="" disabled>
+                        {fields.selectVisaType}
+                      </option>
+                      {spainVisaTypesT.map((v) => (
+                        <option key={v.key}>{v.title[lang]}</option>
                       ))}
                     </select>
                   </Field>
-                  <Field label={fields.timeframe}>
-                    <select name="timeframe" className={inputClass} defaultValue={timeframes[0]}>
-                      {timeframes.map((t) => (
-                        <option key={t}>{t}</option>
-                      ))}
-                    </select>
+                  <Field label={fields.currentOccupation}>
+                    <input name="occupation" placeholder={placeholders.spainOccupation} className={inputClass} />
                   </Field>
                 </div>
                 <Field label={fields.description}>
-                  <textarea name="notes" rows={3} placeholder={placeholders.salesNotes} className={inputClass} />
+                  <textarea name="notes" rows={3} placeholder={placeholders.spainNotes} className={inputClass} />
                 </Field>
-                {submitBtn(T.submitSales)}
+                {submitBtn(T.submitSpain)}
               </form>
             )}
 
-            {tab === "management" && (
-              <form onSubmit={handleSubmit}>
+            {tab === "airport" && (
+              <form onSubmit={(e) => handleSubmit("airport", e)}>
                 <div className="grid sm:grid-cols-2 gap-x-5">
-                  <IdentityFields />
-                  <Field label={fields.propertyAddress} required>
-                    <input name="propertyAddress" required placeholder={placeholders.propertyAddressExample} className={inputClass} />
+                  <IdentityFields defaultName={airportPrefill.name} />
+                  <Field label={fields.flightNumber} required>
+                    <input
+                      name="flight"
+                      required
+                      defaultValue={airportPrefill.flight}
+                      placeholder={placeholders.flightExample}
+                      className={inputClass}
+                    />
                   </Field>
-                  <Field label={fields.propertyType}>
-                    <select name="propertyType" className={inputClass} defaultValue={propertyTypes[0]}>
-                      {propertyTypes.map((p) => (
-                        <option key={p}>{p}</option>
+                  <Field label={fields.arrivalAirport} required>
+                    <select name="airport" required className={inputClass} defaultValue={airportsT.dhaka}>
+                      <option>{airportsT.dhaka}</option>
+                      <option>{airportsT.chattogram}</option>
+                      <option>{airportsT.sylhet}</option>
+                    </select>
+                  </Field>
+                  <Field label={fields.preferredDate} required>
+                    <input name="date" type="date" required className={inputClass} />
+                  </Field>
+                  <Field label={fields.arrivalTime}>
+                    <input name="time" type="time" className={inputClass} />
+                  </Field>
+                  <Field label={fields.purposeOfVisit} required>
+                    <select
+                      name="purpose"
+                      required
+                      defaultValue={
+                        purposesT.find((p) => p.en === (airportPrefill.purpose || "Business"))?.[lang] ?? purposesT[0][lang]
+                      }
+                      className={inputClass}
+                    >
+                      {purposesT.map((p) => (
+                        <option key={p.en}>{p[lang]}</option>
                       ))}
                     </select>
                   </Field>
-                  <Field label={fields.currentStatus}>
-                    <select name="status" className={inputClass} defaultValue={statusOptions[0]}>
-                      {statusOptions.map((s) => (
-                        <option key={s}>{s}</option>
-                      ))}
-                    </select>
+                  <Field label={fields.travelers}>
+                    <input name="travelers" type="number" min="1" defaultValue="1" className={inputClass} />
                   </Field>
                 </div>
                 <Field label={fields.description}>
-                  <textarea name="notes" rows={3} placeholder={placeholders.managementNotes} className={inputClass} />
+                  <textarea name="notes" rows={3} placeholder={placeholders.airportNotes} className={inputClass} />
                 </Field>
-                {submitBtn(T.submitManagement)}
+                {submitBtn(T.submitAirport)}
               </form>
             )}
 
-            {tab === "buyers" && (
-              <form onSubmit={handleSubmit}>
+            {tab === "hotel" && (
+              <form onSubmit={(e) => handleSubmit("hotel", e)}>
                 <div className="grid sm:grid-cols-2 gap-x-5">
                   <IdentityFields />
-                  <Field label={fields.areaOfInterest} required>
-                    <input name="areaOfInterest" required placeholder={placeholders.areaExample} className={inputClass} />
+                  <Field label={fields.locationCity} required>
+                    <input name="city" required placeholder={placeholders.cityExample} className={inputClass} />
                   </Field>
-                  <Field label={fields.propertyType}>
-                    <select name="propertyType" className={inputClass} defaultValue={propertyTypes[0]}>
-                      {propertyTypes.map((p) => (
-                        <option key={p}>{p}</option>
-                      ))}
+                  <Field label={fields.hotelTier}>
+                    <select name="tier" className={inputClass} defaultValue={hotelTiersT.standard}>
+                      <option>{hotelTiersT.standard}</option>
+                      <option>{hotelTiersT.business}</option>
+                      <option>{hotelTiersT.luxury}</option>
                     </select>
                   </Field>
-                  <Field label={fields.budgetRange}>
-                    <select name="budgetRange" className={inputClass} defaultValue={budgetRanges[0]}>
-                      {budgetRanges.map((b) => (
-                        <option key={b}>{b}</option>
-                      ))}
+                  <Field label={fields.checkin} required>
+                    <input name="checkin" type="date" required className={inputClass} />
+                  </Field>
+                  <Field label={fields.checkout} required>
+                    <input name="checkout" type="date" required className={inputClass} />
+                  </Field>
+                  <Field label={fields.carType}>
+                    <select name="car" className={inputClass} defaultValue={carOptionsT.sedanSelf}>
+                      <option>{carOptionsT.sedanSelf}</option>
+                      <option>{carOptionsT.sedanDriver}</option>
+                      <option>{carOptionsT.suvDriver}</option>
+                      <option>{carOptionsT.vanDriver}</option>
+                      <option>{carOptionsT.noCar}</option>
                     </select>
+                  </Field>
+                  <Field label={fields.pickupLocation}>
+                    <input name="pickup" className={inputClass} />
                   </Field>
                 </div>
                 <Field label={fields.description}>
-                  <textarea name="notes" rows={3} placeholder={placeholders.buyersNotes} className={inputClass} />
+                  <textarea name="notes" rows={3} className={inputClass} />
                 </Field>
-                {submitBtn(T.submitBuyers)}
+                {submitBtn(T.submitHotel)}
               </form>
             )}
 
-            {tab === "general" && (
-              <form onSubmit={handleSubmit}>
+            {tab === "government" && (
+              <form onSubmit={(e) => handleSubmit("government", e)}>
+                <div className="mb-5 text-[13px] rounded-lg px-4 py-3 flex gap-2 bg-gold-pale text-[#7A5E13]">
+                  <Clock size={16} className="shrink-0 mt-0.5" />
+                  {T.govNotice}
+                </div>
                 <div className="grid sm:grid-cols-2 gap-x-5">
                   <IdentityFields />
-                  <Field label={fields.enquiryType}>
-                    <input name="enquiryType" placeholder={placeholders.generalNotes} className={inputClass} />
+                  <Field label={fields.serviceRequired} required>
+                    <select name="service" required className={inputClass} defaultValue="">
+                      <option value="" disabled>
+                        {fields.selectAService}
+                      </option>
+                      {govServicesT.map((g) => (
+                        <option key={g.en}>{g[lang]}</option>
+                      ))}
+                    </select>
+                  </Field>
+                  <Field label={fields.urgency}>
+                    <select name="urgency" className={inputClass} defaultValue={urgencyT.standard}>
+                      <option>{urgencyT.standard}</option>
+                      <option>{urgencyT.urgent}</option>
+                    </select>
                   </Field>
                 </div>
                 <Field label={fields.description} required>
-                  <textarea name="notes" rows={4} required placeholder={placeholders.generalNotes} className={inputClass} />
+                  <textarea name="description" rows={4} required className={inputClass} />
                 </Field>
-                {submitBtn(T.submitGeneral)}
+                {submitBtn(T.submitGovernment)}
               </form>
+            )}
+
+            {tab === "programs" && (
+              <form onSubmit={(e) => handleSubmit("program", e)}>
+                <div className="mb-5 text-[13px] rounded-lg px-4 py-3 flex gap-2 bg-gold-pale text-[#7A5E13]">
+                  <Clock size={16} className="shrink-0 mt-0.5" />
+                  {T.programNotice}
+                </div>
+                <div className="grid sm:grid-cols-2 gap-x-5">
+                  <IdentityFields />
+                  <Field label={fields.program} required>
+                    <select key={presetProgram} name="program" required defaultValue={presetProgram} className={inputClass}>
+                      {PROGRAMS.map((p) => {
+                        const tp = programsT.find((x) => x.id === p.id);
+                        return (
+                          <option key={p.id} value={p.id}>
+                            {tp ? tp[lang] : p.label}
+                          </option>
+                        );
+                      })}
+                    </select>
+                  </Field>
+                  <Field label={fields.preferredBatch}>
+                    <select name="batch" className={inputClass} defaultValue={batchT.offline}>
+                      <option>{batchT.offline}</option>
+                      <option>{batchT.online}</option>
+                      <option>{batchT.notApplicable}</option>
+                    </select>
+                  </Field>
+                  <Field label={fields.currentEducation}>
+                    <input name="background" className={inputClass} />
+                  </Field>
+                </div>
+                <Field label={fields.description}>
+                  <textarea name="notes" rows={3} placeholder={placeholders.programGoal} className={inputClass} />
+                </Field>
+                {submitBtn(T.submitProgram)}
+              </form>
+            )}
+
+            {tab === "resume" && (
+              <>
+                {resumeDone ? (
+                  <motion.div
+                    initial={{ opacity: 0, scale: 0.96 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    className="text-center py-6"
+                  >
+                    <CheckCircle2 size={32} className="text-gold-deep mx-auto mb-3" />
+                    <p className="text-[14.5px] text-ink-soft">{resumeT.success}</p>
+                  </motion.div>
+                ) : (
+                  <form onSubmit={handleResumeSubmit}>
+                    <div className="grid sm:grid-cols-2 gap-x-5">
+                      <Field label={resumeT.nameLabel} required>
+                        <input name="name" required className={inputClass} />
+                      </Field>
+                      <Field label={resumeT.emailLabel} required>
+                        <input name="email" type="email" required className={inputClass} />
+                      </Field>
+                      <Field label={resumeT.phoneLabel}>
+                        <input name="phone" className={inputClass} />
+                      </Field>
+                      <Field label={resumeT.roleLabel}>
+                        <input name="targetRole" className={inputClass} placeholder="e.g. Driver, Technician" />
+                      </Field>
+                      <Field label={resumeT.countryLabel}>
+                        <input name="targetCountry" className={inputClass} placeholder="e.g. Saudi Arabia" />
+                      </Field>
+                      <Field label={resumeT.noteLabel}>
+                        <input name="note" className={inputClass} />
+                      </Field>
+                    </div>
+                    <Field label={resumeT.fileLabel} required>
+                      <label
+                        className={`flex items-center gap-3 rounded-lg border border-dashed px-3.5 py-3 cursor-pointer transition-colors ${
+                          resumeFile ? "border-gold bg-gold-pale" : "border-border hover:border-gold"
+                        }`}
+                      >
+                        {resumeFile ? (
+                          <FileText size={18} className="text-gold-deep shrink-0" />
+                        ) : (
+                          <UploadCloud size={18} className="text-ink-faint shrink-0" />
+                        )}
+                        <span className="text-[13.5px] text-ink-soft truncate">
+                          {resumeFile ? resumeFile.name : resumeT.fileLabel}
+                        </span>
+                        <input
+                          type="file"
+                          accept={RESUME_ACCEPTED}
+                          required
+                          className="hidden"
+                          onChange={(e) => setResumeFile(e.target.files?.[0] ?? null)}
+                        />
+                      </label>
+                    </Field>
+                    {submitBtn(resumeT.submit)}
+                  </form>
+                )}
+              </>
             )}
           </motion.div>
         </AnimatePresence>

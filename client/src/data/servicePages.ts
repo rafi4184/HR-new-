@@ -25,191 +25,451 @@ export interface ServicePageData {
 
 export const HOME_FAQS: Faq[] = [
   {
-    question: "What does ARK Property Solution do?",
+    question: "Which is the best Spain visa consultation firm in Dhaka, Bangladesh?",
     answer:
-      "We're a Sydney-based real estate agency covering three services: real estate sales (appraisals, marketing and negotiation for sellers), property management (end-to-end rental management for landlords), and buyer's agency (independent representation for buyers and investors).",
+      "HR — The Mediator is a Dhaka-based Spain visa consultation firm guiding clients from Bangladesh to Spain — specialists in the Digital Nomad Visa (ARTIN), and we directly handle Spain Study Visa, Work Visa and Tourist/Visitor Visa applications, with Permanent Residency guidance underway.",
   },
   {
-    question: "Which areas do you cover?",
+    question: "How do I go from Bangladesh to Spain?",
     answer:
-      "We're based in Sydney and primarily serve clients across New South Wales. Get in touch with your suburb or area and we'll confirm whether it's within our current coverage.",
+      "It depends on your purpose: the Digital Nomad Visa (ARTIN) for remote work, a Study Visa for university or language school, a Work Visa for employment with a Spanish company, or a Tourist/Visitor Visa for short stays. HR — The Mediator's Spain Visa Consultancy in Dhaka assesses your eligibility and guides you through documents and the right application route for your case.",
   },
   {
-    question: "I want to sell my property — what's the first step?",
+    question: "What is Spain's Digital Nomad Visa?",
     answer:
-      "Submit a sales enquiry with your property address and a little about your timeframe. We'll follow up to arrange an appraisal and walk you through our marketing and sale process.",
+      "Officially the International Teleworking Residence Authorisation (ARTIN), introduced under Spain's 2023 Startup Law. It lets you live in Spain while working remotely for a company or clients based outside Spain, with no Spanish employer or local job offer required.",
   },
   {
-    question: "I'm a landlord — can you manage my rental property?",
+    question: "What is the minimum income for Spain's Digital Nomad Visa in 2026?",
     answer:
-      "Yes. Our property management service covers tenant placement, rent collection, routine inspections and maintenance coordination. Submit a property management enquiry and we'll talk through onboarding.",
+      "As of 2026, a single applicant needs at least €2,849 per month (about €34,200 per year), up from €2,763 in 2025. Add roughly €1,068/month for a spouse or partner and €356/month per child. Rates track Spain's minimum wage and change yearly, so confirm the current figure with us before applying.",
   },
   {
-    question: "What is a buyer's agent, and do I need one?",
+    question: "Does HR — The Mediator help with Spain visas other than the Digital Nomad Visa?",
     answer:
-      "A buyer's agent represents you, the buyer or investor — not the seller. We research the market, shortlist properties, handle due diligence and negotiate on your behalf.",
+      "Yes — consultation is available now for Spain Student Visas, Permanent Residency and Work Visas as we expand our Spain practice, alongside our full Digital Nomad Visa service.",
   },
   {
-    question: "Is there a fee to enquire?",
+    question: "What services does HR — The Mediator provide in Bangladesh?",
     answer:
-      "No — submitting an enquiry through our website is free. Any service fees are discussed and agreed with you directly before any paid engagement begins.",
+      "We're a Spain visa consultancy — specialists in the Digital Nomad Visa, with Student, Permanent Residency and Work visa guidance underway — plus our original services: airport VIP reception, hotel & car booking, government-request assistance, manpower & security staffing, and courses & careers support covering media training and Gulf/Australia study or work placement.",
   },
   {
-    question: "How do I get in touch?",
+    question: "Do you provide airport VIP assistance?",
     answer:
-      "Use the Get in Touch button on any page, choose the service that fits, and share your contact details. Our team will follow up directly.",
+      "We do. Our airport VIP service covers meet & greet, arrival and departure assistance, fast-track support, and passenger coordination at Bangladesh airports including Hazrat Shahjalal International (Dhaka).",
+  },
+  {
+    question: "Can you arrange hotel and car services?",
+    answer:
+      "We arrange hotel bookings and vehicle transport — including airport transfers and chauffeur service — matched to your itinerary, budget and preferred city in Bangladesh.",
+  },
+  {
+    question: "Can you assist with government-related requests?",
+    answer:
+      "Our desk reviews each government-related case individually and coordinates documentation and administrative processes such as passport, visa, NID, land registry, and attestation support.",
+  },
+  {
+    question: "Do you provide manpower and security services?",
+    answer:
+      "We supply licensed manpower and security personnel for businesses and organisations, drawing on our staffing and consultancy practice.",
+  },
+  {
+    question: "Can you help with Gulf employment opportunities?",
+    answer:
+      "Our International Careers track supports Gulf employment placement, including documentation and pre-departure assistance for candidates from Bangladesh.",
+  },
+  {
+    question: "Do you help people in Dhaka find jobs in Saudi Arabia or the Middle East?",
+    answer:
+      "Candidates based in Dhaka, Rajshahi or anywhere in Bangladesh can apply through our International Careers programme for employment in Saudi Arabia, the UAE, Qatar and the wider Middle East, with documentation and pre-departure support included.",
+  },
+  {
+    question: "Do you offer premium or VIP service at Dhaka International Airport?",
+    answer:
+      "Yes. Our Airport VIP Reception covers all of Dhaka International Airport (Hazrat Shahjalal International), including the modern Terminal 3 — meet & greet, fast-track immigration, baggage assistance and a car staged at the curb for arrivals and departures.",
+  },
+  {
+    question: "Where can I get airport VIP service in Bangladesh?",
+    answer:
+      "HR — The Mediator provides airport VIP service at Hazrat Shahjalal International Airport in Dhaka, plus Shah Amanat International (Chattogram) and Osmani International (Sylhet) — meet & greet, fast-track immigration and baggage assistance for arrivals and departures anywhere in Bangladesh.",
+  },
+  {
+    question: "Can you help students study in the Gulf?",
+    answer:
+      "We provide study-abroad guidance, university admission support, and visa/documentation assistance for students pursuing education opportunities in the Gulf and other regions.",
+  },
+  {
+    question: "How can I request a service?",
+    answer:
+      "Use the Request a Service button on any page. Choose the service you need, share your contact details and request description, and our team will follow up directly.",
   },
 ];
 
 export const SERVICE_PAGES: Record<string, ServicePageData> = {
-  "property-sales": {
-    id: "property-sales",
-    path: "/property-sales",
-    navLabel: "Sell / Appraisal",
-    title: "Real Estate Sales",
-    metaTitle: "Sell Your Property in Sydney | Real Estate Sales & Appraisals | ARK Property Solution",
+  "airport-vip": {
+    id: "airport-vip",
+    path: "/airport-vip",
+    navLabel: "Airport VIP",
+    title: "Airport VIP Reception",
+    metaTitle: "Dhaka International Airport VIP Service & Pickup | Bangladesh | HR — The Mediator",
     metaDescription:
-      "Thinking of selling in Sydney? ARK Property Solution handles appraisals, marketing and negotiation from first enquiry to settlement, with honest advice on price and timing.",
-    h1: "Sell Your Property in Sydney",
+      "Premium VIP meet & greet at Dhaka International Airport (Hazrat Shahjalal International). Fast-track immigration, baggage assistance and passenger coordination for arrivals and departures across Bangladesh airports.",
+    h1: "Dhaka International Airport VIP Reception & Pickup",
     intro:
-      "From a straightforward appraisal to a full marketing campaign and negotiation, we handle the sale of your property with one team from first enquiry through to settlement — honest advice on price and timing included.",
+      "A meet-and-greet officer waiting at Dhaka International Airport (Hazrat Shahjalal International), fast-track immigration support, baggage assistance, and a car already staged at the curb for your Dhaka airport pickup. Our premium airport VIP service covers every terminal — including the modern Terminal 3 — for travellers, families and business visitors who want a smooth, well-coordinated arrival or departure anywhere in Bangladesh.",
     whoFor: [
-      "Homeowners ready to sell or exploring their options",
-      "Investors looking to exit a property",
-      "Executors and families selling an inherited property",
-      "Anyone who wants a straight answer on what their property is worth",
+      "International visitors arriving in Dhaka, Chattogram or Sylhet",
+      "Bangladeshi families welcoming relatives home",
+      "Business travellers on a tight schedule",
+      "Overseas Bangladeshis returning for a visit",
+      "Elderly or first-time travellers who want extra support",
     ],
     included: [
-      "A property appraisal grounded in current local sales data",
-      "A marketing plan matched to your property and timeline",
-      "Professional photography and listing coordination",
-      "Open home and private inspection management",
-      "Offer negotiation and sale process management through to settlement",
+      "Meet & greet at the aircraft door or terminal entrance",
+      "Fast-track immigration and customs coordination",
+      "Baggage assistance, door to door",
+      "Lounge access arranged on request",
+      "Car staged at the curb for onward travel",
+      "Support for both arrivals and departures",
     ],
     process: [
-      { title: "Tell us about your property", body: "Address, property type and your timeframe — takes a minute to submit." },
-      { title: "We arrange your appraisal", body: "A straight assessment of likely sale price based on current local market data." },
-      { title: "We market and show the property", body: "Photography, listing and open homes or private inspections, coordinated for you." },
-      { title: "Negotiation through to settlement", body: "We handle offers and negotiation, keeping you updated at every step." },
+      { title: "Request your reception", body: "Select Airport VIP on our request form — takes under a minute." },
+      { title: "Send us your flight details", body: "Flight number, date, and which airport — Dhaka, Chattogram or Sylhet." },
+      { title: "We arrange it on the ground", body: "Meet & greet and transport are set up before you land." },
+      { title: "Walk straight to your car", body: "An officer meets you at the gate and walks you through to a car already waiting." },
     ],
     faqs: [
       {
-        question: "How much is my property worth?",
+        question: "Which airports do you cover?",
         answer:
-          "Submit a sales enquiry with your property address and we'll arrange an appraisal based on current local sales data and the specifics of your property.",
+          "We cover Dhaka International Airport (Hazrat Shahjalal International, including Terminal 3), Shah Amanat International (Chattogram) and Osmani International (Sylhet).",
       },
       {
-        question: "Is there a cost to get an appraisal?",
-        answer: "No — an initial appraisal and consultation is free. Any fees for a full sale campaign are agreed with you upfront before you commit.",
+        question: "Can you arrange airport assistance for elderly travellers?",
+        answer: "Let us know in your request notes and we'll arrange extra support at the airport.",
       },
       {
-        question: "How long does a typical sale take?",
+        question: "Do you also handle departures?",
+        answer: "Airport VIP covers both arrival and departure assistance.",
+      },
+      {
+        question: "How much notice do you need?",
         answer:
-          "It depends on the property, price point and current market conditions — we'll give you a realistic estimate once we understand your property and goals.",
+          "Submit your request as early as possible; for most flights we can confirm arrangements within 24–48 hours.",
+      },
+      {
+        question: "What is Dhaka airport VIP service?",
+        answer:
+          "Dhaka airport VIP service is a meet & greet and passenger-assistance package at Dhaka International Airport (Hazrat Shahjalal International Airport) — an officer meets you at the aircraft door or terminal entrance, coordinates fast-track immigration and customs, handles baggage, and has a car waiting at the curb, so you skip the usual arrival or departure queues and confusion.",
+      },
+      {
+        question: "How do I book VIP assistance at Dhaka international airport?",
+        answer:
+          "Submit a request through our Airport VIP request form with your flight number, arrival or departure date, and the airport. Our desk confirms the arrangement and coordinates the meet & greet in advance of your flight.",
       },
     ],
-    cta: "Get a Property Appraisal",
-    bookTab: "sales",
-    related: ["property-management", "buyers-agency"],
+    cta: "Request Airport VIP",
+    bookTab: "airport",
+    related: ["hotel-car", "government-request"],
   },
 
-  "property-management": {
-    id: "property-management",
-    path: "/property-management",
-    navLabel: "Property Management",
-    title: "Property Management",
-    metaTitle: "Sydney Property Management for Landlords | ARK Property Solution",
+  "hotel-car": {
+    id: "hotel-car",
+    path: "/hotel-car",
+    navLabel: "Hotel & Car",
+    title: "Hotel & Car Booking",
+    metaTitle: "Hotel and Car Service Bangladesh | Chauffeur Service | HR — The Mediator",
     metaDescription:
-      "End-to-end rental property management in Sydney: tenant placement, rent collection, inspections and maintenance coordination — one team handling your rental property.",
-    h1: "Property Management for Sydney Landlords",
+      "Hotel booking and chauffeur/car service across Bangladesh. Airport transfers, vetted hotels, and vehicles matched to your itinerary and budget.",
+    h1: "Hotel & Car Booking Across Bangladesh",
     intro:
-      "Tenant placement, rent collection, routine inspections and maintenance coordination — handled by one team so you're not fielding tenant calls and tradespeople yourself.",
+      "We shortlist and personally check accommodation and transport against your schedule and budget, drawing on first-hand knowledge of hotels and drivers in Dhaka, Rajshahi and beyond.",
     whoFor: [
-      "Landlords with an existing tenanted property",
-      "New investors who've just settled on a rental property",
-      "Landlords unhappy with their current managing agent",
-      "Owners relocating or living overseas who need local, hands-on management",
+      "Business travellers who need a reliable hotel and vehicle on short notice",
+      "Families visiting Bangladesh who want vetted, comfortable accommodation",
+      "International visitors unfamiliar with local hotel and transport options",
+      "Organisations booking for staff or delegations",
     ],
     included: [
-      "Tenant screening and placement",
-      "Rent collection and arrears follow-up",
-      "Routine property inspections with reporting",
-      "Maintenance coordination with vetted tradespeople",
-      "Lease renewals and end-of-tenancy management",
+      "Vetted hotels, from standard to luxury",
+      "Airport transfers and point-to-point transport",
+      "Sedan, SUV or van, with or without driver",
+      "Itinerary-matched scheduling",
+      "One invoice, one point of contact",
     ],
     process: [
-      { title: "Tell us about your property", body: "Address, property type and current status — vacant, tenanted, or newly purchased." },
-      { title: "We review and onboard", body: "Our team walks you through management terms and gets your property set up." },
-      { title: "We handle the day to day", body: "Tenant placement or ongoing management, rent collection and inspections." },
-      { title: "Regular reporting", body: "You get clear updates — you're never left wondering what's happening with your property." },
+      { title: "Tell us your trip", body: "City, dates, and the kind of vehicle you need." },
+      { title: "We shortlist and confirm", body: "Vetted hotel options and a matched vehicle, confirmed against your budget." },
+      { title: "One invoice, one contact", body: "Hotel and transport billed together, one point of contact throughout." },
+      { title: "Everything's ready on arrival", body: "Your room and driver are confirmed before you land." },
     ],
     faqs: [
       {
-        question: "What does property management cost?",
-        answer: "Management fees are discussed and agreed with you directly based on your property, before any management agreement begins.",
+        question: "Which cities do you cover for hotel and car bookings?",
+        answer: "Dhaka, Rajshahi and other major Bangladesh cities on request — tell us your destination.",
       },
       {
-        question: "Can you take over management of an already-tenanted property?",
-        answer: "Yes — we regularly take over management from another agent or from self-managing landlords, with a smooth handover for existing tenancies.",
+        question: "Can I request a chauffeur-driven car only, without a hotel?",
+        answer: "Hotel and car can be booked separately or together, whichever you need.",
       },
       {
-        question: "How often will I hear from you?",
-        answer: "You'll get regular updates on inspections, rent and any maintenance issues — not just a call when something goes wrong.",
+        question: "Do you handle airport transfers?",
+        answer: "Airport transfers are part of our standard hotel & car service.",
       },
     ],
-    cta: "Get a Property Management Quote",
-    bookTab: "management",
-    related: ["property-sales", "buyers-agency"],
+    cta: "Request Hotel & Car",
+    bookTab: "hotel",
+    related: ["airport-vip", "manpower-security"],
   },
 
-  "buyers-agency": {
-    id: "buyers-agency",
-    path: "/buyers-agency",
-    navLabel: "Buyer's Agency",
-    title: "Buyer's Agency",
-    metaTitle: "Sydney Buyer's Agent | Independent Property Search & Negotiation | ARK Property Solution",
+  "government-request": {
+    id: "government-request",
+    path: "/government-request",
+    navLabel: "Government Request",
+    title: "Government Request Assistance",
+    metaTitle: "Government Assistance Bangladesh | Passport, Visa & Documentation | HR — The Mediator",
     metaDescription:
-      "ARK Property Solution's buyer's agency service represents buyers and investors in Sydney — market research, property search, due diligence and negotiation, on your side.",
-    h1: "A Buyer's Agent Working for You in Sydney",
+      "Government-request assistance in Bangladesh: passport, visa, NID, land registry and document attestation support. Our desk reviews every case individually.",
+    h1: "Government Request Assistance in Bangladesh",
     intro:
-      "We represent you — the buyer or investor — not the seller. Market research, a shortlist of properties that actually match your brief, due diligence, and negotiation handled on your behalf.",
+      "Passport, visa, land records, attestation, trade licences — our desk reviews every case individually and carries it through the registry office, so you don't have to stand in the queue yourself.",
     whoFor: [
-      "Buyers who want independent representation, not the selling agent's advice",
-      "Investors building a portfolio who want disciplined property selection",
-      "Interstate or overseas buyers who can't attend inspections themselves",
-      "Busy professionals who want the search and shortlisting done for them",
+      "Individuals needing passport, visa or NOC support",
+      "Families handling NID or birth certificate corrections",
+      "Landowners requiring land registry or mutation support",
+      "Businesses needing trade licence or registration assistance",
+      "Overseas Bangladeshis who cannot attend government offices in person",
     ],
     included: [
-      "A clear buyer's brief — budget, must-haves and deal-breakers",
-      "Off-market and on-market property search",
-      "Property shortlisting and inspection coordination",
-      "Due diligence support",
-      "Negotiation handled on your behalf through to exchange",
+      "Passport application support",
+      "Visa extension / NOC assistance",
+      "NID / birth certificate correction",
+      "Land registry & mutation support",
+      "Document attestation / notarization",
+      "Trade licence / business registration support",
+      "Direct phone briefing before any work begins",
     ],
     process: [
-      { title: "Share your brief", body: "Area, budget, property type and what matters most to you." },
-      { title: "We search and shortlist", body: "On and off-market properties matched to your brief, not a generic portal search." },
-      { title: "We inspect and assess", body: "We attend inspections, flag issues, and bring you a shortlist worth considering." },
-      { title: "We negotiate for you", body: "Offer strategy and negotiation handled on your behalf, through to exchange." },
+      { title: "Tell us the case", body: "Passport, NID, land registry — whatever the matter, describe it on our form." },
+      { title: "We review it personally", body: "Our desk reviews your case and briefs you by phone before any work begins." },
+      { title: "We carry it through the office", body: "Our team handles the paperwork and the queue at the relevant government office." },
+      { title: "You get a direct update", body: "We confirm once it's done — no chasing required." },
     ],
     faqs: [
       {
-        question: "What's the difference between a buyer's agent and a regular real estate agent?",
+        question: "What government services can you help with?",
         answer:
-          "A selling agent represents the seller and is paid by the seller to get the best price for them. A buyer's agent is engaged by you, the buyer, and works to find and negotiate the right property for your budget and brief.",
+          "Passport applications, visa extensions/NOCs, NID and birth certificate corrections, land registry and mutation, document attestation, and trade licence or business registration.",
       },
       {
-        question: "Can you help if I'm buying from interstate or overseas?",
-        answer: "Yes — we regularly represent buyers who can't attend inspections themselves, handling the search, due diligence and negotiation locally on your behalf.",
+        question: "Will someone review my case before starting work?",
+        answer:
+          "Our desk reviews every government request individually and confirms scope with you by phone before any work begins.",
       },
       {
-        question: "What areas do you search in?",
-        answer: "Tell us your area of interest when you enquire — we'll confirm whether it's within our current coverage across Sydney and NSW.",
+        question: "Can you help if I live outside Bangladesh?",
+        answer: "We regularly assist overseas Bangladeshis who cannot attend government offices in person.",
       },
     ],
-    cta: "Start Your Buyer's Brief",
-    bookTab: "buyers",
-    related: ["property-sales", "property-management"],
+    cta: "Request Government Assistance",
+    bookTab: "government",
+    related: ["airport-vip", "study-work-gulf"],
+  },
+
+  "manpower-security": {
+    id: "manpower-security",
+    path: "/manpower-security",
+    navLabel: "Manpower & Security",
+    title: "Manpower & Security",
+    metaTitle: "Manpower & Security Services Bangladesh | HR — The Mediator",
+    metaDescription:
+      "Licensed manpower and security services for businesses and organisations in Bangladesh — staffing, security personnel and outsourced workforce support.",
+    h1: "Manpower & Security Services for Bangladesh Businesses",
+    intro:
+      "Trained security personnel and outsourced workforce for organisations, drawing on a licensed staffing and consultancy practice built over years of government and corporate contracts.",
+    whoFor: [
+      "Businesses needing outsourced or temporary staffing",
+      "Organisations requiring trained security personnel",
+      "Institutions with recurring workforce or compliance needs",
+      "Companies preparing documentation for staffing contracts",
+    ],
+    included: [
+      "Licensed staffing & security personnel",
+      "Corporate & institutional contracts",
+      "Documentation and compliance handled",
+      "Gulf & overseas placement support for workforce needs",
+    ],
+    process: [
+      { title: "Describe the role", body: "Roles, headcount and location — tell us what needs staffing or securing." },
+      { title: "We match and vet", body: "Candidates are matched against your requirement and vetted before you see a name." },
+      { title: "Contract and deployment", body: "Documentation and compliance handled, personnel deployed on the agreed date." },
+      { title: "One contact, ongoing", body: "We stay your point of contact for the length of the engagement." },
+    ],
+    faqs: [
+      {
+        question: "Do you provide security personnel for events or offices?",
+        answer: "We supply trained security personnel for both short-term and ongoing engagements.",
+      },
+      {
+        question: "Can you supply outsourced staff for a business?",
+        answer: "We support corporate and institutional staffing contracts across Bangladesh.",
+      },
+    ],
+    cta: "Request Manpower & Security",
+    bookTab: null,
+    related: ["government-request", "study-work-gulf"],
+  },
+
+  "courses-careers": {
+    id: "courses-careers",
+    path: "/courses-careers",
+    navLabel: "Courses & Careers",
+    title: "Courses & Careers",
+    metaTitle: "Courses & Careers Bangladesh | Media Training & Gulf Careers | HR — The Mediator",
+    metaDescription:
+      "Two career tracks from HR — The Mediator: the Media & Public Speaking Academy, and International Careers support for study and work in the Gulf.",
+    h1: "Courses & Careers",
+    intro:
+      "Beyond logistics — the training and placement work HR — The Mediator is known for. Two clear tracks: professional media and public-speaking training, and international careers support for studying or working in the Gulf.",
+    whoFor: [
+      "Students preparing for media, presentation or public-speaking careers",
+      "Professionals wanting stronger communication and presentation skills",
+      "Students exploring university study abroad, including the Gulf",
+      "Jobseekers looking for Gulf employment opportunities",
+    ],
+    included: [
+      "Media & Public Speaking Academy — presentation, communication and confidence training",
+      "International Careers — study-abroad guidance and Gulf employment support",
+      "Visa and documentation assistance for placements",
+      "Pre-departure assistance for students and workers",
+    ],
+    process: [
+      { title: "Pick a track", body: "Media & Public Speaking, or International Careers — ask if you're not sure which fits." },
+      { title: "Tell us where you're starting from", body: "Your background, education or occupation, and what you're aiming for." },
+      { title: "We match you to a path", body: "The right programme or placement route, confirmed with you directly." },
+      { title: "Support through to the finish", body: "Enrolment or placement, then documentation — we stay involved throughout." },
+    ],
+    faqs: [
+      {
+        question: "What is the Media & Public Speaking Academy?",
+        answer:
+          "Training designed to improve public speaking, communication, presentation skills, media skills and professional confidence.",
+      },
+      {
+        question: "What does International Careers cover?",
+        answer:
+          "Overseas university admission, study-abroad guidance, Gulf employment opportunities, career placement, and visa/documentation and pre-departure support.",
+      },
+    ],
+    cta: "Explore Courses & Careers",
+    bookTab: "programs",
+    related: ["media-public-speaking", "study-work-gulf"],
+  },
+
+  "media-public-speaking": {
+    id: "media-public-speaking",
+    path: "/media-public-speaking",
+    navLabel: "Media & Public Speaking Academy",
+    title: "Media & Public Speaking Academy",
+    metaTitle: "Media & Public Speaking Training Bangladesh | HR — The Mediator",
+    metaDescription:
+      "Media and public-speaking training in Bangladesh — presentation, communication, reporting and confidence skills, taught by a working national news presenter.",
+    h1: "Media & Public Speaking Academy",
+    intro:
+      "Learn presentation skills from someone who does it on air. News & event hosting, correct pronunciation, radio announcing, reporting, language and public speaking, and soft-skills development — taught by a working national news presenter.",
+    whoFor: [
+      "Students who want to improve public speaking and confidence",
+      "Aspiring news presenters and media professionals",
+      "Professionals preparing for presentations or public roles",
+      "Anyone wanting stronger communication skills",
+    ],
+    included: [
+      "Public speaking and presentation training",
+      "Communication and pronunciation coaching",
+      "News & event hosting practice",
+      "Radio announcing and reporting fundamentals",
+      "Professional confidence and soft-skills development",
+    ],
+    process: [
+      { title: "Tell us your goals", body: "Current education or occupation, and what you want to get out of the academy." },
+      { title: "Pick your format", body: "An offline Bangladesh-campus batch, or an online Zoom batch — whichever fits." },
+      { title: "We confirm your batch", body: "Dates and format locked in, directly with our team." },
+      { title: "Train with a working presenter", body: "Sessions led by a working national news presenter, from day one." },
+    ],
+    faqs: [
+      {
+        question: "Who teaches the Media & Public Speaking Academy?",
+        answer: "Our lead trainer is a working national news presenter with on-air experience.",
+      },
+      {
+        question: "Is the course offered online?",
+        answer: "Both an offline Bangladesh-campus batch and an online Zoom batch are available.",
+      },
+    ],
+    cta: "Explore the Academy",
+    bookTab: "programs",
+    related: ["study-work-gulf", "courses-careers"],
+  },
+
+  "study-work-gulf": {
+    id: "study-work-gulf",
+    path: "/study-work-gulf",
+    navLabel: "International Careers — Study & Work Abroad",
+    title: "International Careers — Study & Work Abroad",
+    metaTitle: "Study Abroad & International Careers — Gulf, Europe & Beyond | HR — The Mediator",
+    metaDescription:
+      "Study-abroad guidance and international career placement across the Gulf, Europe, North America, Oceania and Asia Pacific, for candidates from Dhaka, Rajshahi and across Bangladesh — university admission, career placement, visa and pre-departure assistance.",
+    h1: "Study Abroad & International Careers — Gulf, Europe & Beyond",
+    intro:
+      "Two clear pathways, one desk: university admission and study-abroad guidance for students, and verified employment placement for jobseekers — across the Gulf, Europe, North America, Oceania and Asia Pacific. Applied for from Dhaka, Rajshahi or anywhere in Bangladesh, drawing on our licensed staffing and outsourcing practice.",
+    whoFor: [
+      "Students seeking university admission or study-abroad guidance in Europe, the Gulf or beyond",
+      "Jobseekers pursuing international employment opportunities",
+      "Overseas Bangladeshis planning a move abroad",
+      "Families needing pre-departure and documentation support",
+    ],
+    included: [
+      "Overseas university admission support",
+      "Study-abroad guidance for Europe, the Gulf and other destinations",
+      "International employment opportunities and career placement",
+      "Visa and documentation support",
+      "Pre-departure assistance",
+    ],
+    process: [
+      {
+        title: "Open your file — ৳5,000",
+        body: "A one-time fee to open your student or career file. It covers our desk's assessment of your background and documents, and starts your case work.",
+      },
+      { title: "Tell us study or work", body: "Target country and your current background — student or jobseeker." },
+      { title: "We verify the placement", body: "University admission or employer match, checked before anything is confirmed to you." },
+      { title: "Visa and documentation", body: "Paperwork handled ahead of travel, not left for the last week." },
+      { title: "Pre-departure briefing", body: "A final check-in before you fly, so nothing is a surprise on arrival." },
+    ],
+    faqs: [
+      {
+        question: "Is there a fee to start my file?",
+        answer:
+          "Yes — opening a student or career file costs ৳5,000. This covers our desk's assessment of your background and documents, and starts your case work. Our team will confirm this with you directly after you submit your request.",
+      },
+      {
+        question: "Which countries do you support placement for?",
+        answer:
+          "The Gulf (Saudi Arabia, UAE, Qatar, Kuwait, Oman, Bahrain), Europe (UK, Ireland, Germany, France, Italy, Spain, Portugal, Netherlands, Poland, Romania, Malta, Cyprus, Sweden, Denmark, Finland), North America (US, Canada), Oceania (Australia, New Zealand) and Asia Pacific (Malaysia, Singapore, Japan, South Korea).",
+      },
+      {
+        question: "How can I apply for study abroad or a job overseas from Dhaka?",
+        answer:
+          "Submit a request through our International Careers programme with your background and target country. Our Dhaka-based desk reviews your case, matches you with a suitable study or employment path, and handles documentation and pre-departure support.",
+      },
+      {
+        question: "Do you help with visa and documentation?",
+        answer: "Visa and documentation support plus pre-departure assistance are included.",
+      },
+    ],
+    cta: "Explore International Careers",
+    bookTab: "programs",
+    related: ["media-public-speaking", "manpower-security"],
   },
 };
 

@@ -3,6 +3,7 @@ import { Routes, Route, useLocation } from "react-router-dom";
 import { AnimatePresence, motion } from "framer-motion";
 import { Phone, MessageCircle } from "lucide-react";
 import Header from "./components/Header";
+import NewsAnnouncementBar from "./components/NewsAnnouncementBar";
 import Footer from "./components/Footer";
 import FinalCta from "./components/FinalCta";
 import Toast from "./components/Toast";
@@ -15,7 +16,10 @@ import { SERVICE_PAGE_LIST } from "./data/servicePages";
 // never touch, say, the staff dashboard, so there's no reason to ship that
 // code (or any other route's) in the bundle everyone downloads first.
 const ServicePage = lazy(() => import("./pages/ServicePage"));
+const SpainVisaPage = lazy(() => import("./pages/SpainVisaPage"));
 const AboutPage = lazy(() => import("./pages/AboutPage"));
+const EventsPage = lazy(() => import("./pages/EventsPage"));
+const NewsPage = lazy(() => import("./pages/NewsPage"));
 const ContactPage = lazy(() => import("./pages/ContactPage"));
 const PrivacyPage = lazy(() => import("./pages/PrivacyPage"));
 const TermsPage = lazy(() => import("./pages/TermsPage"));
@@ -37,6 +41,7 @@ export default function App() {
     <div className="font-sans text-ink bg-white">
       <ScrollProgress />
       <ScrollToHash />
+      {!location.pathname.startsWith("/news") && !location.pathname.startsWith("/staff") && <NewsAnnouncementBar />}
       <Header />
 
       <AnimatePresence mode="wait">
@@ -50,10 +55,13 @@ export default function App() {
           <Suspense fallback={<div className="min-h-[60vh]" />}>
             <Routes location={location}>
               <Route path="/" element={<HomePage onToast={showToast} />} />
+              <Route path="/spain-visa" element={<SpainVisaPage />} />
               {SERVICE_PAGE_LIST.map((data) => (
                 <Route key={data.id} path={data.path} element={<ServicePage data={data} />} />
               ))}
               <Route path="/about-us" element={<AboutPage />} />
+              <Route path="/events" element={<EventsPage onToast={showToast} />} />
+              <Route path="/news" element={<NewsPage />} />
               <Route path="/contact" element={<ContactPage />} />
               <Route path="/privacy-policy" element={<PrivacyPage />} />
               <Route path="/terms" element={<TermsPage />} />
@@ -69,7 +77,7 @@ export default function App() {
       <Toast message={toast} />
 
       <a
-        href="https://wa.me/610000000000?text=Hi%2C%20I%27d%20like%20to%20get%20in%20touch%20with%20ARK%20Property%20Solution."
+        href="https://wa.me/8801717013150?text=Hi%2C%20I%27d%20like%20to%20request%20a%20service%20from%20HR%20%E2%80%94%20The%20Mediator."
         target="_blank"
         rel="noopener noreferrer"
         className="fab-whatsapp fixed bottom-24 right-5 z-40 w-14 h-14 rounded-full flex items-center justify-center shadow-card-hover bg-[#25D366] text-white hover:brightness-95 hover:scale-110 active:scale-95 transition-all"
@@ -79,9 +87,9 @@ export default function App() {
       </a>
 
       <a
-        href="tel:+610000000000"
+        href="tel:+8801717013150"
         className="fab-call fixed bottom-5 right-5 z-40 w-14 h-14 rounded-full flex items-center justify-center shadow-card-hover bg-gold text-white hover:bg-gold-deep hover:scale-110 active:scale-95 transition-all"
-        aria-label="Call ARK Property Solution"
+        aria-label="Call the desk"
       >
         <Phone size={20} />
       </a>

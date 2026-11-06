@@ -2,4 +2,4 @@ User-agent: *
 Allow: /
 Disallow: /staff
 
-Sitemap: https://www.arkpropertysolution.com.au/sitemap.xml
+Sitemap: https://www.hrthemediator.com/sitemap.xml

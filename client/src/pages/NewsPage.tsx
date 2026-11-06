@@ -1,0 +1,322 @@
+import { useEffect, useState } from "react";
+import { motion } from "framer-motion";
+import { Newspaper, RefreshCw, Zap } from "lucide-react";
+import { useSeo } from "../lib/useSeo";
+import Reveal from "../components/ui/Reveal";
+import AmbientGlow from "../components/ui/AmbientGlow";
+import NewsOutletsDirectory from "../components/NewsOutletsDirectory";
+import { listNews } from "../lib/api";
+import type { NewsCategory, NewsItem } from "../types";
+import { useDict, useLanguage } from "../lib/i18n";
+import { newsPageT, newsCategoryLabels } from "../lib/translations";
+import { CATEGORY_TAG_STYLE, JUST_IN_WINDOW_MS } from "../lib/newsCategoryStyle";
+
+const CATEGORIES: (NewsCategory | "all")[] = [
+  "all",
+  "national",
+  "politics",
+  "crime",
+  "jobs",
+  "business",
+  "education",
+  "sports",
+  "international",
+];
+
+const REFRESH_MS = 5 * 60 * 1000;
+
+function timeAgo(iso: string | null, lang: "en" | "bn"): string {
+  if (!iso) return "";
+  const diffMs = Date.now() - new Date(iso).getTime();
+  const mins = Math.max(1, Math.round(diffMs / 60000));
+  if (mins < 60) return lang === "bn" ? `${mins} মিনিট আগে` : `${mins}m ago`;
+  const hours = Math.round(mins / 60);
+  if (hours < 24) return lang === "bn" ? `${hours} ঘণ্টা আগে` : `${hours}h ago`;
+  const days = Math.round(hours / 24);
+  return lang === "bn" ? `${days} দিন আগে` : `${days}d ago`;
+}
+
+export default function NewsPage() {
+  const T = useDict(newsPageT);
+  const { lang } = useLanguage();
+  const [items, setItems] = useState<NewsItem[]>([]);
+  const [category, setCategory] = useState<NewsCategory | "all">("all");
+  const [loaded, setLoaded] = useState(false);
+
+  useSeo({
+    title: "Bangladesh News Today — Live Headlines, Job Circulars & All Newspapers | HR — The Mediator",
+    description:
+      "Bangladesh news today from Prothom Alo, Kaler Kantho, Samakal, Jugantor, The Daily Star, Dhaka Tribune and more — live headlines refreshed every 20 minutes, government and bank job circulars, and direct links to every major Bangladesh newspaper and news channel in one place.",
+    path: "/news",
+    image: items.find((it) => it.imageUrl)?.imageUrl ?? undefined,
+    newsListSchema: {
+      name: "Bangladesh News — Live Headlines",
+      items: items.slice(0, 30).map((it) => ({ url: it.link, headline: it.headline })),
+    },
+  });
+
+  const load = () => {
+    listNews(category === "all" ? null : category, 90)
+      .then((rows) => {
+        setItems(rows);
+        setLoaded(true);
+      })
+      .catch(() => setLoaded(true));
+  };
+
+  useEffect(() => {
+    setLoaded(false);
+    load();
+    const t = setInterval(load, REFRESH_MS);
+    return () => clearInterval(t);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [category]);
+
+  const latest = items.reduce<string | null>((acc, it) => {
+    const t = it.publishedAt ?? it.fetchedAt;
+    return !acc || t > acc ? t : acc;
+  }, null);
+
+  // The lead slot is the biggest, most visible element on the page — an
+  // item with no photo there reads as broken, not just plain. Pick the
+  // most recent item that actually has one; only fall back to items[0] on
+  // the rare run where nothing does.
+  const featured = items.find((it) => it.imageUrl) ?? items[0];
+
+  return (
+    <div>
+      <section className="relative px-5 md:px-10 pt-14 pb-10 md:pt-20 md:pb-12 bg-paper-soft overflow-hidden">
+        <AmbientGlow variant="light" />
+        <div className="relative max-w-4xl mx-auto text-center">
+          <div className="inline-flex items-center gap-2 mb-4 px-3.5 py-1.5 rounded-full bg-navy">
+            <span className="relative flex h-2 w-2">
+              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75" />
+              <span className="relative inline-flex rounded-full h-2 w-2 bg-red-500" />
+            </span>
+            <span className="text-[11px] font-bold tracking-[0.2em] uppercase text-white">{T.liveNow}</span>
+          </div>
+          <div className="flex items-center justify-center gap-2 mb-3 text-[12px] font-medium tracking-[0.2em] uppercase text-gold-deep">
+            <Newspaper size={14} />
+            {T.eyebrow}
+          </div>
+          <h1 className="font-display text-3xl md:text-5xl text-navy mb-5" style={{ textWrap: "balance" }}>
+            {T.h1}
+          </h1>
+          <p className="text-[15.5px] text-ink-muted leading-relaxed max-w-2xl mx-auto mb-5">{T.intro}</p>
+          {latest && (
+            <div className="inline-flex items-center gap-2 text-[12.5px] text-ink-faint">
+              <span className="relative flex h-2 w-2">
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-gold opacity-75" />
+                <span className="relative inline-flex rounded-full h-2 w-2 bg-gold-deep" />
+              </span>
+              {T.lastUpdated} {timeAgo(latest, lang)}
+            </div>
+          )}
+        </div>
+      </section>
+
+      <section className="px-5 md:px-10 py-10 md:py-14 max-w-6xl mx-auto">
+        <Reveal delay={0.05} className="flex flex-wrap justify-center gap-2.5 mb-10">
+          {CATEGORIES.map((c) => (
+            <button
+              key={c}
+              onClick={() => setCategory(c)}
+              className={`px-4 py-2 rounded-full text-[13px] font-medium border transition-colors ${
+                category === c
+                  ? "bg-navy text-white border-navy"
+                  : "bg-white text-ink-soft border-border hover:border-navy hover:text-navy"
+              }`}
+            >
+              {c === "all" ? T.allCategories : newsCategoryLabels[c][lang]}
+            </button>
+          ))}
+        </Reveal>
+
+        {!loaded && (
+          <div className="flex items-center justify-center gap-2 py-20 text-ink-faint text-[14px]">
+            <RefreshCw size={16} className="animate-spin" />
+            {T.loading}
+          </div>
+        )}
+
+        {loaded && items.length === 0 && (
+          <div className="text-center py-20 text-ink-faint text-[14px]">{T.empty}</div>
+        )}
+
+        {loaded && items.length > 0 && (
+          <>
+            <FeaturedStory item={featured} lang={lang} topStoryLabel={T.topStory} justInLabel={T.justIn} />
+
+            {items.length > 1 && (
+              <Reveal delay={0.1} className="mt-10 md:mt-14">
+                <h2 className="text-[12px] font-semibold uppercase tracking-[0.18em] text-ink-faint mb-5 pb-3 border-b border-border">
+                  {T.moreHeadlines}
+                </h2>
+                <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5 sm:gap-6">
+                  {items
+                    .filter((it) => it.id !== featured.id)
+                    .map((item, i) => (
+                      <NewsCard key={item.id} item={item} delay={Math.min(i, 8) * 0.04} lang={lang} justInLabel={T.justIn} />
+                    ))}
+                </div>
+              </Reveal>
+            )}
+          </>
+        )}
+      </section>
+
+      <NewsOutletsDirectory />
+    </div>
+  );
+}
+
+function isJustIn(item: NewsItem): boolean {
+  const t = item.publishedAt ?? item.fetchedAt;
+  if (!t) return false;
+  return Date.now() - new Date(t).getTime() < JUST_IN_WINDOW_MS;
+}
+
+function CategoryTag({ category, lang }: { category: NewsCategory; lang: "en" | "bn" }) {
+  return (
+    <span
+      className={`inline-flex items-center px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wide ${CATEGORY_TAG_STYLE[category]}`}
+    >
+      {newsCategoryLabels[category][lang]}
+    </span>
+  );
+}
+
+function JustInBadge({ label }: { label: string }) {
+  return (
+    <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wide bg-red-600 text-white">
+      <Zap size={9} className="fill-white" />
+      {label}
+    </span>
+  );
+}
+
+function FeaturedStory({
+  item,
+  lang,
+  topStoryLabel,
+  justInLabel,
+}: {
+  item: NewsItem;
+  lang: "en" | "bn";
+  topStoryLabel: string;
+  justInLabel: string;
+}) {
+  const [imgFailed, setImgFailed] = useState(false);
+  const showImage = item.imageUrl && !imgFailed;
+  return (
+    <Reveal>
+      <motion.a
+        href={item.link}
+        target="_blank"
+        rel="noopener noreferrer"
+        whileHover={{ y: -3 }}
+        className="group grid md:grid-cols-5 gap-0 rounded-2xl bg-white border border-border overflow-hidden shadow-card hover:border-gold hover:shadow-card-hover transition-all"
+      >
+        <div className="relative md:col-span-3 aspect-[16/10] md:aspect-auto bg-paper-panel overflow-hidden">
+          {showImage ? (
+            <img
+              src={item.imageUrl!}
+              alt=""
+              loading="lazy"
+              className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+              onError={() => setImgFailed(true)}
+            />
+          ) : (
+            <div className="w-full h-full flex items-center justify-center text-gold-deep/40">
+              <Newspaper size={40} />
+            </div>
+          )}
+        </div>
+        <div className="md:col-span-2 p-5 sm:p-7 flex flex-col justify-center">
+          <div className="flex flex-wrap items-center gap-2 mb-3">
+            <span className="inline-flex items-center px-2.5 py-1 rounded text-[10.5px] font-bold uppercase tracking-wide bg-navy text-white">
+              {topStoryLabel}
+            </span>
+            <CategoryTag category={item.category} lang={lang} />
+            {isJustIn(item) && <JustInBadge label={justInLabel} />}
+          </div>
+          <h2 className="font-display text-[20px] sm:text-[26px] text-navy leading-snug mb-2.5 group-hover:text-gold-deep transition-colors">
+            {item.headline}
+          </h2>
+          {item.excerpt && (
+            <p className="text-[13.5px] sm:text-[14.5px] text-ink-muted leading-relaxed line-clamp-3 mb-4">{item.excerpt}</p>
+          )}
+          <div className="flex items-center gap-2 text-[12px] text-ink-faint">
+            <span className="font-semibold text-ink-soft">{item.source}</span>
+            <span>·</span>
+            <span>{timeAgo(item.publishedAt ?? item.fetchedAt, lang)}</span>
+          </div>
+        </div>
+      </motion.a>
+    </Reveal>
+  );
+}
+
+function NewsCard({
+  item,
+  delay,
+  lang,
+  justInLabel,
+}: {
+  item: NewsItem;
+  delay: number;
+  lang: "en" | "bn";
+  justInLabel: string;
+}) {
+  const [imgFailed, setImgFailed] = useState(false);
+  const showImage = item.imageUrl && !imgFailed;
+  return (
+    <Reveal delay={delay}>
+      <motion.a
+        href={item.link}
+        target="_blank"
+        rel="noopener noreferrer"
+        whileHover={{ y: -3 }}
+        className="group flex flex-row sm:flex-col h-full rounded-2xl bg-white border border-border overflow-hidden shadow-card hover:border-gold hover:shadow-card-hover transition-all"
+      >
+        {/* A full-width photo stacked above the text looks fine once the grid
+            gives a card real width (sm:+), but on a single-column phone
+            layout it dominates the screen — so mobile gets a compact list
+            row with a small thumbnail instead. */}
+        <div className="relative w-24 sm:w-full aspect-square sm:aspect-[16/10] shrink-0 bg-paper-panel overflow-hidden">
+          {showImage ? (
+            <img
+              src={item.imageUrl!}
+              alt=""
+              loading="lazy"
+              className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+              onError={() => setImgFailed(true)}
+            />
+          ) : (
+            <div className="w-full h-full flex items-center justify-center text-gold-deep/40">
+              <Newspaper size={22} className="sm:hidden" />
+              <Newspaper size={34} className="hidden sm:block" />
+            </div>
+          )}
+          <span className="hidden sm:block absolute top-2.5 left-2.5 px-2.5 py-1 rounded-full text-[10.5px] font-semibold uppercase tracking-wide bg-white/90 text-navy backdrop-blur-sm">
+            {item.source}
+          </span>
+        </div>
+        <div className="p-3 sm:p-4 flex flex-col flex-1 min-w-0">
+          <div className="flex items-center gap-1.5 flex-wrap mb-1 sm:mb-2">
+            <span className="sm:hidden text-[10.5px] font-semibold uppercase tracking-wide text-gold-deep">{item.source}</span>
+            <CategoryTag category={item.category} lang={lang} />
+            {isJustIn(item) && <JustInBadge label={justInLabel} />}
+          </div>
+          <h3 className="font-display text-[14px] sm:text-[15.5px] text-navy leading-snug mb-1 sm:mb-2 line-clamp-3 group-hover:text-gold-deep transition-colors">
+            {item.headline}
+          </h3>
+          {item.excerpt && (
+            <p className="hidden sm:block text-[12.5px] text-ink-muted leading-relaxed line-clamp-3 mb-3">{item.excerpt}</p>
+          )}
+          <div className="mt-auto text-[11px] sm:text-[11.5px] text-ink-faint">{timeAgo(item.publishedAt ?? item.fetchedAt, lang)}</div>
+        </div>
+      </motion.a>
+    </Reveal>
+  );
+}

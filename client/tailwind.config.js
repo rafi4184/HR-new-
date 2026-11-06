@@ -9,20 +9,32 @@ export default {
         mono: ["'IBM Plex Mono'", "ui-monospace", "monospace"],
       },
       colors: {
-        // primary navy — ARK Property Solution's primary brand color:
-        // headings, primary text, dark footer band, logo.
+        // primary navy — deepened for a more authoritative, "immigration
+        // consultancy" register (headings, primary text, dark footer band)
         navy: {
           DEFAULT: "#0C2340",
           deep: "#081526",
           soft: "#2E5C8A",
         },
-        // primary accent — warm bronze-gold used sparingly for CTAs,
-        // highlights and the logo's roof-beam accent.
+        // primary accent — shifted from a soft "boutique concierge" honey
+        // gold to a richer, more saturated bronze-gold that reads closer
+        // to an official seal/stamp. Used sparingly: primary CTA, highlights.
+        // NOTE: the token is still named `gold` (avoids touching every
+        // `bg-gold`/`text-gold-deep` usage across the app) but its value is
+        // this deeper bronze tone, not a literal gold/yellow.
         gold: {
           DEFAULT: "#A9792D",
           deep: "#7C591E",
           pale: "#F3E9D6",
           tint: "#E6D2A8",
+        },
+        // Spain flag red — a new, deliberately sparing accent for
+        // Spain-specific nods (flag stripes, badges, "live" tags) now that
+        // the site is a Spain visa consultancy. Not used as a general CTA
+        // color — red reads as "urgent/stop," not "trustworthy."
+        spainRed: {
+          DEFAULT: "#AA151B",
+          deep: "#7E0F14",
         },
         // secondary blue — interactive elements, links, secondary accents
         brand: {

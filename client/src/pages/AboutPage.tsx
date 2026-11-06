@@ -1,19 +1,20 @@
 import { Link } from "react-router-dom";
-import { ArrowRight, Layers, MapPin, ShieldCheck } from "lucide-react";
+import { ArrowRight, ShieldCheck, Layers, MapPin, Mic } from "lucide-react";
 import { useSeo } from "../lib/useSeo";
 import Reveal from "../components/ui/Reveal";
-import ServicesOverview from "../components/ServicesOverview";
+import WhoWeHelp from "../components/WhoWeHelp";
+import { HASANUR_PHOTO } from "../lib/constants";
 import { useDict, useT } from "../lib/i18n";
 import { aboutPageT, aboutCredibility } from "../lib/translations";
 import { useSiteText } from "../lib/siteContent";
 
-const CREDIBILITY_ICONS = [Layers, MapPin, ShieldCheck];
+const CREDIBILITY_ICONS = [ShieldCheck, Layers, MapPin, Mic];
 
 export default function AboutPage() {
   useSeo({
-    title: "About Us | ARK Property Solution",
+    title: "About Us | HR — The Mediator",
     description:
-      "ARK Property Solution is a Sydney-based real estate agency covering real estate sales, property management and buyer's agency services across NSW.",
+      "HR — The Mediator is a registered manpower, security and consultancy company based in Bangladesh, running a concierge desk, media training academy and Gulf employment placement.",
     path: "/about-us",
   });
 
@@ -31,8 +32,15 @@ export default function AboutPage() {
         </div>
       </section>
 
-      <section className="px-5 md:px-10 py-14 max-w-3xl mx-auto">
+      <section className="px-5 md:px-10 py-14 max-w-4xl mx-auto grid md:grid-cols-[1fr_1.4fr] gap-10 items-center">
         <Reveal>
+          <div className="rounded-2xl overflow-hidden shadow-card-hover">
+            <img src={HASANUR_PHOTO} alt="Md. Hasanur Rahman, News Presenter" className="w-full h-full object-cover" />
+          </div>
+        </Reveal>
+        <Reveal delay={0.08}>
+          <h2 className="font-display text-2xl text-navy mb-3">Md. Hasanur Rahman</h2>
+          <p className="text-[13px] text-gold-deep font-medium mb-4 uppercase tracking-wide">{T.founderRole}</p>
           <p className="text-[14.5px] text-ink-muted leading-relaxed mb-4">{para1}</p>
           <p className="text-[14.5px] text-ink-muted leading-relaxed">{para2}</p>
         </Reveal>
@@ -43,7 +51,7 @@ export default function AboutPage() {
           <h2 className="font-display text-2xl md:text-3xl text-navy mb-3">{T.meaningH2}</h2>
           <p className="text-[14.5px] text-ink-muted leading-relaxed">{T.meaningBody}</p>
         </Reveal>
-        <div className="grid sm:grid-cols-3 gap-5">
+        <div className="grid sm:grid-cols-2 gap-5">
           {aboutCredibility.map((c, i) => {
             const Icon = CREDIBILITY_ICONS[i];
             return <CredibilityCard key={c.heading.en} icon={Icon} heading={c.heading} body={c.body} delay={i * 0.07} />;
@@ -51,7 +59,7 @@ export default function AboutPage() {
         </div>
       </section>
 
-      <ServicesOverview />
+      <WhoWeHelp />
 
       <section className="px-5 md:px-10 py-14 bg-paper-panel text-center">
         <div className="max-w-2xl mx-auto">

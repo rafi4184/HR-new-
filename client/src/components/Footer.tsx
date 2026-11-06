@@ -1,36 +1,43 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { Phone, Mail, MapPin, Facebook, Instagram } from "lucide-react";
+import { Phone, Mail, MapPin, Facebook, Instagram, MessageCircle } from "lucide-react";
 import LogoMark from "./ui/Logo";
 import { listContacts } from "../lib/api";
 import { SERVICES } from "../lib/services";
 import { useRequestHref } from "../lib/useRequestHref";
 import AmbientGlow from "./ui/AmbientGlow";
-import { useDict } from "../lib/i18n";
-import { footer } from "../lib/translations";
+import { useDict, useT } from "../lib/i18n";
+import { footer, servicesList } from "../lib/translations";
 import { useSiteText } from "../lib/siteContent";
 import type { Contact } from "../types";
 
-// Placeholder contact details — replace with ARK Property Solution's real
-// phone, email and office address before launch.
 const FALLBACK_CONTACTS: Contact[] = [
   {
     id: -1,
-    label: "Reach us",
-    phone: "(02) 0000 0000",
-    email: "hello@arkpropertysolution.com.au",
+    label: "Reach the desk",
+    phone: "01717013150",
+    email: "hrthemediator@gmail.com",
     address: null,
     whatsapp: null,
     sortOrder: 0,
   },
   {
     id: -2,
-    label: "Office",
+    label: "Corporate Head Office",
     phone: null,
     email: null,
-    address: "Sydney, NSW, Australia",
+    address: "7A/16, Block-F, Aziz Mohalla, Mohammadpur, Dhaka-1207, Bangladesh",
     whatsapp: null,
     sortOrder: 1,
+  },
+  {
+    id: -3,
+    label: "Find us — Australia",
+    phone: null,
+    email: null,
+    address: "6 Cross Street, Bankstown NSW 2200, Australia",
+    whatsapp: null,
+    sortOrder: 2,
   },
 ];
 
@@ -50,6 +57,7 @@ export default function Footer() {
 
   const quickLinks = [
     { label: T.home, to: "/" },
+    { label: T.events, to: "/events" },
     { label: T.aboutUs, to: "/about-us" },
     { label: T.contact, to: "/contact" },
     { label: T.trackARequest, to: "/#track" },
@@ -64,12 +72,12 @@ export default function Footer() {
           <div>
             <div className="flex items-center gap-2.5 mb-3">
               <LogoMark size={30} className="text-white" />
-              <div className="font-display text-white text-xl">ARK Property Solution</div>
+              <div className="font-display text-white text-xl">HR — The Mediator</div>
             </div>
             <p className="text-[14px] leading-relaxed">{description}</p>
             <div className="flex items-center gap-3 mt-5">
               <a
-                href="https://www.facebook.com/"
+                href="https://www.facebook.com/hrmediator"
                 target="_blank"
                 rel="noreferrer"
                 aria-label="Facebook"
@@ -78,7 +86,7 @@ export default function Footer() {
                 <Facebook size={16} />
               </a>
               <a
-                href="https://www.instagram.com/"
+                href="https://www.instagram.com/hr.themediator"
                 target="_blank"
                 rel="noreferrer"
                 aria-label="Instagram"
@@ -92,9 +100,9 @@ export default function Footer() {
           <div>
             <div className="text-white text-sm font-medium mb-3">{T.servicesHeading}</div>
             <div className="flex flex-col gap-2 text-[14px]">
-              {SERVICES.map((s) => (
+              {SERVICES.map((s, i) => (
                 <Link key={s.id} to={s.path} className="hover:text-white transition-colors">
-                  {s.shortTitle}
+                  <ServiceLabel index={i} fallback={s.navLabel} />
                 </Link>
               ))}
             </div>
@@ -124,6 +132,11 @@ export default function Footer() {
                       <Phone size={14} /> {c.phone}
                     </div>
                   )}
+                  {c.whatsapp && (
+                    <div className="flex items-center gap-2">
+                      <MessageCircle size={14} /> {c.whatsapp}
+                    </div>
+                  )}
                   {c.email && (
                     <div className="flex items-center gap-2">
                       <Mail size={14} /> {c.email}
@@ -133,7 +146,7 @@ export default function Footer() {
                     <div className="flex items-start gap-2">
                       <MapPin size={14} className="mt-0.5 shrink-0" />
                       <span>
-                        {c.label && c.label !== "Reach us" && (
+                        {c.label && c.label !== "Reach the desk" && (
                           <span className="block text-[11px] text-mist-soft uppercase tracking-wide mb-0.5">{c.label}</span>
                         )}
                         {c.address}
@@ -162,4 +175,10 @@ export default function Footer() {
       </div>
     </footer>
   );
+}
+
+function ServiceLabel({ index, fallback }: { index: number; fallback: string }) {
+  const entry = servicesList[index];
+  const value = useT(entry ? entry.shortTitle : { en: fallback, bn: fallback });
+  return <>{value}</>;
 }
