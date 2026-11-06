@@ -22,7 +22,7 @@ interface SeoOptions {
   noindex?: boolean;
 }
 
-const SITE_URL = "https://www.hrthemediator.com";
+const SITE_URL = "https://www.arkpropertysolution.com.au";
 const DEFAULT_IMAGE = `${SITE_URL}/logo-full.png`;
 
 function setMeta(attr: "name" | "property", key: string, content: string) {
@@ -70,20 +70,20 @@ export function useSeo(opts: SeoOptions) {
     setLink("canonical", url);
     setMeta("name", "robots", opts.noindex ? "noindex, nofollow" : "index, follow");
 
-    // Geo-targeting signals — reinforces Bangladesh/Dhaka local-search intent
-    // (e.g. "Spain visa Bangladesh") on every page, not just the homepage.
-    setMeta("name", "geo.region", "BD-13");
-    setMeta("name", "geo.placename", "Dhaka, Bangladesh");
-    setMeta("name", "geo.position", "23.8103;90.4125");
-    setMeta("name", "ICBM", "23.8103, 90.4125");
+    // Geo-targeting signals — reinforces Sydney/NSW local-search intent
+    // on every page, not just the homepage.
+    setMeta("name", "geo.region", "AU-NSW");
+    setMeta("name", "geo.placename", "Sydney, New South Wales");
+    setMeta("name", "geo.position", "-33.8688;151.2093");
+    setMeta("name", "ICBM", "-33.8688, 151.2093");
 
     setMeta("property", "og:type", "website");
-    setMeta("property", "og:site_name", "HR — The Mediator");
+    setMeta("property", "og:site_name", "ARK Property Solution");
     setMeta("property", "og:title", opts.title);
     setMeta("property", "og:description", opts.description);
     setMeta("property", "og:url", url);
     setMeta("property", "og:image", image);
-    setMeta("property", "og:locale", "en_GB");
+    setMeta("property", "og:locale", "en_AU");
 
     setMeta("name", "twitter:card", "summary_large_image");
     setMeta("name", "twitter:title", opts.title);
@@ -97,19 +97,17 @@ export function useSeo(opts: SeoOptions) {
         name: opts.serviceSchema.name,
         description: opts.serviceSchema.description,
         provider: {
-          "@type": "LocalBusiness",
-          name: "HR — The Mediator",
+          "@type": "RealEstateAgent",
+          name: "ARK Property Solution",
           url: SITE_URL,
-          telephone: "+8801717013150",
           address: {
             "@type": "PostalAddress",
-            streetAddress: "7A/16, Block-F, Aziz Mohalla, Mohammadpur",
-            addressLocality: "Dhaka",
-            postalCode: "1207",
-            addressCountry: "BD",
+            addressLocality: "Sydney",
+            addressRegion: "NSW",
+            addressCountry: "AU",
           },
         },
-        areaServed: "BD",
+        areaServed: "NSW",
       });
     } else {
       setJsonLd("service-schema", null);

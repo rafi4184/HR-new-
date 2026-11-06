@@ -1,1364 +1,226 @@
-// Bangla / English content for every public-facing page. Each leaf is
-// { en, bn } — components read the current language via useT() from
-// ../lib/i18n. Internal staff/admin screens stay English-only for now.
+// ARK Property Solution is English-only. Every leaf keeps the legacy
+// { en, bn } shape (bn === en) purely so the existing useT()/useDict()
+// plumbing in ../lib/i18n keeps working without touching every call site —
+// there is no language toggle anymore and `lang` always resolves to "en".
+function dup(en: string) {
+  return { en, bn: en };
+}
 
 export const header = {
-  tagline: { en: "Spain Visa Consultants", bn: "স্পেন ভিসা পরামর্শদাতা" },
-  home: { en: "Home", bn: "হোম" },
-  spainVisa: { en: "Spain Visa", bn: "স্পেন ভিসা" },
-  services: { en: "Other Services", bn: "অন্যান্য সেবা" },
-  aboutUs: { en: "About Us", bn: "আমাদের সম্পর্কে" },
-  contact: { en: "Contact", bn: "যোগাযোগ" },
-  trackRequest: { en: "Track Request", bn: "অনুরোধ ট্র্যাক করুন" },
-  requestService: { en: "Request a Service", bn: "সেবার জন্য অনুরোধ করুন" },
-  requestShort: { en: "Request", bn: "অনুরোধ" },
-  menu: { en: "Menu", bn: "মেনু" },
-  events: { en: "Events", bn: "ইভেন্ট" },
-  news: { en: "Bangladesh News", bn: "বাংলাদেশের খবর" },
-  staffLogin: { en: "Staff Login", bn: "স্টাফ লগইন" },
+  tagline: dup("Real Estate · Property Management · Buyer's Agency"),
+  home: dup("Home"),
+  sales: dup("Sell / Appraisal"),
+  management: dup("Property Management"),
+  buyersAgency: dup("Buyer's Agency"),
+  aboutUs: dup("About Us"),
+  contact: dup("Contact"),
+  trackRequest: dup("Track Enquiry"),
+  requestService: dup("Get in Touch"),
+  requestShort: dup("Enquire"),
+  menu: dup("Menu"),
+  staffLogin: dup("Staff Login"),
 };
 
-export const hero = {
-  eyebrow: {
-    en: "Dhaka International Airport · Premium VIP Partner",
-    bn: "ঢাকা আন্তর্জাতিক বিমানবন্দর · প্রিমিয়াম ভিআইপি পার্টনার",
-  },
-  h1: {
-    en: "Your Premium Welcome Through Dhaka International Airport",
-    bn: "ঢাকা আন্তর্জাতিক বিমানবন্দরে আপনার প্রিমিয়াম স্বাগতম",
-  },
-  paragraph: {
-    en: "From a VIP meet & greet at Dhaka International Airport (Hazrat Shahjalal International) to hotel & car, government-request support, manpower, security, education and international careers — HR — The Mediator connects you with the services you need, coordinated by one trusted desk in Bangladesh.",
-    bn: "ঢাকা আন্তর্জাতিক বিমানবন্দরে (হযরত শাহজালাল আন্তর্জাতিক) ভিআইপি মিট অ্যান্ড গ্রিট থেকে শুরু করে হোটেল ও গাড়ি, সরকারি কাজে সহায়তা, জনবল, নিরাপত্তা, শিক্ষা ও আন্তর্জাতিক ক্যারিয়ার পর্যন্ত — এইচআর দ্য মিডিয়েটর আপনাকে প্রয়োজনীয় সেবার সাথে যুক্ত করে, বাংলাদেশে একটি বিশ্বস্ত ডেস্কের মাধ্যমে সমন্বিতভাবে।",
-  },
-  exploreServices: { en: "Explore Services", bn: "সেবাসমূহ দেখুন" },
-  requestService: { en: "Request a Service", bn: "সেবার জন্য অনুরোধ করুন" },
-  spotlightTag: { en: "Hazrat Shahjalal Int'l · Dhaka", bn: "হযরত শাহজালাল আন্তর্জাতিক · ঢাকা" },
-  spotlightTitle: { en: "Premium VIP Reception", bn: "প্রিমিয়াম ভিআইপি রিসেপশন" },
+export const footer = {
+  servicesHeading: dup("Services"),
+  quickLinksHeading: dup("Quick Links"),
+  contactHeading: dup("Contact"),
+  home: dup("Home"),
+  aboutUs: dup("About Us"),
+  contact: dup("Contact"),
+  trackARequest: dup("Track an Enquiry"),
+  staffLogin: dup("Staff Login"),
+  requestService: dup("Get in Touch"),
+  copyright: dup("ARK Property Solution. All rights reserved."),
+  privacyPolicy: dup("Privacy Policy"),
+  termsConditions: dup("Terms & Conditions"),
 };
 
-export const serviceNavGroups = {
-  categories: {
-    travel: { en: "Travel & VIP Services", bn: "ভ্রমণ ও ভিআইপি সেবা" },
-    study: { en: "Study Abroad & Jobs Abroad", bn: "বিদেশে পড়াশোনা ও চাকরি" },
-    media: { en: "Media & Courses", bn: "মিডিয়া ও কোর্স" },
-    government: { en: "Government & Manpower", bn: "সরকারি ও জনবল সেবা" },
-  },
-  items: {
-    airport: {
-      title: { en: "Airport VIP", bn: "এয়ারপোর্ট ভিআইপি" },
-      summary: { en: "Meet & greet, arrivals and departures.", bn: "মিট অ্যান্ড গ্রিট, আগমন ও প্রস্থান সহায়তা।" },
-    },
-    hotel: {
-      title: { en: "Hotel & Car", bn: "হোটেল ও গাড়ি" },
-      summary: { en: "Hotel booking and private car service.", bn: "হোটেল বুকিং ও ব্যক্তিগত গাড়ি সেবা।" },
-    },
-    studyAbroad: {
-      title: { en: "Study Abroad & International Careers", bn: "বিদেশে পড়াশোনা ও আন্তর্জাতিক ক্যারিয়ার" },
-      summary: {
-        en: "University admission, jobs & visa guidance across the Gulf, Europe & beyond.",
-        bn: "গালফ, ইউরোপ ও আরও অনেক দেশে বিশ্ববিদ্যালয় ভর্তি, চাকরি ও ভিসা নির্দেশনা।",
-      },
-    },
-    coursesCareers: {
-      title: { en: "Courses & Careers", bn: "কোর্স ও ক্যারিয়ার" },
-      summary: { en: "Overview of all training & career tracks.", bn: "সকল প্রশিক্ষণ ও ক্যারিয়ার ট্র্যাকের সংক্ষিপ্ত বিবরণ।" },
-    },
-    mediaPublicSpeaking: {
-      title: { en: "Media & Public Speaking Academy", bn: "মিডিয়া ও পাবলিক স্পিকিং একাডেমি" },
-      summary: { en: "Presentation & broadcast training.", bn: "উপস্থাপনা ও সম্প্রচার প্রশিক্ষণ।" },
-    },
-    government: {
-      title: { en: "Government Request", bn: "সরকারি কাজের সহায়তা" },
-      summary: { en: "Documentation & administrative support.", bn: "কাগজপত্র ও প্রশাসনিক সহায়তা।" },
-    },
-    manpower: {
-      title: { en: "Manpower & Security", bn: "জনবল ও নিরাপত্তা" },
-      summary: { en: "Staffing & security for businesses.", bn: "ব্যবসার জন্য জনবল ও নিরাপত্তা।" },
-    },
-  },
-};
-
-export const countriesWeServe = {
-  eyebrow: { en: "Where we help you go", bn: "যেখানে আমরা আপনাকে যেতে সাহায্য করি" },
-  h2: { en: "Countries We Serve", bn: "আমরা যেসব দেশে সেবা দিই" },
-  intro: {
-    en: "Study-abroad guidance and international career placement — across the Gulf, Europe, North America, Oceania and beyond — coordinated from our desk in Bangladesh.",
-    bn: "গালফ, ইউরোপ, উত্তর আমেরিকা, ওশেনিয়া ও আরও অনেক দেশে বিদেশে পড়াশোনার নির্দেশনা এবং আন্তর্জাতিক কর্মসংস্থান — বাংলাদেশে আমাদের ডেস্ক থেকে সমন্বিত।",
-  },
-  regionLabels: {
-    gulf: { en: "Gulf & Middle East", bn: "গালফ ও মধ্যপ্রাচ্য" },
-    europe: { en: "Europe", bn: "ইউরোপ" },
-    americasOceania: { en: "Americas & Oceania", bn: "আমেরিকা ও ওশেনিয়া" },
-    asiaPacific: { en: "Asia Pacific", bn: "এশিয়া প্যাসিফিক" },
-  },
-  countries: [
-    { code: "ae", region: "gulf", name: { en: "UAE", bn: "সংযুক্ত আরব আমিরাত" } },
-    { code: "sa", region: "gulf", name: { en: "Saudi Arabia", bn: "সৌদি আরব" } },
-    { code: "qa", region: "gulf", name: { en: "Qatar", bn: "কাতার" } },
-    { code: "kw", region: "gulf", name: { en: "Kuwait", bn: "কুয়েত" } },
-    { code: "om", region: "gulf", name: { en: "Oman", bn: "ওমান" } },
-    { code: "bh", region: "gulf", name: { en: "Bahrain", bn: "বাহরাইন" } },
-    { code: "gb", region: "europe", name: { en: "United Kingdom", bn: "যুক্তরাজ্য" } },
-    { code: "ie", region: "europe", name: { en: "Ireland", bn: "আয়ারল্যান্ড" } },
-    { code: "de", region: "europe", name: { en: "Germany", bn: "জার্মানি" } },
-    { code: "fr", region: "europe", name: { en: "France", bn: "ফ্রান্স" } },
-    { code: "it", region: "europe", name: { en: "Italy", bn: "ইতালি" } },
-    { code: "es", region: "europe", name: { en: "Spain", bn: "স্পেন" } },
-    { code: "pt", region: "europe", name: { en: "Portugal", bn: "পর্তুগাল" } },
-    { code: "nl", region: "europe", name: { en: "Netherlands", bn: "নেদারল্যান্ডস" } },
-    { code: "pl", region: "europe", name: { en: "Poland", bn: "পোল্যান্ড" } },
-    { code: "ro", region: "europe", name: { en: "Romania", bn: "রোমানিয়া" } },
-    { code: "mt", region: "europe", name: { en: "Malta", bn: "মাল্টা" } },
-    { code: "cy", region: "europe", name: { en: "Cyprus", bn: "সাইপ্রাস" } },
-    { code: "se", region: "europe", name: { en: "Sweden", bn: "সুইডেন" } },
-    { code: "dk", region: "europe", name: { en: "Denmark", bn: "ডেনমার্ক" } },
-    { code: "fi", region: "europe", name: { en: "Finland", bn: "ফিনল্যান্ড" } },
-    { code: "us", region: "americasOceania", name: { en: "United States", bn: "যুক্তরাষ্ট্র" } },
-    { code: "ca", region: "americasOceania", name: { en: "Canada", bn: "কানাডা" } },
-    { code: "au", region: "americasOceania", name: { en: "Australia", bn: "অস্ট্রেলিয়া" } },
-    { code: "nz", region: "americasOceania", name: { en: "New Zealand", bn: "নিউজিল্যান্ড" } },
-    { code: "my", region: "asiaPacific", name: { en: "Malaysia", bn: "মালয়েশিয়া" } },
-    { code: "sg", region: "asiaPacific", name: { en: "Singapore", bn: "সিঙ্গাপুর" } },
-    { code: "jp", region: "asiaPacific", name: { en: "Japan", bn: "জাপান" } },
-    { code: "kr", region: "asiaPacific", name: { en: "South Korea", bn: "দক্ষিণ কোরিয়া" } },
-  ],
-};
-
-export const heroOrbit = {
-  airport: { en: "Airport VIP Reception", bn: "এয়ারপোর্ট ভিআইপি রিসেপশন" },
-  government: { en: "Government Request", bn: "সরকারি কাজে সহায়তা" },
-  manpower: { en: "Manpower & Security", bn: "জনবল ও নিরাপত্তা" },
-  courses: { en: "Courses & Careers", bn: "কোর্স ও ক্যারিয়ার" },
-  scrollCue: { en: "Scroll to explore services", bn: "সেবাসমূহ দেখতে স্ক্রল করুন" },
-};
-
-export const servicesGrid = {
-  eyebrow: { en: "What we offer", bn: "আমরা যা প্রদান করি" },
-  h2: { en: "What Do You Need Help With?", bn: "আপনার কী সহায়তা প্রয়োজন?" },
-  intents: {
-    travel: { en: "I am travelling", bn: "আমি ভ্রমণ করছি" },
-    local: { en: "I need local assistance", bn: "আমার স্থানীয় সহায়তা প্রয়োজন" },
-    people: { en: "I need people or security", bn: "আমার জনবল বা নিরাপত্তা প্রয়োজন" },
-    abroad: { en: "I want to study or work abroad", bn: "আমি বিদেশে পড়াশোনা বা কাজ করতে চাই" },
-  },
-  highlightNote: {
-    en: "Highlighted above — the services that best match what you told us.",
-    bn: "উপরে হাইলাইট করা হয়েছে — আপনি যা বলেছেন তার সাথে সবচেয়ে ভালো মিলে যাওয়া সেবাগুলো।",
-  },
-};
-
-// Mirrors lib/services.ts SERVICES array order: airport, hotel, government, manpower, courses
-export const servicesList = [
-  {
-    title: { en: "Airport VIP Reception", bn: "এয়ারপোর্ট ভিআইপি রিসেপশন" },
-    shortTitle: { en: "Airport VIP", bn: "এয়ারপোর্ট ভিআইপি" },
-    summary: {
-      en: "Premium airport meet & greet, arrival assistance, departure assistance and passenger support.",
-      bn: "প্রিমিয়াম এয়ারপোর্ট মিট অ্যান্ড গ্রিট, আগমন সহায়তা, প্রস্থান সহায়তা এবং যাত্রী সহায়তা।",
-    },
-    story: {
-      en: "The moment your flight touches down at Dhaka International Airport, someone is already waiting — reading your name, not a stranger's face in the crowd. From the aircraft door to the car at the curb, every step is coordinated in advance so Bangladesh's busiest airport feels effortless.",
-      bn: "আপনার ফ্লাইট ঢাকা আন্তর্জাতিক বিমানবন্দরে অবতরণ করার মুহূর্তেই কেউ একজন আপনার জন্য অপেক্ষা করছেন — ভিড়ের মধ্যে অচেনা মুখ নয়, আপনার নাম হাতে। বিমানের দরজা থেকে গাড়ি পর্যন্ত প্রতিটি ধাপ আগে থেকেই সমন্বিত, যাতে বাংলাদেশের ব্যস্ততম বিমানবন্দরও সহজ মনে হয়।",
-    },
-    highlights: [
-      { en: "Meet & greet at the gate or terminal entrance", bn: "গেট বা টার্মিনাল প্রবেশপথে মিট অ্যান্ড গ্রিট" },
-      { en: "Fast-track immigration and customs", bn: "দ্রুত ইমিগ্রেশন ও কাস্টমস সহায়তা" },
-      { en: "Car staged at the curb, ready to go", bn: "কার্বে প্রস্তুত রাখা গাড়ি" },
-    ],
-    cta: { en: "Explore Airport VIP", bn: "এয়ারপোর্ট ভিআইপি দেখুন" },
-  },
-  {
-    title: { en: "Hotel & Car Booking", bn: "হোটেল ও গাড়ি বুকিং" },
-    shortTitle: { en: "Hotel & Car", bn: "হোটেল ও গাড়ি" },
-    summary: {
-      en: "Hotel arrangements, airport transfers, chauffeur and transportation support.",
-      bn: "হোটেল ব্যবস্থাপনা, এয়ারপোর্ট ট্রান্সফার, চালকসহ গাড়ি ও পরিবহন সহায়তা।",
-    },
-    story: {
-      en: "Once you're through the terminal, the story continues on the road. We match you with vetted hotels and a private car — airport transfers and point-to-point trips with a driver who already knows where you're headed.",
-      bn: "টার্মিনাল পেরিয়ে এলে গল্প চলতে থাকে রাস্তায়। আমরা আপনাকে যাচাইকৃত হোটেল ও ব্যক্তিগত গাড়ির সাথে মিলিয়ে দিই — এয়ারপোর্ট ট্রান্সফার ও পয়েন্ট-টু-পয়েন্ট ভ্রমণ, এমন একজন চালকসহ যিনি আগে থেকেই জানেন আপনি কোথায় যাচ্ছেন।",
-    },
-    highlights: [
-      { en: "Hotel bookings matched to your budget", bn: "আপনার বাজেট অনুযায়ী হোটেল বুকিং" },
-      { en: "Airport transfers and chauffeur service", bn: "এয়ারপোর্ট ট্রান্সফার ও চালকসহ গাড়ি সেবা" },
-      { en: "Point-to-point private transport", bn: "পয়েন্ট-টু-পয়েন্ট ব্যক্তিগত পরিবহন" },
-    ],
-    cta: { en: "Explore Hotel & Car", bn: "হোটেল ও গাড়ি দেখুন" },
-  },
-  {
-    title: { en: "Government Request", bn: "সরকারি কাজের সহায়তা" },
-    shortTitle: { en: "Government Request", bn: "সরকারি কাজের সহায়তা" },
-    summary: {
-      en: "Assistance with government-related requests, documentation and administrative processes.",
-      bn: "সরকারি সংক্রান্ত অনুরোধ, প্রয়োজনীয় কাগজপত্র ও প্রশাসনিক প্রক্রিয়ায় সহায়তা।",
-    },
-    story: {
-      en: "Bangladesh's paperwork doesn't have to be a maze. Passport renewals, NID corrections, land registry, attestation — our desk reviews each case and walks it through the process with you, instead of leaving you to chase it alone.",
-      bn: "বাংলাদেশের কাগজপত্রের ঝামেলা গোলকধাঁধা হতে হবে না। পাসপোর্ট নবায়ন, এনআইডি সংশোধন, জমি নিবন্ধন, সত্যায়ন — আমাদের ডেস্ক প্রতিটি কেস পর্যালোচনা করে এবং আপনাকে একা না রেখে পুরো প্রক্রিয়ায় সাথে থাকে।",
-    },
-    highlights: [
-      { en: "Passport, visa & NID support", bn: "পাসপোর্ট, ভিসা ও এনআইডি সহায়তা" },
-      { en: "Land registry & document attestation", bn: "জমি নিবন্ধন ও দলিল সত্যায়ন" },
-      { en: "One desk tracking your case end to end", bn: "শুরু থেকে শেষ পর্যন্ত একটি ডেস্ক আপনার কেস ট্র্যাক করে" },
-    ],
-    cta: { en: "Explore Government Services", bn: "সরকারি সেবা দেখুন" },
-  },
-  {
-    title: { en: "Manpower & Security", bn: "জনবল ও নিরাপত্তা" },
-    shortTitle: { en: "Manpower & Security", bn: "জনবল ও নিরাপত্তা" },
-    summary: {
-      en: "Professional manpower, staffing and security solutions for businesses and organisations.",
-      bn: "প্রতিষ্ঠান ও ব্যবসার জন্য পেশাদার জনবল, স্টাফিং ও নিরাপত্তা সমাধান।",
-    },
-    story: {
-      en: "Behind every smooth arrival is a team. Licensed manpower and professional security personnel, ready for businesses and organisations that need reliable, vetted people on the ground.",
-      bn: "প্রতিটি মসৃণ আগমনের পেছনে থাকে একটি দল। লাইসেন্সপ্রাপ্ত জনবল ও পেশাদার নিরাপত্তা কর্মী, ব্যবসা ও প্রতিষ্ঠানের জন্য প্রস্তুত, যারা নির্ভরযোগ্য ও যাচাইকৃত জনবল চান।",
-    },
-    highlights: [
-      { en: "Licensed manpower staffing", bn: "লাইসেন্সপ্রাপ্ত জনবল স্টাফিং" },
-      { en: "Professional security personnel", bn: "পেশাদার নিরাপত্তা কর্মী" },
-      { en: "Built for businesses & organisations", bn: "ব্যবসা ও প্রতিষ্ঠানের জন্য তৈরি" },
-    ],
-    cta: { en: "Explore Manpower & Security", bn: "জনবল ও নিরাপত্তা দেখুন" },
-  },
-  {
-    title: { en: "Courses & Careers", bn: "কোর্স ও ক্যারিয়ার" },
-    shortTitle: { en: "Courses & Careers", bn: "কোর্স ও ক্যারিয়ার" },
-    summary: {
-      en: "Professional training, media and public speaking, international education and Gulf career support.",
-      bn: "পেশাদার প্রশিক্ষণ, মিডিয়া ও পাবলিক স্পিকিং, আন্তর্জাতিক শিক্ষা ও গালফ ক্যারিয়ার সহায়তা।",
-    },
-    story: {
-      en: "For those looking further ahead — a media and public-speaking academy taught by a working national news presenter, study-abroad guidance, and a path to Gulf employment with documentation support from day one.",
-      bn: "যারা আরও এগিয়ে যেতে চান তাদের জন্য — একজন কর্মরত জাতীয় সংবাদ উপস্থাপকের পরিচালিত মিডিয়া ও পাবলিক স্পিকিং একাডেমি, বিদেশে পড়াশোনার দিকনির্দেশনা, এবং শুরু থেকেই ডকুমেন্টেশন সহায়তাসহ গালফ কর্মসংস্থানের পথ।",
-    },
-    highlights: [
-      { en: "Media & public-speaking training", bn: "মিডিয়া ও পাবলিক স্পিকিং প্রশিক্ষণ" },
-      { en: "Study abroad guidance & admissions", bn: "বিদেশে পড়াশোনার দিকনির্দেশনা ও ভর্তি সহায়তা" },
-      { en: "Gulf employment documentation support", bn: "গালফ কর্মসংস্থানের কাগজপত্র সহায়তা" },
-    ],
-    cta: { en: "Explore Courses & Careers", bn: "কোর্স ও ক্যারিয়ার দেখুন" },
-  },
-];
-
-export const serviceReel = {
-  eyebrow: { en: "Four Services, Clearly Explained", bn: "চারটি সেবা, স্পষ্টভাবে ব্যাখ্যা করা" },
-  h2: { en: "See Exactly How We Help, Service By Service", bn: "আমরা কীভাবে সাহায্য করি, সেবা অনুযায়ী দেখুন" },
-  requestCta: { en: "Request This Service", bn: "এই সেবার জন্য অনুরোধ করুন" },
-  play: { en: "Play", bn: "চালু করুন" },
-  pause: { en: "Pause", bn: "বিরতি দিন" },
-};
-
-export const serviceStory = {
-  eyebrow: { en: "Your Journey With Us", bn: "আমাদের সাথে আপনার যাত্রা" },
-  h2: { en: "Five Services, One Story", bn: "পাঁচটি সেবা, একটি গল্প" },
-  intro: {
-    en: "Follow the journey from the moment you land to wherever you're headed next.",
-    bn: "অবতরণের মুহূর্ত থেকে আপনার পরবর্তী গন্তব্য পর্যন্ত যাত্রাটি অনুসরণ করুন।",
-  },
-};
-
-export const platformHub = {
-  eyebrow: { en: "One Platform", bn: "এক প্ল্যাটফর্ম" },
-  h2: { en: "Many Ways We Can Help", bn: "সাহায্য করার নানা উপায়" },
-  branches: [
-    { label: { en: "Travel", bn: "ভ্রমণ" }, items: [{ en: "Airport VIP", bn: "এয়ারপোর্ট ভিআইপি" }, { en: "Hotel & Car", bn: "হোটেল ও গাড়ি" }] },
-    { label: { en: "Support", bn: "সহায়তা" }, items: [{ en: "Government Request", bn: "সরকারি কাজের সহায়তা" }, { en: "Local Assistance", bn: "স্থানীয় সহায়তা" }] },
-    { label: { en: "Workforce", bn: "কর্মীবাহিনী" }, items: [{ en: "Manpower", bn: "জনবল" }, { en: "Security", bn: "নিরাপত্তা" }] },
-    { label: { en: "Future", bn: "ভবিষ্যৎ" }, items: [{ en: "Courses", bn: "কোর্স" }, { en: "Study & Gulf Careers", bn: "পড়াশোনা ও গালফ ক্যারিয়ার" }] },
-  ],
-};
-
-export const howItWorks = {
-  eyebrow: { en: "Simple process", bn: "সহজ প্রক্রিয়া" },
-  h2: { en: "How HR — The Mediator Works", bn: "এইচআর দ্য মিডিয়েটর যেভাবে কাজ করে" },
-  steps: [
-    { title: { en: "Choose Your Service", bn: "আপনার সেবা বেছে নিন" }, body: { en: "Select the service you need.", bn: "আপনার প্রয়োজনীয় সেবাটি বেছে নিন।" } },
-    { title: { en: "Submit Your Request", bn: "আপনার অনুরোধ জমা দিন" }, body: { en: "Tell us what you need and when you need it.", bn: "আমাদের জানান কী প্রয়োজন এবং কখন প্রয়োজন।" } },
-    { title: { en: "We Coordinate", bn: "আমরা সমন্বয় করি" }, body: { en: "Our team coordinates the appropriate service and support.", bn: "আমাদের দল উপযুক্ত সেবা ও সহায়তা সমন্বয় করে।" } },
-    { title: { en: "Get Assistance", bn: "সহায়তা পান" }, body: { en: "Receive professional support from start to finish.", bn: "শুরু থেকে শেষ পর্যন্ত পেশাদার সহায়তা পান।" } },
-  ],
-  cta: { en: "Request a Service", bn: "সেবার জন্য অনুরোধ করুন" },
-};
-
-export const whyChooseUs = {
-  eyebrow: { en: "Why choose us", bn: "কেন আমাদের বেছে নেবেন" },
-  h2: { en: "Built on Trust and Coordination", bn: "বিশ্বাস ও সমন্বয়ের ভিত্তিতে গড়া" },
-  reasons: [
-    { title: { en: "Local Expertise", bn: "স্থানীয় দক্ষতা" }, body: { en: "Years of experience coordinating services on the ground across Bangladesh.", bn: "সারা বাংলাদেশ জুড়ে মাঠ পর্যায়ে সেবা সমন্বয়ের বহু বছরের অভিজ্ঞতা।" } },
-    { title: { en: "One Trusted Point of Contact", bn: "একটি বিশ্বস্ত যোগাযোগ কেন্দ্র" }, body: { en: "A single desk coordinates every service, so you're never passed between departments.", bn: "একটি মাত্র ডেস্ক প্রতিটি সেবা সমন্বয় করে, তাই আপনাকে কখনো বিভাগে বিভাগে ঘুরতে হয় না।" } },
-    { title: { en: "Professional Coordination", bn: "পেশাদার সমন্বয়" }, body: { en: "Every case is reviewed individually and handled by our team from start to finish.", bn: "প্রতিটি কেস আলাদাভাবে পর্যালোচনা করে আমাদের দল শুরু থেকে শেষ পর্যন্ত পরিচালনা করে।" } },
-    { title: { en: "Transparent Communication", bn: "স্বচ্ছ যোগাযোগ" }, body: { en: "Clear updates by phone, so you always know the status of your request.", bn: "ফোনে স্পষ্ট আপডেট, তাই আপনি সবসময় জানতে পারবেন আপনার অনুরোধের অবস্থা।" } },
-  ],
-};
-
-export const whoWeHelp = {
-  eyebrow: { en: "Who we help", bn: "আমরা কাদের সহায়তা করি" },
-  h2: { en: "Support for Every Kind of Client", bn: "প্রতিটি ধরনের গ্রাহকের জন্য সহায়তা" },
-  groups: [
-    { title: { en: "International Visitors", bn: "আন্তর্জাতিক অতিথি" }, body: { en: "Airport VIP reception, hotel and transport arrangements matched to your itinerary.", bn: "আপনার ভ্রমণসূচি অনুযায়ী এয়ারপোর্ট ভিআইপি রিসেপশন, হোটেল ও পরিবহন ব্যবস্থা।" } },
-    { title: { en: "Bangladeshi Families", bn: "বাংলাদেশি পরিবার" }, body: { en: "Government-request assistance, travel support, and a trusted point of contact.", bn: "সরকারি কাজে সহায়তা, ভ্রমণ সহায়তা এবং একটি বিশ্বস্ত যোগাযোগ কেন্দ্র।" } },
-    { title: { en: "Businesses & Organisations", bn: "ব্যবসা ও প্রতিষ্ঠান" }, body: { en: "Manpower, security staffing, and coordinated logistics for delegations and teams.", bn: "জনবল, নিরাপত্তা স্টাফিং এবং প্রতিনিধিদল ও টিমের জন্য সমন্বিত লজিস্টিকস।" } },
-    { title: { en: "Students & Job Seekers", bn: "শিক্ষার্থী ও চাকরিপ্রার্থী" }, body: { en: "Media training, study-abroad guidance, and Gulf career placement support.", bn: "মিডিয়া প্রশিক্ষণ, বিদেশে পড়াশোনার দিকনির্দেশনা ও গালফ ক্যারিয়ার প্লেসমেন্ট সহায়তা।" } },
-    { title: { en: "Overseas Bangladeshis", bn: "প্রবাসী বাংলাদেশি" }, body: { en: "Airport reception on return visits, and government-request handling from abroad.", bn: "দেশে ফেরার সময় এয়ারপোর্ট রিসেপশন এবং বিদেশ থেকে সরকারি কাজের সমাধান।" } },
-  ],
-};
-
-export const coursesCareersTeaser = {
-  eyebrow: { en: "Courses & International Careers", bn: "কোর্স ও আন্তর্জাতিক ক্যারিয়ার" },
-  h2: { en: "Three paths, one team behind you", bn: "তিনটি পথ, একই দল আপনার পাশে" },
-  subtitle: {
-    en: "Professional training, study-abroad guidance, and Gulf/Middle East job placement — coordinated by one desk in Bangladesh.",
-    bn: "পেশাদার প্রশিক্ষণ, বিদেশে পড়াশোনার নির্দেশনা এবং গালফ/মধ্যপ্রাচ্যে চাকরি প্রাপ্তি — বাংলাদেশে একটি ডেস্ক দ্বারা সমন্বিত।",
-  },
-  trackOneLabel: { en: "Track One", bn: "ট্র্যাক ১" },
-  trackOneTitle: { en: "Media & Public Speaking Academy", bn: "মিডিয়া ও পাবলিক স্পিকিং একাডেমি" },
-  trackOneBody: {
-    en: "Public speaking, communication, presentation skills, media skills and professional confidence — taught by a working national news presenter.",
-    bn: "পাবলিক স্পিকিং, যোগাযোগ, উপস্থাপনা দক্ষতা, মিডিয়া দক্ষতা ও পেশাদার আত্মবিশ্বাস — শেখাচ্ছেন একজন কর্মরত জাতীয় সংবাদ উপস্থাপক।",
-  },
-  trackOneCta: { en: "Explore Academy", bn: "একাডেমি দেখুন" },
-  trackTwoLabel: { en: "Track Two", bn: "ট্র্যাক ২" },
-  trackTwoTitle: { en: "Study Abroad", bn: "বিদেশে পড়াশোনা" },
-  trackTwoBody: {
-    en: "Overseas university admission support, eligibility guidance, and visa/pre-departure assistance for students pursuing education abroad.",
-    bn: "বিদেশে বিশ্ববিদ্যালয় ভর্তি সহায়তা, যোগ্যতা যাচাই নির্দেশনা এবং বিদেশে পড়াশোনার জন্য ভিসা/প্রস্থান-পূর্ব সহায়তা।",
-  },
-  trackTwoCta: { en: "Explore Study Abroad", bn: "বিদেশে পড়াশোনা দেখুন" },
-  trackThreeLabel: { en: "Track Three", bn: "ট্র্যাক ৩" },
-  trackThreeTitle: { en: "International Jobs & Careers", bn: "আন্তর্জাতিক চাকরি ও ক্যারিয়ার" },
-  trackThreeBody: {
-    en: "Employment opportunities across the Gulf, Europe and beyond, with documentation support and pre-departure assistance for jobseekers from Bangladesh.",
-    bn: "গালফ, ইউরোপ ও আরও অনেক দেশে কর্মসংস্থানের সুযোগ, কাগজপত্র সহায়তা এবং বাংলাদেশ থেকে চাকরিপ্রার্থীদের জন্য প্রস্থান-পূর্ব সহায়তা।",
-  },
-  trackThreeCta: { en: "Explore International Jobs", bn: "আন্তর্জাতিক চাকরি দেখুন" },
-};
-
-export const statsRow = {
-  coreServices: { en: "Core Services", bn: "মূল সেবা" },
-  officeLocations: { en: "Office Locations", bn: "অফিসের অবস্থান" },
-  customerGroups: { en: "Customer Groups We Serve", bn: "আমরা যাদের সেবা দিই" },
-  bangladesh: { en: "Bangladesh", bn: "বাংলাদেশ" },
-  ourHome: { en: "Our Home", bn: "আমাদের ঘর" },
-};
-
-export const mediaPartners = {
-  appearsOn: { en: "Our news-presenter trainer appears on", bn: "আমাদের সংবাদ-উপস্থাপক প্রশিক্ষক যেসব চ্যানেলে উপস্থিত হয়েছেন" },
-};
-
-export const events = {
-  eyebrow: { en: "On the ground", bn: "মাঠপর্যায়ে" },
-  h2: { en: "Recent Events", bn: "সাম্প্রতিক ইভেন্ট" },
-  viewAll: { en: "View All Events", bn: "সকল ইভেন্ট দেখুন" },
-};
-
-export const resumeUploadT = {
-  eyebrow: { en: "Looking for employment?", bn: "কর্মসংস্থান খুঁজছেন?" },
-  h2: { en: "Upload Your Resume", bn: "আপনার জীবনবৃত্তান্ত আপলোড করুন" },
-  intro: {
-    en: "Share your CV and our team will review it for suitable opportunities in Saudi Arabia, the UAE, Qatar and the wider Middle East.",
-    bn: "আপনার সিভি শেয়ার করুন, আমাদের দল সৌদি আরব, আরব আমিরাত, কাতার ও মধ্যপ্রাচ্যের উপযুক্ত সুযোগের জন্য তা পর্যালোচনা করবে।",
-  },
-  nameLabel: { en: "Full name", bn: "পূর্ণ নাম" },
-  emailLabel: { en: "Email", bn: "ইমেইল" },
-  phoneLabel: { en: "Phone (optional)", bn: "ফোন (ঐচ্ছিক)" },
-  roleLabel: { en: "Target role (optional)", bn: "লক্ষ্য পদবি (ঐচ্ছিক)" },
-  countryLabel: { en: "Target country (optional)", bn: "লক্ষ্য দেশ (ঐচ্ছিক)" },
-  noteLabel: { en: "Note (optional)", bn: "নোট (ঐচ্ছিক)" },
-  fileLabel: { en: "Resume (PDF or Word, max 10MB)", bn: "জীবনবৃত্তান্ত (PDF বা Word, সর্বোচ্চ ১০MB)" },
-  submit: { en: "Submit Resume", bn: "জীবনবৃত্তান্ত জমা দিন" },
-  submitting: { en: "Submitting…", bn: "জমা দেওয়া হচ্ছে…" },
-  success: { en: "Thank you — we've received your resume and will be in touch.", bn: "ধন্যবাদ — আমরা আপনার জীবনবৃত্তান্ত পেয়েছি এবং শীঘ্রই যোগাযোগ করব।" },
-  errorGeneric: { en: "Something went wrong. Please try again.", bn: "কিছু ভুল হয়েছে। আবার চেষ্টা করুন।" },
-};
-
-export const eventsPageT = {
-  eyebrow: { en: "Media Training & Government Relations", bn: "মিডিয়া প্রশিক্ষণ ও সরকারি সম্পর্ক" },
-  h1: { en: "Our Events & Success Stories", bn: "আমাদের ইভেন্ট ও সাফল্যের গল্প" },
-  intro: {
-    en: "Seminars from our media and public-speaking academy, and updates from our government-relations casework — a running record of the training sessions, workshops and milestones behind HR — The Mediator's work in Bangladesh.",
-    bn: "আমাদের মিডিয়া ও পাবলিক স্পিকিং একাডেমির সেমিনার, এবং আমাদের সরকারি সম্পর্ক সংক্রান্ত কাজের হালনাগাদ — বাংলাদেশে এইচআর দ্য মিডিয়েটরের কাজের পেছনের প্রশিক্ষণ সেশন, কর্মশালা ও মাইলফলকের একটি চলমান রেকর্ড।",
-  },
-  latestLabel: { en: "Latest", bn: "সর্বশেষ" },
-  moreLabel: { en: "More Events & Success Stories", bn: "আরও ইভেন্ট ও সাফল্যের গল্প" },
-  emptyTitle: { en: "New events are on the way", bn: "নতুন ইভেন্ট শীঘ্রই আসছে" },
-  emptyBody: {
-    en: "We're preparing our next media training seminar and government-relations update. Check back soon, or follow our social channels for the latest.",
-    bn: "আমরা আমাদের পরবর্তী মিডিয়া প্রশিক্ষণ সেমিনার ও সরকারি সম্পর্ক সংক্রান্ত হালনাগাদ প্রস্তুত করছি। শীঘ্রই আবার দেখুন, অথবা সর্বশেষ তথ্যের জন্য আমাদের সোশ্যাল চ্যানেল অনুসরণ করুন।",
-  },
-  ctaMediaHeading: { en: "Interested in media training?", bn: "মিডিয়া প্রশিক্ষণে আগ্রহী?" },
-  ctaMediaBody: {
-    en: "Join our media and public-speaking academy, taught by a working national news presenter.",
-    bn: "একজন কর্মরত জাতীয় সংবাদ উপস্থাপকের পরিচালিত আমাদের মিডিয়া ও পাবলিক স্পিকিং একাডেমিতে যোগ দিন।",
-  },
-  ctaMediaButton: { en: "Explore Courses & Careers", bn: "কোর্স ও ক্যারিয়ার দেখুন" },
-  ctaGovHeading: { en: "Need government-request assistance?", bn: "সরকারি কাজে সহায়তা প্রয়োজন?" },
-  ctaGovBody: {
-    en: "Our desk coordinates passport, visa, NID, land registry and attestation cases from start to finish.",
-    bn: "আমাদের ডেস্ক পাসপোর্ট, ভিসা, এনআইডি, জমি নিবন্ধন ও সত্যায়ন সংক্রান্ত কেস শুরু থেকে শেষ পর্যন্ত সমন্বয় করে।",
-  },
-  ctaGovButton: { en: "Explore Government Services", bn: "সরকারি সেবা দেখুন" },
-};
-
-export const newsAnnouncementT = {
-  message: {
-    en: "Live Bangladesh News — Updated Every 20 Minutes",
-    bn: "সরাসরি বাংলাদেশের খবর — প্রতি ২০ মিনিটে হালনাগাদ",
-  },
-  messageShort: { en: "Live Bangladesh News", bn: "সরাসরি বাংলাদেশের খবর" },
-  cta: { en: "Read Now", bn: "এখনই পড়ুন" },
-};
-
-export const newsPageT = {
-  liveNow: { en: "Live Now", bn: "এখন লাইভ" },
-  eyebrow: { en: "Bangladesh News", bn: "বাংলাদেশের খবর" },
-  h1: { en: "Daily Bangladesh News Update", bn: "প্রতিদিনের বাংলাদেশ সংবাদ হালনাগাদ" },
-  intro: {
-    en: "The latest headlines from across Bangladesh, refreshed automatically throughout the day — national, political, crime, jobs, business, education, sports and international news in one place.",
-    bn: "বাংলাদেশ জুড়ে সর্বশেষ শিরোনাম, সারাদিন স্বয়ংক্রিয়ভাবে হালনাগাদ হয় — জাতীয়, রাজনৈতিক, অপরাধ, চাকরি, ব্যবসা, শিক্ষা, খেলা ও আন্তর্জাতিক সংবাদ এক জায়গায়।",
-  },
-  lastUpdated: { en: "Updated", bn: "হালনাগাদ" },
-  allCategories: { en: "All", bn: "সব" },
-  loading: { en: "Loading the latest news…", bn: "সর্বশেষ খবর লোড হচ্ছে…" },
-  empty: { en: "No news in this category right now — check back soon.", bn: "এই বিভাগে এখন কোনো খবর নেই — শীঘ্রই আবার দেখুন।" },
-  justIn: { en: "Just In", bn: "এই মাত্র" },
-  topStory: { en: "Top Story", bn: "প্রধান খবর" },
-  moreHeadlines: { en: "More Headlines", bn: "আরও শিরোনাম" },
-};
-
-export const newsTeaserT = {
-  liveBadge: { en: "Live", bn: "লাইভ" },
-  eyebrow: { en: "Bangladesh News", bn: "বাংলাদেশের খবর" },
-  h2: { en: "Bangladesh News — Live Right Now", bn: "বাংলাদেশের খবর — এখনই লাইভ" },
-  intro: {
-    en: "Real headlines from Bangladesh's most-read outlets, refreshed automatically every 20 minutes — national, political, crime, jobs, business and international news, all in one place.",
-    bn: "বাংলাদেশের সবচেয়ে বেশি পঠিত সংবাদমাধ্যমের সত্যিকারের শিরোনাম, প্রতি ২০ মিনিটে স্বয়ংক্রিয়ভাবে হালনাগাদ — জাতীয়, রাজনৈতিক, অপরাধ, চাকরি, ব্যবসা ও আন্তর্জাতিক খবর, সব এক জায়গায়।",
-  },
-  ctaBig: { en: "Click Here — See Live Bangladesh News", bn: "এখানে ক্লিক করুন — লাইভ বাংলাদেশ খবর দেখুন" },
-  viewAll: { en: "View All Bangladesh News", bn: "সব বাংলাদেশ খবর দেখুন" },
-};
-
-export const newsDirectoryT = {
-  heading: { en: "Every Major Bangladesh Newspaper & News Channel", bn: "বাংলাদেশের প্রতিটি প্রধান সংবাদপত্র ও নিউজ চ্যানেল" },
-  intro: {
-    en: "This page is a hub for Bangladesh news — live headlines above, and direct links to every major newspaper and news channel below, so you can go straight to the source any time.",
-    bn: "এই পৃষ্ঠাটি বাংলাদেশের খবরের একটি হাব — উপরে সরাসরি শিরোনাম, এবং নিচে প্রতিটি প্রধান সংবাদপত্র ও নিউজ চ্যানেলের সরাসরি লিংক, যাতে আপনি যেকোনো সময় সরাসরি উৎসে যেতে পারেন।",
-  },
-};
-
-export const newsDirectoryGroupLabels: Record<string, { en: string; bn: string }> = {
-  banglaDailies: { en: "Bangla Dailies", bn: "বাংলা দৈনিক" },
-  englishDailies: { en: "English Dailies", bn: "ইংরেজি দৈনিক" },
-  newsPortals: { en: "News Agencies & Portals", bn: "সংবাদ সংস্থা ও পোর্টাল" },
-  tvChannels: { en: "TV News Channels", bn: "টিভি নিউজ চ্যানেল" },
-};
-
-export const newsCategoryLabels: Record<string, { en: string; bn: string }> = {
-  national: { en: "National", bn: "জাতীয়" },
-  politics: { en: "Politics", bn: "রাজনীতি" },
-  crime: { en: "Crime", bn: "অপরাধ" },
-  jobs: { en: "Jobs & Circulars", bn: "চাকরি ও বিজ্ঞপ্তি" },
-  business: { en: "Business", bn: "ব্যবসা" },
-  education: { en: "Education", bn: "শিক্ষা" },
-  sports: { en: "Sports", bn: "খেলা" },
-  international: { en: "International", bn: "আন্তর্জাতিক" },
+export const finalCta = {
+  heading: dup("Ready to talk about your property?"),
+  requestService: dup("Get in Touch"),
 };
 
 export const faqDefault = {
-  eyebrow: { en: "FAQ", bn: "প্রশ্নোত্তর" },
-  title: { en: "Frequently Asked Questions", bn: "সচরাচর জিজ্ঞাসিত প্রশ্ন" },
+  eyebrow: dup("FAQ"),
+  title: dup("Frequently Asked Questions"),
+};
+
+export const howItWorks = {
+  eyebrow: dup("Simple process"),
+  h2: dup("How ARK Property Solution Works"),
+  steps: [
+    { title: dup("Tell Us What You Need"), body: dup("Selling, renting out, or buying — share a few details through our enquiry form.") },
+    { title: dup("We Review Your Case"), body: dup("Our team looks at your property or brief and gets back to you directly.") },
+    { title: dup("We Get to Work"), body: dup("Appraisal, management onboarding, or a tailored property search — whichever fits your enquiry.") },
+    { title: dup("Clear Updates Throughout"), body: dup("You hear from us at every meaningful step, not just at the end.") },
+  ],
+  cta: dup("Get in Touch"),
+};
+
+export const whyChooseUs = {
+  eyebrow: dup("Why choose us"),
+  h2: dup("Built on Local Knowledge and Straight Talk"),
+  reasons: [
+    { title: dup("Sydney Market Knowledge"), body: dup("We work Sydney's market every day — pricing, demand and timing advice grounded in what's actually happening locally.") },
+    { title: dup("One Point of Contact"), body: dup("Whether you're selling, renting out, or searching, the same team stays with your case from first enquiry to close.") },
+    { title: dup("Three Services, One Standard"), body: dup("Sales, property management and buyer's agency all run on the same careful, transparent process.") },
+    { title: dup("Straightforward Communication"), body: dup("Clear updates and honest advice — including when a property or price isn't the right fit.") },
+  ],
+};
+
+export const statsRow = {
+  coreServices: dup("Core Services"),
+  serviceArea: dup("Primary Service Area"),
+  clientTypes: dup("Client Types We Serve"),
+  sydney: dup("Sydney, NSW"),
+  ourHome: dup("Our Home"),
 };
 
 export const homeFaqs = [
   {
-    question: { en: "Which is the best Spain visa consultation firm in Dhaka, Bangladesh?", bn: "ঢাকা, বাংলাদেশে সেরা স্পেন ভিসা কনসালটেশন ফার্ম কোনটি?" },
-    answer: {
-      en: "HR — The Mediator is a Dhaka-based Spain visa consultation firm guiding clients from Bangladesh to Spain — specialists in the Digital Nomad Visa (ARTIN), and we directly handle Spain Study Visa, Work Visa and Tourist/Visitor Visa applications, with Permanent Residency guidance underway.",
-      bn: "এইচআর দ্য মিডিয়েটর হলো ঢাকাভিত্তিক একটি স্পেন ভিসা কনসালটেশন ফার্ম, যা বাংলাদেশ থেকে স্পেন পর্যন্ত ক্লায়েন্টদের গাইড করে — ডিজিটাল নোম্যাড ভিসা (ARTIN)-এ বিশেষজ্ঞ, এবং আমরা সরাসরি স্পেনের স্টাডি ভিসা, ওয়ার্ক ভিসা ও ট্যুরিস্ট/ভিজিটর ভিসার আবেদন পরিচালনা করি, সাথে পার্মানেন্ট রেসিডেন্সির পরামর্শও সম্প্রসারিত হচ্ছে।",
-    },
+    question: dup("What does ARK Property Solution do?"),
+    answer: dup(
+      "We're a Sydney-based real estate agency covering three services: real estate sales (appraisals, marketing and negotiation for sellers), property management (end-to-end rental management for landlords), and buyer's agency (independent representation for buyers and investors)."
+    ),
   },
   {
-    question: { en: "How do I go from Bangladesh to Spain?", bn: "বাংলাদেশ থেকে স্পেনে কীভাবে যাব?" },
-    answer: {
-      en: "It depends on your purpose: the Digital Nomad Visa (ARTIN) for remote work, a Study Visa for university or language school, a Work Visa for employment with a Spanish company, or a Tourist/Visitor Visa for short stays. Our Spain Visa Consultancy in Dhaka assesses your eligibility and guides you through documents and the right application route for your case.",
-      bn: "এটি আপনার উদ্দেশ্যের উপর নির্ভর করে: রিমোট কাজের জন্য ডিজিটাল নোম্যাড ভিসা (ARTIN), বিশ্ববিদ্যালয় বা ভাষা স্কুলের জন্য স্টাডি ভিসা, স্প্যানিশ কোম্পানির অধীনে কাজের জন্য ওয়ার্ক ভিসা, অথবা স্বল্পমেয়াদী সফরের জন্য ট্যুরিস্ট/ভিজিটর ভিসা। ঢাকায় আমাদের স্পেন ভিসা কনসালটেন্সি আপনার যোগ্যতা যাচাই করে এবং কাগজপত্র ও সঠিক আবেদনের পথ নিয়ে আপনাকে গাইড করে।",
-    },
+    question: dup("Which areas do you cover?"),
+    answer: dup("We're based in Sydney and primarily serve clients across New South Wales. Get in touch with your suburb or area and we'll confirm whether it's within our current coverage."),
   },
   {
-    question: { en: "What is Spain's Digital Nomad Visa?", bn: "স্পেনের ডিজিটাল নোম্যাড ভিসা কী?" },
-    answer: {
-      en: "Officially the International Teleworking Residence Authorisation (ARTIN), introduced under Spain's 2023 Startup Law. It lets you live in Spain while working remotely for a company or clients based outside Spain — no Spanish employer or local job offer required.",
-      bn: "এর সরকারি নাম \"ইন্টারন্যাশনাল টেলিওয়ার্ক রেসিডেন্স অথরাইজেশন\" (ARTIN), যা স্পেনের ২০২৩ সালের স্টার্টআপ আইনের অধীনে চালু হয়েছে। এই ভিসায় স্পেনে থেকে স্পেনের বাইরের কোম্পানি বা ক্লায়েন্টের হয়ে রিমোট কাজ করা যায় — স্প্যানিশ নিয়োগকর্তা বা স্থানীয় চাকরির অফার লাগে না।",
-    },
+    question: dup("I want to sell my property — what's the first step?"),
+    answer: dup("Submit a sales enquiry with your property address and a little about your timeframe. We'll follow up to arrange an appraisal and walk you through our marketing and sale process."),
   },
   {
-    question: { en: "What is the minimum income for Spain's Digital Nomad Visa in 2026?", bn: "২০২৬ সালে স্পেনের ডিজিটাল নোম্যাড ভিসার জন্য ন্যূনতম আয় কত?" },
-    answer: {
-      en: "A single applicant needs at least €2,849 per month (about €34,200 per year), up from €2,763 in 2025. Add roughly €1,068/month for a spouse or partner and €356/month per child. Rates change yearly, so confirm the current figure with us before applying.",
-      bn: "একক আবেদনকারীর জন্য মাসে কমপক্ষে €২,৮৪৯ প্রয়োজন (বছরে প্রায় €৩৪,২০০), যা ২০২৫ সালে ছিল €২,৭৬৩। স্বামী/স্ত্রীর জন্য প্রায় +€১,০৬৮/মাস এবং প্রতিটি সন্তানের জন্য প্রায় +€৩৫৬/মাস যোগ হবে। হার প্রতি বছর পরিবর্তিত হয়, তাই আবেদনের আগে আমাদের সাথে বর্তমান অঙ্ক যাচাই করে নিন।",
-    },
+    question: dup("I'm a landlord — can you manage my rental property?"),
+    answer: dup("Yes. Our property management service covers tenant placement, rent collection, routine inspections and maintenance coordination. Submit a property management enquiry and we'll talk through onboarding."),
   },
   {
-    question: { en: "Does HR — The Mediator help with other Spain visas too?", bn: "এইচআর দ্য মিডিয়েটর কি স্পেনের অন্যান্য ভিসাতেও সহায়তা করে?" },
-    answer: {
-      en: "Yes — alongside our full Digital Nomad Visa service, we directly handle Spain Study, Work and Visitor visa applications from Bangladesh, with Permanent Residency guidance as we expand.",
-      bn: "হ্যাঁ — আমাদের সম্পূর্ণ ডিজিটাল নোম্যাড ভিসা সেবার পাশাপাশি, আমরা বাংলাদেশ থেকে সরাসরি স্পেনের স্টাডি, ওয়ার্ক ও ভিজিটর ভিসার আবেদন পরিচালনা করি, সাথে পার্মানেন্ট রেসিডেন্সির পরামর্শও সম্প্রসারিত হচ্ছে।",
-    },
+    question: dup("What is a buyer's agent, and do I need one?"),
+    answer: dup("A buyer's agent represents you, the buyer or investor — not the seller. We research the market, shortlist properties, handle due diligence and negotiate on your behalf. Useful if you want independent representation, are buying from out of area, or simply want the search and negotiation handled for you."),
   },
   {
-    question: { en: "What other services does HR — The Mediator provide in Bangladesh?", bn: "এইচআর দ্য মিডিয়েটর বাংলাদেশে আর কী কী সেবা প্রদান করে?" },
-    answer: {
-      en: "Alongside our Spain visa consultancy, we provide five original services: airport VIP reception, hotel & car booking, government-request assistance, manpower & security staffing, and courses & careers support covering media training and Gulf/Australia study or work placement.",
-      bn: "আমাদের স্পেন ভিসা কনসালটেন্সির পাশাপাশি, আমরা পাঁচটি মূল সেবা প্রদান করি: এয়ারপোর্ট ভিআইপি রিসেপশন, হোটেল ও গাড়ি বুকিং, সরকারি কাজে সহায়তা, জনবল ও নিরাপত্তা স্টাফিং এবং মিডিয়া প্রশিক্ষণ ও গালফ/অস্ট্রেলিয়া পড়াশোনা বা কাজের প্লেসমেন্টসহ কোর্স ও ক্যারিয়ার সহায়তা।",
-    },
+    question: dup("Is there a fee to enquire?"),
+    answer: dup("No — submitting an enquiry through our website is free. Any service fees (e.g. management commission, buyer's agency fee) are discussed and agreed with you directly before any paid engagement begins."),
   },
   {
-    question: { en: "Do you provide airport VIP assistance?", bn: "আপনারা কি এয়ারপোর্ট ভিআইপি সহায়তা প্রদান করেন?" },
-    answer: {
-      en: "We do. Our airport VIP service covers meet & greet, arrival and departure assistance, fast-track support, and passenger coordination at Bangladesh airports including Hazrat Shahjalal International (Dhaka).",
-      bn: "আমাদের এয়ারপোর্ট ভিআইপি সেবায় রয়েছে মিট অ্যান্ড গ্রিট, আগমন ও প্রস্থান সহায়তা, ফাস্ট-ট্র্যাক সহায়তা এবং হযরত শাহজালাল আন্তর্জাতিক (ঢাকা)সহ বাংলাদেশের বিমানবন্দরে যাত্রী সমন্বয়।",
-    },
-  },
-  {
-    question: { en: "Can you arrange hotel and car services?", bn: "আপনারা কি হোটেল ও গাড়ির ব্যবস্থা করতে পারেন?" },
-    answer: {
-      en: "We arrange hotel bookings and vehicle transport — including airport transfers and chauffeur service — matched to your itinerary, budget and preferred city in Bangladesh.",
-      bn: "আমরা আপনার ভ্রমণসূচি, বাজেট ও পছন্দের শহর অনুযায়ী হোটেল বুকিং ও যানবাহন পরিবহন — এয়ারপোর্ট ট্রান্সফার ও চালকসহ গাড়ি সেবাসহ — ব্যবস্থা করি।",
-    },
-  },
-  {
-    question: { en: "Can you assist with government-related requests?", bn: "আপনারা কি সরকারি সংক্রান্ত কাজে সহায়তা করতে পারেন?" },
-    answer: {
-      en: "Our desk reviews each government-related case individually and coordinates documentation and administrative processes such as passport, visa, NID, land registry, and attestation support.",
-      bn: "আমাদের ডেস্ক প্রতিটি সরকারি সংক্রান্ত কেস আলাদাভাবে পর্যালোচনা করে এবং পাসপোর্ট, ভিসা, এনআইডি, ভূমি নিবন্ধন ও সত্যায়ন সহায়তার মতো কাগজপত্র ও প্রশাসনিক প্রক্রিয়া সমন্বয় করে।",
-    },
-  },
-  {
-    question: { en: "Do you provide manpower and security services?", bn: "আপনারা কি জনবল ও নিরাপত্তা সেবা প্রদান করেন?" },
-    answer: {
-      en: "We supply licensed manpower and security personnel for businesses and organisations, drawing on our staffing and consultancy practice.",
-      bn: "আমরা আমাদের স্টাফিং ও পরামর্শ প্র্যাকটিসের অভিজ্ঞতায় ব্যবসা ও প্রতিষ্ঠানের জন্য লাইসেন্সপ্রাপ্ত জনবল ও নিরাপত্তা কর্মী সরবরাহ করি।",
-    },
-  },
-  {
-    question: { en: "Can you help with Gulf employment opportunities?", bn: "আপনারা কি গালফে কর্মসংস্থানের সুযোগে সহায়তা করতে পারেন?" },
-    answer: {
-      en: "Our International Careers track supports Gulf employment placement, including documentation and pre-departure assistance for candidates from Bangladesh.",
-      bn: "আমাদের আন্তর্জাতিক ক্যারিয়ার ট্র্যাক বাংলাদেশ থেকে প্রার্থীদের জন্য কাগজপত্র ও প্রস্থান-পূর্ব সহায়তাসহ গালফ কর্মসংস্থান প্লেসমেন্টে সহায়তা করে।",
-    },
-  },
-  {
-    question: { en: "Can you help students study in the Gulf?", bn: "আপনারা কি শিক্ষার্থীদের গালফে পড়াশোনায় সহায়তা করতে পারেন?" },
-    answer: {
-      en: "We provide study-abroad guidance, university admission support, and visa/documentation assistance for students pursuing education opportunities in the Gulf and other regions.",
-      bn: "আমরা গালফ ও অন্যান্য অঞ্চলে শিক্ষার সুযোগ খুঁজছেন এমন শিক্ষার্থীদের জন্য বিদেশে পড়াশোনার দিকনির্দেশনা, বিশ্ববিদ্যালয় ভর্তি সহায়তা এবং ভিসা/কাগজপত্র সহায়তা প্রদান করি।",
-    },
-  },
-  {
-    question: { en: "How can I request a service?", bn: "আমি কীভাবে একটি সেবার জন্য অনুরোধ করতে পারি?" },
-    answer: {
-      en: "Use the Request a Service button on any page. Choose the service you need, share your contact details and request description, and our team will follow up directly.",
-      bn: "যেকোনো পৃষ্ঠায় থাকা 'সেবার জন্য অনুরোধ করুন' বাটনটি ব্যবহার করুন। আপনার প্রয়োজনীয় সেবা বেছে নিন, আপনার যোগাযোগের তথ্য ও অনুরোধের বিবরণ দিন, আমাদের দল সরাসরি যোগাযোগ করবে।",
-    },
+    question: dup("How do I get in touch?"),
+    answer: dup("Use the \"Get in Touch\" button on any page, choose the service that fits (sales, property management, buyer's agency, or a general enquiry), and share your contact details. Our team will follow up directly."),
   },
 ];
 
-export const footer = {
-  description: {
-    en: "Spain visa consultants based in Bangladesh — specialists in the Digital Nomad Visa, and we directly handle Spain Study, Work and Visitor visas too, with Permanent Residency guidance underway. We also continue our original concierge, transport, government-request, manpower, security and overseas-career services.",
-    bn: "বাংলাদেশভিত্তিক স্পেন ভিসা পরামর্শদাতা — ডিজিটাল নোম্যাড ভিসায় বিশেষজ্ঞ, এবং আমরা সরাসরি স্পেনের স্টাডি, ওয়ার্ক ও ভিজিটর ভিসাও পরিচালনা করি, সাথে পার্মানেন্ট রেসিডেন্সির পরামর্শও যুক্ত হচ্ছে। আমরা আমাদের পূর্বের কনসিয়ার্জ, পরিবহন, সরকারি সহায়তা, জনবল, নিরাপত্তা ও প্রবাসী ক্যারিয়ার সেবাও চালিয়ে যাচ্ছি।",
-  },
-  servicesHeading: { en: "Services", bn: "সেবাসমূহ" },
-  quickLinksHeading: { en: "Quick Links", bn: "দ্রুত লিংক" },
-  contactHeading: { en: "Contact", bn: "যোগাযোগ" },
-  home: { en: "Home", bn: "হোম" },
-  events: { en: "Events", bn: "ইভেন্ট" },
-  aboutUs: { en: "About Us", bn: "আমাদের সম্পর্কে" },
-  contact: { en: "Contact", bn: "যোগাযোগ" },
-  trackARequest: { en: "Track a Request", bn: "অনুরোধ ট্র্যাক করুন" },
-  staffLogin: { en: "Staff Login", bn: "স্টাফ লগইন" },
-  requestService: { en: "Request a Service", bn: "সেবার জন্য অনুরোধ করুন" },
-  copyright: { en: "HR — The Mediator Limited. All rights reserved.", bn: "এইচআর দ্য মিডিয়েটর লিমিটেড। সর্বস্বত্ব সংরক্ষিত।" },
-  privacyPolicy: { en: "Privacy Policy", bn: "গোপনীয়তা নীতি" },
-  termsConditions: { en: "Terms & Conditions", bn: "শর্তাবলী" },
-};
-
-export const finalCta = {
-  heading: { en: "Need Assistance?", bn: "সহায়তা প্রয়োজন?" },
-  requestService: { en: "Request a Service", bn: "সেবার জন্য অনুরোধ করুন" },
+export const identityFields = {
+  fullName: dup("Full name"),
+  phoneWhatsapp: dup("Phone"),
+  email: dup("Email"),
+  dob: dup("Date of birth"),
 };
 
 export const bookingT = {
+  submitting: dup("Submitting…"),
+  submitSales: dup("Submit Sales Enquiry"),
+  submitManagement: dup("Submit Property Management Enquiry"),
+  submitBuyers: dup("Submit Buyer's Brief"),
+  submitGeneral: dup("Send Enquiry"),
+  errorFallback: dup("Something went wrong. Please try again."),
+  ticketSaved: dup("Enquiry {ticket} received — our team will be in touch. You can track its status anytime with this reference."),
+  defaultHeading: dup("Get in Touch"),
+  defaultSubheading: dup("Choose the service you need. Every enquiry gets a reference number you can track."),
   tabs: {
-    spain: { en: "Spain Visa", bn: "স্পেন ভিসা" },
-    airport: { en: "Airport VIP", bn: "এয়ারপোর্ট ভিআইপি" },
-    hotel: { en: "Hotel & car", bn: "হোটেল ও গাড়ি" },
-    government: { en: "Government request", bn: "সরকারি অনুরোধ" },
-    programs: { en: "Courses & careers", bn: "কোর্স ও ক্যারিয়ার" },
-    resume: { en: "Resume Review", bn: "জীবনবৃত্তান্ত পর্যালোচনা" },
+    sales: dup("Sell / Appraisal"),
+    management: dup("Property Management"),
+    buyers: dup("Buyer's Agency"),
+    general: dup("General Enquiry"),
   },
-  defaultHeading: { en: "Request a Service", bn: "সেবার জন্য অনুরোধ করুন" },
-  defaultSubheading: {
-    en: "Pick the service you need. Every request gets a ticket number you can track.",
-    bn: "আপনার প্রয়োজনীয় সেবাটি বেছে নিন। প্রতিটি অনুরোধে একটি টিকিট নম্বর দেওয়া হয় যা আপনি ট্র্যাক করতে পারবেন।",
-  },
-  submitting: { en: "Submitting…", bn: "জমা দেওয়া হচ্ছে…" },
-  submitSpain: { en: "Submit Spain visa consultation request", bn: "স্পেন ভিসা পরামর্শের অনুরোধ জমা দিন" },
-  submitAirport: { en: "Submit airport request", bn: "এয়ারপোর্ট অনুরোধ জমা দিন" },
-  submitHotel: { en: "Submit hotel & car request", bn: "হোটেল ও গাড়ির অনুরোধ জমা দিন" },
-  submitGovernment: { en: "Submit government request", bn: "সরকারি অনুরোধ জমা দিন" },
-  submitProgram: { en: "Submit enrollment request", bn: "ভর্তি অনুরোধ জমা দিন" },
-  errorFallback: { en: "Couldn't submit that request. Please try again.", bn: "অনুরোধটি জমা দেওয়া যায়নি। আবার চেষ্টা করুন।" },
   fields: {
-    flightNumber: { en: "Flight number", bn: "ফ্লাইট নম্বর" },
-    arrivalAirport: { en: "Arrival airport", bn: "আগমন বিমানবন্দর" },
-    preferredDate: { en: "Preferred date", bn: "পছন্দের তারিখ" },
-    arrivalTime: { en: "Arrival time", bn: "আগমনের সময়" },
-    purposeOfVisit: { en: "Purpose of visit", bn: "ভ্রমণের উদ্দেশ্য" },
-    travelers: { en: "Travelers", bn: "যাত্রী সংখ্যা" },
-    description: { en: "Description of request", bn: "অনুরোধের বিবরণ" },
-    locationCity: { en: "Location / City", bn: "অবস্থান / শহর" },
-    hotelTier: { en: "Hotel tier", bn: "হোটেল মান" },
-    checkin: { en: "Check-in (preferred date)", bn: "চেক-ইন (পছন্দের তারিখ)" },
-    checkout: { en: "Check-out", bn: "চেক-আউট" },
-    carType: { en: "Car type", bn: "গাড়ির ধরন" },
-    pickupLocation: { en: "Pickup location", bn: "পিকআপ স্থান" },
-    serviceRequired: { en: "Service required", bn: "প্রয়োজনীয় সেবা" },
-    urgency: { en: "Urgency", bn: "জরুরি মাত্রা" },
-    program: { en: "Program", bn: "প্রোগ্রাম" },
-    preferredBatch: { en: "Preferred batch", bn: "পছন্দের ব্যাচ" },
-    currentEducation: { en: "Current education / occupation", bn: "বর্তমান শিক্ষা / পেশা" },
-    selectAService: { en: "Select a service", bn: "একটি সেবা নির্বাচন করুন" },
-    visaType: { en: "Visa type", bn: "ভিসার ধরন" },
-    selectVisaType: { en: "Select a visa type", bn: "একটি ভিসার ধরন নির্বাচন করুন" },
-    currentOccupation: { en: "Current occupation / remote employer", bn: "বর্তমান পেশা / রিমোট নিয়োগকর্তা" },
-  },
-  airports: {
-    dhaka: { en: "Hazrat Shahjalal Int'l, Dhaka", bn: "হযরত শাহজালাল আন্তর্জাতিক বিমানবন্দর, ঢাকা" },
-    chattogram: { en: "Shah Amanat Int'l, Chattogram", bn: "শাহ আমানত আন্তর্জাতিক বিমানবন্দর, চট্টগ্রাম" },
-    sylhet: { en: "Osmani Int'l, Sylhet", bn: "ওসমানী আন্তর্জাতিক বিমানবন্দর, সিলেট" },
-  },
-  hotelTiers: {
-    standard: { en: "Standard", bn: "স্ট্যান্ডার্ড" },
-    business: { en: "Business", bn: "বিজনেস" },
-    luxury: { en: "Luxury", bn: "লাক্সারি" },
-  },
-  carOptions: {
-    sedanSelf: { en: "Sedan, self-drive", bn: "সেডান, নিজে চালাবেন" },
-    sedanDriver: { en: "Sedan, with driver", bn: "সেডান, চালকসহ" },
-    suvDriver: { en: "SUV, with driver", bn: "এসইউভি, চালকসহ" },
-    vanDriver: { en: "Van, with driver", bn: "ভ্যান, চালকসহ" },
-    noCar: { en: "No car needed", bn: "গাড়ি প্রয়োজন নেই" },
-  },
-  urgencyOptions: {
-    standard: { en: "Standard", bn: "স্ট্যান্ডার্ড" },
-    urgent: { en: "Urgent", bn: "জরুরি" },
-  },
-  batchOptions: {
-    offline: { en: "Offline, Bangladesh campus", bn: "অফলাইন, বাংলাদেশ ক্যাম্পাস" },
-    online: { en: "Online, Zoom", bn: "অনলাইন, জুম" },
-    notApplicable: { en: "Not applicable", bn: "প্রযোজ্য নয়" },
-  },
-  spainNotice: {
-    en: "Our desk reviews your eligibility and confirms the right visa route and current income requirement with you directly before any application work begins.",
-    bn: "আবেদনের কাজ শুরুর আগে আমাদের ডেস্ক আপনার যোগ্যতা পর্যালোচনা করে এবং সঠিক ভিসার পথ ও বর্তমান আয়ের শর্ত সরাসরি আপনার সাথে নিশ্চিত করে।",
-  },
-  govNotice: {
-    en: "Our desk reviews every case individually and confirms scope directly with you by phone before any work begins.",
-    bn: "আমাদের ডেস্ক প্রতিটি কেস আলাদাভাবে পর্যালোচনা করে এবং কাজ শুরুর আগে ফোনে সরাসরি আপনার সাথে বিষয়টি নিশ্চিত করে।",
-  },
-  programNotice: {
-    en: "Opening a student or career file costs ৳5,000 — this covers our desk's assessment of your background and documents, and starts your case work. Our team will confirm this with you directly after you submit.",
-    bn: "একটি শিক্ষার্থী বা ক্যারিয়ার ফাইল খুলতে ৳৫,০০০ খরচ হয় — এতে আপনার পটভূমি ও কাগজপত্র পর্যালোচনা এবং কেস শুরু করার কাজ অন্তর্ভুক্ত। জমা দেওয়ার পর আমাদের দল সরাসরি আপনার সাথে এটি নিশ্চিত করবে।",
+    description: dup("Message"),
+    propertyAddress: dup("Property address"),
+    propertyType: dup("Property type"),
+    selectPropertyType: dup("Select a property type"),
+    timeframe: dup("Timeframe"),
+    currentStatus: dup("Current status"),
+    areaOfInterest: dup("Suburb / area of interest"),
+    budgetRange: dup("Budget range"),
+    enquiryType: dup("What's this about?"),
   },
   placeholders: {
-    flightExample: { en: "e.g. BG 147", bn: "যেমন BG 147" },
-    airportNotes: { en: "Anything else we should know", bn: "অন্য কিছু জানানোর থাকলে লিখুন" },
-    cityExample: { en: "Dhaka, Rajshahi...", bn: "ঢাকা, রাজশাহী..." },
-    programGoal: { en: "What are you hoping to get out of it?", bn: "আপনি এখান থেকে কী পেতে চান?" },
-    spainOccupation: { en: "e.g. Software Developer, remote for a UK company", bn: "যেমন সফটওয়্যার ডেভেলপার, যুক্তরাজ্যের কোম্পানির জন্য রিমোট" },
-    spainNotes: { en: "Anything else we should know about your situation", bn: "আপনার পরিস্থিতি সম্পর্কে আর কিছু জানানোর থাকলে লিখুন" },
+    propertyAddressExample: dup("e.g. 12 Smith Street, Parramatta NSW"),
+    areaExample: dup("e.g. Parramatta, Inner West, North Shore"),
+    salesNotes: dup("Anything about the property or your timeline we should know"),
+    managementNotes: dup("Anything about the property or tenancy we should know"),
+    buyersNotes: dup("What are you looking for — must-haves, deal-breakers, must-see features"),
+    generalNotes: dup("Tell us a little about what you need"),
   },
-  ticketSaved: {
-    en: "Your ticket number is {ticket}. Save it — you'll need it with your name and date of birth to track this request.",
-    bn: "আপনার টিকিট নম্বর {ticket}। এটি সংরক্ষণ করুন — এই অনুরোধ ট্র্যাক করতে আপনার নাম ও জন্মতারিখসহ এটি প্রয়োজন হবে।",
-  },
-};
-
-export const identityFields = {
-  fullName: { en: "Full name", bn: "পূর্ণ নাম" },
-  phoneWhatsapp: { en: "Phone / WhatsApp", bn: "ফোন / হোয়াটসঅ্যাপ" },
-  email: { en: "Email", bn: "ইমেইল" },
-  dob: { en: "Date of birth", bn: "জন্মতারিখ" },
+  propertyTypes: ["House", "Apartment / Unit", "Townhouse", "Land", "Other"].map(dup),
+  timeframes: ["ASAP", "1–3 months", "3–6 months", "Just researching"].map(dup),
+  statusOptions: ["Currently vacant", "Currently tenanted", "New purchase, settling soon"].map(dup),
+  budgetRanges: ["Under $700k", "$700k – $1M", "$1M – $1.5M", "$1.5M – $2M", "$2M+", "Prefer to discuss"].map(dup),
 };
 
 export const trackRequestT = {
-  h2: { en: "Track Your Request", bn: "আপনার অনুরোধ ট্র্যাক করুন" },
-  subtitle: {
-    en: "Enter your ticket number, full name, and date of birth exactly as submitted.",
-    bn: "জমা দেওয়ার সময় যেভাবে দিয়েছিলেন ঠিক সেভাবে টিকিট নম্বর, পূর্ণ নাম ও জন্মতারিখ লিখুন।",
-  },
-  ticketNumber: { en: "Ticket number", bn: "টিকিট নম্বর" },
-  fullName: { en: "Full name", bn: "পূর্ণ নাম" },
-  dob: { en: "Date of birth", bn: "জন্মতারিখ" },
-  checkStatus: { en: "Check status", bn: "স্ট্যাটাস দেখুন" },
-  notFound: {
-    en: "No matching request. Double-check the ticket number, name, and date of birth exactly as submitted.",
-    bn: "কোনো মিল পাওয়া যায়নি। জমা দেওয়ার সময় ব্যবহৃত টিকিট নম্বর, নাম ও জন্মতারিখ আবার যাচাই করুন।",
-  },
-  rejected: { en: "This request was not approved.", bn: "এই অনুরোধটি অনুমোদিত হয়নি।" },
-  contactDeskFallback: { en: "Please contact the desk for details.", bn: "বিস্তারিত জানতে ডেস্কে যোগাযোগ করুন।" },
-  payButton: { en: "Pay ৳{fee}", bn: "৳{fee} পরিশোধ করুন" },
+  h2: dup("Track an Enquiry"),
+  subtitle: dup("Enter your reference number, full name, and date of birth exactly as submitted."),
+  ticketNumber: dup("Reference number"),
+  fullName: dup("Full name"),
+  dob: dup("Date of birth"),
+  checkStatus: dup("Check Status"),
+  notFound: dup("We couldn't find a matching enquiry. Double-check your reference number, name and date of birth, or get in touch directly."),
+  rejected: dup("This enquiry wasn't able to proceed."),
+  contactDeskFallback: dup("Get in touch for details."),
   stageLabels: {
-    received: { en: "Request received", bn: "অনুরোধ গৃহীত হয়েছে" },
-    approved: { en: "Approved", bn: "অনুমোদিত" },
-    approvedFeeDue: { en: "Approved — fee due", bn: "অনুমোদিত — ফি বাকি" },
-    paid: { en: "Paid", bn: "পরিশোধ করা হয়েছে" },
-    completed: { en: "Completed", bn: "সম্পন্ন" },
+    received: dup("Received — pending review"),
+    approved: dup("In progress"),
+    approvedFeeDue: dup("In progress"),
+    paid: dup("In progress"),
+    completed: dup("Completed"),
   },
 };
 
 export const servicePageUi = {
-  whoThisIsFor: { en: "Who This Is For", bn: "এটি কাদের জন্য" },
-  whatsIncluded: { en: "What's Included", bn: "যা অন্তর্ভুক্ত" },
-  howTheProcessWorks: { en: "How the Process Works", bn: "প্রক্রিয়াটি যেভাবে কাজ করে" },
-  bookingSubheading: {
-    en: "Fill in the details below and our team will follow up directly.",
-    bn: "নিচে বিস্তারিত পূরণ করুন এবং আমাদের দল সরাসরি যোগাযোগ করবে।",
-  },
-  relatedServices: { en: "Related Services", bn: "সম্পর্কিত সেবাসমূহ" },
-  faqsSuffix: { en: "FAQs", bn: "সচরাচর জিজ্ঞাসিত প্রশ্ন" },
+  whoThisIsFor: dup("Who This Is For"),
+  whatsIncluded: dup("What's Included"),
+  howTheProcessWorks: dup("How the Process Works"),
+  bookingSubheading: dup("Fill in the details below and our team will follow up directly."),
+  relatedServices: dup("Related Services"),
+  faqsSuffix: dup("FAQs"),
 };
 
 export const aboutPageT = {
-  eyebrow: { en: "About Us", bn: "আমাদের সম্পর্কে" },
-  h1: { en: "A Trusted Service Partner in Bangladesh", bn: "বাংলাদেশে একটি বিশ্বস্ত সেবা অংশীদার" },
-  intro: {
-    en: "HR — The Mediator is a registered manpower, security and consultancy company running a concierge desk, a media training academy, and Gulf employment placement for Bangladesh's travellers, students and jobseekers.",
-    bn: "এইচআর দ্য মিডিয়েটর একটি নিবন্ধিত জনবল, নিরাপত্তা ও পরামর্শক প্রতিষ্ঠান, যা বাংলাদেশের ভ্রমণকারী, শিক্ষার্থী ও চাকরিপ্রার্থীদের জন্য একটি কনসিয়ার্জ ডেস্ক, একটি মিডিয়া প্রশিক্ষণ একাডেমি এবং গালফ কর্মসংস্থান প্লেসমেন্ট পরিচালনা করে।",
-  },
-  founderRole: {
-    en: "News Presenter, BTV & Radio Today · Lead Trainer",
-    bn: "সংবাদ উপস্থাপক, বিটিভি ও রেডিও টুডে · প্রধান প্রশিক্ষক",
-  },
-  para1: {
-    en: "HR — The Mediator was built to give travellers, families, businesses and jobseekers one trusted point of contact in Bangladesh — instead of chasing separate agents for the airport, the hotel, the government office, the security desk and the training academy.",
-    bn: "এইচআর দ্য মিডিয়েটর তৈরি করা হয়েছে ভ্রমণকারী, পরিবার, ব্যবসা ও চাকরিপ্রার্থীদের বাংলাদেশে একটি বিশ্বস্ত যোগাযোগ কেন্দ্র দেওয়ার জন্য — এয়ারপোর্ট, হোটেল, সরকারি অফিস, নিরাপত্তা ডেস্ক ও প্রশিক্ষণ একাডেমির জন্য আলাদা আলাদা এজেন্টের পেছনে ছোটার বদলে।",
-  },
-  para2: {
-    en: "The company is a proud Rajshahi University Readers' Forum affiliate, drawing on a licensed staffing and consultancy practice built over years of government and corporate contracts.",
-    bn: "প্রতিষ্ঠানটি গর্বের সাথে রাজশাহী বিশ্ববিদ্যালয় রিডার্স ফোরামের সাথে যুক্ত, এবং বছরের পর বছর সরকারি ও কর্পোরেট চুক্তির অভিজ্ঞতার ওপর গড়ে ওঠা একটি লাইসেন্সপ্রাপ্ত স্টাফিং ও পরামর্শ প্র্যাকটিসের ওপর নির্ভর করে।",
-  },
-  meaningH2: { en: "What “The Mediator” Means", bn: "“দ্য মিডিয়েটর” বলতে কী বোঝায়" },
-  meaningBody: {
-    en: "The name is the role. Instead of you dealing with five different offices — the airport, the hotel, the government desk, the staffing agency, the training academy — you deal with one team, and we deal with the rest.",
-    bn: "নামটিই আমাদের ভূমিকা বহন করে। আপনাকে পাঁচটি আলাদা অফিসের সাথে — এয়ারপোর্ট, হোটেল, সরকারি ডেস্ক, স্টাফিং এজেন্সি, প্রশিক্ষণ একাডেমি — নিজে যোগাযোগ করতে হয় না; আপনি একটি দলের সাথে কথা বলেন, বাকিটা আমরা সামলাই।",
-  },
-  exploreH2: { en: "Explore Our Services", bn: "আমাদের সেবাসমূহ দেখুন" },
-  exploreBody: {
-    en: "Airport VIP, hotel & car, government requests, manpower & security, and courses & careers.",
-    bn: "এয়ারপোর্ট ভিআইপি, হোটেল ও গাড়ি, সরকারি কাজের সহায়তা, জনবল ও নিরাপত্তা এবং কোর্স ও ক্যারিয়ার।",
-  },
-  viewAllServices: { en: "View All Services", bn: "সকল সেবা দেখুন" },
+  eyebrow: dup("About Us"),
+  h1: dup("A Sydney Property Team You Can Rely On"),
+  intro: dup(
+    "ARK Property Solution is a Sydney-based real estate agency built around three services: real estate sales, property management and buyer's agency — one team across the services you're likely to need over the life of a property."
+  ),
+  meaningH2: dup("How We Work"),
+  meaningBody: dup(
+    "Every enquiry gets a direct response from someone who actually works your case — not a call centre. We're upfront about pricing, timeframes and whether a property or strategy is genuinely the right fit, because that's what keeps clients coming back for the next property, not just this one."
+  ),
+  exploreH2: dup("Explore Our Services"),
+  exploreBody: dup("Real estate sales, property management, and buyer's agency."),
+  viewAllServices: dup("View All Services"),
 };
 
 export const aboutCredibility = [
   {
-    heading: { en: "Registered & licensed", bn: "নিবন্ধিত ও লাইসেন্সপ্রাপ্ত" },
-    body: {
-      en: "A registered manpower, security and consultancy company — not an informal network of agents.",
-      bn: "একটি নিবন্ধিত জনবল, নিরাপত্তা ও পরামর্শক প্রতিষ্ঠান — কোনো অনানুষ্ঠানিক এজেন্ট নেটওয়ার্ক নয়।",
-    },
+    heading: dup("Three services, one team"),
+    body: dup("Sales, property management and buyer's agency, coordinated by the same desk so your file doesn't get passed around."),
   },
   {
-    heading: { en: "Five service lines, one desk", bn: "পাঁচটি সেবা, একটি ডেস্ক" },
-    body: {
-      en: "Airport VIP, hotel & car, government liaison, manpower & security, and courses & careers — coordinated by the same team.",
-      bn: "এয়ারপোর্ট ভিআইপি, হোটেল ও গাড়ি, সরকারি সমন্বয়, জনবল ও নিরাপত্তা এবং কোর্স ও ক্যারিয়ার — একই দলের মাধ্যমে সমন্বিত।",
-    },
+    heading: dup("Sydney-based, Sydney-focused"),
+    body: dup("Based in Sydney and focused on the NSW market we work day to day, not a generic national franchise playbook."),
   },
   {
-    heading: { en: "Two offices", bn: "দুটি অফিস" },
-    body: {
-      en: "A corporate head office in Dhaka, Bangladesh, and a second office in Bankstown, Australia.",
-      bn: "ঢাকা, বাংলাদেশে একটি প্রধান কার্যালয় এবং ব্যাংকসটাউন, অস্ট্রেলিয়ায় একটি দ্বিতীয় অফিস।",
-    },
-  },
-  {
-    heading: { en: "Trained by an on-air presenter", bn: "একজন সম্প্রচারকারীর তত্ত্বাবধানে প্রশিক্ষণ" },
-    body: {
-      en: "Our Media & Public Speaking Academy is led by a working BTV and Radio Today news presenter, not a freelance coach.",
-      bn: "আমাদের মিডিয়া ও পাবলিক স্পিকিং একাডেমি পরিচালনা করেন একজন কর্মরত বিটিভি ও রেডিও টুডে সংবাদ উপস্থাপক, কোনো ফ্রিল্যান্স কোচ নন।",
-    },
+    heading: dup("Straight answers"),
+    body: dup("If a price, property or timeline isn't realistic, we'll tell you — before you commit, not after."),
   },
 ];
 
 export const contactPageT = {
-  eyebrow: { en: "Contact", bn: "যোগাযোগ" },
-  h1: { en: "Get in Touch", bn: "যোগাযোগ করুন" },
-  intro: {
-    en: "Reach our desk directly, or submit a service request and we'll follow up right away.",
-    bn: "সরাসরি আমাদের ডেস্কে যোগাযোগ করুন, অথবা একটি সেবার অনুরোধ জমা দিন এবং আমরা দ্রুত যোগাযোগ করব।",
-  },
-  requestService: { en: "Request a Service", bn: "সেবার জন্য অনুরোধ করুন" },
-  fallbackReachDesk: { en: "Reach the desk", bn: "ডেস্কে যোগাযোগ করুন" },
-  fallbackFindUs: { en: "Corporate Head Office", bn: "প্রধান কার্যালয়" },
-};
-
-// ---------------------------------------------------------------------
-// Per-service-page data, keyed by the same id used in data/servicePages.ts
-// ---------------------------------------------------------------------
-
-export const servicePagesT: Record<
-  string,
-  {
-    h1: { en: string; bn: string };
-    intro: { en: string; bn: string };
-    whoFor: { en: string; bn: string }[];
-    included: { en: string; bn: string }[];
-    process: { title: { en: string; bn: string }; body: { en: string; bn: string } }[];
-    faqs: { question: { en: string; bn: string }; answer: { en: string; bn: string } }[];
-    cta: { en: string; bn: string };
-  }
-> = {
-  "airport-vip": {
-    h1: {
-      en: "Airport VIP Reception & Pickup in Dhaka, Bangladesh",
-      bn: "ঢাকা, বাংলাদেশে এয়ারপোর্ট ভিআইপি রিসেপশন ও পিকআপ",
-    },
-    intro: {
-      en: "A meet-and-greet officer at the aircraft door, fast-track immigration support, baggage assistance, and a car already waiting at the curb for your Dhaka airport pickup. Our airport VIP service is built for travellers, families and business visitors who want a smooth, well-coordinated arrival or departure anywhere in Bangladesh.",
-      bn: "বিমানের দরজায় একজন মিট-অ্যান্ড-গ্রিট কর্মকর্তা, ফাস্ট-ট্র্যাক ইমিগ্রেশন সহায়তা, লাগেজ সহায়তা এবং আপনার ঢাকা এয়ারপোর্ট পিকআপের জন্য কার্বেই অপেক্ষমান একটি গাড়ি। আমাদের এয়ারপোর্ট ভিআইপি সেবা তৈরি করা হয়েছে ভ্রমণকারী, পরিবার ও ব্যবসায়িক অতিথিদের জন্য, যারা বাংলাদেশের যেকোনো স্থানে একটি মসৃণ, সুসমন্বিত আগমন বা প্রস্থান চান।",
-    },
-    whoFor: [
-      { en: "International visitors arriving in Dhaka, Chattogram or Sylhet", bn: "ঢাকা, চট্টগ্রাম বা সিলেটে আগমনকারী আন্তর্জাতিক অতিথি" },
-      { en: "Bangladeshi families welcoming relatives home", bn: "স্বজনদের দেশে স্বাগত জানানো বাংলাদেশি পরিবার" },
-      { en: "Business travellers on a tight schedule", bn: "ব্যস্ত সময়সূচির ব্যবসায়িক ভ্রমণকারী" },
-      { en: "Overseas Bangladeshis returning for a visit", bn: "সফরে আসা প্রবাসী বাংলাদেশি" },
-      { en: "Elderly or first-time travellers who want extra support", bn: "অতিরিক্ত সহায়তা চান এমন প্রবীণ বা প্রথমবার ভ্রমণকারী" },
-    ],
-    included: [
-      { en: "Meet & greet at the aircraft door or terminal entrance", bn: "বিমানের দরজা বা টার্মিনাল প্রবেশপথে মিট অ্যান্ড গ্রিট" },
-      { en: "Fast-track immigration and customs coordination", bn: "ফাস্ট-ট্র্যাক ইমিগ্রেশন ও কাস্টমস সমন্বয়" },
-      { en: "Baggage assistance, door to door", bn: "দুয়ার থেকে দুয়ার লাগেজ সহায়তা" },
-      { en: "Lounge access arranged on request", bn: "অনুরোধ অনুযায়ী লাউঞ্জ প্রবেশাধিকার ব্যবস্থা" },
-      { en: "Car staged at the curb for onward travel", bn: "পরবর্তী যাত্রার জন্য কার্বে প্রস্তুত গাড়ি" },
-      { en: "Support for both arrivals and departures", bn: "আগমন ও প্রস্থান উভয়ের জন্য সহায়তা" },
-    ],
-    process: [
-      { title: { en: "Request your reception", bn: "আপনার রিসেপশনের অনুরোধ করুন" }, body: { en: "Select Airport VIP on our request form — takes under a minute.", bn: "আমাদের অনুরোধ ফর্মে এয়ারপোর্ট ভিআইপি নির্বাচন করুন — এক মিনিটেরও কম সময় লাগে।" } },
-      { title: { en: "Send us your flight details", bn: "আপনার ফ্লাইটের তথ্য পাঠান" }, body: { en: "Flight number, date, and which airport — Dhaka, Chattogram or Sylhet.", bn: "ফ্লাইট নম্বর, তারিখ এবং কোন বিমানবন্দর — ঢাকা, চট্টগ্রাম বা সিলেট।" } },
-      { title: { en: "We arrange it on the ground", bn: "আমরা মাঠপর্যায়ে ব্যবস্থা করি" }, body: { en: "Meet & greet and transport are set up before you land.", bn: "আপনি অবতরণের আগেই মিট অ্যান্ড গ্রিট এবং পরিবহন প্রস্তুত থাকে।" } },
-      { title: { en: "Walk straight to your car", bn: "সরাসরি আপনার গাড়িতে যান" }, body: { en: "An officer meets you at the gate and walks you through to a car already waiting.", bn: "একজন কর্মকর্তা গেটেই আপনার সাথে দেখা করবেন এবং অপেক্ষারত গাড়ি পর্যন্ত সঙ্গ দেবেন।" } },
-    ],
-    faqs: [
-      { question: { en: "Which airports do you cover?", bn: "আপনারা কোন কোন বিমানবন্দর কভার করেন?" }, answer: { en: "We cover Hazrat Shahjalal International (Dhaka), Shah Amanat International (Chattogram) and Osmani International (Sylhet).", bn: "আমরা হযরত শাহজালাল আন্তর্জাতিক (ঢাকা), শাহ আমানত আন্তর্জাতিক (চট্টগ্রাম) এবং ওসমানী আন্তর্জাতিক (সিলেট) কভার করি।" } },
-      { question: { en: "Can you arrange airport assistance for elderly travellers?", bn: "প্রবীণ ভ্রমণকারীদের জন্য কি এয়ারপোর্ট সহায়তার ব্যবস্থা করা যায়?" }, answer: { en: "Let us know in your request notes and we'll arrange extra support at the airport.", bn: "আপনার অনুরোধের নোটে জানালে আমরা বিমানবন্দরে অতিরিক্ত সহায়তার ব্যবস্থা করব।" } },
-      { question: { en: "Do you also handle departures?", bn: "আপনারা কি প্রস্থানের ক্ষেত্রেও সহায়তা করেন?" }, answer: { en: "Airport VIP covers both arrival and departure assistance.", bn: "এয়ারপোর্ট ভিআইপি সেবায় আগমন ও প্রস্থান উভয়ের সহায়তা অন্তর্ভুক্ত।" } },
-      { question: { en: "How much notice do you need?", bn: "কতদিন আগে জানাতে হবে?" }, answer: { en: "Submit your request as early as possible; for most flights we can confirm arrangements within 24–48 hours.", bn: "যত দ্রুত সম্ভব আপনার অনুরোধ জমা দিন; বেশিরভাগ ফ্লাইটের ক্ষেত্রে আমরা ২৪-৪৮ ঘণ্টার মধ্যে ব্যবস্থা নিশ্চিত করতে পারি।" } },
-    ],
-    cta: { en: "Request Airport VIP", bn: "এয়ারপোর্ট ভিআইপির জন্য অনুরোধ করুন" },
-  },
-
-  "hotel-car": {
-    h1: { en: "Hotel & Car Booking Across Bangladesh", bn: "সমগ্র বাংলাদেশে হোটেল ও গাড়ি বুকিং" },
-    intro: {
-      en: "We shortlist and personally check accommodation and transport against your schedule and budget, drawing on first-hand knowledge of hotels and drivers in Dhaka, Rajshahi and beyond.",
-      bn: "আমরা আপনার সময়সূচি ও বাজেট অনুযায়ী থাকার ব্যবস্থা ও পরিবহন বাছাই করি এবং ব্যক্তিগতভাবে যাচাই করি, ঢাকা, রাজশাহী ও তার বাইরের হোটেল ও চালকদের সরাসরি অভিজ্ঞতার ভিত্তিতে।",
-    },
-    whoFor: [
-      { en: "Business travellers who need a reliable hotel and vehicle on short notice", bn: "স্বল্প সময়ে নির্ভরযোগ্য হোটেল ও গাড়ি প্রয়োজন এমন ব্যবসায়িক ভ্রমণকারী" },
-      { en: "Families visiting Bangladesh who want vetted, comfortable accommodation", bn: "যাচাইকৃত, আরামদায়ক থাকার ব্যবস্থা চান এমন বাংলাদেশ ভ্রমণকারী পরিবার" },
-      { en: "International visitors unfamiliar with local hotel and transport options", bn: "স্থানীয় হোটেল ও পরিবহন বিকল্পের সাথে অপরিচিত আন্তর্জাতিক অতিথি" },
-      { en: "Organisations booking for staff or delegations", bn: "কর্মী বা প্রতিনিধিদলের জন্য বুকিং করা প্রতিষ্ঠান" },
-    ],
-    included: [
-      { en: "Vetted hotels, from standard to luxury", bn: "স্ট্যান্ডার্ড থেকে লাক্সারি পর্যন্ত যাচাইকৃত হোটেল" },
-      { en: "Airport transfers and point-to-point transport", bn: "এয়ারপোর্ট ট্রান্সফার ও পয়েন্ট-টু-পয়েন্ট পরিবহন" },
-      { en: "Sedan, SUV or van, with or without driver", bn: "চালকসহ বা চালকবিহীন সেডান, এসইউভি বা ভ্যান" },
-      { en: "Itinerary-matched scheduling", bn: "ভ্রমণসূচি অনুযায়ী সময় নির্ধারণ" },
-      { en: "One invoice, one point of contact", bn: "একটি চালান, একটি যোগাযোগ কেন্দ্র" },
-    ],
-    process: [
-      { title: { en: "Tell us your trip", bn: "আপনার ভ্রমণ জানান" }, body: { en: "City, dates, and the kind of vehicle you need.", bn: "শহর, তারিখ এবং আপনার প্রয়োজনীয় গাড়ির ধরন।" } },
-      { title: { en: "We shortlist and confirm", bn: "আমরা বাছাই করে নিশ্চিত করি" }, body: { en: "Vetted hotel options and a matched vehicle, confirmed against your budget.", bn: "যাচাইকৃত হোটেল বিকল্প ও উপযুক্ত গাড়ি, আপনার বাজেট অনুযায়ী নিশ্চিত করা হয়।" } },
-      { title: { en: "One invoice, one contact", bn: "একটি চালান, একটি যোগাযোগ" }, body: { en: "Hotel and transport billed together, one point of contact throughout.", bn: "হোটেল ও পরিবহন একসাথে বিল করা হয়, পুরো সময় একটি যোগাযোগ কেন্দ্র।" } },
-      { title: { en: "Everything's ready on arrival", bn: "পৌঁছানোর সময় সবকিছু প্রস্তুত" }, body: { en: "Your room and driver are confirmed before you land.", bn: "আপনি অবতরণের আগেই আপনার রুম ও চালক নিশ্চিত থাকবে।" } },
-    ],
-    faqs: [
-      { question: { en: "Which cities do you cover for hotel and car bookings?", bn: "হোটেল ও গাড়ি বুকিংয়ের জন্য আপনারা কোন কোন শহর কভার করেন?" }, answer: { en: "Dhaka, Rajshahi and other major Bangladesh cities on request — tell us your destination.", bn: "ঢাকা, রাজশাহী ও অনুরোধ অনুযায়ী বাংলাদেশের অন্যান্য প্রধান শহর — আমাদের আপনার গন্তব্য জানান।" } },
-      { question: { en: "Can I request a chauffeur-driven car only, without a hotel?", bn: "আমি কি শুধু চালকসহ গাড়ি চাইতে পারি, হোটেল ছাড়া?" }, answer: { en: "Hotel and car can be booked separately or together, whichever you need.", bn: "হোটেল ও গাড়ি আলাদা বা একসাথে বুক করা যায়, যেভাবে আপনার প্রয়োজন।" } },
-      { question: { en: "Do you handle airport transfers?", bn: "আপনারা কি এয়ারপোর্ট ট্রান্সফার পরিচালনা করেন?" }, answer: { en: "Airport transfers are part of our standard hotel & car service.", bn: "এয়ারপোর্ট ট্রান্সফার আমাদের স্ট্যান্ডার্ড হোটেল ও গাড়ি সেবার অংশ।" } },
-    ],
-    cta: { en: "Request Hotel & Car", bn: "হোটেল ও গাড়ির জন্য অনুরোধ করুন" },
-  },
-
-  "government-request": {
-    h1: { en: "Government Request Assistance in Bangladesh", bn: "বাংলাদেশে সরকারি কাজের সহায়তা" },
-    intro: {
-      en: "Passport, visa, land records, attestation, trade licences — our desk reviews every case individually and carries it through the registry office, so you don't have to stand in the queue yourself.",
-      bn: "পাসপোর্ট, ভিসা, ভূমি রেকর্ড, সত্যায়ন, ট্রেড লাইসেন্স — আমাদের ডেস্ক প্রতিটি কেস আলাদাভাবে পর্যালোচনা করে এবং নিবন্ধন অফিসের মধ্য দিয়ে এটি সম্পন্ন করে, যাতে আপনাকে নিজে লাইনে দাঁড়াতে না হয়।",
-    },
-    whoFor: [
-      { en: "Individuals needing passport, visa or NOC support", bn: "পাসপোর্ট, ভিসা বা এনওসি সহায়তা প্রয়োজন এমন ব্যক্তি" },
-      { en: "Families handling NID or birth certificate corrections", bn: "এনআইডি বা জন্ম সনদ সংশোধন করছেন এমন পরিবার" },
-      { en: "Landowners requiring land registry or mutation support", bn: "ভূমি নিবন্ধন বা মিউটেশন সহায়তা প্রয়োজন এমন জমির মালিক" },
-      { en: "Businesses needing trade licence or registration assistance", bn: "ট্রেড লাইসেন্স বা নিবন্ধন সহায়তা প্রয়োজন এমন ব্যবসা" },
-      { en: "Overseas Bangladeshis who cannot attend government offices in person", bn: "সরাসরি সরকারি অফিসে যেতে পারেন না এমন প্রবাসী বাংলাদেশি" },
-    ],
-    included: [
-      { en: "Passport application support", bn: "পাসপোর্ট আবেদন সহায়তা" },
-      { en: "Visa extension / NOC assistance", bn: "ভিসা মেয়াদ বৃদ্ধি / এনওসি সহায়তা" },
-      { en: "NID / birth certificate correction", bn: "এনআইডি / জন্ম সনদ সংশোধন" },
-      { en: "Land registry & mutation support", bn: "ভূমি নিবন্ধন ও মিউটেশন সহায়তা" },
-      { en: "Document attestation / notarization", bn: "কাগজপত্র সত্যায়ন / নোটারাইজেশন" },
-      { en: "Trade licence / business registration support", bn: "ট্রেড লাইসেন্স / ব্যবসা নিবন্ধন সহায়তা" },
-      { en: "Direct phone briefing before any work begins", bn: "কাজ শুরুর আগে সরাসরি ফোনে ব্রিফিং" },
-    ],
-    process: [
-      { title: { en: "Tell us the case", bn: "আপনার বিষয়টি জানান" }, body: { en: "Passport, NID, land registry — whatever the matter, describe it on our form.", bn: "পাসপোর্ট, এনআইডি, ভূমি নিবন্ধন — যে বিষয়ই হোক, আমাদের ফর্মে বর্ণনা করুন।" } },
-      { title: { en: "We review it personally", bn: "আমরা ব্যক্তিগতভাবে পর্যালোচনা করি" }, body: { en: "Our desk reviews your case and briefs you by phone before any work begins.", bn: "আমাদের ডেস্ক আপনার বিষয়টি পর্যালোচনা করে এবং কাজ শুরুর আগে ফোনে আপনাকে জানায়।" } },
-      { title: { en: "We carry it through the office", bn: "আমরা অফিসের মাধ্যমে সম্পন্ন করি" }, body: { en: "Our team handles the paperwork and the queue at the relevant government office.", bn: "আমাদের দল সংশ্লিষ্ট সরকারি অফিসে কাগজপত্র ও সারিবদ্ধ প্রক্রিয়া সামলায়।" } },
-      { title: { en: "You get a direct update", bn: "আপনি সরাসরি আপডেট পাবেন" }, body: { en: "We confirm once it's done — no chasing required.", bn: "কাজ শেষ হলে আমরা জানাই — আপনাকে পিছনে ছুটতে হয় না।" } },
-    ],
-    faqs: [
-      { question: { en: "What government services can you help with?", bn: "আপনারা কোন কোন সরকারি সেবায় সহায়তা করতে পারেন?" }, answer: { en: "Passport applications, visa extensions/NOCs, NID and birth certificate corrections, land registry and mutation, document attestation, and trade licence or business registration.", bn: "পাসপোর্ট আবেদন, ভিসা মেয়াদ বৃদ্ধি/এনওসি, এনআইডি ও জন্ম সনদ সংশোধন, ভূমি নিবন্ধন ও মিউটেশন, কাগজপত্র সত্যায়ন এবং ট্রেড লাইসেন্স বা ব্যবসা নিবন্ধন।" } },
-      { question: { en: "Will someone review my case before starting work?", bn: "কাজ শুরুর আগে কি কেউ আমার বিষয়টি পর্যালোচনা করবে?" }, answer: { en: "Our desk reviews every government request individually and confirms scope with you by phone before any work begins.", bn: "আমাদের ডেস্ক প্রতিটি সরকারি অনুরোধ আলাদাভাবে পর্যালোচনা করে এবং কাজ শুরুর আগে ফোনে আপনার সাথে বিষয়টি নিশ্চিত করে।" } },
-      { question: { en: "Can you help if I live outside Bangladesh?", bn: "আমি বাংলাদেশের বাইরে থাকলে কি আপনারা সহায়তা করতে পারবেন?" }, answer: { en: "We regularly assist overseas Bangladeshis who cannot attend government offices in person.", bn: "আমরা নিয়মিতভাবে প্রবাসী বাংলাদেশিদের সহায়তা করি যারা সরাসরি সরকারি অফিসে যেতে পারেন না।" } },
-    ],
-    cta: { en: "Request Government Assistance", bn: "সরকারি সহায়তার জন্য অনুরোধ করুন" },
-  },
-
-  "manpower-security": {
-    h1: { en: "Manpower & Security Services for Bangladesh Businesses", bn: "বাংলাদেশের ব্যবসার জন্য জনবল ও নিরাপত্তা সেবা" },
-    intro: {
-      en: "Trained security personnel and outsourced workforce for organisations, drawing on a licensed staffing and consultancy practice built over years of government and corporate contracts.",
-      bn: "প্রশিক্ষিত নিরাপত্তা কর্মী ও আউটসোর্স করা কর্মীবাহিনী প্রতিষ্ঠানের জন্য, বছরের পর বছর সরকারি ও কর্পোরেট চুক্তির অভিজ্ঞতায় গড়ে ওঠা লাইসেন্সপ্রাপ্ত স্টাফিং ও পরামর্শ প্র্যাকটিসের ভিত্তিতে।",
-    },
-    whoFor: [
-      { en: "Businesses needing outsourced or temporary staffing", bn: "আউটসোর্স বা সাময়িক স্টাফিং প্রয়োজন এমন ব্যবসা" },
-      { en: "Organisations requiring trained security personnel", bn: "প্রশিক্ষিত নিরাপত্তা কর্মী প্রয়োজন এমন প্রতিষ্ঠান" },
-      { en: "Institutions with recurring workforce or compliance needs", bn: "নিয়মিত কর্মীবাহিনী বা কমপ্লায়েন্স প্রয়োজন এমন প্রতিষ্ঠান" },
-      { en: "Companies preparing documentation for staffing contracts", bn: "স্টাফিং চুক্তির জন্য কাগজপত্র প্রস্তুত করছে এমন কোম্পানি" },
-    ],
-    included: [
-      { en: "Licensed staffing & security personnel", bn: "লাইসেন্সপ্রাপ্ত স্টাফিং ও নিরাপত্তা কর্মী" },
-      { en: "Corporate & institutional contracts", bn: "কর্পোরেট ও প্রাতিষ্ঠানিক চুক্তি" },
-      { en: "Documentation and compliance handled", bn: "কাগজপত্র ও কমপ্লায়েন্স পরিচালনা" },
-      { en: "Gulf & overseas placement support for workforce needs", bn: "কর্মীবাহিনীর প্রয়োজনে গালফ ও প্রবাসী প্লেসমেন্ট সহায়তা" },
-    ],
-    process: [
-      { title: { en: "Describe the role", bn: "পদের বিবরণ দিন" }, body: { en: "Roles, headcount and location — tell us what needs staffing or securing.", bn: "পদ, জনসংখ্যা ও অবস্থান — কী স্টাফিং বা নিরাপত্তা প্রয়োজন তা জানান।" } },
-      { title: { en: "We match and vet", bn: "আমরা মিলিয়ে যাচাই করি" }, body: { en: "Candidates are matched against your requirement and vetted before you see a name.", bn: "প্রার্থীদের আপনার প্রয়োজন অনুযায়ী মিলিয়ে যাচাই করা হয়, নাম জানানোর আগেই।" } },
-      { title: { en: "Contract and deployment", bn: "চুক্তি ও নিয়োগ" }, body: { en: "Documentation and compliance handled, personnel deployed on the agreed date.", bn: "কাগজপত্র ও কমপ্লায়েন্স সম্পন্ন করে নির্ধারিত তারিখে কর্মী নিয়োগ করা হয়।" } },
-      { title: { en: "One contact, ongoing", bn: "একটি যোগাযোগ, চলমান" }, body: { en: "We stay your point of contact for the length of the engagement.", bn: "পুরো কাজের সময়কালে আমরা আপনার যোগাযোগ কেন্দ্র থাকি।" } },
-    ],
-    faqs: [
-      { question: { en: "Do you provide security personnel for events or offices?", bn: "আপনারা কি ইভেন্ট বা অফিসের জন্য নিরাপত্তা কর্মী প্রদান করেন?" }, answer: { en: "We supply trained security personnel for both short-term and ongoing engagements.", bn: "আমরা স্বল্পমেয়াদি ও চলমান উভয় কাজের জন্য প্রশিক্ষিত নিরাপত্তা কর্মী সরবরাহ করি।" } },
-      { question: { en: "Can you supply outsourced staff for a business?", bn: "আপনারা কি একটি ব্যবসার জন্য আউটসোর্স করা কর্মী সরবরাহ করতে পারেন?" }, answer: { en: "We support corporate and institutional staffing contracts across Bangladesh.", bn: "আমরা সারা বাংলাদেশে কর্পোরেট ও প্রাতিষ্ঠানিক স্টাফিং চুক্তিতে সহায়তা করি।" } },
-    ],
-    cta: { en: "Request Manpower & Security", bn: "জনবল ও নিরাপত্তার জন্য অনুরোধ করুন" },
-  },
-
-  "courses-careers": {
-    h1: { en: "Courses & Careers", bn: "কোর্স ও ক্যারিয়ার" },
-    intro: {
-      en: "Beyond logistics — the training and placement work HR — The Mediator is known for. Two clear tracks: professional media and public-speaking training, and international careers support for studying or working in the Gulf.",
-      bn: "লজিস্টিকসের বাইরেও — যে প্রশিক্ষণ ও প্লেসমেন্ট কাজের জন্য এইচআর দ্য মিডিয়েটর পরিচিত। দুটি স্পষ্ট ট্র্যাক: পেশাদার মিডিয়া ও পাবলিক স্পিকিং প্রশিক্ষণ, এবং গালফে পড়াশোনা বা কাজের জন্য আন্তর্জাতিক ক্যারিয়ার সহায়তা।",
-    },
-    whoFor: [
-      { en: "Students preparing for media, presentation or public-speaking careers", bn: "মিডিয়া, উপস্থাপনা বা পাবলিক স্পিকিং ক্যারিয়ারের জন্য প্রস্তুতি নিচ্ছেন এমন শিক্ষার্থী" },
-      { en: "Professionals wanting stronger communication and presentation skills", bn: "আরও ভালো যোগাযোগ ও উপস্থাপনা দক্ষতা চান এমন পেশাজীবী" },
-      { en: "Students exploring university study abroad, including the Gulf", bn: "গালফসহ বিদেশে বিশ্ববিদ্যালয়ে পড়াশোনার সন্ধানে থাকা শিক্ষার্থী" },
-      { en: "Jobseekers looking for Gulf employment opportunities", bn: "গালফ কর্মসংস্থানের সুযোগ খুঁজছেন এমন চাকরিপ্রার্থী" },
-    ],
-    included: [
-      { en: "Media & Public Speaking Academy — presentation, communication and confidence training", bn: "মিডিয়া ও পাবলিক স্পিকিং একাডেমি — উপস্থাপনা, যোগাযোগ ও আত্মবিশ্বাস প্রশিক্ষণ" },
-      { en: "International Careers — study-abroad guidance and Gulf employment support", bn: "আন্তর্জাতিক ক্যারিয়ার — বিদেশে পড়াশোনার দিকনির্দেশনা ও গালফ কর্মসংস্থান সহায়তা" },
-      { en: "Visa and documentation assistance for placements", bn: "প্লেসমেন্টের জন্য ভিসা ও কাগজপত্র সহায়তা" },
-      { en: "Pre-departure assistance for students and workers", bn: "শিক্ষার্থী ও কর্মীদের জন্য প্রস্থান-পূর্ব সহায়তা" },
-    ],
-    process: [
-      { title: { en: "Pick a track", bn: "একটি ট্র্যাক বেছে নিন" }, body: { en: "Media & Public Speaking, or International Careers — ask if you're not sure which fits.", bn: "মিডিয়া ও পাবলিক স্পিকিং, অথবা আন্তর্জাতিক ক্যারিয়ার — নিশ্চিত না হলে আমাদের জিজ্ঞাসা করুন।" } },
-      { title: { en: "Tell us where you're starting from", bn: "আপনার বর্তমান অবস্থান জানান" }, body: { en: "Your background, education or occupation, and what you're aiming for.", bn: "আপনার পটভূমি, শিক্ষা বা পেশা এবং লক্ষ্য জানান।" } },
-      { title: { en: "We match you to a path", bn: "আমরা উপযুক্ত পথ নির্ধারণ করি" }, body: { en: "The right programme or placement route, confirmed with you directly.", bn: "সঠিক প্রোগ্রাম বা প্লেসমেন্ট পথ, সরাসরি আপনার সাথে নিশ্চিত করে।" } },
-      { title: { en: "Support through to the finish", bn: "শেষ পর্যন্ত সহায়তা" }, body: { en: "Enrolment or placement, then documentation — we stay involved throughout.", bn: "ভর্তি বা প্লেসমেন্ট, এরপর কাগজপত্র — পুরো সময় আমরা সম্পৃক্ত থাকি।" } },
-    ],
-    faqs: [
-      { question: { en: "What is the Media & Public Speaking Academy?", bn: "মিডিয়া ও পাবলিক স্পিকিং একাডেমি কী?" }, answer: { en: "Training designed to improve public speaking, communication, presentation skills, media skills and professional confidence.", bn: "পাবলিক স্পিকিং, যোগাযোগ, উপস্থাপনা দক্ষতা, মিডিয়া দক্ষতা ও পেশাদার আত্মবিশ্বাস উন্নত করতে ডিজাইন করা প্রশিক্ষণ।" } },
-      { question: { en: "What does International Careers cover?", bn: "আন্তর্জাতিক ক্যারিয়ারে কী কী অন্তর্ভুক্ত?" }, answer: { en: "Overseas university admission, study-abroad guidance, Gulf employment opportunities, career placement, and visa/documentation and pre-departure support.", bn: "বিদেশে বিশ্ববিদ্যালয় ভর্তি, বিদেশে পড়াশোনার দিকনির্দেশনা, গালফ কর্মসংস্থানের সুযোগ, ক্যারিয়ার প্লেসমেন্ট এবং ভিসা/কাগজপত্র ও প্রস্থান-পূর্ব সহায়তা।" } },
-    ],
-    cta: { en: "Explore Courses & Careers", bn: "কোর্স ও ক্যারিয়ার দেখুন" },
-  },
-
-  "media-public-speaking": {
-    h1: { en: "Media & Public Speaking Academy", bn: "মিডিয়া ও পাবলিক স্পিকিং একাডেমি" },
-    intro: {
-      en: "Learn presentation skills from someone who does it on air. News & event hosting, correct pronunciation, radio announcing, reporting, language and public speaking, and soft-skills development — taught by a working national news presenter.",
-      bn: "যিনি নিজে সরাসরি সম্প্রচারে করেন, তার কাছ থেকে উপস্থাপনা দক্ষতা শিখুন। সংবাদ ও ইভেন্ট হোস্টিং, সঠিক উচ্চারণ, রেডিও ঘোষণা, রিপোর্টিং, ভাষা ও পাবলিক স্পিকিং এবং সফট-স্কিলস উন্নয়ন — শেখাচ্ছেন একজন কর্মরত জাতীয় সংবাদ উপস্থাপক।",
-    },
-    whoFor: [
-      { en: "Students who want to improve public speaking and confidence", bn: "পাবলিক স্পিকিং ও আত্মবিশ্বাস উন্নত করতে চান এমন শিক্ষার্থী" },
-      { en: "Aspiring news presenters and media professionals", bn: "উচ্চাকাঙ্ক্ষী সংবাদ উপস্থাপক ও মিডিয়া পেশাজীবী" },
-      { en: "Professionals preparing for presentations or public roles", bn: "উপস্থাপনা বা জনসম্মুখীন ভূমিকার জন্য প্রস্তুতি নিচ্ছেন এমন পেশাজীবী" },
-      { en: "Anyone wanting stronger communication skills", bn: "আরও ভালো যোগাযোগ দক্ষতা চান এমন যে কেউ" },
-    ],
-    included: [
-      { en: "Public speaking and presentation training", bn: "পাবলিক স্পিকিং ও উপস্থাপনা প্রশিক্ষণ" },
-      { en: "Communication and pronunciation coaching", bn: "যোগাযোগ ও উচ্চারণ কোচিং" },
-      { en: "News & event hosting practice", bn: "সংবাদ ও ইভেন্ট হোস্টিং অনুশীলন" },
-      { en: "Radio announcing and reporting fundamentals", bn: "রেডিও ঘোষণা ও রিপোর্টিংয়ের মূল বিষয়" },
-      { en: "Professional confidence and soft-skills development", bn: "পেশাদার আত্মবিশ্বাস ও সফট-স্কিলস উন্নয়ন" },
-    ],
-    process: [
-      { title: { en: "Tell us your goals", bn: "আপনার লক্ষ্য জানান" }, body: { en: "Current education or occupation, and what you want to get out of the academy.", bn: "বর্তমান শিক্ষা বা পেশা, এবং একাডেমি থেকে আপনি কী অর্জন করতে চান।" } },
-      { title: { en: "Pick your format", bn: "আপনার ফরম্যাট বেছে নিন" }, body: { en: "An offline Bangladesh-campus batch, or an online Zoom batch — whichever fits.", bn: "অফলাইন বাংলাদেশ-ক্যাম্পাস ব্যাচ, অথবা অনলাইন জুম ব্যাচ — যেটি উপযুক্ত।" } },
-      { title: { en: "We confirm your batch", bn: "আমরা আপনার ব্যাচ নিশ্চিত করি" }, body: { en: "Dates and format locked in, directly with our team.", bn: "তারিখ ও ফরম্যাট আমাদের দলের সাথে সরাসরি চূড়ান্ত করা হয়।" } },
-      { title: { en: "Train with a working presenter", bn: "একজন কর্মরত উপস্থাপকের সাথে প্রশিক্ষণ নিন" }, body: { en: "Sessions led by a working national news presenter, from day one.", bn: "প্রথম দিন থেকেই একজন কর্মরত জাতীয় সংবাদ উপস্থাপকের নেতৃত্বে সেশন।" } },
-    ],
-    faqs: [
-      { question: { en: "Who teaches the Media & Public Speaking Academy?", bn: "মিডিয়া ও পাবলিক স্পিকিং একাডেমি কে পড়ান?" }, answer: { en: "Our lead trainer is a working national news presenter with on-air experience.", bn: "আমাদের প্রধান প্রশিক্ষক সরাসরি সম্প্রচারের অভিজ্ঞতাসম্পন্ন একজন কর্মরত জাতীয় সংবাদ উপস্থাপক।" } },
-      { question: { en: "Is the course offered online?", bn: "কোর্সটি কি অনলাইনে দেওয়া হয়?" }, answer: { en: "Both an offline Bangladesh-campus batch and an online Zoom batch are available.", bn: "অফলাইন বাংলাদেশ-ক্যাম্পাস ব্যাচ এবং অনলাইন জুম ব্যাচ উভয়ই উপলব্ধ।" } },
-    ],
-    cta: { en: "Explore the Academy", bn: "একাডেমি দেখুন" },
-  },
-
-  "study-work-gulf": {
-    h1: {
-      en: "Study Abroad & International Careers — Gulf, Europe & Beyond",
-      bn: "বিদেশে পড়াশোনা ও আন্তর্জাতিক ক্যারিয়ার — গালফ, ইউরোপ ও আরও অনেক দেশ",
-    },
-    intro: {
-      en: "Two clear pathways, one desk: university admission and study-abroad guidance for students, and verified employment placement for jobseekers — across the Gulf, Europe, North America, Oceania and Asia Pacific. Applied for from Dhaka, Rajshahi or anywhere in Bangladesh, drawing on our licensed staffing and outsourcing practice.",
-      bn: "দুটি স্পষ্ট পথ, একটি ডেস্ক: শিক্ষার্থীদের জন্য বিশ্ববিদ্যালয় ভর্তি ও বিদেশে পড়াশোনার দিকনির্দেশনা, এবং চাকরিপ্রার্থীদের জন্য যাচাইকৃত কর্মসংস্থান প্লেসমেন্ট — গালফ, ইউরোপ, উত্তর আমেরিকা, ওশেনিয়া ও এশিয়া প্যাসিফিক জুড়ে। ঢাকা, রাজশাহী বা সমগ্র বাংলাদেশ থেকে আবেদন করা যায়, আমাদের লাইসেন্সপ্রাপ্ত স্টাফিং ও আউটসোর্সিং প্র্যাকটিসের অভিজ্ঞতায়।",
-    },
-    whoFor: [
-      {
-        en: "Students seeking university admission or study-abroad guidance in Europe, the Gulf or beyond",
-        bn: "ইউরোপ, গালফ বা অন্যান্য দেশে বিশ্ববিদ্যালয় ভর্তি বা বিদেশে পড়াশোনার দিকনির্দেশনা খুঁজছেন এমন শিক্ষার্থী",
-      },
-      { en: "Jobseekers pursuing international employment opportunities", bn: "আন্তর্জাতিক কর্মসংস্থানের সুযোগ খুঁজছেন এমন চাকরিপ্রার্থী" },
-      { en: "Overseas Bangladeshis planning a move abroad", bn: "বিদেশে যাওয়ার পরিকল্পনা করছেন এমন প্রবাসী বাংলাদেশি" },
-      { en: "Families needing pre-departure and documentation support", bn: "প্রস্থান-পূর্ব ও কাগজপত্র সহায়তা প্রয়োজন এমন পরিবার" },
-    ],
-    included: [
-      { en: "Overseas university admission support", bn: "বিদেশে বিশ্ববিদ্যালয় ভর্তি সহায়তা" },
-      {
-        en: "Study-abroad guidance for Europe, the Gulf and other destinations",
-        bn: "ইউরোপ, গালফ ও অন্যান্য গন্তব্যের জন্য বিদেশে পড়াশোনার দিকনির্দেশনা",
-      },
-      { en: "International employment opportunities and career placement", bn: "আন্তর্জাতিক কর্মসংস্থানের সুযোগ ও ক্যারিয়ার প্লেসমেন্ট" },
-      { en: "Visa and documentation support", bn: "ভিসা ও কাগজপত্র সহায়তা" },
-      { en: "Pre-departure assistance", bn: "প্রস্থান-পূর্ব সহায়তা" },
-    ],
-    process: [
-      {
-        title: { en: "Open your file — ৳5,000", bn: "আপনার ফাইল খুলুন — ৳৫,০০০" },
-        body: {
-          en: "A one-time fee to open your student or career file. It covers our desk's assessment of your background and documents, and starts your case work.",
-          bn: "আপনার শিক্ষার্থী বা ক্যারিয়ার ফাইল খোলার জন্য একটি একবারের ফি। এতে আপনার পটভূমি ও কাগজপত্র সম্পর্কে আমাদের ডেস্কের মূল্যায়ন অন্তর্ভুক্ত, এবং আপনার কেসের কাজ শুরু হয়।",
-        },
-      },
-      { title: { en: "Tell us study or work", bn: "পড়াশোনা নাকি কাজ জানান" }, body: { en: "Target country and your current background — student or jobseeker.", bn: "লক্ষ্য দেশ এবং আপনার বর্তমান পটভূমি — শিক্ষার্থী নাকি চাকরিপ্রার্থী।" } },
-      { title: { en: "We verify the placement", bn: "আমরা প্লেসমেন্ট যাচাই করি" }, body: { en: "University admission or employer match, checked before anything is confirmed to you.", bn: "বিশ্ববিদ্যালয় ভর্তি বা নিয়োগকর্তার মিল, আপনাকে নিশ্চিত করার আগেই যাচাই করা হয়।" } },
-      { title: { en: "Visa and documentation", bn: "ভিসা ও কাগজপত্র" }, body: { en: "Paperwork handled ahead of travel, not left for the last week.", bn: "ভ্রমণের আগেই কাগজপত্র সম্পন্ন করা হয়, শেষ সপ্তাহের জন্য ফেলে রাখা হয় না।" } },
-      { title: { en: "Pre-departure briefing", bn: "প্রস্থান-পূর্ব ব্রিফিং" }, body: { en: "A final check-in before you fly, so nothing is a surprise on arrival.", bn: "উড়ালের আগে একটি চূড়ান্ত পর্যালোচনা, যাতে পৌঁছানোর পর কিছু অপ্রত্যাশিত না হয়।" } },
-    ],
-    faqs: [
-      {
-        question: { en: "Is there a fee to start my file?", bn: "আমার ফাইল শুরু করতে কি কোনো ফি আছে?" },
-        answer: {
-          en: "Yes — opening a student or career file costs ৳5,000. This covers our desk's assessment of your background and documents, and starts your case work. Our team will confirm this with you directly after you submit your request.",
-          bn: "হ্যাঁ — একটি শিক্ষার্থী বা ক্যারিয়ার ফাইল খুলতে ৳৫,০০০ খরচ হয়। এতে আপনার পটভূমি ও কাগজপত্রের মূল্যায়ন এবং কেসের কাজ শুরু করা অন্তর্ভুক্ত। আপনার অনুরোধ জমা দেওয়ার পর আমাদের দল সরাসরি আপনার সাথে এটি নিশ্চিত করবে।",
-        },
-      },
-      {
-        question: { en: "Which countries do you support placement for?", bn: "আপনারা কোন কোন দেশে প্লেসমেন্ট সহায়তা দেন?" },
-        answer: {
-          en: "The Gulf (Saudi Arabia, UAE, Qatar, Kuwait, Oman, Bahrain), Europe (UK, Ireland, Germany, France, Italy, Spain, Portugal, Netherlands, Poland, Romania, Malta, Cyprus, Sweden, Denmark, Finland), North America (US, Canada), Oceania (Australia, New Zealand) and Asia Pacific (Malaysia, Singapore, Japan, South Korea).",
-          bn: "গালফ (সৌদি আরব, ইউএই, কাতার, কুয়েত, ওমান, বাহরাইন), ইউরোপ (যুক্তরাজ্য, আয়ারল্যান্ড, জার্মানি, ফ্রান্স, ইতালি, স্পেন, পর্তুগাল, নেদারল্যান্ডস, পোল্যান্ড, রোমানিয়া, মাল্টা, সাইপ্রাস, সুইডেন, ডেনমার্ক, ফিনল্যান্ড), উত্তর আমেরিকা (যুক্তরাষ্ট্র, কানাডা), ওশেনিয়া (অস্ট্রেলিয়া, নিউজিল্যান্ড) এবং এশিয়া প্যাসিফিক (মালয়েশিয়া, সিঙ্গাপুর, জাপান, দক্ষিণ কোরিয়া)।",
-        },
-      },
-      {
-        question: { en: "How can I apply for study abroad or a job overseas from Dhaka?", bn: "ঢাকা থেকে কীভাবে বিদেশে পড়াশোনা বা চাকরির জন্য আবেদন করতে পারি?" },
-        answer: {
-          en: "Submit a request through our International Careers programme with your background and target country. Our Dhaka-based desk reviews your case, matches you with a suitable study or employment path, and handles documentation and pre-departure support.",
-          bn: "আপনার পটভূমি ও লক্ষ্য দেশসহ আমাদের আন্তর্জাতিক ক্যারিয়ার প্রোগ্রামের মাধ্যমে একটি অনুরোধ জমা দিন। আমাদের ঢাকা-ভিত্তিক ডেস্ক আপনার কেস পর্যালোচনা করে, উপযুক্ত পড়াশোনা বা কর্মসংস্থানের পথের সাথে আপনাকে মিলিয়ে দেয়, এবং কাগজপত্র ও প্রস্থান-পূর্ব সহায়তা পরিচালনা করে।",
-        },
-      },
-      { question: { en: "Do you help with visa and documentation?", bn: "আপনারা কি ভিসা ও কাগজপত্রে সহায়তা করেন?" }, answer: { en: "Visa and documentation support plus pre-departure assistance are included.", bn: "ভিসা ও কাগজপত্র সহায়তা এবং প্রস্থান-পূর্ব সহায়তা অন্তর্ভুক্ত।" } },
-    ],
-    cta: { en: "Explore International Careers", bn: "আন্তর্জাতিক ক্যারিয়ার দেখুন" },
-  },
-};
-
-// navLabel per service-page id (data/servicePages.ts) — used for the small
-// eyebrow tag, the "<X> FAQs" heading, and cross-links between service pages.
-export const serviceNavLabelsT: Record<string, { en: string; bn: string }> = {
-  "airport-vip": { en: "Airport VIP", bn: "এয়ারপোর্ট ভিআইপি" },
-  "hotel-car": { en: "Hotel & Car", bn: "হোটেল ও গাড়ি" },
-  "government-request": { en: "Government Request", bn: "সরকারি কাজের সহায়তা" },
-  "manpower-security": { en: "Manpower & Security", bn: "জনবল ও নিরাপত্তা" },
-  "courses-careers": { en: "Courses & Careers", bn: "কোর্স ও ক্যারিয়ার" },
-  "media-public-speaking": { en: "Media & Public Speaking Academy", bn: "মিডিয়া ও পাবলিক স্পিকিং একাডেমি" },
-  "study-work-gulf": {
-    en: "International Careers — Study & Work Abroad",
-    bn: "আন্তর্জাতিক ক্যারিয়ার — বিদেশে পড়াশোনা ও কাজ",
-  },
-};
-
-// GOV_SERVICES / PURPOSES / PROGRAMS select-option lists from lib/constants.ts
-export const govServicesT = [
-  { en: "Passport application support", bn: "পাসপোর্ট আবেদন সহায়তা" },
-  { en: "Visa extension / NOC", bn: "ভিসা মেয়াদ বৃদ্ধি / এনওসি" },
-  { en: "NID / birth certificate correction", bn: "এনআইডি / জন্ম সনদ সংশোধন" },
-  { en: "Land registry & mutation support", bn: "ভূমি নিবন্ধন ও মিউটেশন সহায়তা" },
-  { en: "Document attestation / notarization", bn: "কাগজপত্র সত্যায়ন / নোটারাইজেশন" },
-  { en: "Trade license / business registration", bn: "ট্রেড লাইসেন্স / ব্যবসা নিবন্ধন" },
-  { en: "Other government liaison", bn: "অন্যান্য সরকারি সমন্বয়" },
-];
-
-export const purposesT = [
-  { en: "Business", bn: "ব্যবসা" },
-  { en: "Tourism", bn: "পর্যটন" },
-  { en: "Family visit", bn: "পারিবারিক সফর" },
-  { en: "Diaspora / expatriate return", bn: "প্রবাসী প্রত্যাবর্তন" },
-  { en: "Study", bn: "পড়াশোনা" },
-  { en: "Medical", bn: "চিকিৎসা" },
-  { en: "Government / diplomatic", bn: "সরকারি / কূটনৈতিক" },
-  { en: "Other", bn: "অন্যান্য" },
-];
-
-export const programsT = [
-  { id: "study", en: "Study Abroad Consultation", bn: "বিদেশে পড়াশোনা পরামর্শ" },
-  { id: "media", en: "Media & Public Speaking Academy", bn: "মিডিয়া ও পাবলিক স্পিকিং একাডেমি" },
-  { id: "gulf", en: "Gulf & Overseas Employment", bn: "গালফ ও প্রবাসী কর্মসংস্থান" },
-];
-
-// ---------------------------------------------------------------------
-// Spain Visa Consultancy — the site's primary identity. Everything below
-// is new content for the Spain-focused hero, homepage overview section,
-// the dedicated /spain-visa page, and the matching Booking tab.
-// ---------------------------------------------------------------------
-
-export const homeTopIntro = {
-  eyebrow: { en: "Spain Visa Consultancy · Based in Dhaka, Bangladesh", bn: "স্পেন ভিসা কনসালটেন্সি · ঢাকা, বাংলাদেশ থেকে পরিচালিত" },
-  h1: {
-    en: "Spain Visa Consultants in Bangladesh — Digital Nomad, Study, Work & Tourist Visa",
-    bn: "বাংলাদেশে স্পেন ভিসা পরামর্শদাতা — ডিজিটাল নোম্যাড, স্টাডি, ওয়ার্ক ও ট্যুরিস্ট ভিসা",
-  },
-  summary: {
-    en: "HR — The Mediator is the Dhaka-based Spain visa consultation firm guiding clients from Bangladesh to Spain, start to finish. We cover the Digital Nomad Visa (ARTIN) in full detail, and we directly handle Spain Study Visa, Work Visa and Tourist/Visitor Visa applications for clients across Dhaka and the rest of Bangladesh, with Permanent Residency guidance as we expand — alongside visa and placement consultation for other countries, including the Gulf and Australia. Tell us which visa you need below, and our desk will guide you from eligibility and documents to the right application route and submission.",
-    bn: "এইচআর দ্য মিডিয়েটর হলো ঢাকাভিত্তিক স্পেন ভিসা কনসালটেশন ফার্ম, যা বাংলাদেশ থেকে স্পেন পর্যন্ত ক্লায়েন্টদের শুরু থেকে শেষ পর্যন্ত গাইড করে। আমরা ডিজিটাল নোম্যাড ভিসা (ARTIN) নিয়ে সম্পূর্ণ বিস্তারিতভাবে কাজ করি, এবং সরাসরি ঢাকাসহ বাংলাদেশজুড়ে ক্লায়েন্টদের জন্য স্পেনের স্টাডি ভিসা, ওয়ার্ক ভিসা ও ট্যুরিস্ট/ভিজিটর ভিসার আবেদন পরিচালনা করি, সাথে পার্মানেন্ট রেসিডেন্সির পরামর্শও সম্প্রসারিত হচ্ছে — পাশাপাশি গালফ ও অস্ট্রেলিয়াসহ অন্যান্য দেশের ভিসা ও কর্মসংস্থান পরামর্শও দিই। নিচে আপনার প্রয়োজনীয় ভিসা জানান, আমাদের ডেস্ক যোগ্যতা যাচাই ও কাগজপত্র থেকে শুরু করে সঠিক আবেদনের পথ ও জমা পর্যন্ত আপনাকে গাইড করবে।",
-  },
-};
-
-export const spainHero = {
-  eyebrow: { en: "Spain Visa Consultants · Based in Bangladesh", bn: "স্পেন ভিসা পরামর্শদাতা · বাংলাদেশ থেকে পরিচালিত" },
-  h1: { en: "Your Path to Spain, Handled Start to Finish", bn: "স্পেনে যাওয়ার পথ, শুরু থেকে শেষ পর্যন্ত আমরাই সামলাই" },
-  paragraph: {
-    en: "We are HR — The Mediator's Spain Visa Consultancy, based in Bangladesh — specialists in Spain's Digital Nomad Visa (ARTIN), and we also handle Spain Study, Work and Visitor visas directly, with Permanent Residency guidance as we expand. Eligibility, documents, the right application route, and your consultation — coordinated from one trusted desk.",
-    bn: "আমরা এইচআর দ্য মিডিয়েটরের স্পেন ভিসা কনসালটেন্সি, বাংলাদেশ থেকে পরিচালিত — স্পেনের ডিজিটাল নোম্যাড ভিসা (ARTIN)-এ বিশেষজ্ঞ, এবং আমরা সরাসরি স্পেনের স্টাডি, ওয়ার্ক ও ভিজিটর ভিসাও পরিচালনা করি, সাথে পার্মানেন্ট রেসিডেন্সির পরামর্শও সম্প্রসারিত হচ্ছে। যোগ্যতা যাচাই, কাগজপত্র, সঠিক আবেদনের পথ এবং পরামর্শ — সবকিছু একটি বিশ্বস্ত ডেস্ক থেকে সমন্বিত।",
-  },
-  ctaExplore: { en: "Explore Spain Visas", bn: "স্পেন ভিসা দেখুন" },
-  ctaConsult: { en: "Request a Consultation", bn: "পরামর্শের জন্য অনুরোধ করুন" },
-  badgeTag: { en: "Updated November 2026", bn: "নভেম্বর ২০২৬ অনুযায়ী হালনাগাদ" },
-  badgeTitle: { en: "Digital Nomad Visa (ARTIN)", bn: "ডিজিটাল নোম্যাড ভিসা (ARTIN)" },
-  otherServicesNote: {
-    en: "We also continue our original services — Dhaka Airport VIP, government-request assistance, manpower & security staffing, and placement across the Gulf & Australia.",
-    bn: "আমরা আমাদের পূর্বের সেবাগুলোও চালিয়ে যাচ্ছি — ঢাকা এয়ারপোর্ট ভিআইপি, সরকারি কাজে সহায়তা, জনবল ও নিরাপত্তা স্টাফিং, এবং গালফ ও অস্ট্রেলিয়ায় কর্মসংস্থান।",
-  },
-};
-
-export const otherServicesSection = {
-  eyebrow: { en: "Also From Our Desk", bn: "আমাদের ডেস্ক থেকে আরও" },
-  h2: { en: "Our Other Services", bn: "আমাদের অন্যান্য সেবা" },
-  intro: {
-    en: "Before we became a Spain visa consultancy, we built a track record on these — and we still run them every day for clients across Bangladesh.",
-    bn: "স্পেন ভিসা কনসালটেন্সি হওয়ার আগে আমরা এই সেবাগুলোতে আস্থা অর্জন করেছি — এবং আমরা এখনও প্রতিদিন বাংলাদেশজুড়ে গ্রাহকদের জন্য এগুলো পরিচালনা করি।",
-  },
-};
-
-export type SpainVisaKey = "digital-nomad" | "study" | "work" | "visitor" | "permanent-residency";
-
-export const spainVisaTypesT: { key: SpainVisaKey; title: { en: string; bn: string }; summary: { en: string; bn: string }; available: boolean }[] = [
-  {
-    key: "digital-nomad",
-    title: { en: "Digital Nomad Visa", bn: "ডিজিটাল নোম্যাড ভিসা" },
-    summary: {
-      en: "Live in Spain while working remotely for a non-Spanish employer or clients — no local job offer needed.",
-      bn: "বিদেশি নিয়োগকর্তা বা ক্লায়েন্টদের জন্য রিমোট কাজ করে স্পেনে বসবাস করুন — স্থানীয় চাকরির অফার লাগে না।",
-    },
-    available: true,
-  },
-  {
-    key: "study",
-    title: { en: "Study Visa", bn: "স্টাডি ভিসা" },
-    summary: {
-      en: "We handle Spain study-visa applications for university and language-school admission — talk to our desk about your eligibility and documents.",
-      bn: "আমরা সরাসরি স্পেনের বিশ্ববিদ্যালয় ও ভাষা স্কুলে ভর্তির জন্য স্টাডি ভিসার আবেদন পরিচালনা করি — আপনার যোগ্যতা ও কাগজপত্র নিয়ে আমাদের ডেস্কের সাথে কথা বলুন।",
-    },
-    available: false,
-  },
-  {
-    key: "work",
-    title: { en: "Work Visa", bn: "ওয়ার্ক ভিসা" },
-    summary: {
-      en: "We handle Spain employment-visa applications for jobs with a Spanish employer — talk to our desk about your specific case.",
-      bn: "আমরা সরাসরি স্প্যানিশ নিয়োগকর্তার অধীনে কাজের জন্য ওয়ার্ক ভিসার আবেদন পরিচালনা করি — আপনার নির্দিষ্ট পরিস্থিতি নিয়ে আমাদের ডেস্কের সাথে কথা বলুন।",
-    },
-    available: false,
-  },
-  {
-    key: "visitor",
-    title: { en: "Visitor Visa", bn: "ভিজিটর ভিসা" },
-    summary: {
-      en: "We handle Spain short-stay visitor visas for tourism, business and family visits — talk to our desk about your travel purpose and documents.",
-      bn: "আমরা সরাসরি পর্যটন, ব্যবসা ও পারিবারিক সফরের জন্য স্পেনের স্বল্পমেয়াদী ভিজিটর ভিসা পরিচালনা করি — আপনার ভ্রমণের উদ্দেশ্য ও কাগজপত্র নিয়ে আমাদের ডেস্কের সাথে কথা বলুন।",
-    },
-    available: false,
-  },
-  {
-    key: "permanent-residency",
-    title: { en: "Permanent Residency", bn: "পার্মানেন্ট রেসিডেন্সি" },
-    summary: {
-      en: "Long-term and permanent residency pathways in Spain — ask us as we expand this part of our practice.",
-      bn: "স্পেনে দীর্ঘমেয়াদী ও স্থায়ী বসবাসের পথ — আমাদের এই প্র্যাকটিস সম্প্রসারিত হওয়ার সাথে সাথে জিজ্ঞাসা করুন।",
-    },
-    available: false,
-  },
-];
-
-export const spainVisaPageT = {
-  eyebrow: { en: "Spain Visa Consultancy", bn: "স্পেন ভিসা কনসালটেন্সি" },
-  h1: { en: "Spain Digital Nomad Visa (ARTIN)", bn: "স্পেন ডিজিটাল নোম্যাড ভিসা (ARTIN)" },
-  intro: {
-    en: "Officially the International Teleworking Residence Authorisation (ARTIN), introduced under Spain's 2023 Startup Law. It lets you live in Spain while working remotely for a company or clients based outside Spain — no Spanish employer or local job offer required.",
-    bn: "এর সরকারি নাম \"ইন্টারন্যাশনাল টেলিওয়ার্ক রেসিডেন্স অথরাইজেশন\" (ARTIN), যা স্পেনের ২০২৩ সালের স্টার্টআপ আইনের অধীনে চালু হয়েছে। এই ভিসায় স্পেনে থেকে স্পেনের বাইরের কোম্পানি বা ক্লায়েন্টের হয়ে রিমোট কাজ করা যায় — স্প্যানিশ নিয়োগকর্তা বা স্থানীয় চাকরির অফার লাগে না।",
-  },
-  updatedNote: { en: "Information current as of November 2026.", bn: "তথ্য নভেম্বর ২০২৬ অনুযায়ী হালনাগাদ।" },
-
-  whoHeading: { en: "Who Can Apply", bn: "কারা আবেদন করতে পারবেন" },
-  whoItems: [
-    {
-      en: "Remote employees of a foreign company, or freelancers working mainly with foreign clients.",
-      bn: "বিদেশি কোম্পানির রিমোট কর্মচারী, অথবা বিদেশি ক্লায়েন্টদের সাথে কাজ করা ফ্রিল্যান্সার।",
-    },
-    {
-      en: "Income from Spanish companies or clients cannot exceed 20% of your total professional income.",
-      bn: "স্প্যানিশ কোম্পানি বা ক্লায়েন্ট থেকে আয় মোট পেশাগত আয়ের ২০% এর বেশি হতে পারবে না।",
-    },
-    {
-      en: "Usually requires a university degree, or at least 3 years of relevant professional experience.",
-      bn: "সাধারণত বিশ্ববিদ্যালয়ের ডিগ্রি থাকতে হয়, অথবা কমপক্ষে ৩ বছরের প্রাসঙ্গিক পেশাগত অভিজ্ঞতা।",
-    },
-    {
-      en: "At least 3 months' existing relationship with the foreign company or clients; that company must have been operating for at least 1 year.",
-      bn: "বিদেশি কোম্পানির সাথে কমপক্ষে ৩ মাসের সম্পর্ক থাকতে হবে। কোম্পানিটি কমপক্ষে ১ বছর ধরে চালু থাকতে হবে।",
-    },
-  ],
-
-  incomeHeading: { en: "Income Requirements (2026)", bn: "আয়ের শর্ত (২০২৬)" },
-  incomeIntro: {
-    en: "New applications and renewals both use the current rate.",
-    bn: "নতুন আবেদন ও নবায়ন — দুটোতেই বর্তমান হার প্রযোজ্য।",
-  },
-  incomeColumns: {
-    applicant: { en: "Applicant", bn: "আবেদনকারী" },
-    eur: { en: "Required (EUR)", bn: "প্রয়োজনীয় আয় (ইউরো)" },
-    bdt: { en: "Equivalent (BDT)", bn: "সমপরিমাণ (টাকা)" },
-  },
-  incomeRows: [
-    {
-      label: { en: "Main applicant", bn: "মূল আবেদনকারী" },
-      sub: { en: "Monthly gross income", bn: "মাসিক মোট আয়" },
-      value: { en: "€2,849 / month", bn: "€২,৮৪৯ / মাস" },
-      bdt: { en: "≈ Tk 4,04,600 / month", bn: "≈ ৪,০৪,৬০০ টাকা / মাস" },
-    },
-    {
-      label: { en: "Main applicant", bn: "মূল আবেদনকারী" },
-      sub: { en: "Annual gross income", bn: "বার্ষিক মোট আয়" },
-      value: { en: "€34,188 / year", bn: "€৩৪,১৮৮ / বছর" },
-      bdt: { en: "≈ Tk 48.5 lakh / year", bn: "≈ ৪৮.৫ লাখ টাকা / বছর" },
-    },
-    {
-      label: { en: "Spouse / partner", bn: "স্বামী / স্ত্রী" },
-      sub: { en: "Additional, per month", bn: "অতিরিক্ত, প্রতি মাসে" },
-      value: { en: "+ €1,068 / month", bn: "+ €১,০৬৮ / মাস" },
-      bdt: { en: "≈ + Tk 1,51,700 / month", bn: "≈ + ১,৫১,৭০০ টাকা / মাস" },
-    },
-    {
-      label: { en: "Each child / dependant", bn: "প্রতিটি সন্তান / নির্ভরশীল" },
-      sub: { en: "Additional, per month", bn: "অতিরিক্ত, প্রতি মাসে" },
-      value: { en: "+ €356 / month", bn: "+ €৩৫৬ / মাস" },
-      bdt: { en: "≈ + Tk 50,600 / month", bn: "≈ + ৫০,৬০০ টাকা / মাস" },
-    },
-  ],
-  incomeExample: {
-    en: "Example: a couple with one child needs about €4,273 / month (≈ Tk 6,06,800).",
-    bn: "উদাহরণ: স্বামী-স্ত্রী ও এক সন্তানের পরিবারের জন্য মাসে প্রায় €৪,২৭৩ (≈ ৬,০৬,৮০০ টাকা) আয় দেখাতে হবে।",
-  },
-  incomeRateNote: {
-    en: "Taka figures are indicative, converted at €1 ≈ Tk 142 (mid-market rate, November 2026) and rounded. Income must be shown in your payslips, contracts and bank statements; the official threshold is set in euros.",
-    bn: "টাকার অঙ্কগুলো আনুমানিক — €১ ≈ ১৪২ টাকা হারে (মিড-মার্কেট রেট, নভেম্বর ২০২৬) রূপান্তর ও রাউন্ড করা। আয়ের প্রমাণ পে-স্লিপ, চুক্তিপত্র ও ব্যাংক স্টেটমেন্টে দেখাতে হবে; সরকারি সীমা ইউরোতে নির্ধারিত।",
-  },
-  incomeDisclaimer: {
-    en: "The threshold is 200% of Spain's national minimum wage (SMI) and is revised each year — it rose from €2,763 / month in 2025 to €2,849 / month in 2026. Please confirm the current figure with our team before you apply.",
-    bn: "এই সীমা স্পেনের জাতীয় ন্যূনতম মজুরির (SMI) ২০০% এবং প্রতি বছর হালনাগাদ হয় — ২০২৫ সালে মাসে €২,৭৬৩ থেকে ২০২৬ সালে বেড়ে €২,৮৪৯ হয়েছে। আবেদনের আগে আমাদের টিমের সাথে সর্বশেষ অঙ্ক নিশ্চিত করে নিন।",
-  },
-
-  documentsHeading: { en: "Required Documents", bn: "প্রয়োজনীয় কাগজপত্র" },
-  documents: [
-    { en: "Valid passport", bn: "বৈধ পাসপোর্ট" },
-    { en: "Police clearance certificates from every country lived in over the last 5 years", bn: "বিগত ৫ বছরে যেসব দেশে ছিলেন, সেসব দেশের পুলিশ ক্লিয়ারেন্স সনদ" },
-    { en: "Full private Spanish health insurance, with no co-payments", bn: "স্পেনে বৈধ, পূর্ণাঙ্গ প্রাইভেট হেলথ ইন্স্যুরেন্স (কো-পেমেন্ট ছাড়া)" },
-    { en: "Employment or client contract, remote-work authorisation letter, and company registration certificate", bn: "চাকরির চুক্তি বা ক্লায়েন্ট কন্ট্রাক্ট, রিমোট কাজের অনুমতিপত্র, কোম্পানির রেজিস্ট্রেশন সার্টিফিকেট" },
-    { en: "Proof of income: payslips, bank statements or tax returns from the last 3–6 months", bn: "আয়ের প্রমাণ: গত ৩–৬ মাসের পে-স্লিপ, ব্যাংক স্টেটমেন্ট বা ট্যাক্স রিটার্ন" },
-    { en: "Degree certificate, or proof of 3+ years' experience", bn: "ডিগ্রি সনদ, অথবা ৩+ বছরের অভিজ্ঞতার সনদ" },
-    { en: "Proof of social security coverage", bn: "সোশ্যাল সিকিউরিটি কভারেজের প্রমাণ" },
-    { en: "Foreign documents legalised or apostilled, with official Spanish translation", bn: "বিদেশি কাগজপত্র লিগালাইজড বা অ্যাপোস্টিল করা এবং স্প্যানিশ ভাষায় সরকারি অনুবাদকৃত" },
-  ],
-
-  pathsHeading: { en: "Two Ways to Apply", bn: "আবেদনের দুই পথ" },
-  paths: [
-    {
-      title: { en: "Consulate route", bn: "কনস্যুলেট পথ" },
-      body: {
-        en: "Apply from outside Spain — e.g. the Spanish Embassy in Dhaka. Grants an initial 1-year visa. Processing takes about 45 days.",
-        bn: "দেশের বাইরে থেকে, যেমন ঢাকার স্প্যানিশ দূতাবাস থেকে আবেদন করলে প্রথমে ১ বছরের ভিসা পাওয়া যায়। প্রক্রিয়াকরণে প্রায় ৪৫ দিন লাগে।",
-      },
-    },
-    {
-      title: { en: "Inside Spain (UGE)", bn: "স্পেনের ভেতর থেকে (UGE)" },
-      body: {
-        en: "Apply online while legally resident in Spain, via the Unidad de Grandes Empresas. Grants an initial 3-year permit. Processing takes about 20 days.",
-        bn: "বৈধভাবে স্পেনে থাকা অবস্থায় Unidad de Grandes Empresas-এর মাধ্যমে অনলাইনে আবেদন করা যায়। প্রথমেই ৩ বছরের অনুমতি মেলে। প্রক্রিয়াকরণে প্রায় ২০ দিন লাগে।",
-      },
-    },
-  ],
-  pathsNote: {
-    en: "After approval, you'll give fingerprints at a police station to collect your TIE residence card.",
-    bn: "অনুমোদনের পর পুলিশ স্টেশনে আঙুলের ছাপ দিয়ে আপনার TIE কার্ড সংগ্রহ করতে হবে।",
-  },
-
-  futureHeading: { en: "Duration & What Comes Next", bn: "মেয়াদ ও পরবর্তী ধাপ" },
-  futureItems: [
-    { en: "Renewable up to a total of 5 years, after which permanent residency becomes available.", bn: "নবায়ন করে সর্বোচ্চ ৫ বছর থাকা যায়, এরপর স্থায়ী বসবাসের (Permanent Residence) সুযোগ তৈরি হয়।" },
-    { en: "Visa-free travel across 29 Schengen countries while holding this visa.", bn: "এই ভিসা থাকাকালীন ২৯টি শেনজেন দেশে ভিসামুক্ত ভ্রমণ করা যায়।" },
-    { en: "Spanish citizenship generally requires 10 years of legal residence.", bn: "স্প্যানিশ নাগরিকত্বের জন্য সাধারণত ১০ বছরের বৈধ বসবাস প্রয়োজন।" },
-  ],
-
-  otherVisasHeading: { en: "Other Spain Visas We Handle", bn: "আমরা পরিচালনা করি স্পেনের আরও যেসব ভিসা" },
-  otherVisasIntro: {
-    en: "Alongside the Digital Nomad Visa, we directly handle Spain Study, Work and Visitor visa applications from Bangladesh, with Permanent Residency guidance as we expand. Reach out and our desk will guide you through what's currently required for your case.",
-    bn: "ডিজিটাল নোম্যাড ভিসার পাশাপাশি, আমরা বাংলাদেশ থেকে সরাসরি স্পেনের স্টাডি, ওয়ার্ক ও ভিজিটর ভিসার আবেদন পরিচালনা করি, সাথে পার্মানেন্ট রেসিডেন্সির পরামর্শও সম্প্রসারিত হচ্ছে। যোগাযোগ করুন, আমাদের ডেস্ক আপনার ক্ষেত্রে বর্তমান প্রয়োজনীয়তা নিয়ে গাইড করবে।",
-  },
-
-  ctaHeading: { en: "Ready to Start Your Spain Application?", bn: "স্পেনের আবেদন শুরু করতে প্রস্তুত?" },
-  ctaBody: {
-    en: "Submit a consultation request and our desk will review your background and confirm the right visa route for you.",
-    bn: "একটি পরামর্শের অনুরোধ জমা দিন, আমাদের ডেস্ক আপনার পটভূমি পর্যালোচনা করে সঠিক ভিসার পথ নিশ্চিত করবে।",
-  },
-  ctaButton: { en: "Request Spain Visa Consultation", bn: "স্পেন ভিসা পরামর্শের অনুরোধ করুন" },
+  eyebrow: dup("Contact"),
+  h1: dup("Get in Touch"),
+  intro: dup("Reach us directly, or submit an enquiry below and we'll follow up right away."),
+  requestService: dup("Get in Touch"),
+  fallbackReachDesk: dup("Reach us"),
+  fallbackFindUs: dup("Office"),
 };

@@ -71,14 +71,14 @@ export default class ErrorBoundary extends Component<Props, State> {
             </button>
             <div className="flex gap-3">
               <a
-                href="tel:+8801717013150"
+                href="tel:+610000000000"
                 className="flex-1 inline-flex items-center justify-center gap-2 px-5 py-3 rounded-full font-medium text-[13.5px] border border-border text-ink-soft hover:border-navy hover:text-navy transition-colors"
               >
                 <Phone size={14} />
                 Call us
               </a>
               <a
-                href="https://wa.me/8801717013150"
+                href="https://wa.me/610000000000"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="flex-1 inline-flex items-center justify-center gap-2 px-5 py-3 rounded-full font-medium text-[13.5px] border border-border text-ink-soft hover:border-[#25D366] hover:text-[#25D366] transition-colors"

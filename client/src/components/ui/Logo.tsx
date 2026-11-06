@@ -1,8 +1,5 @@
 import { motion } from "framer-motion";
 
-// Brand mark: blue-to-green gradient handshake-in-circle icon (fixed
-// brand colors, not theme-reactive via currentColor). Works from a
-// 320px header badge down to a 16px favicon context.
 export default function LogoMark({
   size = 36,
   className = "",
@@ -17,7 +14,7 @@ export default function LogoMark({
       src="/logo-icon.png"
       width={size}
       height={size}
-      alt="HR — The Mediator"
+      alt="ARK Property Solution"
       className={className}
       style={{ width: size, height: size, objectFit: "contain" }}
       draggable={false}

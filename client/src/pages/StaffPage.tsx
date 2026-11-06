@@ -3,8 +3,8 @@ import StaffDashboard from "../components/StaffDashboard";
 
 export default function StaffPage({ onToast }: { onToast: (msg: string) => void }) {
   useSeo({
-    title: "Staff Dashboard | HR — The Mediator",
-    description: "Staff sign-in and request management for HR — The Mediator.",
+    title: "Staff Dashboard | ARK Property Solution",
+    description: "Staff sign-in and enquiry management for ARK Property Solution.",
     path: "/staff",
     noindex: true,
   });

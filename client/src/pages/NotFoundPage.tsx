@@ -6,8 +6,8 @@ import { SERVICE_PAGE_LIST } from "../data/servicePages";
 
 export default function NotFoundPage() {
   useSeo({
-    title: "Page Not Found | HR — The Mediator",
-    description: "The page you're looking for doesn't exist. Explore HR — The Mediator's services or return to the homepage.",
+    title: "Page Not Found | ARK Property Solution",
+    description: "The page you're looking for doesn't exist. Explore ARK Property Solution's services or return to the homepage.",
     path: "/404",
     noindex: true,
   });

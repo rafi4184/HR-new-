@@ -8,41 +8,33 @@ import type { Contact } from "../types";
 import { useDict } from "../lib/i18n";
 import { contactPageT } from "../lib/translations";
 
+// Placeholder contact details — replace with ARK Property Solution's real
+// phone, email and office address before launch.
 const FALLBACK_CONTACTS: Contact[] = [
   {
     id: -1,
-    label: "Reach the desk",
-    phone: "01717013150",
-    email: "hrthemediator@gmail.com",
+    label: "Reach us",
+    phone: "(02) 0000 0000",
+    email: "hello@arkpropertysolution.com.au",
     address: null,
     whatsapp: null,
     sortOrder: 0,
   },
   {
     id: -2,
-    label: "Corporate Head Office",
+    label: "Office",
     phone: null,
     email: null,
-    address: "7A/16, Block-F, Aziz Mohalla, Mohammadpur, Dhaka-1207, Bangladesh",
+    address: "Sydney, NSW, Australia",
     whatsapp: null,
     sortOrder: 1,
-  },
-  {
-    id: -3,
-    label: "Find us — Australia",
-    phone: null,
-    email: null,
-    address: "6 Cross Street, Bankstown NSW 2200, Australia",
-    whatsapp: null,
-    sortOrder: 2,
   },
 ];
 
 export default function ContactPage() {
   useSeo({
-    title: "Contact Us | HR — The Mediator",
-    description:
-      "Contact HR — The Mediator in Dhaka, Bangladesh. Call, WhatsApp or email our desk, or submit a service request directly.",
+    title: "Contact Us | ARK Property Solution",
+    description: "Contact ARK Property Solution in Sydney, NSW. Call, email, or submit an enquiry directly.",
     path: "/contact",
   });
 

@@ -1,6 +1,6 @@
 import { forwardRef, type FormEvent } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Search, ShieldAlert, XCircle, CreditCard } from "lucide-react";
+import { Search, ShieldAlert, XCircle } from "lucide-react";
 import { Field, inputClass } from "./ui/Field";
 import StatusPill from "./ui/StatusPill";
 import StatusTimeline, { type TimelineStage } from "./ui/StatusTimeline";
@@ -10,16 +10,10 @@ import { trackRequestT } from "../lib/translations";
 
 function timelineFor(
   result: ServiceRequest,
-  stageLabels: Record<"received" | "approved" | "approvedFeeDue" | "paid" | "completed", string>
+  stageLabels: Record<"received" | "approved" | "paid" | "completed", string>
 ): { stages: TimelineStage[]; currentIndex: number } {
-  const hasFee = result.type === "Government Request" && result.fee != null;
-  const keys: (keyof typeof stageLabels)[] = hasFee
-    ? ["received", "approved", "paid", "completed"]
-    : ["received", "approved", "completed"];
-  const stages = keys.map((key) => ({
-    key,
-    label: key === "approved" && hasFee ? stageLabels.approvedFeeDue : stageLabels[key],
-  }));
+  const keys: (keyof typeof stageLabels)[] = ["received", "approved", "completed"];
+  const stages = keys.map((key) => ({ key, label: stageLabels[key] }));
   return { stages, currentIndex: Math.max(0, keys.indexOf(result.status as keyof typeof stageLabels)) };
 }
 
@@ -29,9 +23,8 @@ const TrackRequest = forwardRef<
     loading: boolean;
     result: ServiceRequest | "notfound" | null;
     onSubmit: (ticket: string, name: string, dob: string) => void;
-    onPay: (req: ServiceRequest) => void;
   }
->(function TrackRequest({ loading, result, onSubmit, onPay }, ref) {
+>(function TrackRequest({ loading, result, onSubmit }, ref) {
   const T = useDict({
     h2: trackRequestT.h2,
     subtitle: trackRequestT.subtitle,
@@ -42,7 +35,6 @@ const TrackRequest = forwardRef<
     notFound: trackRequestT.notFound,
     rejected: trackRequestT.rejected,
     contactDeskFallback: trackRequestT.contactDeskFallback,
-    payButton: trackRequestT.payButton,
   });
   const stageLabels = useDict(trackRequestT.stageLabels);
 
@@ -67,7 +59,7 @@ const TrackRequest = forwardRef<
       <form onSubmit={runTrack} className="rounded-2xl border border-border p-6 md:p-8 mb-6 bg-white shadow-card">
         <div className="grid sm:grid-cols-3 gap-x-5">
           <Field label={T.ticketNumber} required>
-            <input name="ticket" required placeholder="HRM-100..." className={inputClass} />
+            <input name="ticket" required placeholder="ARK-100..." className={inputClass} />
           </Field>
           <Field label={T.fullName} required>
             <input name="name" required className={inputClass} />
@@ -110,7 +102,7 @@ const TrackRequest = forwardRef<
 
         {result && result !== "notfound" && !loading && (
           <motion.div
-            key={result.status + String(result.fee)}
+            key={result.status}
             initial={{ opacity: 0, scale: 0.96 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.3 }}
@@ -120,7 +112,7 @@ const TrackRequest = forwardRef<
               <span className="text-[11px] font-medium text-ink-faint">
                 {result.ticket} · {result.type}
               </span>
-              <StatusPill status={result.status} fee={result.fee} />
+              <StatusPill status={result.status} />
             </div>
             <div className="text-[15px] mb-5">{result.summary}</div>
 
@@ -137,15 +129,6 @@ const TrackRequest = forwardRef<
                 const { stages, currentIndex } = timelineFor(result, stageLabels);
                 return <StatusTimeline stages={stages} currentIndex={currentIndex} />;
               })()
-            )}
-
-            {result.type === "Government Request" && result.status === "approved" && result.fee != null && (
-              <button
-                onClick={() => onPay(result)}
-                className="mt-5 flex items-center gap-2 text-[13px] font-medium px-4 py-2.5 rounded-md bg-navy text-white active:scale-[0.97] transition-transform"
-              >
-                <CreditCard size={14} /> {T.payButton.replace("{fee}", result.fee.toLocaleString())}
-              </button>
             )}
           </motion.div>
         )}
