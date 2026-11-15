@@ -3,7 +3,10 @@
 // ../lib/i18n. Internal staff/admin screens stay English-only for now.
 
 export const header = {
-  tagline: { en: "Spain Visa Consultants", bn: "স্পেন ভিসা পরামর্শদাতা" },
+  tagline: {
+    en: "Visa, Airport, Accommodation - All Services Here",
+    bn: "ভিসা, এয়ারপোর্ট, থাকার ব্যবস্থা - সকল সেবা এখানে",
+  },
   home: { en: "Home", bn: "হোম" },
   spainVisa: { en: "Spain Visa", bn: "স্পেন ভিসা" },
   services: { en: "Other Services", bn: "অন্যান্য সেবা" },
