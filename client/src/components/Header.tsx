@@ -87,7 +87,7 @@ export default function Header() {
         scrolled ? "bg-white shadow-soft border-b border-border" : "bg-transparent border-b border-transparent"
       }`}
     >
-      <div className="flex items-center justify-between px-5 md:px-10 py-3.5 max-w-7xl mx-auto">
+      <div className="flex items-start justify-between px-5 md:px-10 py-3.5 max-w-7xl mx-auto">
         <Link
           to="/"
           className="flex flex-col items-center gap-1.5 sm:gap-2 min-w-0 shrink py-1.5"
@@ -108,7 +108,7 @@ export default function Header() {
           </div>
         </Link>
 
-        <nav className="hidden lg:flex items-center gap-7">
+        <nav className="hidden lg:flex items-center gap-7 pt-4">
           <NavLink to="/" className={linkClass} end>
             {({ isActive }) => (
               <>
@@ -215,7 +215,7 @@ export default function Header() {
           </NavLink>
         </nav>
 
-        <div className="hidden lg:flex items-center gap-3">
+        <div className="hidden lg:flex items-center gap-3 pt-4">
           <LanguageToggle />
           <Link to="/#track" className="text-[13px] font-medium text-ink-faint hover:text-navy transition-colors">
             {T.trackRequest}
@@ -277,7 +277,7 @@ export default function Header() {
           </Link>
         </div>
 
-        <div className="lg:hidden flex items-center gap-1.5 shrink-0">
+        <div className="lg:hidden flex items-center gap-1.5 shrink-0 pt-1.5 sm:pt-5">
           <LanguageToggle className="mr-0.5" />
           <Link
             to={requestHref}
