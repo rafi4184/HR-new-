@@ -19,8 +19,8 @@ export interface AirportPrefill {
 }
 
 const TAB_META: { id: BookingTab; icon: typeof PlaneTakeoff }[] = [
-  { id: "spain", icon: Laptop2 },
   { id: "airport", icon: PlaneTakeoff },
+  { id: "spain", icon: Laptop2 },
   { id: "hotel", icon: CarFront },
   { id: "government", icon: Landmark },
   { id: "programs", icon: GraduationCap },

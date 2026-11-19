@@ -88,12 +88,16 @@ export default function Header() {
       }`}
     >
       <div className="flex items-center justify-between px-5 md:px-10 py-3.5 max-w-7xl mx-auto">
-        <Link to="/" className="flex items-center gap-2 sm:gap-2.5 min-w-0 shrink" onClick={() => setMobileOpen(false)}>
-          <LogoMark size={30} className="text-navy shrink-0 sm:hidden" animated />
-          <LogoMark size={34} className="text-navy shrink-0 hidden sm:block" animated />
-          <div className="hidden sm:block min-w-0">
-            <div className="text-navy font-display text-[17px] leading-none truncate">HR — The Mediator</div>
-            <div className="text-[10px] leading-none mt-1 tracking-wide text-ink-faint">{T.tagline}</div>
+        <Link
+          to="/"
+          className="flex items-center gap-2 sm:flex-col sm:items-center sm:gap-1.5 min-w-0 shrink py-1.5"
+          onClick={() => setMobileOpen(false)}
+        >
+          <LogoMark size={36} className="text-navy shrink-0 sm:hidden" animated />
+          <LogoMark size={56} className="text-navy shrink-0 hidden sm:block" animated />
+          <div className="hidden sm:flex sm:flex-col sm:items-center min-w-0">
+            <div className="text-navy font-display text-[16px] leading-none text-center whitespace-nowrap">HR — The Mediator</div>
+            <div className="text-[9.5px] leading-tight mt-1 tracking-wide text-ink-faint text-center max-w-[190px]">{T.tagline}</div>
           </div>
         </Link>
 

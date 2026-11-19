@@ -45,7 +45,7 @@ export default function HomePage({ onToast }: { onToast: (msg: string) => void }
     faq: HOME_FAQS,
   });
 
-  const [activeTab, setActiveTab] = useState<BookingTab>("spain");
+  const [activeTab, setActiveTab] = useState<BookingTab>("airport");
   const [presetProgram] = useState("study");
   const [airportPrefill] = useState<AirportPrefill>({ name: "", flight: "", purpose: "Business" });
   const [lastTicket, setLastTicket] = useState<string | null>(null);
@@ -87,7 +87,33 @@ export default function HomePage({ onToast }: { onToast: (msg: string) => void }
 
   return (
     <div>
-      {/* Spain Digital Nomad Visa — top of homepage */}
+      <Booking
+        ref={bookingRef}
+        activeTab={activeTab}
+        setActiveTab={setActiveTab}
+        presetProgram={presetProgram}
+        airportPrefill={airportPrefill}
+        airportPrefillKey={0}
+        lastTicket={lastTicket}
+        onSubmitted={handleSubmitted}
+      />
+
+      {/* Airport VIP — moved ahead of the Spain consultation content */}
+      <Hero />
+      <ServiceVideoHero onRequest={goToBooking} />
+
+      <section className="relative px-5 md:px-10 pt-14 pb-8 md:pt-20 md:pb-10 overflow-hidden">
+        <AmbientGlow variant="light" />
+        <Reveal className="relative max-w-3xl mx-auto text-center">
+          <div className="text-[12px] font-medium mb-4 tracking-[0.2em] uppercase text-gold-deep">{topIntroT.eyebrow}</div>
+          <h1 className="font-display text-navy text-3xl md:text-5xl leading-[1.1] mb-6" style={{ textWrap: "balance" }}>
+            {topIntroT.h1}
+          </h1>
+          <p className="text-[15.5px] md:text-[17px] text-ink-muted leading-relaxed">{topIntroT.summary}</p>
+        </Reveal>
+      </section>
+
+      {/* Spain Digital Nomad Visa */}
       <section className="relative px-5 md:px-10 pt-14 pb-12 md:pt-20 md:pb-14 bg-paper-soft overflow-hidden">
         <AmbientGlow variant="light" />
         <div className="relative max-w-4xl mx-auto text-center">
@@ -123,28 +149,6 @@ export default function HomePage({ onToast }: { onToast: (msg: string) => void }
         </Reveal>
       </section>
 
-      <section className="relative px-5 md:px-10 pt-14 pb-8 md:pt-20 md:pb-10 overflow-hidden">
-        <AmbientGlow variant="light" />
-        <Reveal className="relative max-w-3xl mx-auto text-center">
-          <div className="text-[12px] font-medium mb-4 tracking-[0.2em] uppercase text-gold-deep">{topIntroT.eyebrow}</div>
-          <h1 className="font-display text-navy text-3xl md:text-5xl leading-[1.1] mb-6" style={{ textWrap: "balance" }}>
-            {topIntroT.h1}
-          </h1>
-          <p className="text-[15.5px] md:text-[17px] text-ink-muted leading-relaxed">{topIntroT.summary}</p>
-        </Reveal>
-      </section>
-
-      <Booking
-        ref={bookingRef}
-        activeTab={activeTab}
-        setActiveTab={setActiveTab}
-        presetProgram={presetProgram}
-        airportPrefill={airportPrefill}
-        airportPrefillKey={0}
-        lastTicket={lastTicket}
-        onSubmitted={handleSubmitted}
-      />
-
       <SpainHero />
       <SpainVisaHighlights />
       <SpainVisaOverview />
@@ -158,8 +162,6 @@ export default function HomePage({ onToast }: { onToast: (msg: string) => void }
       </section>
 
       <NewsTeaser />
-      <Hero />
-      <ServiceVideoHero onRequest={goToBooking} />
       <ServicesOverview />
       <TrackRequest ref={trackRef} loading={trackLoading} result={trackResult} onSubmit={runTrack} onPay={setPayModal} />
       <WhyChooseUs />
