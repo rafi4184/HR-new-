@@ -90,16 +90,19 @@ export default function Header() {
       <div className="flex items-center justify-between px-5 md:px-10 py-3.5 max-w-7xl mx-auto">
         <Link
           to="/"
-          className="flex flex-col items-center gap-1 sm:gap-1.5 min-w-0 shrink py-1"
+          className="flex flex-col items-center gap-1.5 sm:gap-2 min-w-0 shrink py-1.5"
           onClick={() => setMobileOpen(false)}
         >
-          <LogoMark size={34} className="text-navy shrink-0 sm:hidden" animated />
-          <LogoMark size={56} className="text-navy shrink-0 hidden sm:block" animated />
+          <div className="relative shrink-0 w-12 h-12 sm:w-[76px] sm:h-[76px] rounded-full bg-white shadow-card border border-border flex items-center justify-center overflow-hidden">
+            <LogoMark size={36} className="text-navy sm:hidden" animated />
+            <LogoMark size={58} className="text-navy hidden sm:block" animated />
+          </div>
           <div className="flex flex-col items-center min-w-0">
-            <div className="text-navy font-display text-[12px] sm:text-[16px] leading-none text-center whitespace-nowrap">
+            <div className="text-navy font-display font-semibold text-[13px] sm:text-[19px] leading-none text-center whitespace-nowrap tracking-wide">
               HR — The Mediator
             </div>
-            <div className="text-[8px] sm:text-[9.5px] leading-tight mt-0.5 sm:mt-1 tracking-wide text-ink-soft text-center max-w-[130px] sm:max-w-[190px]">
+            <div className="w-6 sm:w-8 h-px bg-gold-deep/60 my-1 sm:my-1.5" />
+            <div className="text-[7px] sm:text-[10px] leading-snug tracking-[0.1em] sm:tracking-[0.12em] uppercase text-navy/60 font-medium text-center max-w-[140px] sm:max-w-[220px]">
               {T.tagline}
             </div>
           </div>
